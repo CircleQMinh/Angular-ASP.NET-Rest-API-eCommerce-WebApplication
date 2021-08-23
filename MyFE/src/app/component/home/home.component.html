@@ -1,0 +1,181 @@
+<app-nav></app-nav>
+
+<div id="slide-show">
+
+
+    <ngb-carousel #carousel [interval]="2400" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus"
+        [showNavigationArrows]="true" [showNavigationIndicators]="true" [keyboard]="true" [pauseOnHover]="true"
+        [wrap]="true" (slide)="onSlide($event)">
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[0]" alt="Random first slide" class="mh-100" style="width: 100%; height: 90vh">
+            </div>
+            <div class="carousel-caption">
+                <button class="btn btn-success" routerLink="/products/category/Fruit">Shop Now <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[1]" alt="Random second slide" class="mh-100" style="width: 100%; height: 90vh">
+            </div>
+            <div class="carousel-caption">
+                <button class="btn btn-success" routerLink="/products/category/Vegetable">Shop Now <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[2]" alt="Random second slide" class="mh-100" style="width: 100%; height: 90vh">
+            </div>
+            <div class="carousel-caption">
+                <button class="btn btn-success" routerLink="/products/category/Snack">Shop Now <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[3]" alt="Random second slide" class="mh-100" style="width: 100%; height: 90vh">
+            </div>
+            <div class="carousel-caption">
+                <button class="btn btn-success" routerLink="/products/category/Confectionery">Shop Now <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+        </ng-template>
+    </ngb-carousel>
+</div>
+<div class="HF-data-container-section HF-featured-grid HF-bg-offwhite" style="    display: flex;
+flex-wrap: wrap;
+justify-content: space-evenly;
+align-content: stretch;
+align-items: stretch;">
+    <div class="HF-data-container-panel HF-featured-grid-header">
+        <div class="HF-featured-grid-header-container">
+            <h2 class="HF-data-container-section-item HF-section-heading HF-graphen-style">Shop Online</h2>
+        </div>
+    </div>
+
+    <div class="HF-featured-grid-body">
+        <div class="HF-featured-grid-body-container">
+            <div class="HF-featured-grid-item large-3 small-6">
+
+                <div class="HF-data-container-section-item HF-featured-grid-item-image">
+                    <div class="HF-figure-overflow">
+                        <a routerLink="/products/category/Fruit" title="">
+                            <img class="HF-hover-img"
+                                src="https://www.giftsforeurope.com/images/gene/prod/norm/cado001152_01_vip-hamper-exotic-fruit.jpg"
+                                title="">
+                        </a>
+
+                    </div>
+
+                </div>
+                <div class="HF-data-container-section-item HF-featured-grid-item-text-container">
+                    <h3 class="HF-data-container-section-item HF-grid-item-heading">Fruit</h3>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-description">
+                        <p>Check out our weekly specials.</p>
+                    </div>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-link">
+                        <a routerLink="/products/category/Fruit" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span>Shop
+                                    Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="HF-featured-grid-item large-3 small-6">
+
+                <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
+                    <div class="HF-figure-overflow">
+                        <a routerLink="/products/category/Vegetable" title="">
+                            <img class="HF-hover-img"
+                                src="//cdn.shopify.com/s/files/1/0206/9470/collections/buy-groceries-online_a778f666-e7e6-4312-acbe-696ada4e81cd_large.jpg?v=1617760517"
+                                title="">
+                        </a>
+
+                    </div>
+
+                </div>
+                <div class="HF-data-container-section-item HF-featured-grid-item-text-container">
+                    <h3 class="HF-data-container-section-item HF-grid-item-heading">Vegetable</h3>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-description">
+                        <p>Fresh from the markets daily.</p>
+                    </div>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-link">
+                        <a routerLink="/products/category/Vegetable" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                                    Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="HF-featured-grid-item large-3 small-6">
+
+                <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
+                    <div class="HF-figure-overflow">
+                        <a routerLink="/products/category/Confectionery" title="">
+                            <img class="HF-hover-img"
+                                src="https://www.famima.vn/wp-content/uploads/2016/12/CONFACTIONARY-2.jpg" title="">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="HF-data-container-section-item HF-featured-grid-item-text-container">
+                    <h3 class="HF-data-container-section-item HF-grid-item-heading">Confectionery</h3>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-description">
+                        <p>A wide range of confectionery.</p>
+                    </div>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-link">
+                        <a routerLink="/products/category/Confectionery" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                                    Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="HF-featured-grid-item large-3 small-6">
+
+                <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
+                    <div class="HF-figure-overflow">
+                        <a routerLink="/products/category/Confectionery" title="">
+                            <img class="HF-hover-img"
+                                src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg"
+                                title="">
+                        </a>
+                    </div>
+
+                </div>
+                <div class="HF-data-container-section-item HF-featured-grid-item-text-container">
+                    <h3 class="HF-data-container-section-item HF-grid-item-heading">Snack</h3>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-description">
+                        <p>Lots of delicioust snack!</p>
+                    </div>
+                    <div class="HF-data-container-section-item HF-featured-grid-item-link">
+                        <a routerLink="/products/category/Confectionery" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                                    Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 3%;margin:0 auto;
+    width: 50%;display: block;">
+        <div class="col-lg-12">
+            <div class="section-title">
+                <h2 style="text-align: center;">Search for your favarite goods!</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-product-list></app-product-list>
+
+
+<app-footer></app-footer>

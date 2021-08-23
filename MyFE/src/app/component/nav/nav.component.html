@@ -1,0 +1,53 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top "  >
+    <a class="navbar-brand" >
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+            style="width: 40px;height: 40px;">Circle's Shop</a>
+
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent"  [collapse]="isCollapsed">
+        <ul class="navbar-nav ml-auto topnav" >
+
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Product</a>
+            </li>
+            <li class="nav-item dropdown ">
+                <div class="btn-group">
+                    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                        <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
+                            Year</button> -->
+                        <a class="nav-link"  ngbDropdownToggle><i class="fas fa-bars"></i> Category</a>    
+                        <div class="dropdown-menu dd-menu" ngbDropdownMenu >
+                            <a ngbDropdownItem ><i class="fas fa-clipboard-list"></i>
+                                All</a>
+                            <hr>
+                            <a ngbDropdownItem ><i class="fas fa-apple-alt"></i>
+                                Fruit</a>
+                            <a ngbDropdownItem ><i class="fas fa-carrot"></i>
+                                Vegetable</a>
+                            <a ngbDropdownItem ><i class="fas fa-candy-cane"></i>
+                                Confectionary</a>
+                            <a ngbDropdownItem ><i class="fas fa-cookie-bite"></i>
+                                Snack</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </li>          
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-newspaper"></i> News&Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-question-circle"></i> Info</a>
+            </li>        
+        </ul>
+    </div>
+
+
+</nav>

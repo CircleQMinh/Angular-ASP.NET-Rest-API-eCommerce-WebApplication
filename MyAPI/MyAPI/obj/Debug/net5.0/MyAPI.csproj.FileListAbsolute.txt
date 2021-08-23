@@ -1,0 +1,144 @@
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\appsettings.Development.json
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\appsettings.json
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.exe
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.deps.json
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.runtimeconfig.json
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.runtimeconfig.dev.json
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\ref\MyAPI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Humanizer.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Data.SqlClient.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Identity.Client.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\System.Runtime.Caching.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.AssemblyInfoInputs.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.AssemblyInfo.cs
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.CoreCompileInputs.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\staticwebassets\MyAPI.StaticWebAssets.Manifest.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\staticwebassets\MyAPI.StaticWebAssets.xml
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\scopedcss\bundle\MyAPI.styles.css
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.RazorTargetAssemblyInfo.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.CopyComplete
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\ref\MyAPI.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.pdb
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.genruntimeconfig.cache
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\quocm\source\repos\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.AssemblyReference.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.AssemblyInfoInputs.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.AssemblyInfo.cs
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.CoreCompileInputs.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\ref\MyAPI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\appsettings.Development.json
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\appsettings.json
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.exe
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.deps.json
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.runtimeconfig.json
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.runtimeconfig.dev.json
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\ref\MyAPI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\MyAPI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\AutoMapper.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Humanizer.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Data.SqlClient.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.Identity.Client.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Microsoft.OpenApi.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\System.Runtime.Caching.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\staticwebassets\MyAPI.StaticWebAssets.Manifest.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\staticwebassets\MyAPI.StaticWebAssets.xml
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\scopedcss\bundle\MyAPI.styles.css
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.RazorTargetAssemblyInfo.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.CopyComplete
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.genruntimeconfig.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.AssemblyReference.cache
