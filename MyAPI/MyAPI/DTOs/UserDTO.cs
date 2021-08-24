@@ -25,13 +25,22 @@ namespace MyAPI.DTOs
 
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
+        [Required]
         public ICollection<string> Roles { get; set; }
 
     }
 
-    public class UserInfoDTO : UserDTO
+    public class UserInfoDTO 
     {
         public string Id { get; set; }
+        public string DisplayName { get; set; }
+        public string imgUrl { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
     }
 
     public class ResetPasswordDTO
@@ -39,10 +48,13 @@ namespace MyAPI.DTOs
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
+    }
+
+    public class ConfirmEmailDTO
+    {
+        public string email { get; set; }
+        public string token { get; set; }
     }
 }

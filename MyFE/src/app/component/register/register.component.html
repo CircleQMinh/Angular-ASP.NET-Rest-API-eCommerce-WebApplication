@@ -1,1 +1,140 @@
-<p>register works!</p>
+<app-nav></app-nav>
+
+
+<div class="container form-reg" >
+    <div class="div-center-content" style="margin-bottom: 20px;">
+
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
+        <strong style="display: block;font-size: 20px;" class="text-monospace">Sign Up</strong>
+        <!-- <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+    </div>
+
+    <form novalidate (ngSubmit)="trySignUp()" class="row justify-content-md-center" [formGroup]="rf1">
+        <div class="col-md-8">
+            <div class="col alert alert-danger" role="alert" *ngIf="unknown_error&&showFormError">
+                An error has occurred ! Try again !
+            </div>
+            <div class="form-group row">
+                <label for="example-text-input" class="col-2 col-form-label">
+                    Email:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="email" id="example-text-input" formControlName="email">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.email?.errors?.required&&showFormError">
+                Email is required!
+            </div>
+            <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
+                Email is not valid!
+            </div>
+            <div class="col alert alert-danger" role="alert" *ngIf="email_exist_error&&showFormError">
+                Email is already been used!
+            </div>
+            <div class="form-group row">
+                <label for="example-email-input" class="col-2 col-form-label">
+                    Password:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="password" id="example-email-input" formControlName="password">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.password?.errors?.required&&showFormError">
+                Password is required!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['password'].hasError('minlength')&&showFormError">
+                Password is must be atleast 8 characters!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['password'].hasError('pattern')&&showFormError">
+                Password must satisfy these requirements : <br>
+                    Lowercase letters <br>
+                    Uppercase letters <br>
+                    Numbers <br>
+                    Special characters <br>
+            </div>
+            <div class="form-group row">
+                <label for="example-url-fb" class="col-2 col-form-label">
+                    Username:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="text" id="example-url-fb" formControlName="username">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.username?.errors?.required&&showFormError">
+                Username is required!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['username'].hasError('minlength')&&showFormError">
+                Username is must be atleast 3 characters!
+            </div>
+
+            <div class="form-group row">
+                <label for="example-url-fb" class="col-2 col-form-label">
+                    Phone:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="tel" id="example-url-fb-sdas" formControlName="phone">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
+                Phone number is required!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['phone'].hasError('pattern')&&showFormError">
+                Phone is invalid!
+            </div>
+
+            <div class="form-group row" *ngIf="!isLoading&&!isRegistered">
+                <div class="col " style="display: flex;
+                justify-content: center;">
+                    <!-- <a routerLink="/register">Sign Up</a><br> -->
+                    <button class="btn btn-primary" type="submit">Sign Up</button>
+
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="isLoading">
+                <div class="col " style="display: flex;
+                justify-content: center;">
+                    <div class="spinner-border text-primary" role="status" >
+
+                    </div>
+
+                    <p style="color: rgb(0, 0, 0);" > Loading ...</p>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="isRegistered">
+                <div class="col " style="display: flex;
+                justify-content: center;">
+                    <p style="color: rgb(0, 0, 0);" > We have sent an email with a confirmation link to your email address.
+                         In order to complete the sign-up process, please click the confirmation link.</p>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- <pre>{{rf1.value|json}}</pre>
+    <pre>{{rf1.valid|json}}</pre> -->
+
+</div>
+<div class="div-center-content">
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <div class="d-flex flex-column justify-content-center">
+
+                <p class="text-monospace"> Already registered ?  </p><button class="btn btn-danger" routerLink="/login"
+               >Sign
+                In</button>
+                <p class="text-monospace" style="margin-top:15px;"> Forgot password ?  </p><button class="btn btn-warning" routerLink="/password-recover"
+                >Click here</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-footer></app-footer>

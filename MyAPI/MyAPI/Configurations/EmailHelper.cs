@@ -10,7 +10,8 @@ namespace MyAPI.Configurations
 {
     public class EmailHelper
     {
-        public string SendEmailConfirm(string userEmail, string confirmationLink)
+        public string site = "http://localhost:4200/";
+        public string SendEmailConfirm(string userEmail, string token)
         {
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress("timelive.circleqm@gmail.com");
@@ -18,7 +19,11 @@ namespace MyAPI.Configurations
 
             mailMessage.Subject = "Confirm your email";
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = "Please comfirm your account by using this code here: " + confirmationLink ;
+
+            string encodetk=token.Replace("+", "%2B");
+            string link = site+ "confirmAccount?email=" + userEmail+"&token="+encodetk;
+
+            mailMessage.Body = "Please comfirm your account by using this link here: " + link +"<br>"+"Token="+token;
 
      
 
@@ -42,7 +47,7 @@ namespace MyAPI.Configurations
         }
 
 
-        public string SendEmailResetPassword(string userEmail, string confirmationLink)
+        public string SendEmailResetPassword(string userEmail, string token)
         {
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress("timelive.circleqm@gmail.com");
@@ -50,7 +55,10 @@ namespace MyAPI.Configurations
 
             mailMessage.Subject = "Reset your password";
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = "Please comfirm your password reset request by using this code here: " + confirmationLink;
+
+            string encodetk = token.Replace("+", "%2B");
+            string link = site + "reset-password?email=" + userEmail + "&token=" + encodetk;
+            mailMessage.Body = "Please comfirm your password reset request by using this link here: " + link;
 
 
 

@@ -1,1 +1,84 @@
-<p>login works!</p>
+<app-nav></app-nav>
+
+
+<div class="container form-reg" style="margin-top: 100px;">
+    <div class="div-center-content" style="margin-bottom: 20px;">
+
+        <img  src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
+        <strong style="display: block;font-size: 20px;" class="text-monospace">Login</strong>
+      <!-- //  <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">You already login as '{{user.displayName}}' using {{user.email}}</p>
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="login_error">Wrong password or email!</p>
+    </div>
+
+    <form novalidate (ngSubmit)="trySignIn()" class="row justify-content-md-center" [formGroup]="rf1" *ngIf="!isLogin">
+        <div class="col-md-8">
+            <div class="form-group row">
+                <label for="example-text-input" class="col-2 col-form-label">
+                    Email:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="email" id="example-text-input" formControlName="email">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.email?.errors?.required&&showFormError">
+                Email is required!
+            </div>
+            <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
+                Email is not valid!
+            </div>
+            <div class="form-group row">
+                <label for="example-email-input" class="col-2 col-form-label">
+                    Password:
+                </label>
+                <div class="col-10">
+                    <input class="form-control" type="password" id="example-email-input" formControlName="password">
+                </div>
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.password?.errors?.required&&showFormError">
+                Password is required!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['password'].hasError('minlength')&&showFormError">
+                Password is must be atleast 8 characters!
+            </div>
+            <div class="spinner-border text-primary" role="status" *ngIf="isLoading">
+
+            </div>
+
+            <p style="color: rgb(8, 8, 8);" *ngIf="isLoading"> Please wait a sec ...</p>
+            <div class="form-group row" *ngIf="!isLoading"> 
+                <div class="col " style="display: flex;
+                justify-content: center;">
+                    <!-- <a routerLink="/register">Sign Up</a><br> -->
+                    <button class="btn btn-primary" type="submit">Login</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    
+
+    <!-- <pre>{{rf1.value|json}}</pre>
+    <pre>{{rf1.valid|json}}</pre> -->
+</div>
+<div class="div-center-content"> 
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <div class="d-flex flex-column justify-content-center">
+    
+    
+                <p class="text-monospace"> New here ? : <button class="btn btn-danger" routerLink="/register" style="margin-left: 10px;">Sign
+                        Up</button></p>
+                <p class="text-monospace"> Forgot password ? : <button class="btn btn-warning" routerLink="/password-recover"
+                        style="margin-left: 10px;">Click here</button></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<app-footer></app-footer>
