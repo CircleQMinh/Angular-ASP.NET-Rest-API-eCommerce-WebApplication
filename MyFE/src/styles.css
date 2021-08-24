@@ -88,6 +88,19 @@ img{display:inline-block;vertical-align:middle;}
     font-size: 10px;
     display: contents;
 }
+
+.div-center-content{
+    margin:0 auto;
+    width: 50%;display: block;margin-top: 3%;text-align: center;
+}
+.form-reg{
+    border: solid;
+    /* margin: 0%; */
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #007bff5c;
+}
 @media (max-width: 575.98px) { 
     .HF-grid-item-heading{
         font-size: 15px;

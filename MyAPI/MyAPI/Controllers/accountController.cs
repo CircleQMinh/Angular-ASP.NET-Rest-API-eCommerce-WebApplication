@@ -88,21 +88,31 @@ namespace MyAPI.Controllers
             }
         }
 
-        [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token,string email)
+      
+
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailDTO ce)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(ce.email);
             if (user==null)
             {
                 var error = "Submitted token is invalid";
                 return BadRequest(new { error });
             }
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(user, ce.token);
 
-            return Accepted(new { success = result });
+            if (result.Succeeded)
+            {
+                return Accepted(new { result });
+            }
+            else
+            {
+                return BadRequest(new { result });
+
+            }
         }
 
-        [HttpGet("ForgotPassword")]
+        [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
             APIUser user = await _userManager.FindByEmailAsync(email);
@@ -129,8 +139,17 @@ namespace MyAPI.Controllers
                 return BadRequest(new { error });
             }
             var result = await _userManager.ResetPasswordAsync(user, unitDTO.Token,unitDTO.Password);
+            if (result.Succeeded)
+            {
+                return Accepted(new { result });
+            }
+            else
+            {
+                return BadRequest(new { result });
 
-            return Accepted(new { result });
+            }
+
+         
         }
 
 
@@ -151,7 +170,9 @@ namespace MyAPI.Controllers
                     return Unauthorized();
                 }
                 APIUser u = await _userManager.FindByEmailAsync(userDTO.Email);
-                return Accepted(new { Token = await _authManager.CreateToken(), u });
+                var roles = await _userManager.GetRolesAsync(u);
+                var results = _mapper.Map<UserInfoDTO>(u);
+                return Accepted(new { Token = await _authManager.CreateToken(), user=results,roles });
             }
             catch (Exception ex)
             {

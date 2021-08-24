@@ -14,6 +14,9 @@ import { LoginComponent } from './component/login/login.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { ProductListComponent } from './component/product-list/product-list.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmAccountComponent } from './component/confirm-account/confirm-account.component';
+import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +26,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    ProductListComponent
+    ProductListComponent,
+    ConfirmAccountComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +36,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     NgbModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule, ReactiveFormsModule,
     HotToastModule.forRoot(),
     CollapseModule.forRoot()
   ],

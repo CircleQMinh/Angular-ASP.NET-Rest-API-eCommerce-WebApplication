@@ -15,12 +15,12 @@ using System.Web;
 
 namespace MyAPI.Controllers
 {
-    public class Test
-    {
-        public string Name { get; set; }
+    //public class Test
+    //{
+    //    public string Name { get; set; }
 
-        public int Age { get; set; }
-    }
+    //    public int Age { get; set; }
+    //}
 
     [Route("api/[controller]")]
     [ApiController]
@@ -36,11 +36,11 @@ namespace MyAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetPerson")]
-        public string GetQueryParams([FromQuery] Test person)
-        {
-            return person.Name + " " + person.Age;
-        }
+        //[HttpGet("GetPerson")]
+        //public string GetQueryParams([FromQuery] Test person)
+        //{
+        //    return person.Name + " " + person.Age;
+        //}
 
         [HttpGet(Name ="GetProducts")]
         //[Route("/all")]

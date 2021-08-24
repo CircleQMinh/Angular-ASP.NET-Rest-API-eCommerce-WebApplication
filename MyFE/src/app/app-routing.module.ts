@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ConfirmAccountComponent } from './component/confirm-account/confirm-account.component';
+import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { HomeComponent } from './component/home/home.component';
+import { LoginComponent } from './component/login/login.component';
+import { RegisterComponent } from './component/register/register.component';
+import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 
 const routes: Routes = [
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-
+  { path: 'register', component: RegisterComponent },
+  { path: 'confirmAccount', component: ConfirmAccountComponent },
+  { path: 'confirmResetPassword', component: ConfirmAccountComponent },
+  { path: 'password-recover', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'login', component: LoginComponent },
   {path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];
 
