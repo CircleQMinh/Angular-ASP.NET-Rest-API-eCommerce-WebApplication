@@ -30,7 +30,14 @@ ul{padding:0;margin:0;}
 .featured__item__text h6 a{color:#252525;}
 .featured__item__text h5{color:#252525;font-weight:700;}
 /*! CSS Used fontfaces */
-
+.featured__controls{text-align:center;margin-bottom:50px;}
+.featured__controls ul li{list-style:none;font-size:18px;color:#1c1c1c;display:inline-block;margin-right:25px;position:relative;cursor:pointer;}
+.featured__controls ul li.active:after{opacity:1;}
+.featured__controls ul li:after{position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:#7fad39;content:"";opacity:0;}
+.featured__controls ul li:last-child{margin-right:0;}
+@media only screen and (max-width:479px){
+.featured__controls ul li{margin-bottom:10px;}
+}
 .searchbar{
     width: 50%;
     margin-left: 25%;
@@ -132,27 +139,7 @@ ul{padding:0;margin:0;}
 }
 
 
-.gradient-border {
-  --borderWidth: 3px;
-  background: white;
-  position: relative;
-  border-radius: var(--borderWidth);
-  width: 250px;
-  height: 200px;
-}
-.gradient-border:after {
-  content: '';
-  position: absolute;
-  top: calc(-1 * var(--borderWidth));
-  left: calc(-1 * var(--borderWidth));
-  height: calc(100% + var(--borderWidth) * 2);
-  width: calc(100% + var(--borderWidth) * 2);
-  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-  border-radius: calc(2 * var(--borderWidth));
-  z-index: -1;
-  animation: animatedgradient 3s ease alternate infinite;
-  background-size: 300% 300%;
-}
+
 
 
 @keyframes animatedgradient {

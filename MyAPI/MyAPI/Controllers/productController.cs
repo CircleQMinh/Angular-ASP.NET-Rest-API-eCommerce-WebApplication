@@ -61,7 +61,7 @@ namespace MyAPI.Controllers
                         orderBy = a => a.OrderBy(x => x.Name);
                         break;
                 }
-                if (category!=null)
+                if (category!="all")
                 {
                     expression = q => q.Category == category;
                 }

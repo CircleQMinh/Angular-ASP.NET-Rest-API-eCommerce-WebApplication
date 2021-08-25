@@ -16,5 +16,9 @@ export class ProductService {
     return this.http.get(`${this.apiUrl}product?category=${category}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
+  getProductInfo(id:string):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/${id}`);
+  }
+  
 
 }

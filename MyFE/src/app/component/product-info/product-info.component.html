@@ -1,0 +1,58 @@
+<app-nav></app-nav>
+
+<div class="container" *ngIf="!isLoading" style="margin-top:10px ;">
+    <ol class="breadcrumb">
+        <li routerLink="/home"><a class="breadcrumb-link">
+                Home
+            </a>
+        </li>
+        <li><a class="breadcrumb-link"><span itemprop="name">Product</span></a></li>
+
+        <li><a class="breadcrumb-link">
+                {{product.id}}
+            </a>
+        </li>
+    </ol>
+    <div class="card-info d-flex justify-content-center pro-info ">
+        <div class="i-product-update-error errors hidden-xs-up">
+            <p class="errors_error i-product-update-error-text" data-cy="product-update-error-message"></p>
+        </div>
+        <div class="container-fliud">
+
+            <div class="wrapper row">
+                <div class="preview col-md-6">
+
+                    <div class="preview-pic tab-content">
+                        <div class="tab-pane active d-flex justify-content-center" id="pic-1">
+                            <img src="{{product!.imgUrl}}" />
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="details col-md-6">
+                    <h3 class="product-title">{{product.name}}</h3>
+
+                    <p class="product-description">Category : {{product.category}} </p>
+                    <h3 class="product-title">Product Description</h3>
+
+                    <p class="product-description" style="    height: 45%;
+                    border: solid mediumslateblue 2px;
+                    padding: 1%;">{{product.description}}</p>
+                    <h4 class="price">current price: <span>${{product.price}} </span></h4>
+
+                    <div class="action d-flex justify-content-center">
+                        <button class="like btn btn-danger" type="button"
+                            style="background-color: red;margin-right: 3%;"><span class="fa fa-heart"></span></button>
+                        <button class=" btn btn-info" type="button"><i class="fas fa-shopping-cart"></i> Add to
+                            cart</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

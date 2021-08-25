@@ -17,6 +17,10 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmAccountComponent } from './component/confirm-account/confirm-account.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
+import { ProductInfoComponent } from './component/product-info/product-info.component';
+import { CartComponent } from './component/cart/cart.component';
+import { ScrollComponent } from './component/scroll/scroll.component';
+import { CartInfoComponent } from './component/cart-info/cart-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +32,11 @@ import { ResetPasswordComponent } from './component/reset-password/reset-passwor
     ForgotPasswordComponent,
     ProductListComponent,
     ConfirmAccountComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ProductInfoComponent,
+    CartComponent,
+    ScrollComponent,
+    CartInfoComponent
   ],
   imports: [
     BrowserModule,
