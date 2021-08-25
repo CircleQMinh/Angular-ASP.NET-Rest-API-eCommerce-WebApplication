@@ -1,20 +1,20 @@
-<div class="container-fluid">
+<div class="container-fluid" #top>
     <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
         <div class="col">
             <div class="section-title">
                 <h2>Our Product</h2>
             </div>
-            <div class="featured__controls">
+            <div class="featured__controls" >
                 <ul>
-                    <li [class.active]="category=='all'" routerLink="/products"><a>All</a></li>
-                    <li [class.active]="category=='Fruit'" routerLink="/products/category/Fruit"><a>Fruit</a></li>
-                    <li [class.active]="category=='Vegetable'" routerLink="/products/category/Vegetable">
+                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a>All</a></li>
+                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a>Fruit</a></li>
+                    <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
                         <a>Vegetables</a>
                     </li>
-                    <li [class.active]="category=='Confectionery'" routerLink="/products/category/Confectionery">
+                    <li [class.active]="category=='Confectionery'" (click)="switchCategory('Confectionery')">
                         <a>Confectionery</a>
                     </li>
-                    <li [class.active]="category=='Snack'" routerLink="/products/category/Snack"><a>Snack</a></li>
+                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a>Snack</a></li>
                 </ul>
             </div>
         </div>
@@ -30,25 +30,30 @@
         </div>
     </div>
 </div> -->
-<div *ngIf="isLoading" class="d-flex justify-content-center ">
+<div *ngIf="isLoading" class="d-flex justify-content-center " > 
     <div class="spinner-border text-warning" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 <!-- 2308 -->
 
-<section style="margin-top: -5%;" *ngIf="!isLoading">
-    <div class="container-fluid  mt-5">
-        <div class="row justify-content-center">
+<section style="margin-top: -5%;" *ngIf="!isLoading"  >
+    <div class="container-fluid  mt-5 dflex-jus" >
+        <a class="float-btn-nav" (click)="  prevPropage()">
+         
+            <i class="fas fa-arrow-left float-btn-icon"></i>
+        </a>
+        <div class="row justify-content-center" style="width: 80%;">
+      
             <div *ngFor="let pro of content  " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
                         container="body">
                         <ul class="featured__item__pic__hover">
-                            <li ngbTooltip="Add to Favarite" container="body"><a (click)="addToFav(pro)"><i
+                            <li ngbTooltip="Add to Favorite" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="View product page" container="body" routerLink="/products/{{pro.id}}"><a><i
+                            <li ngbTooltip="View product page" container="body" routerLink="/product/{{pro.id}}"><a><i
                                         class="fas fa-info"></i></a></li>
                             <li ngbTooltip="Add to cart" container="body" (click)="addToCart(pro)"><a><i
                                         class="fa fa-shopping-cart"></i></a></li>
@@ -60,18 +65,21 @@
                     </div>
                 </div>
             </div>
-
+           
         </div>
+        <a class="float-btn-nav" (click)="nextProPage()">
 
+            <i class="fas fa-arrow-right float-btn-icon"></i>
+        </a>
     </div>
 </section>
 
-<div class="container d-flex justify-content-center ">
+<div class="container d-flex justify-content-center " >
     <div class="row">
         <div class="col">
             <div id="ng-pagi">
                 <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="collectionSize"
-                    [maxSize]="3" [boundaryLinks]=true (pageChange)="productPageChange()" size="sm">
+                    [maxSize]="3" [boundaryLinks]=true (pageChange)="scroll(top);productPageChange()" size="sm">
                 </ngb-pagination>
             </div>
 

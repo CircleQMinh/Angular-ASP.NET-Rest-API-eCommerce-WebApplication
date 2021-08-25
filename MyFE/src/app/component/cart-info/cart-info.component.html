@@ -1,0 +1,151 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li routerLink="/home"><a class="breadcrumb-link">
+                    Home
+                </a>
+            </li>
+            <li><a class="breadcrumb-link"><span itemprop="name">Cart</span></a></li>
+    
+        </ol>
+        <div class="col" *ngIf="cartItems.length==0">
+            <p class="lead text-center">
+                Your cart is empty! Add some items to cart now!
+              </p>
+        </div>
+    </div>
+</div>
+
+<main class="main-container pt-3 pb-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                    <div class="steps__wrapper-main steps__wrapper-checkers">
+                        <div class="steps__progress" style="width: 3.33%;background-color: royalblue;"></div>
+                        <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                            <li class="complete" style="background-color: greenyellow;">
+                                <a class="active">
+                                    <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                        <span class="before"></span>
+                                        <span class="after"></span>
+                                        1
+                                    </span>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="checkout.html" class="">
+                                    <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                        <span class="before"></span>
+                                        <span class="after"></span>
+                                        2
+                                    </span>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="">
+                                    <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                        <span class="before"></span>
+                                        <span class="after"></span>
+                                        3
+                                    </span>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Payment</p>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="">
+                                    <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                        <span class="before"></span>
+                                        <span class="after"></span>
+                                        4
+                                    </span>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col  ">
+                <div style="width: 100%;" class="d-flex justify-content-center">
+
+                    <table class="table table-cart" style="margin-top: 20px;width: 100%;table-layout : fixed">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Product</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let o of cartItems,index as i">
+                                <td>
+                                    <div
+                                        class="d-flex flex-row justify-content-lg-start justify-content-between align-items-center">
+                                        <button class="brk-cart__remove"></button>
+                                        <img src="{{o.imgUrl}}"
+                                            alt="item-alt" class="brk-cart__img lazyloaded">
+                                    </div>
+                                </td>
+                                <td aria-label="Product">
+                                    <a href="#" class="font__size-16 line-height-1-375 brk-cart__title">{{o.name}}</a>
+                                </td>
+                                <td aria-label="Price">
+                                    <span
+                                        class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">${{o.price}}</span>
+                                </td>
+                                <td class="d-flex justify-content-center">
+
+                       
+                                    <p class="text-monospace"><i class="fas fa-angle-double-left"></i> {{cartItemsQuantity[i]}} <i class="fas fa-angle-double-right"></i></p>
+                                    
+
+
+                                </td>
+                                <td aria-label="Total">
+                                    <span
+                                        class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">${{(cartItemsQuantity[i]*o.price).toFixed(2)}}</span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="brk-cart__footer">
+                    <div class="brk-cart__footer-coupon">
+
+                        <button type="button" class="btn btn-secondary">Checkout</button>
+                        <button type="button" class="btn btn-secondary">Continue Shopping</button>
+
+                    </div>
+                    <div class="brk-cart__footer-total">
+                        <div class="brk-cart__footer-total-item font__family-montserrat">
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Total Item : </div>
+                            <div class="font__size-16 line-height-1-25 font__weight-bold brk-base-font-color">{{totalItem}}
+                            </div>
+                        </div>
+                        <div class="brk-cart__footer-total-item font__family-montserrat">
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Total : </div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">${{(totalPrice).toFixed(2)}}</div>
+                        </div>
+                        <div class="brk-cart__footer-total-item font__family-montserrat">
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Shipping and Handling</div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">Free Shipping</div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<app-footer></app-footer>
