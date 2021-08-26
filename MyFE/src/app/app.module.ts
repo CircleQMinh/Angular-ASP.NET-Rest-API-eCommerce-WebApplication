@@ -21,6 +21,7 @@ import { ProductInfoComponent } from './component/product-info/product-info.comp
 import { CartComponent } from './component/cart/cart.component';
 import { ScrollComponent } from './component/scroll/scroll.component';
 import { CartInfoComponent } from './component/cart-info/cart-info.component';
+import { CheckoutComponent } from './component/checkout/checkout.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { CartInfoComponent } from './component/cart-info/cart-info.component';
     ProductInfoComponent,
     CartComponent,
     ScrollComponent,
-    CartInfoComponent
+    CartInfoComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
