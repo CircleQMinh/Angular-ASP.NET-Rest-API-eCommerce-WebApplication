@@ -7,17 +7,17 @@
                 </a>
             </li>
             <li><a class="breadcrumb-link"><span itemprop="name">Cart</span></a></li>
-    
+
         </ol>
         <div class="col" *ngIf="cartItems.length==0">
-            <p class="lead text-center">
+            <p class="lead text-center" style="margin-bottom: 500px;">
                 Your cart is empty! Add some items to cart now!
-              </p>
+            </p>
         </div>
     </div>
 </div>
 
-<main class="main-container pt-3 pb-3">
+<main class="main-container pt-3 pb-3" *ngIf="cartItems.length!=0">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col">
@@ -42,7 +42,7 @@
                                         <span class="after"></span>
                                         2
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Login</p>
                                 </a>
                             </li>
                             <li class="">
@@ -52,7 +52,7 @@
                                         <span class="after"></span>
                                         3
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Payment</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
                                 </a>
                             </li>
                             <li class="">
@@ -89,9 +89,8 @@
                                 <td>
                                     <div
                                         class="d-flex flex-row justify-content-lg-start justify-content-between align-items-center">
-                                        <button class="brk-cart__remove"></button>
-                                        <img src="{{o.imgUrl}}"
-                                            alt="item-alt" class="brk-cart__img lazyloaded">
+                                        <button class="brk-cart__remove" (click)="removeFromCart(o)"></button>
+                                        <img src="{{o.imgUrl}}" alt="item-alt" class="brk-cart__img lazyloaded">
                                     </div>
                                 </td>
                                 <td aria-label="Product">
@@ -103,9 +102,12 @@
                                 </td>
                                 <td class="d-flex justify-content-center">
 
-                       
-                                    <p class="text-monospace"><i class="fas fa-angle-double-left"></i> {{cartItemsQuantity[i]}} <i class="fas fa-angle-double-right"></i></p>
-                                    
+
+                                    <p class="text-monospace"><i class="fas fa-angle-double-left"
+                                            (click)="removeOneFromCart(o)"></i> {{cartItemsQuantity[i]}}
+                                        <i class="fas fa-angle-double-right" (click)="addOneToCart(o)"></i>
+                                    </p>
+
 
 
                                 </td>
@@ -122,25 +124,29 @@
                 <div class="brk-cart__footer">
                     <div class="brk-cart__footer-coupon">
 
-                        <button type="button" class="btn btn-secondary">Checkout</button>
-                        <button type="button" class="btn btn-secondary">Continue Shopping</button>
+                        <button type="button" class="btn btn-secondary" (click)="checkOut()">Checkout <i
+                                class="fas fa-dollar-sign"></i></button>
+                        <button type="button" class="btn btn-secondary" routerLink="/home">Continue Shopping <i
+                                class="fas fa-shopping-cart"></i></button>
 
                     </div>
                     <div class="brk-cart__footer-total">
                         <div class="brk-cart__footer-total-item font__family-montserrat">
                             <div class="font__size-sm-14 font__size-13 line-height-1-5">Total Item : </div>
-                            <div class="font__size-16 line-height-1-25 font__weight-bold brk-base-font-color">{{totalItem}}
+                            <div class="font__size-16 line-height-1-25 font__weight-bold brk-base-font-color">
+                                {{totalItem}}
                             </div>
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
                             <div class="font__size-sm-14 font__size-13 line-height-1-5">Total : </div>
-                            <div class="font__size-14 line-height-1-5 font__weight-bold">${{(totalPrice).toFixed(2)}}</div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">${{(totalPrice).toFixed(2)}}
+                            </div>
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
                             <div class="font__size-sm-14 font__size-13 line-height-1-5">Shipping and Handling</div>
                             <div class="font__size-14 line-height-1-5 font__weight-bold">Free Shipping</div>
                         </div>
-                    
+
                     </div>
                 </div>
             </div>
@@ -149,3 +155,57 @@
 </main>
 
 <app-footer></app-footer>
+
+
+
+
+
+<ng-template #loginModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Login</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf1">
+            <div class="form-group">
+                <div class="input-group">
+                    <label for="email">Email :</label>
+                   
+                    <div class="input-group">
+                        <input id="email" class="form-control" placeholder="Email..." name="email"
+                            formControlName="email">
+                    </div>
+                    <div class="input-group" *ngIf="rf1.controls.email?.errors?.required&&showFormError">
+                        <p class="text-center d-block">
+                            Email is required! <i class="fas fa-exclamation-triangle"></i></p>
+                    </div>
+                    <div class="input-group" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
+                        <p class="text-center d-block">
+                            Email not valid! <i class="fas fa-exclamation-triangle"></i></p>
+                    </div>
+                    <label for="password" c>Password :</label>
+                    <div class="input-group ">
+                        <input id="password" class="form-control" placeholder="Password..." name="password" type="password"
+                            formControlName="password">
+                    </div>
+                    <div class="input-group"  *ngIf="rf1.controls.password?.errors?.required&&showFormError">
+                        <p class="text-center d-block">
+                            Password is required! <i class="fas fa-exclamation-triangle"></i></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="isLoadingLogin" class="div-center-content">
+        <div class="spinner-border text-primary" role="status" >
+
+        </div>
+        <p style="color: rgb(8, 8, 8);" > Please wait a sec ...</p>
+    </div>
+    <div class="modal-footer">
+     
+        <button *ngIf="!isLoadingLogin" type="button" class="btn btn-outline-dark" (click)="tryLogin()">Login</button>
+    </div>
+</ng-template>

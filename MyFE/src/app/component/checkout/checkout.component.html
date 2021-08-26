@@ -1,0 +1,301 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li routerLink="/home"><a class="breadcrumb-link">
+                    Home
+                </a>
+            </li>
+            <li><a class="breadcrumb-link"><span itemprop="name">Checkout</span></a></li>
+
+        </ol>
+    </div>
+</div>
+<div *ngIf="!isDone">
+    <main class="main-container mt-100 mt-md-130">
+        <div class="container">
+            <div class="tabs-wrapper mb-130 brk-library-rendered" data-brk-library="component__steps">
+                <div class="steps__wrapper-main steps__wrapper-checkers">
+                    <div class="steps__progress" style="width: 66.66%;background-color: royalblue;"></div>
+                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                        <li class="complete" style="background-color: greenyellow;">
+                            <a href="cart.html" class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    1
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                            </a>
+                        </li>
+                        <li class="complete" style="background-color: greenyellow">
+                            <a class="active">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    2
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Login</p>
+                            </a>
+                        </li>
+                        <li class="complete" style="background-color: greenyellow">
+                            <a class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    3
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    4
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="container ">
+        <div class="row">
+            <div class="col form-reg">
+                <div class="div-center-content" style="margin-bottom: 20px;">
+
+                    <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+                        style="width: 50%;">
+                    <strong style="display: block;font-size: 20px;" class="text-monospace">Contact Infomation</strong>
+                    <!-- <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+                </div>
+                <form novalidate (ngSubmit)="submitInfo()" class="row justify-content-md-center" [formGroup]="rf1">
+                    <div class="col-md-8">
+                        <!-- <div class="col alert alert-danger" role="alert" *ngIf="unknown_error&&showFormError">
+                        An error has occurred ! Try again !
+                    </div> -->
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-2 col-form-label">
+                                Email:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="email" id="example-text-input"
+                                    formControlName="email">
+                            </div>
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.email?.errors?.required&&showFormError">
+                            Email is required!
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.email?.errors?.email&&showFormError">
+                            Email is not valid!
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Name:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="example-url-fb"
+                                    formControlName="contactname">
+                            </div>
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.contactname?.errors?.required&&showFormError">
+                            Contact name is required!
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Phone:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="tel" id="example-url-fb-sdas" formControlName="phone">
+                            </div>
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
+                            Phone number is required!
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls['phone'].hasError('pattern')&&showFormError">
+                            Phone is invalid!
+                        </div>
+                        <div class="div-center-content" style="margin-bottom: 20px;">
+                            <strong style="display: block;font-size: 20px;" class="text-monospace">Address</strong>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Address:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="example-url-fb-sdas"
+                                    formControlName="address">
+                            </div>
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.address?.errors?.required&&showFormError">
+                            Address is required!
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Street:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="example-url-fb-sdas"
+                                    formControlName="street">
+                            </div>
+                        </div>
+                        <div class="col alert alert-danger" role="alert"
+                            *ngIf="rf1.controls.street?.errors?.required&&showFormError">
+                            Street is required!
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Ward:
+                            </label>
+                            <div class="col-10">
+                                <select class="form-select" aria-label="Default select example" formControlName="ward">
+                                    <option *ngFor="let o of Ward" value="{{o}}">{{o}}</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                District:
+                            </label>
+                            <div class="col-10">
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="district">
+                                    <option *ngFor="let o of District" value="{{o}}" selected>{{o}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="div-center-content" style="margin-bottom: 20px;">
+                            <strong style="display: block;font-size: 20px;" class="text-monospace">Billing
+                                option</strong>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Payment:
+                            </label>
+                            <div class="col-10">
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="billOption">
+                                    <option selected value="cash">Cash</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="div-center-content" style="margin-bottom: 20px;">
+                            <strong style="display: block;font-size: 20px;" class="text-monospace">
+                                Note</strong>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-url-fb" class="col-2 col-form-label">
+                                Note:
+                            </label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="example-url-fb-sdas"
+                                    formControlName="note" placeholder="Note for this order...">
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div *ngIf="isLoading" class="div-center-content">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p>
+                                   Please wait a sec ... !
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf="!isLoading">
+                            <div class="col " style="display: flex;
+                        justify-content: center;">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div *ngIf="isDone">
+    <main class="main-container mt-100 mt-md-130">
+        <div class="container">
+            <div class="tabs-wrapper mb-130 brk-library-rendered" data-brk-library="component__steps">
+                <div class="steps__wrapper-main steps__wrapper-checkers">
+                    <div class="steps__progress" style="width: 99.99%;background-color: royalblue;"></div>
+                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                        <li class="complete" style="background-color: greenyellow;">
+                            <a href="cart.html" class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    1
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                            </a>
+                        </li>
+                        <li class="complete" style="background-color: greenyellow">
+                            <a class="active">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    2
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Login</p>
+                            </a>
+                        </li>
+                        <li class="complete" style="background-color: greenyellow">
+                            <a class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    3
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                            </a>
+                        </li>
+                        <li class="complete" style="background-color: greenyellow">
+                            <a class="">
+                                <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                    <span class="before"></span>
+                                    <span class="after"></span>
+                                    4
+                                </span>
+                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="container ">
+        <div class="row">
+            <div class="col form-reg">
+                <div class="div-center-content" style="margin-bottom: 20px;">
+
+                    <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+                        style="width: 50%;">
+                    <strong style="display: block;font-size: 20px;" class="text-monospace">Thank you for shopping with us!</strong>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

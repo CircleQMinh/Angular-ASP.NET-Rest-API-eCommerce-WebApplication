@@ -331,6 +331,76 @@ ol.breadcrumb > li{white-space:nowrap;}
 .brk-cart .btn-icon-right i{right:59px;}
 
 
+
+.brk-form-wrap{margin-top:30px;}
+.brk-form-strict [type=text]:not([disabled]),.brk-form-strict textarea:not([disabled]){width:100%;font-size:.875rem;background-color:transparent;}
+.brk-form-strict [type=text]{width:100%;height:54px;border:0;border-radius:0;box-shadow:none;padding:0 15px 0 21px;transition:all .4s ease-in-out;border-bottom:1px solid var(--form-color-1);color:var(--brk-dark-base);}
+.brk-form-strict [type=text]+.input-label,.brk-form-strict textarea+.input-label{position:absolute;top:22px;left:21px;display:block;font-size:.875rem;line-height:14px;transition:all .4s ease-in-out;color:#a2a5ad;white-space:nowrap;}
+.brk-form-strict [type=text][required]+.input-label:after{content:"*";position:absolute;color:var(--brand-primary);padding-left:5px;}
+.brk-form-strict textarea{min-height:170px;padding:10px 15px;line-height:18px;transition:all .4s ease-in-out;border:1px solid var(--form-color-1);}
+.brk-form-strict textarea+.input-label{top:21px;}
+.brk-form-wrap{position:relative;}
+.brk-form-wrap .input-label{cursor:text;}
+/*! CSS Used from: http://html.berserk.nikadevs.com/css/components/steps.css */
+.steps__wrapper{display:flex;justify-content:space-between;align-items:center;text-align:center;}
+.steps__wrapper-checkers li.complete .active .steps__dot>.before{width:4px;}
+.steps__wrapper-checkers{position:relative;z-index:1;margin:0 7px;}
+@media (min-width:992px){
+.steps__wrapper-checkers{margin:0 0 30px;}
+}
+.steps__wrapper-checkers:before{content:'';position:absolute;left:50%;bottom:50%;transform:translate(-50%,50%);width:calc(100% - 2px);height:8px;background:#e8f0fe;box-shadow:inset 0 1px 15px -8px #000;z-index:-1;}
+.steps__wrapper-checkers li{cursor:pointer;position:relative;}
+.steps__wrapper-checkers li.complete .steps__dot{background:var(--brand-primary);color:transparent;}
+.steps__wrapper-checkers li.complete .steps__dot:before{color:#fff;}
+.steps__wrapper-checkers li:not(.complete) .steps__dot{background:#e8f0fe!important;}
+.steps__wrapper-checkers li:last-child{margin-right:-1px;}
+.steps__wrapper-checkers .steps__title{color:#333;position:absolute;top:45px;left:50%;transform:translate(-50%,0%);min-width:80px;}
+.steps__wrapper-checkers .steps__progress{height:2px;background:var(--brand-primary);position:absolute;top:50%;transform:translateY(-50%);transition:all .4s ease;left:0;}
+.steps__wrapper-checkers .steps__dot{margin:0 auto;color:#333;width:30px;height:30px;transition:all .4s ease;border-radius:50%;position:relative;z-index:1;display:flex;justify-content:center;align-items:center;border:0;}
+.steps__wrapper-checkers .steps__dot:before{content:'\f00c';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:all .4s ease;font-family:"Font Awesome 5 Free";font-weight:600;font-size:14px;color:transparent;z-index:20;}
+.steps__wrapper-checkers .steps__dot>.after,.steps__wrapper-checkers .steps__dot>.before{position:absolute;left:0;background:var(--brand-primary);opacity:0;transition:all .4s ease;}
+.steps__wrapper-checkers .steps__dot>.before{display:block;transform:translateY(-50%);height:2px;width:10px;top:50%;}
+.steps__wrapper-checkers .steps__dot>.after{top:0;right:0;bottom:0;z-index:2;border-radius:50%;}
+.steps__wrapper-checkers .steps__dot:after{content:'';position:absolute;top:-4px;left:-4px;right:-4px;bottom:-4px;border:5px solid #e7effd;border-radius:50%;z-index:-1;}
+.steps__wrapper-checkers li.complete .steps__dot>.after{opacity:1;}
+.steps__wrapper-checkers li.complete .steps__dot>.before{left:-4px;width:45px;opacity:1;transition-delay:.25s;}
+.steps__wrapper-checkers li:first-child .steps__dot>.before{left:0;width:45px;opacity:1;}
+/*! CSS Used from: http://html.berserk.nikadevs.com/css/components/alerts.css */
+.alert{box-shadow:0 5px 14px 0 rgba(0,0,0,.1);border-radius:0;border:0;background:#fff;padding:26px 31px;border-left:3px solid;margin:0 auto 20px;position:relative;}
+.alert .close{opacity:.5;line-height:26px;vertical-align:middle;box-shadow:none;text-shadow:none;}
+.alert .close:focus,.alert .close:hover{color:inherit;opacity:1;}
+.alert.fade{will-change:opacity;transition:opacity .3s ease-in-out;}
+.alert.show{transition:opacity .15s linear;}
+.alert-simple{color:#fff;}
+.alert-simple.alert-primary{border-color:#00c5ff;color:#00c5ff;}
+/*! CSS Used from: http://html.berserk.nikadevs.com/css/components/checkout.css */
+.brk-checkout-order-item{display:flex;align-items:center;border:1px solid #e9e9e9;margin-bottom:12px;min-width:930px;}
+.brk-checkout-order-item:last-child{margin-bottom:0;}
+.brk-checkout-order-item__img{width:62px;height:62px;-o-object-fit:cover;object-fit:cover;-o-object-position:center;object-position:center;flex-shrink:0;margin-right:27px;}
+.brk-checkout-order-item__title{flex-grow:1;}
+.brk-checkout-order-item__price{width:240px;}
+.brk-checkout-order-item__count{width:155px;}
+.brk-checkout-order-item__price-total{width:160px;}
+.brk-checkout-order-item__count,.brk-checkout-order-item__price,.brk-checkout-order-item__price-total{flex-shrink:0;padding-left:30px;}
+.brk-checkout-order{position:relative;box-shadow:0 3px 20px rgba(0,0,0,.1);}
+.brk-checkout-order__after{position:absolute;left:0;bottom:0;width:100%;height:3px;background-image:linear-gradient(to right,var(--brand-primary) 0%,var(--secondary) 100%);}
+.brk-checkout-order__header{padding:25px 40px 26px;}
+.brk-checkout-order__list{margin-left:40px;margin-right:40px;padding-bottom:50px;}
+.brk-checkout-order__footer{border-top:1px solid #e9e9e9;display:flex;}
+@media screen and (max-width:992px){
+.brk-checkout-order__footer{flex-wrap:wrap;}
+}
+.brk-checkout-order__footer-section{width:100%;display:flex;height:130px;align-items:center;justify-content:center;border-right:1px solid #e9e9e9;}
+@media screen and (max-width:992px){
+.brk-checkout-order__footer-section{border-right:0;border-bottom:1px solid #e9e9e9;}
+.brk-checkout-order__footer-section:last-child{border-bottom:0;}
+}
+.brk-checkout-order__footer-section:last-child{border-right:0;}
+.brk-checkout-order__footer-section h3{display:flex;align-items:baseline;}
+@media screen and (max-width:992px){
+.brk-checkout-order .brk-checkout-order__header{padding:20px 15px;}
+.brk-checkout-order .brk-checkout-order__list{margin-left:15px;margin-right:15px;padding-bottom:30px;}}
+
 .gradient-border {
 --borderWidth: 3px;
 background: white;

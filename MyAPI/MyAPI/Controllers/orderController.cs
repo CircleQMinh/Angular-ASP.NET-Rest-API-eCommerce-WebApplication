@@ -85,7 +85,7 @@ namespace MyAPI.Controllers
                 await _unitOfWork.Orders.Insert(query);
                 await _unitOfWork.Save();
 
-                return Accepted(new { query });
+                return Accepted(new { order=query,order_id=query.Id });
             }
             catch (Exception ex)
             {
