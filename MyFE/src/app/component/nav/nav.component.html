@@ -13,8 +13,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent"  [collapse]="isCollapsed">
         <ul class="navbar-nav ml-auto topnav" >
 
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Product</a>
+            <li class="nav-item" >
+                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart"></i> Product</a>
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
@@ -23,16 +23,16 @@
                             Year</button> -->
                         <a class="nav-link"  ngbDropdownToggle><i class="fas fa-bars"></i> Category</a>    
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu >
-                            <a ngbDropdownItem ><i class="fas fa-clipboard-list"></i>
+                            <a routerLink="/products" ngbDropdownItem ><i class="fas fa-clipboard-list"></i>
                                 All</a>
                             <hr>
-                            <a ngbDropdownItem ><i class="fas fa-apple-alt"></i>
+                            <a routerLink="/fruit" ngbDropdownItem ><i class="fas fa-apple-alt"></i>
                                 Fruit</a>
-                            <a ngbDropdownItem ><i class="fas fa-carrot"></i>
+                            <a routerLink="/vegetable" ngbDropdownItem ><i class="fas fa-carrot"></i>
                                 Vegetable</a>
-                            <a ngbDropdownItem ><i class="fas fa-candy-cane"></i>
-                                Confectionary</a>
-                            <a ngbDropdownItem ><i class="fas fa-cookie-bite"></i>
+                            <a routerLink="/confectionary" ngbDropdownItem ><i class="fas fa-candy-cane"></i>
+                                Confectionery</a>
+                            <a routerLink="/snack" ngbDropdownItem ><i class="fas fa-cookie-bite"></i>
                                 Snack</a>
 
                         </div>

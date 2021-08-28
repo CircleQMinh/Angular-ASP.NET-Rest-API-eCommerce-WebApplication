@@ -1,20 +1,34 @@
+<div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+    <div class="wrap">
+        <div class="search">
+           <input type="text" class="searchTerm" placeholder="What are you looking for?" 
+           [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)" >
+           <button type="submit" class="searchButton">
+             <i class="fa fa-search"></i>
+          </button>
+        </div>
+     </div>
+</div>
+
+
+
 <div class="container-fluid" #top>
     <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
         <div class="col">
             <div class="section-title">
-                <h2>Our Product</h2>
+                <h2 class="text-tron">Our Product</h2>
             </div>
             <div class="featured__controls" >
                 <ul>
-                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a>All</a></li>
-                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a>Fruit</a></li>
+                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">All</a></li>
+                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Fruit</a></li>
                     <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
-                        <a>Vegetables</a>
+                        <a class="text-tron">Vegetables</a>
                     </li>
                     <li [class.active]="category=='Confectionery'" (click)="switchCategory('Confectionery')">
-                        <a>Confectionery</a>
+                        <a class="text-tron">Confectionery</a>
                     </li>
-                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a>Snack</a></li>
+                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a class="text-tron">Snack</a></li>
                 </ul>
             </div>
         </div>
@@ -37,8 +51,8 @@
 </div>
 <!-- 2308 -->
 
-<section style="margin-top: -5%;" *ngIf="!isLoading"  >
-    <div class="container-fluid  mt-5 dflex-jus" >
+<section *ngIf="!isLoading"  >
+    <div class="container-fluid dflex-jus" >
         <a class="float-btn-nav" (click)="  prevPropage()">
          
             <i class="fas fa-arrow-left float-btn-icon"></i>
@@ -86,3 +100,12 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;" >
+    <div class="typeahead-tron">
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img" >
+        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
+    </div>
+
+</ng-template>

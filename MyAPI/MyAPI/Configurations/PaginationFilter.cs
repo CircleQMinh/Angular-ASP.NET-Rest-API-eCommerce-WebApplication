@@ -16,8 +16,8 @@ namespace MyAPI.Configurations
         }
         public PaginationFilter(int pageNumber, int pageSize)
         {
-            this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
-            this.PageSize = pageSize > 10 ? 10 : pageSize;
+            this.PageNumber = pageNumber ;
+            this.PageSize = pageSize ;
         }
     }
 }

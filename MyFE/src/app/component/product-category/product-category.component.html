@@ -1,0 +1,246 @@
+<app-nav></app-nav>
+<section id="share-section" class="bg-light text-muted py-5" *ngIf="category=='all'||category=='Vegetable'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="https://indiandownunder.com.au/wp-content/uploads/2017/11/veggies.jpg" alt=""
+                    class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-6">
+                <h3>Vegetables</h3>
+                <p>Fresh from the markets daily.</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        FREE home delivery with bill from 200,000 VND
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        ❤️❤️❤️ Money-back guarantee if the product is not as expected
+                    </div>
+                </div>
+                <button class="btn btn-success float-right" (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="create-section" class="py-5" *ngIf="category=='all'||category=='Fruit'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 order-2 ">
+                <img src="https://www.ieltsvietop.vn/wp-content/uploads/2020/06/tu-vung-trai-cay.jpg" alt=""
+                    class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-6 order-1 order-tron">
+                <h3>Fruit</h3>
+                <p>Check out our weekly specials.</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        FREE home delivery with bill from 200,000 VND
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        ❤️❤️❤️ Money-back guarantee if the product is not as expected
+                    </div>
+                </div>
+                <button class="btn btn-success " (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="share-section" class="bg-light text-muted py-5" *ngIf="category=='all'||category=='Snack'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="https://toplist.vn/images/800px/fritos-198624.jpg" alt=""
+                    class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-6">
+                <h3>Snack</h3>
+                <p>Lots of delicioust snack!</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        FREE home delivery with bill from 200,000 VND
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        ❤️❤️❤️ Money-back guarantee if the product is not as expected
+                    </div>
+                </div>
+                <button class="btn btn-success float-right" (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="create-section" class="py-5" *ngIf="category=='all'||category=='Confectionery'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 order-2">
+                <img src="https://songhantourist.com/upload/articles-images/images/chon-lua-keo-kitkat-nhieu-huong-vi.jpg"
+                    alt="" class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-6 order-1 order-tron">
+                <h3>Confectionery</h3>
+                <p>A wide range of confectionery</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        FREE home delivery with bill from 200,000 VND
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        ❤️❤️❤️ Money-back guarantee if the product is not as expected
+                    </div>
+                </div>
+                <button class="btn btn-success ">Shop Now <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+    <div class="wrap">
+        <div class="search">
+            <input type="text" class="searchTerm" placeholder="What are you looking for?" [(ngModel)]="keyword"
+                [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
+            <button type="submit" class="searchButton">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid" #top>
+    <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
+        <div class="col">
+            <div class="section-title">
+                <h2 class="text-tron">Our Product</h2>
+            </div>
+            <div class="featured__controls">
+                <ul>
+                    <li [class.active]="category=='all'" routerLink="/products"><a class="text-tron">All</a>
+                    </li>
+                    <li [class.active]="category=='Fruit'" routerLink="/fruit"><a
+                            class="text-tron">Fruit</a></li>
+                    <li [class.active]="category=='Vegetable'"routerLink="/vegetable">
+                        <a class="text-tron">Vegetables</a>
+                    </li>
+                    <li [class.active]="category=='Confectionery'" routerLink="/confectionery">
+                        <a class="text-tron">Confectionery</a>
+                    </li>
+                    <li [class.active]="category=='Snack'" routerLink="/snack"><a
+                            class="text-tron">Snack</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="row" style="margin-top: 3%;" *ngIf="searchMode">
+    <div class="col-lg-12">
+        <div class="section-title">
+           <button (click)="backToProduct()">Back to product list</button>
+        </div>
+    </div>
+</div> -->
+<div *ngIf="isLoading" class="d-flex justify-content-center ">
+    <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- 2308 -->
+
+<section style="margin-top: -5%;" *ngIf="!isLoading">
+    <div class="container-fluid  mt-5 dflex-jus">
+        <a class="float-btn-nav" (click)="  prevPropage()">
+
+            <i class="fas fa-arrow-left float-btn-icon"></i>
+        </a>
+        <div class="row justify-content-center" style="width: 80%;">
+
+            <div *ngFor="let pro of content  " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                        ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
+                        container="body">
+                        <ul class="featured__item__pic__hover">
+                            <li ngbTooltip="Add to Favorite" container="body"><a (click)="addToFav(pro)"><i
+                                        class="fa fa-heart"></i></a></li>
+                            <li ngbTooltip="View product page" container="body" routerLink="/product/{{pro.id}}"><a><i
+                                        class="fas fa-info"></i></a></li>
+                            <li ngbTooltip="Add to cart" container="body" (click)="addToCart(pro)"><a><i
+                                        class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6><a href="#">{{pro.name}}</a></h6>
+                        <h5>${{pro.price}}</h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <a class="float-btn-nav" (click)="nextProPage()">
+
+            <i class="fas fa-arrow-right float-btn-icon"></i>
+        </a>
+    </div>
+</section>
+
+<div class="container d-flex justify-content-center ">
+    <div class="row">
+        <div class="col">
+            <div id="ng-pagi">
+                <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="collectionSize"
+                    [maxSize]="3" [boundaryLinks]=true (pageChange)="scroll(top);productPageChange()" size="sm">
+                </ngb-pagination>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;">
+    <div class="typeahead-tron">
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img">
+        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
+    </div>
+
+</ng-template>
+<app-footer></app-footer>

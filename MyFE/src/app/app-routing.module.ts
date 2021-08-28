@@ -6,6 +6,7 @@ import { ConfirmAccountComponent } from './component/confirm-account/confirm-acc
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
+import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
@@ -23,6 +24,11 @@ const routes: Routes = [
   { path: 'product/:id', component: ProductInfoComponent },
   { path: 'cart', component: CartInfoComponent },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'products', component: ProductCategoryComponent },
+  { path: 'fruit', component: ProductCategoryComponent },
+  { path: 'vegetable', component: ProductCategoryComponent },
+  { path: 'confectionery', component: ProductCategoryComponent },
+  { path: 'snack', component: ProductCategoryComponent },
   {path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];
 
