@@ -1,57 +1,103 @@
 <app-nav></app-nav>
 
-<div id="slide-show">
 
-
+<!-- <div id="slide-show">
     <ngb-carousel #carousel [interval]="2400" [pauseOnHover]="pauseOnHover" [pauseOnFocus]="pauseOnFocus"
         [showNavigationArrows]="true" [showNavigationIndicators]="true" [keyboard]="true" [pauseOnHover]="true"
         [wrap]="true" (slide)="onSlide($event)">
         <ng-template ngbSlide>
             <div class="picsum-img-wrapper">
-                <img [src]="images[0]" alt="Random first slide" class="mh-100" style="width: 100%; height: 90vh">
+                <img [src]="images[0]" alt="Random first slide" class="mh-100 slide-tron-img">
             </div>
             <div class="carousel-caption">
-                <button class="btn btn-success" routerLink="/products/category/Fruit">Shop Now <i
-                        class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-success" routerLink="/fruit">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </ng-template>
         <ng-template ngbSlide>
             <div class="picsum-img-wrapper">
-                <img [src]="images[1]" alt="Random second slide" class="mh-100" style="width: 100%; height: 90vh">
+                <img [src]="images[1]" alt="Random 3 slide" class="mh-100 slide-tron-img">
             </div>
             <div class="carousel-caption">
-                <button class="btn btn-success" routerLink="/products/category/Vegetable">Shop Now <i
-                        class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-success" routerLink="/snack">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </ng-template>
-        <ng-template ngbSlide>
-            <div class="picsum-img-wrapper">
-                <img [src]="images[2]" alt="Random 3 slide" class="mh-100" style="width: 100%; height: 90vh">
-            </div>
-            <div class="carousel-caption">
-                <button class="btn btn-success" routerLink="/products/category/Snack">Shop Now <i
-                        class="fas fa-arrow-right"></i></button>
-            </div>
-        </ng-template>
-        <ng-template ngbSlide>
-            <div class="picsum-img-wrapper">
-                <img [src]="images[3]" alt="Random 4 slide" class="mh-100" style="width: 100%; height: 90vh">
-            </div>
-            <div class="carousel-caption">
-                <button class="btn btn-success" routerLink="/products/category/Confectionery">Shop Now <i
-                        class="fas fa-arrow-right"></i></button>
-            </div>
-        </ng-template>
+
     </ngb-carousel>
-</div>
+</div> -->
+
+<section class="section" id="section_893025223">
+    <div class="bg section-bg fill bg-fill bg-loaded"></div>
+    <div class="section-content relative">
+        <div class="banner has-hover hide-for-small" id="banner-143461212">
+            <div class="banner-inner fill">
+                <div class="banner-bg fill">
+                    <div class="bg fill bg-fill bg-loaded"></div>
+                    <div class="overlay"></div>
+                </div>
+                <div class="banner-layers container">
+                    <div class="fill banner-link"></div>
+                    <div id="text-box-1947309283"
+                        class="text-box banner-layer x50 md-x50 lg-x50 y15 md-y15 lg-y15 res-text">
+                        <div class="text-box-content text dark">
+                            <div class="text-inner text-center">
+                                <h4>Vegetables, fruits, confectionery, snacks of all kinds</h4>
+                                <h5>Item is fresh every day.</h5> <a routerLink="/vegetable" target="_self"
+                                    class="button primary is-small" style="border-radius:99px;"> <span><i class="fas fa-carrot"></i> Vegatable</span> <i
+                                        class="fas fa-arrow-right"></i></a>
+                                <a routerLink="/fruit" target="_self" class="button primary is-small"
+                                    style="border-radius:99px;"> <span><i class="fas fa-apple-alt"></i> Fruit</span><i
+                                        class="fas fa-arrow-right"></i></a><a routerLink="/confectionery" target="_self"
+                                    class="button primary is-small" style="border-radius:99px;"> <span><i class="fas fa-candy-cane"></i> Confectionery</span> <i
+                                        class="fas fa-arrow-right"></i></a><a  routerLink="/snack"  target="_self"
+                                    class="button primary is-small" style="border-radius:99px;"> <span><i class="fas fa-cookie-bite"></i> Snack</span><i
+                                        class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="height-fix is-invisible"><img width="1920" height="680"
+                    src="https://cuahangtienloi24h.com/wp-content/uploads/2021/07/rev-slider_h4-2.jpg"></div>
+        </div>
+    </div>
+</section>
+
+
+<section id="home-icons" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 text-center">
+                <i class="fas fa-shipping-fast fa-3x mb-2"></i>
+                <h3>Fast Shipping</h3>
+                <p>Fast and secure shipping<br>
+                    FREE home delivery with the bill from 200,000 VND</p>
+            </div>
+            <div class="col-md-4 mb-4 text-center">
+                <i class="fas fa-phone-square fa-3x mb-2"></i>
+                <h3>Customer Support</h3>
+                <p>Online support and dedicated staff<br>
+                    Fast-paced and friendly consulting team</p>
+            </div>
+            <div class="col-md-4 mb-4 text-center">
+                <i class="fas fa-cart-plus fa-3x mb-2"></i>
+                <h3>Easy Shopping</h3>
+                <p>Simple procedure and friendly interface<br>
+                    Money-back guarantee if the product is not as expected</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <div class="HF-data-container-section HF-featured-grid HF-bg-offwhite" style="    display: flex;
 flex-wrap: wrap;
 justify-content: space-evenly;
 align-content: stretch;
-align-items: stretch;">
+align-items: stretch;" id="home-category">
     <div class="HF-data-container-panel HF-featured-grid-header">
         <div class="HF-featured-grid-header-container">
-            <h2 class="HF-data-container-section-item HF-section-heading HF-graphen-style">Shop Online</h2>
+            <h2 class="HF-data-container-section-item HF-section-heading HF-graphen-style">Category</h2>
         </div>
     </div>
 
@@ -61,7 +107,7 @@ align-items: stretch;">
 
                 <div class="HF-data-container-section-item HF-featured-grid-item-image">
                     <div class="HF-figure-overflow">
-                        <a routerLink="/products/category/Fruit" title="">
+                        <a routerLink="/fruit" title="">
                             <img class="HF-hover-img"
                                 src="https://www.giftsforeurope.com/images/gene/prod/norm/cado001152_01_vip-hamper-exotic-fruit.jpg"
                                 title="">
@@ -76,7 +122,7 @@ align-items: stretch;">
                         <p>Check out our weekly specials.</p>
                     </div>
                     <div class="HF-data-container-section-item HF-featured-grid-item-link">
-                        <a routerLink="/products/category/Fruit" title="">
+                        <a routerLink="/fruit" title="">
                             <button class="HF-btn btn-secondary" type="button"><span>Shop
                                     Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
                         </a>
@@ -88,7 +134,7 @@ align-items: stretch;">
 
                 <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
                     <div class="HF-figure-overflow">
-                        <a routerLink="/products/category/Vegetable" title="">
+                        <a routerLink="/vegetable" title="">
                             <img class="HF-hover-img"
                                 src="//cdn.shopify.com/s/files/1/0206/9470/collections/buy-groceries-online_a778f666-e7e6-4312-acbe-696ada4e81cd_large.jpg?v=1617760517"
                                 title="">
@@ -103,8 +149,8 @@ align-items: stretch;">
                         <p>Fresh from the markets daily.</p>
                     </div>
                     <div class="HF-data-container-section-item HF-featured-grid-item-link">
-                        <a routerLink="/products/category/Vegetable" title="">
-                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                        <a routerLink="/vegetable" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span>Shop
                                     Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
                         </a>
                     </div>
@@ -115,7 +161,7 @@ align-items: stretch;">
 
                 <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
                     <div class="HF-figure-overflow">
-                        <a routerLink="/products/category/Confectionery" title="">
+                        <a routerLink="/confectionery" title="">
                             <img class="HF-hover-img"
                                 src="https://www.famima.vn/wp-content/uploads/2016/12/CONFACTIONARY-2.jpg" title="">
                         </a>
@@ -128,8 +174,8 @@ align-items: stretch;">
                         <p>A wide range of confectionery.</p>
                     </div>
                     <div class="HF-data-container-section-item HF-featured-grid-item-link">
-                        <a routerLink="/products/category/Confectionery" title="">
-                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                        <a routerLink="/confectionery" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span>Shop
                                     Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
                         </a>
                     </div>
@@ -140,7 +186,7 @@ align-items: stretch;">
 
                 <div class="HF-data-container-section-item HF-featured-grid-item-image HF-figure-overflow">
                     <div class="HF-figure-overflow">
-                        <a routerLink="/products/category/Confectionery" title="">
+                        <a routerLink="/snack" title="">
                             <img class="HF-hover-img"
                                 src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg"
                                 title="">
@@ -154,8 +200,8 @@ align-items: stretch;">
                         <p>Lots of delicioust snack!</p>
                     </div>
                     <div class="HF-data-container-section-item HF-featured-grid-item-link">
-                        <a routerLink="/products/category/Confectionery" title="">
-                            <button class="HF-btn btn-secondary" type="button"><span >Shop
+                        <a routerLink="/snack" title="">
+                            <button class="HF-btn btn-secondary" type="button"><span>Shop
                                     Now</span><i class="fa fa-arrow-right HF-icon-right"></i></button>
                         </a>
                     </div>
@@ -166,14 +212,16 @@ align-items: stretch;">
         </div>
     </div>
     <div class="row" style="margin-top: 3%;margin:0 auto;
-    width: 50%;display: block;">
+    width: 100%;display: block;">
         <div class="col-lg-12">
             <div class="section-title">
-                <h2 style="text-align: center;">Search for your favarite goods!</h2>
+                <h2 class="text-tron" style="text-align: center;">Search for your favorite goods!</h2>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <app-product-list></app-product-list>
 

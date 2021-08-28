@@ -9,9 +9,8 @@ import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/n
 export class HomeComponent implements OnInit {
 
   images = ['https://res.cloudinary.com/dkmk9tdwx/image/upload/v1627026204/Dozen-reasons_header_xwmgkc.jpg',
-    'https://res.cloudinary.com/dkmk9tdwx/image/upload/v1627026203/freshfel1-1_klukey.jpg',
   'https://www.oishi.com.ph/wp-content/uploads/2020/12/Always-On-WEBSITE-BANNER-DESKTOP-FA-01-resize.jpg',
-'https://135525-391882-2-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2017/03/bulk-confectionery-lollies-candy.jpg'];
+];
 
   paused = false;
   unpauseOnArrow = false;
