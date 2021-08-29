@@ -16,7 +16,7 @@ namespace MyAPI.Data
 
             CreateMap<APIUser, UserDTO>().ReverseMap();
             CreateMap<APIUser, UserInfoDTO>().ReverseMap();
-
+            CreateMap<APIUser, UserOrderInfoDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();

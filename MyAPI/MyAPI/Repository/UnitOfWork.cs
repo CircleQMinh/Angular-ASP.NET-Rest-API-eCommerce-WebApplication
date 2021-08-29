@@ -13,6 +13,7 @@ namespace MyAPI.Repository
         private IGenericRepository<Product> _product;
         private IGenericRepository<Order> _order;
         private IGenericRepository<OrderDetail> _orderDetail;
+        private IGenericRepository<APIUser> _user;
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -23,6 +24,8 @@ namespace MyAPI.Repository
         public IGenericRepository<Order> Orders => _order ??= new GenericRepository<Order>(_context);
 
         public IGenericRepository<OrderDetail> OrderDetails => _orderDetail ??= new GenericRepository<OrderDetail>(_context);
+
+        public IGenericRepository<APIUser> Users => _user ??= new GenericRepository<APIUser>(_context);
 
         public void Dispose()
         {

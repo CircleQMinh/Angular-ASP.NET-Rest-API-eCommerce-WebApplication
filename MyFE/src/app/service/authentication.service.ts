@@ -45,4 +45,20 @@ export class AuthenticationService {
       password:password
     })
   }
+
+  getUserInfo(id:string):Observable<any>{
+    return this.http.get(`${this.apiUrl}account?id=${id}`)
+  }
+
+  upLoadIMG(blob_string:any):Observable<any>{
+    return this.http.post('https://api.cloudinary.com/v1_1/dkmk9tdwx/image/upload', { file: blob_string, upload_preset: 'v0q5hczm' })
+  }
+  updateProfile(url:string,phone:string,name:string,id:string):Observable<any>{
+    return this.http.put(`${this.apiUrl}account?id=${id}`,{
+      username: name,
+      imgUrl: url,
+      phone: phone
+    })
+  }
+
 }

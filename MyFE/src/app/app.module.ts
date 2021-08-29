@@ -23,6 +23,8 @@ import { ScrollComponent } from './component/scroll/scroll.component';
 import { CartInfoComponent } from './component/cart-info/cart-info.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
+import { ProfileComponent } from './component/profile/profile.component';
+import { TestComponent } from './component/test/test.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +42,9 @@ import { ProductCategoryComponent } from './component/product-category/product-c
     ScrollComponent,
     CartInfoComponent,
     CheckoutComponent,
-    ProductCategoryComponent
+    ProductCategoryComponent,
+    ProfileComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

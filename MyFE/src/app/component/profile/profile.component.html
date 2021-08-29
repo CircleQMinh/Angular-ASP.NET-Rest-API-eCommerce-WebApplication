@@ -1,0 +1,270 @@
+<app-nav></app-nav>
+
+
+<div class="container mt-3" *ngIf="!isLoading&&selectedTab=='profile'">
+    <div class="main-body">
+
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a
+                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
+            </ol>
+        </nav>
+
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150"
+                                *ngIf="userInfo.imgUrl">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
+                            <div class="mt-3">
+                                <h4>{{userInfo.displayName}}</h4>
+                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
+                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
+                                    Logout</button>
+                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
+                                    Password?</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group ">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                            <button class="btn btn-primary btn-block"  (click)="switchTab('profile')"><i class="fas fa-user"></i> Profile</button>
+
+                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('order')"><i class="fas fa-shopping-cart"></i>
+                                Order</button>
+
+                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('favorite')"><i class="far fa-heart"></i>
+                                Favorite</button>
+
+                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('coins')"><i class="fab fa-bitcoin"></i> Shop
+                                Xu</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">User ID</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.id}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.email}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Username</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.displayName}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.phoneNumber}}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-info " (click)="openChangeModal(changeProfile)">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container mt-3" *ngIf="!isLoading&&selectedTab=='order'">
+    <div class="main-body">
+
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a
+                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
+            </ol>
+        </nav>
+
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150"
+                                *ngIf="userInfo.imgUrl">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
+                            <div class="mt-3">
+                                <h4>{{userInfo.displayName}}</h4>
+                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
+                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
+                                    Logout</button>
+                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
+                                    Password?</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group ">
+                        <ul class="list-group ">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+    
+                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i class="fas fa-user" ></i> Profile</button>
+    
+                                <button class="btn btn-primary btn-block"  (click)="switchTab('order')"><i class="fas fa-shopping-cart"></i>
+                                    Order</button>
+    
+                                <button class="btn btn-outline-primary btn-block"  (click)="switchTab('favorite')"><i class="far fa-heart"></i>
+                                    Favorite</button>
+    
+                                <button class="btn btn-outline-primary btn-block"  (click)="switchTab('coins')"><i class="fab fa-bitcoin"></i> Shop
+                                    Xu</button>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">User ID Oder</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.id}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.email}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Username</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.displayName}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{userInfo.phoneNumber}}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-info " (click)="openChangeModal(changeProfile)">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Please wait a sec...</p>
+</div>
+
+
+<app-footer></app-footer>
+
+
+<ng-template #changeProfile let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Change profile info</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <label for="img">Profile Image</label>
+        <div class="input-group">
+            <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                (change)="selectFile($event)">
+        </div>
+        <div class="d-flex justify-content-center flex-column align-items-center">
+            <div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
+            <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
+        </div>
+
+        <label for="des">Name</label>
+        <div class="input-group">
+            <input id="des" class="form-control" placeholder="Name..." name="name" [(ngModel)]="newName">
+        </div>
+        <label for="uis">Phone</label>
+        <div class="input-group">
+            <input id="uis" class="form-control" placeholder="Phone..." name="phone" [(ngModel)]="newPhone">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isUpdateProfile">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="saveProfile()">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full"  style="height: 100px;" *ngIf="isUpdateProfile">
+            <div class="spinner-border text-info" role="status" >
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
