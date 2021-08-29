@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
         [Validators.required, Validators.minLength(8)]),
     });
     this.getLocalStorage()
+    window.scrollTo(0,0)
   }
   getLocalStorage() {
     if(localStorage.getItem("isLogin")){

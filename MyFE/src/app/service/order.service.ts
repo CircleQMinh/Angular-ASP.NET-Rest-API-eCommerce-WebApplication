@@ -35,4 +35,8 @@ export class OrderService {
     })
   }
 
+  getOrderDetails(ID:number):Observable<any>{
+    return this.http.get(`${this.apiUrl}order/getOrderDetails?id=${ID}`)
+  }
+
 }

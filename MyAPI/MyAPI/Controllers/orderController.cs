@@ -9,6 +9,7 @@ using MyAPI.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyAPI.Controllers
@@ -193,6 +194,30 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateOrderDetail)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpGet("getOrderDetails")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetOrderDetail(int id)
+        {
+
+            try
+            {
+                Expression<Func<OrderDetail, bool>> expression = q=>q.OrderId==id;
+                var query = await _unitOfWork.OrderDetails.GetAll(expression,null,new List<string> {"Product"});
+                var results = _mapper.Map<IList<FullOrderDetailDTO>>(query);
+                var success = true;
+
+                return Accepted(new { success,orderDetails=results });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrderDetail)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }

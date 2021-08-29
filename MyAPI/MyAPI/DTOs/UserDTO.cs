@@ -41,8 +41,21 @@ namespace MyAPI.DTOs
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-    }
 
+    }
+    public class UserOrderInfoDTO
+    {
+        public string Id { get; set; }
+        public string DisplayName { get; set; }
+        public string imgUrl { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+        public virtual ICollection<OrderDTO> Orders { get; set; }
+    }
     public class ResetPasswordDTO
     {
         [Required]
@@ -56,5 +69,13 @@ namespace MyAPI.DTOs
     {
         public string email { get; set; }
         public string token { get; set; }
+    }
+
+    public class UpdateUserInfoDTO
+    {
+        public string Username { get; set; }
+        public string ImgUrl { get; set; }
+
+        public string Phone { get; set; }
     }
 }

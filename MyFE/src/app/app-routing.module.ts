@@ -8,13 +8,16 @@ import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
+import { ProfileComponent } from './component/profile/profile.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
+import { TestComponent } from './component/test/test.component';
 
 const routes: Routes = [
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'test', component: TestComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'confirmAccount', component: ConfirmAccountComponent },
   { path: 'confirmResetPassword', component: ConfirmAccountComponent },
@@ -29,6 +32,7 @@ const routes: Routes = [
   { path: 'vegetable', component: ProductCategoryComponent },
   { path: 'confectionery', component: ProductCategoryComponent },
   { path: 'snack', component: ProductCategoryComponent },
+  { path: 'profile/:id', component: ProfileComponent },
   {path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];
 

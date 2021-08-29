@@ -10,7 +10,7 @@ namespace MyAPI.IRepository
     {
         IGenericRepository<Product> Products { get; }
         IGenericRepository<Order> Orders { get; }
-
+        IGenericRepository<APIUser> Users { get; }
         IGenericRepository<OrderDetail> OrderDetails { get; }
 
         Task Save();

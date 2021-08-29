@@ -1,3 +1,5 @@
+import { Order } from "./order";
+
 export class User {
     id!:string;
 
@@ -9,4 +11,5 @@ export class User {
 
 
     roles!:string[];
+    orders!:Order[];
 }
