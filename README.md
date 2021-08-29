@@ -5,3 +5,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 26-08-2021 : thêm chức năng gửi đơn hàng .<br>
 27-08-2021 : :cry: làm tiểu luận :cry: .<br>
 28-08-2021 : thêm trang sản phẩm, update home page.<br>
+28-08-2021 : thêm trang profile, setup api cho trang profile.<br>
