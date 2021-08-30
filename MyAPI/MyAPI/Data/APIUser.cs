@@ -11,5 +11,12 @@ namespace MyAPI.Data
         public string DisplayName { get; set; }
         public string imgUrl { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Product> FavoriteProducts { get; set; }
+
+        public APIUser()
+        {
+            FavoriteProducts = new HashSet<Product>();
+        }
+
     }
 }

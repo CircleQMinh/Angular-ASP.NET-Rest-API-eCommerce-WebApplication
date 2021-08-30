@@ -14,10 +14,12 @@ namespace MyAPI.Data
         public int UnitInStock { get; set; }
         public string Category { get; set; }
         public string ImgUrl { get; set; }
-      
-       
- 
         public string LastUpdate { get; set; }
+        public virtual ICollection<APIUser> FavoritedUsers { get; set; }
 
+        public Product()
+        {
+            FavoritedUsers = new HashSet<APIUser>();
+        }
     }
 }

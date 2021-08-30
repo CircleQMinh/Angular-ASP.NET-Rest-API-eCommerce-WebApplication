@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210830060150_addfavandshiper2")]
+    partial class addfavandshiper2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("APIUserProduct", b =>
-                {
-                    b.Property<int>("FavoriteProductsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FavoritedUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FavoriteProductsId", "FavoritedUsersId");
-
-                    b.HasIndex("FavoritedUsersId");
-
-                    b.ToTable("APIUserProduct");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -63,22 +50,22 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "43862d92-b8b6-4916-a7f4-11de0de2c33e",
-                            ConcurrencyStamp = "7a5b157b-f108-4cc6-ae9d-e3c27afdc908",
+                            Id = "a6775f03-7b1c-4d59-939f-325c27072074",
+                            ConcurrencyStamp = "2e7dc75b-2979-4069-b282-06895951507b",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "e142c3ad-0050-4b07-8dab-0ece68ca44ab",
-                            ConcurrencyStamp = "d770025b-b5b2-4f0a-9361-22040b5d822f",
+                            Id = "b65bb868-993f-464e-89a0-93096da299b9",
+                            ConcurrencyStamp = "af3e2943-fe37-4143-886c-613de5fe4de0",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "f2ca778a-f504-4641-aabe-f303849e458e",
-                            ConcurrencyStamp = "a5c9d9ee-d4aa-4b2d-9bc2-c6916c6bd984",
+                            Id = "8fc3dc5d-4afb-4ac8-9e1f-4e6f1f999b27",
+                            ConcurrencyStamp = "d50dc936-77b4-46f5-a534-11c13e7e5c7e",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -338,6 +325,9 @@ namespace MyAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("APIUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
@@ -360,6 +350,8 @@ namespace MyAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("APIUserId");
 
                     b.ToTable("Products");
                 });
@@ -384,21 +376,6 @@ namespace MyAPI.Migrations
                     b.HasIndex("ShipperID");
 
                     b.ToTable("ShippingInfos");
-                });
-
-            modelBuilder.Entity("APIUserProduct", b =>
-                {
-                    b.HasOne("MyAPI.Data.Product", null)
-                        .WithMany()
-                        .HasForeignKey("FavoriteProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyAPI.Data.APIUser", null)
-                        .WithMany()
-                        .HasForeignKey("FavoritedUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -480,6 +457,13 @@ namespace MyAPI.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("MyAPI.Data.Product", b =>
+                {
+                    b.HasOne("MyAPI.Data.APIUser", null)
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("APIUserId");
+                });
+
             modelBuilder.Entity("MyAPI.Data.ShippingInfo", b =>
                 {
                     b.HasOne("MyAPI.Data.Order", "Order")
@@ -499,6 +483,8 @@ namespace MyAPI.Migrations
 
             modelBuilder.Entity("MyAPI.Data.APIUser", b =>
                 {
+                    b.Navigation("FavoriteProducts");
+
                     b.Navigation("Orders");
                 });
 

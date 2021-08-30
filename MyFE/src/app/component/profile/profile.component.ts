@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { OrderDetail } from 'src/app/class/order-detail';
 import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { OrderService } from 'src/app/service/order.service';
+import { Order } from 'src/app/class/order';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +15,7 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class ProfileComponent implements OnInit {
 
-  selectedTab:any="profile"
+  selectedTab: any = "profile"
 
   user!: User
   userID: any
@@ -22,13 +24,25 @@ export class ProfileComponent implements OnInit {
   userInfo!: User
 
   isLoading: boolean = false
-  isUpdateProfile : boolean = false
+  isUpdateProfile: boolean = false
 
   urlIMG: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
   uploadedUrlImg: any
   msg = "";
-  newName!:string
-  newPhone!:string
+  newName!: string
+  newPhone!: string
+
+  viewOrderDetails: boolean = false
+  currentOrder!: Order
+  currentOrderDetails: OrderDetail[] = []
+
+  pageSizeOrder=5
+  pageNumberOrder=1
+  pagedOrder:Order[]=[]
+
+  pageSizeOrderDetail=5
+  pageNumberOrderDetails=1
+  pagedOrderDetails:OrderDetail[]=[]
 
 
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
@@ -38,14 +52,15 @@ export class ProfileComponent implements OnInit {
     this.userID = this.route.snapshot.paramMap.get("id")
     //console.log(this.userID)
     this.getLocalStorage()
-    if(!this.isLogin){
+    if (!this.isLogin) {
       this.router.navigateByUrl("/login")
     }
-    if(this.user.id!=this.userID){
+    if (this.user.id != this.userID) {
       this.router.navigateByUrl("/error")
     }
     window.scrollTo(0, 0)
     this.getUserInfo()
+
   }
   getUserInfo() {
     this.isLoading = true
@@ -56,6 +71,7 @@ export class ProfileComponent implements OnInit {
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
         this.getOrderDetails()
+        this.getPagedOrder()
         this.isLoading = false
       },
       error => {
@@ -110,9 +126,9 @@ export class ProfileComponent implements OnInit {
 
   }
   openChangeModal(changeIMG: any) {
-    this.newName=this.userInfo.displayName
-    this.newPhone=this.userInfo.phoneNumber
-    this.urlIMG=this.userInfo.imgUrl
+    this.newName = this.userInfo.displayName
+    this.newPhone = this.userInfo.phoneNumber
+    this.urlIMG = this.userInfo.imgUrl
     this.modalService.open(changeIMG, { ariaLabelledBy: 'modal-basic-title' })
   }
   selectFile(event: any) { //Angular 11, for stricter type
@@ -141,16 +157,16 @@ export class ProfileComponent implements OnInit {
 
   }
   upLoadAndUpdateProfile() {
-    this.isUpdateProfile=true
-    if(this.urlIMG==this.userInfo.imgUrl){
-      this.uploadedUrlImg=this.urlIMG
+    this.isUpdateProfile = true
+    if (this.urlIMG == this.userInfo.imgUrl) {
+      this.uploadedUrlImg = this.urlIMG
       this.updateProfile()
     }
-    else{
+    else {
       this.authService.upLoadIMG(this.urlIMG).subscribe(
         data => {
           //console.log(data)
-          this.uploadedUrlImg=data.secure_url
+          this.uploadedUrlImg = data.secure_url
           //console.log(this.uploadedUrlImg)
           this.updateProfile()
         },
@@ -159,25 +175,55 @@ export class ProfileComponent implements OnInit {
         }
       )
     }
-  
+
   }
-  updateProfile(){
-    this.authService.updateProfile(this.uploadedUrlImg,this.newPhone,this.newName,this.userInfo.id).subscribe(
-      data=>{
+  updateProfile() {
+    this.authService.updateProfile(this.uploadedUrlImg, this.newPhone, this.newName, this.userInfo.id).subscribe(
+      data => {
         //console.log(data)
         this.modalService.dismissAll()
-        this.router.navigateByUrl('/', {skipLocationChange: true})
-          .then(() => this.router.navigate(['/profile/'+this.userInfo.id]));
+        this.router.navigateByUrl('/', { skipLocationChange: true })
+          .then(() => this.router.navigate(['/profile/' + this.userInfo.id]));
       },
-      error=>{
+      error => {
         console.log(error)
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }
-  switchTab(tab:any){
-    window.scrollTo(0,0)
-    this.selectedTab=tab
+  switchTab(tab: any) {
+    window.scrollTo(0, 0)
+    this.selectedTab = tab
   }
 
+  viewDetail(o: Order, od: OrderDetail[]) {
+
+    this.currentOrder = o
+    this.currentOrderDetails = od
+    this.currentOrder.status=this.randomInteger(0,3)
+    this.viewOrderDetails = true
+  
+  }
+
+  getPagedOrder() {
+    this.pagedOrder = []
+    for (let i = 0; i < this.pageSizeOrder; i++) {
+      if(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)]){
+        this.pagedOrder.push(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)])
+      }
+
+    }
+  }
+  getPagedOrderDetails() {
+    this.pagedOrderDetails = []
+    for (let i = 0; i < this.pageSizeOrderDetail; i++) {
+      if(this.currentOrderDetails[i + this.pageSizeOrderDetail * (this.pageNumberOrderDetails - 1)]){
+        this.pagedOrderDetails.push(this.currentOrderDetails[i + this.pageSizeOrderDetail * (this.pageNumberOrderDetails - 1)])
+      }
+    }
+  }
+
+  randomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 }

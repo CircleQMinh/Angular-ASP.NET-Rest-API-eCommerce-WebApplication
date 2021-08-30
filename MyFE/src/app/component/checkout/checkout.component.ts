@@ -159,7 +159,7 @@ export class CheckoutComponent implements OnInit {
           this.toast.error(" An error has occurred ! Try again !")
         }
       )
-      console.log(this.cartItems[i].id, this.cartItemsQuantity[i])
+      //console.log(this.cartItems[i].id, this.cartItemsQuantity[i])
     }
   }
 

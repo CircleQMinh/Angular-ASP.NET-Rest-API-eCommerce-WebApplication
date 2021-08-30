@@ -24,5 +24,6 @@ namespace MyAPI.Data
         public int Status { get; set; }
         public string Note { get; set; }
         public virtual IList<OrderDetail> OrderDetails { get; set; }
+
     }
 }

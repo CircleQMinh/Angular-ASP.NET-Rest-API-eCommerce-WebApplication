@@ -193,7 +193,7 @@ namespace MyAPI.Controllers
             {
                 APIUser u = await _userManager.FindByIdAsync(id);
                 var roles = await _userManager.GetRolesAsync(u);
-                var user = _unitOfWork.Users.Get(q=>q.Id==id, new List<string> { "Orders"});
+                var user = _unitOfWork.Users.Get(q=>q.Id==id, new List<string> { "Orders", "FavoriteProducts" });
                 var rs = _mapper.Map<UserOrderInfoDTO>(user.Result);
                 return Ok(new {roles,user=rs });
             }
@@ -235,6 +235,103 @@ namespace MyAPI.Controllers
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(UpdateUserInfo)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
+        [HttpPost("addFavoriteProduct",Name = "AddUserFavoriteProduct")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddUserFavoriteProduct([FromBody] AddUserFavoriteProductDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Submitted data is invalid");
+            }
+            try
+            {
+                APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
+                Product pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
+
+                foreach (var item in u.FavoriteProducts)
+                {
+                    if (item.Id==pro.Id)
+                    {
+                        return Ok(new { success = false });
+                    }
+                }
+
+                var User = u;
+                _unitOfWork.Users.Update(User);
+
+                var Product = pro;
+                _unitOfWork.Products.Update(Product);
+                User.FavoriteProducts.Add(Product);
+                Product.FavoritedUsers.Add(User);
+
+                await _unitOfWork.Save();
+                return Ok(new { success = true });
+
+               
+
+
+                //u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
+                //pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
+                //return Ok(new { success = true,u,pro });
+               
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(AddUserFavoriteProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPost("removeFavoriteProduct", Name = "RemoveFavoriteProduct")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveFavoriteProduct([FromBody] AddUserFavoriteProductDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Submitted data is invalid");
+            }
+            try
+            {
+                APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
+                Product pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
+
+
+                _unitOfWork.Users.Update(u);
+
+ 
+                //_unitOfWork.Products.Update(pro);
+
+                foreach (var item in u.FavoriteProducts)
+                {
+                    if (item.Id==pro.Id)
+                    {
+                        u.FavoriteProducts.Remove(item);
+                    }
+                }
+                foreach (var item in pro.FavoritedUsers)
+                {
+                    if (item.Id==u.Id)
+                    {
+                        pro.FavoritedUsers.Remove(item);
+                    }
+                }
+           
+
+                await _unitOfWork.Save();
+                return Ok(new { success = true });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(RemoveFavoriteProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
     }

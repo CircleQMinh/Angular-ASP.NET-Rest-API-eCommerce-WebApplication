@@ -13,6 +13,9 @@ namespace MyAPI.IRepository
         IGenericRepository<APIUser> Users { get; }
         IGenericRepository<OrderDetail> OrderDetails { get; }
 
+        //IGenericRepository<APIUserProduct> APIUserProducts { get; }
+        IGenericRepository<ShippingInfo> ShippingInfos { get; }
+
         Task Save();
     }
 }

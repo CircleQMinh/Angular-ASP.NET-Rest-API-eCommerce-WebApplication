@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210830071023_addfavandshiper3")]
+    partial class addfavandshiper3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,22 +65,22 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "43862d92-b8b6-4916-a7f4-11de0de2c33e",
-                            ConcurrencyStamp = "7a5b157b-f108-4cc6-ae9d-e3c27afdc908",
+                            Id = "a274263e-4ba3-489b-a069-f1d9aa737ca1",
+                            ConcurrencyStamp = "21e5f4f9-45e9-44f0-979c-790dbff1ca3e",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "e142c3ad-0050-4b07-8dab-0ece68ca44ab",
-                            ConcurrencyStamp = "d770025b-b5b2-4f0a-9361-22040b5d822f",
+                            Id = "252b0267-0c79-483b-9ae5-a246109ce681",
+                            ConcurrencyStamp = "b540a009-16f1-4230-8e49-36b1ed04bb7c",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "f2ca778a-f504-4641-aabe-f303849e458e",
-                            ConcurrencyStamp = "a5c9d9ee-d4aa-4b2d-9bc2-c6916c6bd984",
+                            Id = "7576c53c-1f98-4730-9f92-a2acc8905875",
+                            ConcurrencyStamp = "f46484fc-c05f-4722-aec7-8d5745657ccb",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });

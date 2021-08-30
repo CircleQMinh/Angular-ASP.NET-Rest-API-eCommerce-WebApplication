@@ -39,15 +39,19 @@
                     <ul class="list-group ">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                            <button class="btn btn-primary btn-block"  (click)="switchTab('profile')"><i class="fas fa-user"></i> Profile</button>
+                            <button class="btn btn-primary btn-block" (click)="switchTab('profile')"><i
+                                    class="fas fa-user"></i> Profile</button>
 
-                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('order')"><i class="fas fa-shopping-cart"></i>
+                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('order')"><i
+                                    class="fas fa-shopping-cart"></i>
                                 Order</button>
 
-                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('favorite')"><i class="far fa-heart"></i>
+                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
+                                    class="far fa-heart"></i>
                                 Favorite</button>
 
-                            <button class="btn btn-outline-primary btn-block"  (click)="switchTab('coins')"><i class="fab fa-bitcoin"></i> Shop
+                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('coins')"><i
+                                    class="fab fa-bitcoin"></i> Shop
                                 Xu</button>
                         </li>
                     </ul>
@@ -145,16 +149,20 @@
                     <ul class="list-group ">
                         <ul class="list-group ">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-    
-                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i class="fas fa-user" ></i> Profile</button>
-    
-                                <button class="btn btn-primary btn-block"  (click)="switchTab('order')"><i class="fas fa-shopping-cart"></i>
+
+                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i
+                                        class="fas fa-user"></i> Profile</button>
+
+                                <button class="btn btn-primary btn-block" (click)="switchTab('order')"><i
+                                        class="fas fa-shopping-cart"></i>
                                     Order</button>
-    
-                                <button class="btn btn-outline-primary btn-block"  (click)="switchTab('favorite')"><i class="far fa-heart"></i>
+
+                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
+                                        class="far fa-heart"></i>
                                     Favorite</button>
-    
-                                <button class="btn btn-outline-primary btn-block"  (click)="switchTab('coins')"><i class="fab fa-bitcoin"></i> Shop
+
+                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('coins')"><i
+                                        class="fab fa-bitcoin"></i> Shop
                                     Xu</button>
                             </li>
                         </ul>
@@ -162,55 +170,335 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">User ID Oder</h6>
+                <div class="card" *ngIf="!viewOrderDetails">
+                    <div class="card-header">
+                        <h4 class="text-monospace">Your Order</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-monospace">#</th>
+                                <th class="text-monospace">Date</th>
+                                <th class="text-monospace">Total Item</th>
+                                <th class="text-monospace">Total Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let o of pagedOrder">
+                                <td class="text-monospace">{{o.id}}</td>
+                                <td class="text-monospace">{{o.orderDate}}</td>
+                                <td class="text-monospace">{{o.totalItem}}</td>
+                                <td class="text-monospace">{{(o.totalPrice).toFixed(2)}} </td>
+                                <td>
+                                    <a class="btn btn-info" (click)="viewDetail(o,o.orderDetails)">
+                                        <i class="fas fa-angle-double-right"></i> Details
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container d-flex justify-content-center " *ngIf="!viewOrderDetails">
+                    <div class="row">
+                        <div class="col">
+                            <div id="ng-pagi">
+                                <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
+                                    [collectionSize]="userInfo.orders.length" [maxSize]="3" [boundaryLinks]=true
+                                    (pageChange)="getPagedOrder()" size="sm">
+                                </ngb-pagination>
                             </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{userInfo.id}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{userInfo.email}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Username</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{userInfo.displayName}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{userInfo.phoneNumber}}
-                            </div>
-                        </div>
-                        <hr>
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button class="btn btn-info " (click)="openChangeModal(changeProfile)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" *ngIf="viewOrderDetails">
+                    <div class="card-header">
+                        <h4 class="text-monospace">Track Your Order</h4>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==0">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a  class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Checked</p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==1">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Checked</p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==2">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Checked</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==3">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Checked</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a  class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <h4 class="text-monospace">Order Date - {{currentOrder.orderDate}}</h4>
+                        <h4 class="text-monospace">Contact Name - {{currentOrder.contactName}}</h4>
+                        <h4 class="text-monospace">Email - {{currentOrder.email}}</h4>
+                        <h4 class="text-monospace">Phone - {{currentOrder.phone}}</h4>
+                    </div>
+                    <table class="table table-striped table-responsive">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-monospace">#</th>
+                                <th class="text-monospace">Product</th>
+                                <th class="text-monospace">Name</th>
+                                <th class="text-monospace">Quantity</th>
+                                <th class="text-monospace">Price</th>
+                                <th class="text-monospace">Subtotal</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let o of currentOrderDetails,index as i">
+                                <td class="text-monospace">{{i}}</td>
+                                <td class="text-monospace"><img src="{{o.product.imgUrl}}"
+                                        style="height: 40px;width: 40px;"></td>
+                                <td class="text-monospace">{{o.product.name}}</td>
+                                <td class="text-monospace">{{(o.quantity)}} </td>
+                                <td class="text-monospace">{{(o.product.price)}} </td>
+                                <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
+
+                            </tr>
+                            <tr class="table-primary">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-left"><strong>Item :</strong>
+                                    <p class="text-monospace">{{currentOrder.totalItem}}</p>
+                                </td>
+                                <td></td>
+                                <td class="text-left"><strong>Total :</strong>
+                                    <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container d-flex justify-content-center " *ngIf="viewOrderDetails">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-outline-danger" (click)="viewOrderDetails=!viewOrderDetails">Back to Order List</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -260,8 +548,8 @@
                 (click)="saveProfile()">Save</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
-        <div class="loading-full"  style="height: 100px;" *ngIf="isUpdateProfile">
-            <div class="spinner-border text-info" role="status" >
+        <div class="loading-full" style="height: 100px;" *ngIf="isUpdateProfile">
+            <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
             <p class="text monospace">Please wait a sec...</p>

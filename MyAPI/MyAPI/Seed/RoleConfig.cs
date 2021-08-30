@@ -22,6 +22,11 @@ namespace MyAPI.Seed
                 {
                     Name = "Administrator",
                     NormalizedName = "ADMINISTRATOR"
+                },
+                new IdentityRole
+                {
+                    Name = "Shipper",
+                    NormalizedName = "SHIPPER"
                 }
             );
         }
