@@ -16,12 +16,16 @@ namespace MyAPI.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<APIUser> Users { get; set; }
-       public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        //public DbSet<APIUserProduct> APIUserProducts { get; set; }
+        public DbSet<ShippingInfo> ShippingInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             // builder.ApplyConfiguration(new ProductConfig());
             builder.ApplyConfiguration(new RoleConfig());
+
         }
     }
 }

@@ -44,7 +44,7 @@ export class ProductCategoryComponent implements OnInit {
       this.category="Snack"
     }
     console.log(this.category)
-    window.scrollTo(0,0)
+   // window.scrollTo(0,0)
     this.getProductAll()
     this.getProduct()
   }

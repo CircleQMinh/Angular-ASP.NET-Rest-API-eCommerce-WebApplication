@@ -55,6 +55,7 @@ namespace MyAPI.DTOs
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public virtual ICollection<OrderDTO> Orders { get; set; }
+        public virtual ICollection<Product> FavoriteProducts { get; set; }
     }
     public class ResetPasswordDTO
     {
@@ -77,5 +78,11 @@ namespace MyAPI.DTOs
         public string ImgUrl { get; set; }
 
         public string Phone { get; set; }
+    }
+
+    public class AddUserFavoriteProductDTO
+    {
+        public int ProductId { get; set; }
+        public string UserId { get; set; }
     }
 }

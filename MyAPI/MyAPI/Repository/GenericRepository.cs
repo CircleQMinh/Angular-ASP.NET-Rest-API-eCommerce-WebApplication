@@ -126,6 +126,7 @@ namespace MyAPI.Repository
         public void Update(T entity)
         {
             _db.Attach(entity);
+            
             _context.Entry(entity).State = EntityState.Modified;
         }
     }
