@@ -1,4 +1,5 @@
 import { Order } from "./order";
+import { Product } from "./product";
 
 export class User {
     id!:string;
@@ -8,7 +9,7 @@ export class User {
     phoneNumber!:string
     email!:string
     imgUrl!:string
-
+    favoriteProducts!:Product[]
 
     roles!:string[];
     orders!:Order[];

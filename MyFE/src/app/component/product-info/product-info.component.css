@@ -1,0 +1,19 @@
+/*! CSS Used from: Embedded */
+
+.hdozRK{display:block;position:absolute;z-index:2;}
+.fWjUGo{object-fit:contain;}
+.iTEXsX .slick-list{margin-left:0px;margin-right:0px;}
+.iTEXsX .slick-track{display:flex;}
+.iTEXsX .slick-slide{height:auto;}
+.iTEXsX .slick-slide > div{height:100%;}
+.jayrsL{position:relative;display:flex;flex-direction:column;-webkit-box-align:center;align-items:center;width:100%;height:100%;padding:12px 16px;background-color:rgb(255, 255, 255);}
+.jayrsL:hover{box-shadow:rgba(0, 0, 0, 0.1) 0px 0px 20px;z-index:1;}
+.jayrsL .title{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;max-height:40px;margin:0px;width:100%;color:rgb(36, 36, 36);font-size:13px;font-weight:400;font-style:normal;font-stretch:normal;line-height:1.54;letter-spacing:0.1px;text-align:left;text-overflow:ellipsis;overflow:hidden;word-break:break-word;}
+.jayrsL .price{margin:0px;padding-top:3px;align-self:stretch;color:rgb(36, 36, 36);font-size:15px;font-weight:500;line-height:1.6;}
+.jayrsL .price .percent{margin-left:8px;color:rgb(120, 120, 120);font-size:13px;font-weight:400;line-height:1.6;}
+.jayrsL .price .original{display:block;margin-left:0px;color:rgb(120, 120, 120);font-size:13px;font-weight:300;text-decoration:line-through;}
+.jayrsL .bottom{flex:1 1 0%;display:flex;flex-direction:column;justify-content:normal;align-self:stretch;}
+.jYQzjY{display:flex;-webkit-box-align:center;align-items:center;align-self:stretch;margin-top:3px;}
+.dgEsBx{position:relative;width:100%;margin-bottom:12px;}
+.jTPYDY{position:relative;width:100%;padding-bottom:100%;}
+.jTPYDY img{position:absolute;top:0px;left:0px;width:100%;height:100%;}

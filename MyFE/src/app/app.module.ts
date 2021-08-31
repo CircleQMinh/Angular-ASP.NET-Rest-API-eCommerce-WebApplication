@@ -25,6 +25,7 @@ import { CheckoutComponent } from './component/checkout/checkout.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { TestComponent } from './component/test/test.component';
+import { ErrorComponent } from './component/error/error.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +45,8 @@ import { TestComponent } from './component/test/test.component';
     CheckoutComponent,
     ProductCategoryComponent,
     ProfileComponent,
-    TestComponent
+    TestComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

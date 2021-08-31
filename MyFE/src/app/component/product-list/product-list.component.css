@@ -14,7 +14,7 @@ h5{font-size:18px;}
 h6{font-size:16px;}
 a:hover,a:focus{text-decoration:none;outline:none;color:#fff;}
 ul{padding:0;margin:0;}
-.set-bg{background-repeat:no-repeat;background-size:cover;background-position:top center;}
+.set-bg{background-repeat:no-repeat;background-size:contain;background-position:top center;}
 .featured__item{margin-bottom:50px;}
 .featured__item:hover .featured__item__pic .featured__item__pic__hover{bottom:20px;}
 .featured__item__pic{height:200px;position:relative;overflow:hidden;background-position:center center;}
@@ -152,4 +152,9 @@ ul{padding:0;margin:0;}
 	100% {
 		background-position: 0% 50%;
 	}
+}
+
+
+a:hover{
+  color: blue;
 }

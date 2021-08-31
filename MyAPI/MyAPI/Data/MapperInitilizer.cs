@@ -12,6 +12,7 @@ namespace MyAPI.Data
         public MapperInitilizer()
         {
             CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Product, FullProductDTO>().ReverseMap();
             CreateMap<Product, CreateProductDTO>().ReverseMap();
 
             CreateMap<APIUser, UserDTO>().ReverseMap();

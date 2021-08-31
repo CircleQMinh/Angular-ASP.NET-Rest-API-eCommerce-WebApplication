@@ -61,4 +61,16 @@ export class AuthenticationService {
     })
   }
 
+  addToFav(userID:string,proID:number):Observable<any>{
+    return this.http.post(`${this.apiUrl}account/addFavoriteProduct`,{
+      productId: proID,
+      userId: userID
+    })
+  }
+  removeFromFav(userID:string,proID:number):Observable<any>{
+    return this.http.post(`${this.apiUrl}account/removeFavoriteProduct`,{
+      productId: proID,
+      userId: userID
+    })
+  }
 }

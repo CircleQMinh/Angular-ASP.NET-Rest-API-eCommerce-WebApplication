@@ -6,6 +6,7 @@ import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -26,7 +27,7 @@ export class ProductListComponent implements OnInit {
   isLoading: boolean = false
   @ViewChild('top', { static: true }) contentPage!: ElementRef;
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
-    private router: Router) { }
+    private router: Router,private authService:AuthenticationService) { }
 
 
   keyword: any;
@@ -83,6 +84,25 @@ export class ProductListComponent implements OnInit {
   }
 
   addToFav(pro: Product) {
+    if(localStorage.getItem("isLogin")){
+      this.authService.addToFav(localStorage.getItem('user-id')!,pro.id).subscribe(
+        data=>{
+          if(data.success){
+            this.toast.success("Product added to favorite list successfully")
+          }
+          else{
+            this.toast.info("This product is already on your favorite list")
+          }
+        },
+        error=>{
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+    }
+    else{
+      this.toast.info("Login to add this product to your favorite list")
+    }
 
   }
   addToCart(pro: Product) {

@@ -24,7 +24,7 @@ namespace MyAPI.Data
         {
             base.OnModelCreating(builder);
             // builder.ApplyConfiguration(new ProductConfig());
-            builder.ApplyConfiguration(new RoleConfig());
+            // builder.ApplyConfiguration(new RoleConfig());
 
         }
     }

@@ -4,6 +4,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Product } from 'src/app/class/product';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -25,7 +26,7 @@ export class ProductCategoryComponent implements OnInit {
   isLoading: boolean = false
   category:any
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
-    private router: Router ) { }
+    private router: Router,private authService:AuthenticationService ) { }
 
   ngOnInit(): void {
     if(this.router.url.includes("products")){
@@ -97,7 +98,25 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   addToFav(pro: Product) {
-
+    if(localStorage.getItem("isLogin")){
+      this.authService.addToFav(localStorage.getItem('user-id')!,pro.id).subscribe(
+        data=>{
+          if(data.success){
+            this.toast.success("Product added to favorite list successfully")
+          }
+          else{
+            this.toast.info("This product is already on your favorite list")
+          }
+        },
+        error=>{
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+    }
+    else{
+      this.toast.info("Login to add this product to your favorite list")
+    }
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)

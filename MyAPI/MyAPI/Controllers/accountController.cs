@@ -302,7 +302,20 @@ namespace MyAPI.Controllers
                 APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
                 Product pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
 
+                bool isItemInFav = false;
+                foreach (var item in u.FavoriteProducts)
+                {
+                    if (item.Id == pro.Id)
+                    {
+                        isItemInFav = true;
+                        break;
+                    }
+                }
 
+                if (!isItemInFav)
+                {
+                    return Ok(new { success = false });
+                }
                 _unitOfWork.Users.Update(u);
 
  
@@ -334,5 +347,26 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
+
+        //[HttpGet("getFavoriteProduct", Name = "GetFavoriteProduct")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetFavoriteProduct(string id)
+        //{
+
+        //    try
+        //    {
+                
+               
+        //        return Ok(new { success = true });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetFavoriteProduct)}");
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+        //    }
+        //}
     }
 }
