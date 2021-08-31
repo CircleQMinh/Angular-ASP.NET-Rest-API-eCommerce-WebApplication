@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { CartInfoComponent } from './component/cart-info/cart-info.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { ConfirmAccountComponent } from './component/confirm-account/confirm-account.component';
+import { ErrorComponent } from './component/error/error.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
@@ -33,7 +35,8 @@ const routes: Routes = [
   { path: 'confectionery', component: ProductCategoryComponent },
   { path: 'snack', component: ProductCategoryComponent },
   { path: 'profile/:id', component: ProfileComponent },
-  {path: '**', redirectTo: '/home', pathMatch: 'full'}
+  { path: 'error', component: ErrorComponent },
+  {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];
 
 

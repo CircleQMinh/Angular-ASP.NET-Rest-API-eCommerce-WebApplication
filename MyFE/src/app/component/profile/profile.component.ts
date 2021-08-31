@@ -7,6 +7,8 @@ import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { OrderService } from 'src/app/service/order.service';
 import { Order } from 'src/app/class/order';
+import { Product } from 'src/app/class/product';
+import { CartService } from 'src/app/service/cart.service';
 
 @Component({
   selector: 'app-profile',
@@ -44,9 +46,13 @@ export class ProfileComponent implements OnInit {
   pageNumberOrderDetails=1
   pagedOrderDetails:OrderDetail[]=[]
 
+  pageSizeFav=4
+  pageNumberFav=1
+  pagedFavProduct:Product[]=[]
+
 
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
-    private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal) { }
+    private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,private cartService:CartService) { }
 
   ngOnInit(): void {
     this.userID = this.route.snapshot.paramMap.get("id")
@@ -66,12 +72,14 @@ export class ProfileComponent implements OnInit {
     this.isLoading = true
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
-        // console.log(data)
+        //console.log(data)
+        
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
         this.getOrderDetails()
         this.getPagedOrder()
+        this.getPagedFavProduct()
         this.isLoading = false
       },
       error => {
@@ -223,7 +231,56 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  getPagedFavProduct() {
+    this.pagedFavProduct = []
+    for (let i = 0; i < this.pageSizeFav; i++) {
+      if(this.userInfo.favoriteProducts[i + this.pageSizeFav * (this.pageNumberFav - 1)]){
+        this.pagedFavProduct.push(this.userInfo.favoriteProducts[i + this.pageSizeFav * (this.pageNumberFav - 1)])
+      }
+
+    }
+  }
+
   randomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  addToFav(pro:Product){
+    this.toast.info("This product is already on your favorite list")
+
+  }
+  removeFromFav(pro:Product){
+    this.authService.removeFromFav(this.userInfo.id,pro.id).subscribe(
+      data=>{
+        if(data.success){
+          this.toast.success("Product remove from favorite list successfully")
+          //console.log(this.userInfo.favoriteProducts)
+          this.removeFromLocal(pro.id)
+          //console.log(this.userInfo.favoriteProducts)
+        }
+        else{
+          this.toast.info("This product is not on your favorite list")
+        }
+      },
+      error=>{
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+  removeFromLocal(id:number){
+
+
+    for(let i=0;i<this.userInfo.favoriteProducts.length;i++){
+      if(this.userInfo.favoriteProducts[i].id==id){
+        this.userInfo.favoriteProducts.splice(i,1)
+        break
+      }
+    }
+    this.getPagedFavProduct()
+  }
+  addToCart(pro:Product){
+    this.cartService.addToCart(pro)
+    this.toast.success("Product added to cart!")
   }
 }
