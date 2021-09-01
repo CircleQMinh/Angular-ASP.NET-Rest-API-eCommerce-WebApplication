@@ -894,7 +894,9 @@ width: 100%;
     
 }
 @media (max-width: 991.98px) { 
-    
+    .review-box{
+        width: 500px;
+    }
 }
 @media (max-width: 767.98px) { 
     #slide-show{
@@ -912,7 +914,9 @@ width: 100%;
     .loading-full{
         height: 200px;
     }
-
+    .review-box{
+        width: 300px;
+    }
 }
 @media (max-width: 575.98px) { 
     .HF-grid-item-heading{
@@ -969,6 +973,9 @@ width: 100%;
     }
     #searchBarProduct{
         width: 100%;
+    }
+    .review-box{
+        width: 160px;
     }
 }
 

@@ -80,6 +80,14 @@ namespace MyAPI.DTOs
         public string Phone { get; set; }
     }
 
+    public class ReviewUserInfoDTO
+    {
+        public string Id { get; set; }
+        public string DisplayName { get; set; }
+        public string ImgUrl { get; set; }
+
+    }
+
     public class AddUserFavoriteProductDTO
     {
         public int ProductId { get; set; }

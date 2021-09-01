@@ -87,14 +87,16 @@ namespace MyAPI.Controllers
         {
             try
             {
-                var query = await _unitOfWork.Products.Get(q => q.Id == id);
-                var result = _mapper.Map<ProductDTO>(query);
-                return Ok(result);
+                var query = await _unitOfWork.Products.Get(q => q.Id == id,new List<string> { "FavoritedUsers"});
+                var result = _mapper.Map<FullProductDTO>(query);
+                var query2 = await _unitOfWork.Reviews.GetAll(q => q.ProductId == id,null, new List<string> { "User" });
+                var reviews = _mapper.Map<IList<ReviewDTO>>(query2);
+                return Ok(new { result,reviews });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetProduct)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
             }
         }
 

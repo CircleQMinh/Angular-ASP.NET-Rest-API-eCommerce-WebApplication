@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210901040925_dbreview")]
+    partial class dbreview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,29 +61,6 @@ namespace MyAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "aa3245e0-23a3-4a30-bb3d-26deed8ba4be",
-                            ConcurrencyStamp = "a0239872-d161-40e1-9709-a504f301fd12",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "61d7eb7b-321c-4695-b7fe-e6b2891fdb45",
-                            ConcurrencyStamp = "6d13b1fa-5f11-437e-aa06-9c264a07a157",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "2e1a1973-a03a-402f-8a1f-f2329a28d329",
-                            ConcurrencyStamp = "b05d9b6e-756f-480a-88f1-faffe7436103",
-                            Name = "Shipper",
-                            NormalizedName = "SHIPPER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -372,9 +351,6 @@ namespace MyAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")

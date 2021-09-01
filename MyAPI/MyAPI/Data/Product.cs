@@ -17,6 +17,8 @@ namespace MyAPI.Data
         public string LastUpdate { get; set; }
         public virtual ICollection<APIUser> FavoritedUsers { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
+
         public Product()
         {
             FavoritedUsers = new HashSet<APIUser>();

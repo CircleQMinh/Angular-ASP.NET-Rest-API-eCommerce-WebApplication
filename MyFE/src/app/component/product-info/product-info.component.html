@@ -48,24 +48,23 @@
             </p>
         </div>
     </div>
-    <blockquote class="blockquote mt-3 ml-5">
-        <p>Recommended Products</p>
+    <blockquote class="blockquote mt-4 ml-5">
+        <p class="text-monospace text-tron text-center" style="margin-right: 3rem;">Recommended Products</p>
     </blockquote>
     <div class="slick-list">
         <div class="slick-track product-similar">
 
-            <div  class="slick-slide slick-active" tabindex="-1" aria-hidden="false"
-                style="outline: none; width: 207px;" *ngFor="let o of randomProducts" (click)="goToProductPage(o.id)">
+            <div class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
+                *ngFor="let o of randomProducts" (click)="goToProductPage(o.id)">
                 <div>
-                    <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL"
-                        style="padding: 12px;"><a style="width: 100%; height: 100%;">
+                    <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
+                            style="width: 100%; height: 100%;">
                             <div class="Item__ProductImgWrapper-sc-m1oy8w-6 dgEsBx">
                                 <div class="Item__ThumbnailWrapper-sc-m1oy8w-7 jTPYDY">
                                     <picture class="webpimg-container">
                                         <!-- <source type="image/webp"
                                             srcset="https://salt.tikicdn.com/cache/200x200/ts/product/d6/bd/97/20d1ef37a3355741639f448f02a9f1ea.jpg.webp"> -->
-                                        <img alt="{{o.imgUrl}}"
-                                            src="{{o.imgUrl}}"
+                                        <img alt="{{o.imgUrl}}" src="{{o.imgUrl}}"
                                             class="WebpImg__StyledImg-sc-h3ozu8-0 fWjUGo">
                                     </picture>
                                 </div>
@@ -78,5 +77,176 @@
             </div>
         </div>
     </div>
+    <div class="div-center-content mt-5">
+        <h2 class="pdp-mod-section-title outer-title text-tron">Ratings &amp; Reviews of '{{product.name}}'</h2>
+        <p class="text-monospace text-tron"><i class="far fa-star"></i><b>Rating({{(avgRating).toFixed(2)}}) </b></p>
+        <p class="text-monospace text-tron" *ngIf="product.reviews.length==0">
+            No one has rated this product!
+        </p>
+        <p>
+            5<i class="far fa-star"></i>({{fivestar}})
+            <ngb-progressbar [showValue]="true" type="success" [value]="fivestar/product.reviews.length*100">
+            </ngb-progressbar>
+        </p>
+        <p>
+            4
+            <i class="far fa-star"></i>({{fourstar}})
+            <ngb-progressbar [showValue]="true" type="info" [value]="fourstar/product.reviews.length*100">
+            </ngb-progressbar>
+        </p>
+        <p>
+            3<i class="far fa-star"></i>({{threestar}})
+            <ngb-progressbar [showValue]="true" type="warning" [value]="threestar/product.reviews.length*100">
+            </ngb-progressbar>
+        </p>
+        <p>
+            2
+            <i class="far fa-star"></i>({{twostar}})
+            <ngb-progressbar [showValue]="true" type="danger" [value]="twostar/product.reviews.length*100">
+            </ngb-progressbar>
+        </p>
+        <p>
+            1<i class="far fa-star"></i>({{onestar}})
+            <ngb-progressbar [showValue]="true" type="primary" [value]="onestar/product.reviews.length*100">
+            </ngb-progressbar>
+        </p>
+    </div>
+
+    <!-- --------------------------------------------------------- -->
+
+    <div class="d-flex justify-content-center mt-5">
+        <header class="head-comment fmsidWidgetCommentListHead mr-3"><i class="far fa-comments"></i> <b>
+                Reviews</b><span class="fmsidWidgetCommentListHeadText"></span> (<span
+                class="fmsidWidgetCommentListCount">{{product.reviews.length}}</span>)
+        </header>
+        <div>Sort by : <select class="select select-history select-lg" name="sort" (change)="sortChange()" [(ngModel)]="sort">
+                <option value="d" selected="true">Newest</option>
+                <option value="a">Oldest</option>
+            </select>
+        </div>
+        <!-- <div>Rating : <select class="select select-history select-lg" name="rating">
+                <option value="all" selected="true">All</option>
+                <option value="5">5 Star</option>
+                <option value="4">4 Star</option>
+                <option value="3">3 Star</option>
+                <option value="2">2 Star</option>
+                <option value="1">1 Star</option>
+            </select>
+        </div> -->
+    </div>
+    <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="product.reviews.length!=0">
+        <div *ngFor="let r of pagedReview " class="shopee-product-rating">
+            <div >
+
+
+                <a class="shopee-product-rating__avatar">
+                    <div class="shopee-avatar">
+                        <img src="{{r.user.imgUrl}}" style="width: 40px;height: 40px;border-radius: 50%;">
+                    </div>
+                </a>
+
+                <div class="shopee-product-rating__main"><a
+                        class="shopee-product-rating__author-name">{{r.user.displayName}}</a>
+                    <div class="shopee-product-rating__rating">
+                        <svg *ngFor="let i of [].constructor(r.star)" enable-background="new 0 0 15 15"
+                            viewBox="0 0 15 15" x="0" y="0"
+                            class="shopee-svg-icon icon-rating-solid--active icon-rating-solid">
+                            <polygon
+                                points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></polygon>
+                        </svg>
+                        <!-- <svg enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0"
+                    class="shopee-svg-icon icon-rating-solid--active icon-rating-solid">
+                    <polygon
+                        points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></polygon>
+                </svg> -->
+                    </div>
+                    <div class="shopee-product-rating__content">{{r.content}}</div>
+                    <div class="shopee-product-rating__time">{{r.date}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center ">
+        <div class="row">
+            <div class="col">
+                <div id="ng-pagi">
+                    <ngb-pagination [(page)]="pageReview" [pageSize]="pageSizeReview"
+                        [collectionSize]="product.reviews.length" [maxSize]="3"
+                        [boundaryLinks]=true (pageChange)="getPagedReviews()" size="sm">
+                    </ngb-pagination>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="product.reviews.length==0" class="mt-5">
+        <p>There is no review for this product!</p>
+    </div>
+    <div class="mt-5">
+        <p><b>Write your review</b></p>
+
+        <div class="form-group" *ngIf="isLogin&&!alreadyReview||reWriteReview">
+            <ngb-rating [(ngModel)]="rating" [max]=5 name="rating"></ngb-rating>
+            <div class="form-text small">
+                <div *ngIf="rating" class="text-success">Thanks!</div>
+                <div *ngIf="!rating" class="text-danger">Please rate this product!</div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form commentBoxContainer" *ngIf="isLogin&&!alreadyReview||reWriteReview">
+            <div class="input review-box"><textarea class="text-cmt fmsidWidgetCommentMessage"
+                    placeholder="Your review..." name="review" [(ngModel)]="review"></textarea></div>
+            <p class="sent-cmt clearfix"><a id="btnSubmit" class="btnSubmit disabled fmsidWidgetCommentBtnSend"
+                    (click)="addReview()">Send</a>
+            </p>
+
+        </div>
+        <div *ngIf="!isLogin">
+            <p>
+                Login to write review about this product!
+            </p>
+        </div>
+        <div *ngIf="isLogin&&alreadyReview">
+            <p>
+                You already write a review for this product.
+            </p>
+            <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Edit Review</button>
+            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false" *ngIf="reWriteReview">Cancel</button>
+        </div>
+        <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="isLogin&&alreadyReview">
+            <div class="shopee-product-rating">
+                <div>
+    
+                    <a class="shopee-product-rating__avatar">
+                        <div class="shopee-avatar">
+                            <img src="{{reviewedContent.imgUrl}}" style="width: 40px;height: 40px;border-radius: 50%;">
+                        </div>
+                    </a>
+    
+                    <div class="shopee-product-rating__main"><a
+                            class="shopee-product-rating__author-name">{{reviewedContent.username}}</a>
+                        <div class="shopee-product-rating__rating">
+                            <svg *ngFor="let i of [].constructor(reviewedContent.star)" enable-background="new 0 0 15 15"
+                                viewBox="0 0 15 15" x="0" y="0"
+                                class="shopee-svg-icon icon-rating-solid--active icon-rating-solid">
+                                <polygon
+                                    points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></polygon>
+                            </svg>
+                        </div>
+                        <div class="shopee-product-rating__content">{{reviewedContent.content}}</div>
+                        <div class="shopee-product-rating__time">{{reviewedContent.date}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <app-footer></app-footer>
+
+

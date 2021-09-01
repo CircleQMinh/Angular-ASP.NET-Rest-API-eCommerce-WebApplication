@@ -90,6 +90,7 @@ export class CartInfoComponent implements OnInit {
         localStorage.removeItem("user-email")
         localStorage.removeItem("login-timeOut")
         localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
       }
       else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
@@ -97,6 +98,7 @@ export class CartInfoComponent implements OnInit {
         this.user.id = localStorage.getItem('user-id')!
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
         //console.log("still login")
       }
     }

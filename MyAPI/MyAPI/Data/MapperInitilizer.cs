@@ -18,6 +18,7 @@ namespace MyAPI.Data
             CreateMap<APIUser, UserDTO>().ReverseMap();
             CreateMap<APIUser, UserInfoDTO>().ReverseMap();
             CreateMap<APIUser, UserOrderInfoDTO>().ReverseMap();
+            CreateMap<APIUser, ReviewUserInfoDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
@@ -29,6 +30,9 @@ namespace MyAPI.Data
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
 
             CreateMap<ShippingInfo, ShippingInfoDTO>().ReverseMap();
+
+            CreateMap<Review, ReviewDTO>().ReverseMap();
+            CreateMap<Review, CreateReviewDTO>().ReverseMap();
         }
     }
 }
