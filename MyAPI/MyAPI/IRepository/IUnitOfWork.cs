@@ -16,6 +16,8 @@ namespace MyAPI.IRepository
         //IGenericRepository<APIUserProduct> APIUserProducts { get; }
         IGenericRepository<ShippingInfo> ShippingInfos { get; }
 
+        IGenericRepository<Review> Reviews { get; }
+
         Task Save();
     }
 }

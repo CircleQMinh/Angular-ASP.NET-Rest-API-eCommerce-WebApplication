@@ -1,3 +1,6 @@
+import { Review } from "./review";
+import { User } from "./user";
+
 export class Product {
 
     id!:number;
@@ -8,6 +11,8 @@ export class Product {
     category!:string;
     imgUrl!:string;
     lastUpdate!:string;
+    favoritedUsers!:User[]
+    reviews!:Review[]
 
 
 	constructor(id:number,name:string,price:number,des:string,unit:number,cate:string,img:string,last:string) {

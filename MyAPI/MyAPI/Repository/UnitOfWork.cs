@@ -16,6 +16,8 @@ namespace MyAPI.Repository
         private IGenericRepository<APIUser> _user;
        // private IGenericRepository<APIUserProduct> _APIUserProducts;
         private IGenericRepository<ShippingInfo> _shippingInfo;
+
+        private IGenericRepository<Review> _review;
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -30,6 +32,8 @@ namespace MyAPI.Repository
         public IGenericRepository<APIUser> Users => _user ??= new GenericRepository<APIUser>(_context);
 
         public IGenericRepository<ShippingInfo> ShippingInfos => _shippingInfo ??= new GenericRepository<ShippingInfo>(_context);
+
+        public IGenericRepository<Review> Reviews => _review ??= new GenericRepository<Review>(_context);
 
         //public IGenericRepository<APIUserProduct> APIUserProducts => _APIUserProducts ??= new GenericRepository<APIUserProduct>(_context);
 

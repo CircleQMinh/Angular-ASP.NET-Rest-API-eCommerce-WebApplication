@@ -30,10 +30,7 @@ namespace MyAPI.DTOs
     {
         public int Id { get; set; }
 
-        public static implicit operator ProductDTO(List<ProductDTO> v)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 
     public class FullProductDTO
@@ -46,6 +43,8 @@ namespace MyAPI.DTOs
         public string Category { get; set; }
         public string ImgUrl { get; set; }
         public string LastUpdate { get; set; }
-        public virtual ICollection<UserInfoDTO> FavoritedUsers { get; set; }
+        public virtual ICollection<ReviewUserInfoDTO> FavoritedUsers { get; set; }
+
+        public virtual ICollection<ReviewDTO> Reviews { get; set; }
     }
 }

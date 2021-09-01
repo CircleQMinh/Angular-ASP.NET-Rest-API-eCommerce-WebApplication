@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem("user-email")
         localStorage.removeItem("login-timeOut")
         localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
       }
       else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
@@ -54,6 +55,7 @@ export class LoginComponent implements OnInit {
         this.user.id = localStorage.getItem('user-id')!
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
         //console.log("still login")
       }
     }
@@ -78,6 +80,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('isLogin', "true")
           localStorage.setItem("user-id",this.user.id)
           localStorage.setItem("user-disName",this.user.displayName)
+          localStorage.setItem("user-imgUrl",this.user.imgUrl)
           localStorage.setItem("user-email",this.user.email)
           let a = new Date()
           a.setMinutes(a.getMinutes()+120)

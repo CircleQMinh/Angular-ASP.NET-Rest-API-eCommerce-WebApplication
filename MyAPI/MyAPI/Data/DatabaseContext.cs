@@ -20,11 +20,13 @@ namespace MyAPI.Data
 
         //public DbSet<APIUserProduct> APIUserProducts { get; set; }
         public DbSet<ShippingInfo> ShippingInfos { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             // builder.ApplyConfiguration(new ProductConfig());
-            // builder.ApplyConfiguration(new RoleConfig());
+            builder.ApplyConfiguration(new RoleConfig());
 
         }
     }
