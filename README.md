@@ -8,3 +8,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 29-08-2021 : thêm trang profile, setup api cho trang profile.<br>
 30-08-2021 : thêm chức năng theo dõi đơn hàng.<br>
 31-08-2021 : thêm chức năng thêm/loại sản phẩm trong danh sách yêu thích.<br>
+01-09-2021 : thêm chức năng review sản phẩm cho khách hàng.<br>
