@@ -9,3 +9,5 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 30-08-2021 : thêm chức năng theo dõi đơn hàng.<br>
 31-08-2021 : thêm chức năng thêm/loại sản phẩm trong danh sách yêu thích.<br>
 01-09-2021 : thêm chức năng review sản phẩm cho khách hàng.<br>
+02-09-2021 : thêm chức năng chat trực tuyến.<br>
+03-09-2021 : host thử website :triumph: .<br>
