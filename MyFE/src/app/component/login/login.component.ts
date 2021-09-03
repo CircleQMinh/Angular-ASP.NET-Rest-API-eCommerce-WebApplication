@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   showFormError: boolean = false
   login_error: boolean = false
   isLoading:boolean=false
-  isLogin: boolean = false
 
+  isLogin: boolean = false
   user!:User
 
   constructor(private authService: AuthenticationService,private toast:HotToastService,private router:Router) { }
@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem("login-timeOut")
         localStorage.removeItem("user-disName")
         localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
       }
       else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
@@ -56,6 +57,8 @@ export class LoginComponent implements OnInit {
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
         this.user.imgUrl=localStorage.getItem("user-imgUrl")!
+        this.user.roles=[]
+        this.user.roles.push(localStorage.getItem("user-role")!)
         //console.log("still login")
       }
     }
@@ -82,6 +85,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("user-disName",this.user.displayName)
           localStorage.setItem("user-imgUrl",this.user.imgUrl)
           localStorage.setItem("user-email",this.user.email)
+          localStorage.setItem("user-role",this.user.roles[0])
           let a = new Date()
           a.setMinutes(a.getMinutes()+120)
           localStorage.setItem("login-timeOut",formatDate(a, 'MMMM d, y, hh:mm:ss a z', 'en'))

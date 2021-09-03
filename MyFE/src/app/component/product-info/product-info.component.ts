@@ -104,9 +104,10 @@ export class ProductInfoComponent implements OnInit {
     this.isLoading = true
     this.proService.getProductInfo(this.id).subscribe(
       data => {
-        //console.log(data)
+       // console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
+        
        // console.log(this.product)
         this.getRandomProduct()
         this.getProductRating()

@@ -827,6 +827,19 @@ width: 100%;
     text-align: center;
     z-index: 998;
 }  
+
+.float-btn-chat{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:70px;
+    right:10px;
+    background-color:#2369d3;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    z-index: 999;
+}  
 .dflex-jus{
     display: flex;
     justify-content: center;
@@ -883,7 +896,53 @@ width: 100%;
     align-content: center;
     align-items: center;
 }
-
+.chat-box{
+    position: fixed;
+    width: 50%;
+    height: 70%;
+    bottom: 120px;
+    padding: 2%;
+    right: 30px;
+    background-color: white;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    z-index: 999;
+    border: solid 2px black;
+    color: #000;
+}
+.chat-scroll{
+    padding: 4px;
+    /* background-color: green; */
+    width: 100%;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+    color: black;
+}
+.chat-line{
+    color: black;
+}
+.chat-enter{
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+    align-items: center;
+    align-content: center;
+}
+.chat-enter textarea{
+    width: 75%;height: 75%;
+    resize: none;
+}
+.chat-enter button{
+    width: 15%;;height: 75%;
+}
+.chat-time{
+    font-size: 11px;
+    color: rgb(65, 54, 54);
+}
 
 @media (max-width: 1399.98px) { 
     .float-btn-nav{
@@ -891,11 +950,19 @@ width: 100%;
     }
 }
 @media (max-width: 1199.98px) { 
-    
-}
-@media (max-width: 991.98px) { 
     .review-box{
         width: 500px;
+    }
+    .chat-enter{
+        height: 15%;
+    }
+    .chat-enter textarea{
+        width: 70%;
+    }
+}
+@media (max-width: 991.98px) { 
+    .chat-enter{
+        height: 12%;
     }
 }
 @media (max-width: 767.98px) { 
@@ -917,6 +984,9 @@ width: 100%;
     .review-box{
         width: 300px;
     }
+    .chat-box{
+        width: 70%;
+    }
 }
 @media (max-width: 575.98px) { 
     .HF-grid-item-heading{
@@ -935,6 +1005,11 @@ width: 100%;
     .float-btn-cart{
         width: 30px;
         height: 30px;
+    }
+    .float-btn-chat{
+        width: 30px;
+        height: 30px;
+        bottom: 40px;
     }
     .float-btn-icon{
         margin-top: 8px;
@@ -977,8 +1052,26 @@ width: 100%;
     .review-box{
         width: 160px;
     }
+    .chat-box{
+        width: 85%;
+        bottom: 60px;
+        right: 18px;
+    }
+    .chat-enter textarea{
+        width: 65%;
+    }
 }
 
 @media (max-width: 300px) { 
-
+    .chat-box{
+        width: 90%;
+        right: 10px;
+        bottom: 70px;
+    }
+    .chat-enter{
+        height: 11%;
+    }
+    .chat-enter textarea{
+        width: 60%;
+    }
 }

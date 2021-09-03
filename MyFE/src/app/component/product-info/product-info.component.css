@@ -115,3 +115,9 @@ a{text-decoration:none;}
 /*! CSS Used from: https://vnn-res.vgcloud.vn/ResV9/css/popup-login.css */
 .List-commenttool a:hover{font-weight:700;}
 .fmsidWidgetCommentListCount{font-family:Roboto-regular;}
+
+
+.fWjUGo:hover{
+    transform: scale(1);
+    transition: .3s ease-in-out;
+}

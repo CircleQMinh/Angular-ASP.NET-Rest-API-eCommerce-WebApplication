@@ -31,6 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
           // console.log(data)
           this.isLoading=false
           this.toast.success("Check your email to complete the password-reset process!")
+          this.signOut()
           this.email_send = true
         },
         error => {
@@ -42,5 +43,16 @@ export class ForgotPasswordComponent implements OnInit {
     else {
       this.toast.error("The submitted data is not valid. Please correct it to continue")
     }
+  }
+  signOut() {
+
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("user-id")
+    localStorage.removeItem("user-email")
+    localStorage.removeItem("login-timeOut")
+    localStorage.removeItem("user-disName")
+    localStorage.removeItem("user-imgUrl")
+    localStorage.removeItem("user-role")
+
   }
 }

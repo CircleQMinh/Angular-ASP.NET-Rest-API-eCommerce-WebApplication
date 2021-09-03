@@ -10,7 +10,8 @@ namespace MyAPI.Configurations
 {
     public class EmailHelper
     {
-        public string site = "http://localhost:4200/";
+        public string site = "http://localhost:4200/#/";
+        public string siteOnline = "http://circleqm.000webhostapp.com/#/";
         public string SendEmailConfirm(string userEmail, string token)
         {
             MailMessage mailMessage = new MailMessage();
@@ -22,8 +23,10 @@ namespace MyAPI.Configurations
 
             string encodetk=token.Replace("+", "%2B");
             string link = site+ "confirmAccount?email=" + userEmail+"&token="+encodetk;
+            string linkOnline = siteOnline + "confirmAccount?email=" + userEmail + "&token=" + encodetk;
 
-            mailMessage.Body = "Please comfirm your account by using this link here: " + link +"<br>"+"Token="+token;
+            mailMessage.Body = "Please comfirm your account by using this link here(localhost): " + link +"<br>"+
+                "Please comfirm your account by using this link here(online): " + linkOnline + "<br>";
 
      
 
@@ -58,7 +61,9 @@ namespace MyAPI.Configurations
 
             string encodetk = token.Replace("+", "%2B");
             string link = site + "reset-password?email=" + userEmail + "&token=" + encodetk;
-            mailMessage.Body = "Please comfirm your password reset request by using this link here: " + link;
+            string linkOnline = siteOnline + "reset-password?email=" + userEmail + "&token=" + encodetk;
+            mailMessage.Body = "Please comfirm your password reset request by using this link here(localhost): " + link+"<br>"+
+                "Please comfirm your password reset request by using this link here(online): " + linkOnline + "<br>";
 
 
 

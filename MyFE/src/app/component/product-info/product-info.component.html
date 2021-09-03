@@ -8,8 +8,8 @@
 <div class="container" *ngIf="!isLoading">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
-        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{id}}</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Product</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
     <div class="row justify-content-center">
         <div class="col-md-5">
@@ -26,6 +26,11 @@
                     <a rel="tag"> {{ product.category}}</a>
 
                 </span>
+                <span class="posted_in">
+                    <strong>Favorite :</strong>
+                    <a rel="tag"> {{ product.favoritedUsers.length}} <i class="fas fa-users"></i></a>
+
+                </span>
             </div>
             <div class="m-bot15">
                 <strong>Price :
@@ -40,8 +45,7 @@
                         class="fa fa-shopping-cart"></i> Add to
                     Cart
                 </button>
-                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i
-                        class="fa fa-shopping-cart"></i> Add to
+                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i class="far fa-heart"></i> Add to
                     Favorite
                 </button>
 

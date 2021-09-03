@@ -1,0 +1,60 @@
+<div class="chat-box" *ngIf="showChatBox">
+    <p>Chat Message</p>
+    <div class="chat-scroll" id="chat_content">
+
+        <div class="chat-line" *ngFor="let o of chatMess">
+            <p *ngIf="o.userrole=='User'" class="text-tron" style="color: black;"><strong>{{o.user}}({{o.userrole}}) : </strong>{{o.content}}</p>
+            <p *ngIf="o.userrole=='Administrator'" class="text-tron" style="color: rgb(66, 155, 233);"><strong>{{o.user}}({{o.userrole}}) : </strong>{{o.content}}</p>
+                    <span class="chat-time">{{o.time| date:'medium'}} </span>
+
+            <hr>
+        </div>
+<!-- 
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div>
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div>
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div>
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div>
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div>
+        <div class="chat-line">
+            <p><strong>Username : </strong>erviews & make your upcoming placement season efficient and
+                successful. Also, a </p>
+                <span class="chat-time">{{"02/09/2021 11:22:33"| date:'medium'}} </span>
+            <hr>
+        </div> -->
+    </div>
+    <div class="chat-enter" *ngIf="!isLogin">
+        <p>Login to chat!</p>
+    </div>
+    <div class="chat-enter" *ngIf="isLogin">
+        <textarea class="text-tron" placeholder="Press 'enter' to send message!" (keyup.enter)="postChat()" [(ngModel)]="message"></textarea>
+        <button type="button" (click)="postChat()" class="btn btn-info" ><i class="far fa-paper-plane" ></i></button>
+    </div>
+</div>
+<a class="float-btn-chat"  (click)="showHideChat()">
+    <i class="far fa-comment-alt float-btn-icon"></i>
+</a>

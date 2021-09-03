@@ -6,10 +6,10 @@
 
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
         <strong style="display: block;font-size: 20px;" class="text-monospace">Sign Up</strong>
-        <!-- <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">You already login as '{{user.displayName}}' using {{user.email}}</p>
     </div>
 
-    <form novalidate (ngSubmit)="trySignUp()" class="row justify-content-md-center" [formGroup]="rf1">
+    <form novalidate (ngSubmit)="trySignUp()" class="row justify-content-md-center" [formGroup]="rf1" *ngIf="!isLogin">
         <div class="col-md-8">
             <div class="col alert alert-danger" role="alert" *ngIf="unknown_error&&showFormError">
                 An error has occurred ! Try again !
