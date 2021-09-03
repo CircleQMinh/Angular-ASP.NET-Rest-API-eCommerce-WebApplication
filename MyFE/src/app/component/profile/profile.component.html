@@ -24,7 +24,7 @@
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
                                 <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
                                     Logout</button>
-                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
+                                <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i class="fas fa-key"></i>
                                     Password?</button>
                             </div>
                         </div>
@@ -45,9 +45,8 @@
                                     class="far fa-heart"></i>
                                 Favorite</button>
 
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('coins')"><i
-                                    class="fab fa-bitcoin"></i> Shop
-                                Xu</button>
+                            <button class="btn btn-outline-primary btn-block" ><i
+                                    class="fab fa-bitcoin"></i> Shop Xu</button>
                         </li>
                     </ul>
                 </div>
@@ -156,9 +155,8 @@
                                         class="far fa-heart"></i>
                                     Favorite</button>
 
-                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('coins')"><i
-                                        class="fab fa-bitcoin"></i> Shop
-                                    Xu</button>
+                                <button class="btn btn-outline-primary btn-block"><i
+                                        class="fab fa-bitcoin"></i> Shop Xu</button>
                             </li>
                         </ul>
                     </ul>
@@ -211,7 +209,7 @@
                     <div class="card-header">
                         <h4 class="text-monospace">Track Your Order</h4>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==0">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==0">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -269,7 +267,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==1">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==1">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -327,7 +325,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==2">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==2">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -385,7 +383,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" *ngIf="currentOrder.status==3">
+                    <div class="row justify-content-center mt-3 mb-3"  style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==3">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -443,7 +441,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-header">
+                    <div class="card-header" style="margin-top: 50px;">
                         <h4 class="text-monospace">Order Date - {{currentOrder.orderDate}}</h4>
                         <h4 class="text-monospace">Contact Name - {{currentOrder.contactName}}</h4>
                         <h4 class="text-monospace">Email - {{currentOrder.email}}</h4>
@@ -540,20 +538,19 @@
                     <ul class="list-group ">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                            <button class="btn btn-primary btn-block" (click)="switchTab('profile')"><i
+                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i
                                     class="fas fa-user"></i> Profile</button>
 
                             <button class="btn btn-outline-primary btn-block" (click)="switchTab('order')"><i
                                     class="fas fa-shopping-cart"></i>
                                 Order</button>
 
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
+                            <button class="btn btn-primary btn-block" (click)="switchTab('favorite')"><i
                                     class="far fa-heart"></i>
                                 Favorite</button>
 
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('coins')"><i
-                                    class="fab fa-bitcoin"></i> Shop
-                                Xu</button>
+                            <button class="btn btn-outline-primary btn-block"><i
+                                    class="fab fa-bitcoin"></i> Shop Xu</button>
                         </li>
                     </ul>
                 </div>

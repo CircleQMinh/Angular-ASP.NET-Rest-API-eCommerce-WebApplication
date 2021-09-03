@@ -26,6 +26,7 @@ import { ProductCategoryComponent } from './component/product-category/product-c
 import { ProfileComponent } from './component/profile/profile.component';
 import { TestComponent } from './component/test/test.component';
 import { ErrorComponent } from './component/error/error.component';
+import { ChatBoxComponent } from './component/chat-box/chat-box.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,8 @@ import { ErrorComponent } from './component/error/error.component';
     ProductCategoryComponent,
     ProfileComponent,
     TestComponent,
-    ErrorComponent
+    ErrorComponent,
+    ChatBoxComponent
   ],
   imports: [
     BrowserModule,

@@ -106,30 +106,35 @@ export class ProfileComponent implements OnInit {
   }
 
   getLocalStorage() {
-    if (localStorage.getItem("isLogin")) {
-
-      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
+    if(localStorage.getItem("isLogin")){
+   
+      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
       let timeNow = new Date()
-
-      if (timeOut.getTime() < timeNow.getTime()) {
+  
+      if(timeOut.getTime()<timeNow.getTime()){
         //console.log("time out remove key")
         localStorage.removeItem("isLogin")
         localStorage.removeItem("user-id")
         localStorage.removeItem("user-email")
         localStorage.removeItem("login-timeOut")
         localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
       }
-      else {
+      else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user = new User
+        this.user=new User
         this.user.id = localStorage.getItem('user-id')!
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
+        this.user.roles=[]
+        this.user.roles.push(localStorage.getItem("user-role")!)
         //console.log("still login")
       }
     }
-    else {
-      // console.log("no login acc")
+    else{
+     // console.log("no login acc")
     }
 
   }

@@ -15,6 +15,7 @@ export class ResetPasswordComponent implements OnInit {
   email_send: boolean = false
   email!: string
   token!: string
+  isLoading=false
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthenticationService, private toast: HotToastService) { }
 
   ngOnInit(): void {
@@ -37,6 +38,7 @@ export class ResetPasswordComponent implements OnInit {
   tryReset() {
     this.showFormError = true
     if (this.rf1.valid) {
+      this.isLoading=true
       this.authService.comfirmPassword(this.email,this.token,this.rf1.controls['password'].value).subscribe(
         data=>{
           console.log(data)
@@ -47,6 +49,7 @@ export class ResetPasswordComponent implements OnInit {
         error=>{
           console.log(error)
           this.toast.error(" An error has occurred ! Try again !")
+          this.isLoading=false
         }
       )
     }

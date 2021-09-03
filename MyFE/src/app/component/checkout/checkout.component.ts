@@ -86,6 +86,7 @@ export class CheckoutComponent implements OnInit {
         localStorage.removeItem("login-timeOut")
         localStorage.removeItem("user-disName")
         localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
       }
       else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
@@ -94,6 +95,8 @@ export class CheckoutComponent implements OnInit {
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
         this.user.imgUrl=localStorage.getItem("user-imgUrl")!
+        this.user.roles=[]
+        this.user.roles.push(localStorage.getItem("user-role")!)
         //console.log("still login")
       }
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
+import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
@@ -23,6 +24,11 @@ export class RegisterComponent implements OnInit {
 
   step=1
 
+  isLogin: boolean = false
+
+  user!: User
+
+
   constructor(private authService: AuthenticationService,private toast:HotToastService) { }
 
   ngOnInit(): void {
@@ -37,6 +43,7 @@ export class RegisterComponent implements OnInit {
       phone: new FormControl("",
         [Validators.required,Validators.pattern('[- +()0-9]+')])
     });
+    this.getLocalStorage()
   }
 
   trySignUp(){
@@ -69,9 +76,45 @@ export class RegisterComponent implements OnInit {
       this.isLoading=false
     }
   }
+
+
+  
   delay(ms:number){
     setTimeout(()=>{
       this.isLoading=false
     },ms)
+  }
+
+  getLocalStorage() {
+    if(localStorage.getItem("isLogin")){
+   
+      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
+      let timeNow = new Date()
+  
+      if(timeOut.getTime()<timeNow.getTime()){
+        //console.log("time out remove key")
+        localStorage.removeItem("isLogin")
+        localStorage.removeItem("user-id")
+        localStorage.removeItem("user-email")
+        localStorage.removeItem("login-timeOut")
+        localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
+      }
+      else{
+        this.isLogin = Boolean(localStorage.getItem('isLogin'))
+        this.user=new User
+        this.user.id = localStorage.getItem('user-id')!
+        this.user.email = localStorage.getItem("user-email")!
+        this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
+        this.user.roles.push(localStorage.getItem("user-role")!)
+        //console.log("still login")
+      }
+    }
+    else{
+     // console.log("no login acc")
+    }
+
   }
 }

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class AuthenticationService {
   // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
   apiUrl: string = "https://localhost:44324/api/";
+  firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
   constructor(private http: HttpClient, private route: Router) { }
 
   signUp(email: string, password: string, userName: string, phoneNumber: string): Observable<any> {
@@ -82,5 +83,18 @@ export class AuthenticationService {
       userID: userID,
       date: date
     })
+  }
+
+  addChatMess(user: string, time: string, content: string, role: string): Observable<any> {
+    return this.http.post(`${this.firebaseUrl}chatME.json`, {
+      user: user,
+      time: time,
+      content: content,
+      userrole: role
+    }
+    )
+  }
+  getChatMess(): Observable<any> {
+    return this.http.get(`${this.firebaseUrl}chatME.json`)
   }
 }
