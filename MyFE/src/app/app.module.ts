@@ -27,6 +27,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { TestComponent } from './component/test/test.component';
 import { ErrorComponent } from './component/error/error.component';
 import { ChatBoxComponent } from './component/chat-box/chat-box.component';
+import { AdminComponent } from './component/admin/admin.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +49,8 @@ import { ChatBoxComponent } from './component/chat-box/chat-box.component';
     ProfileComponent,
     TestComponent,
     ErrorComponent,
-    ChatBoxComponent
+    ChatBoxComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
