@@ -12,5 +12,5 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 01-09-2021 : thêm chức năng review sản phẩm cho khách hàng.<br>
 02-09-2021 : thêm chức năng chat trực tuyến.<br>
 03-09-2021 : host thử website :triumph: .<br>
-04-09-2021 : nghĩ lễ :upside_down_face:
+04-09-2021 : nghĩ lễ :upside_down_face:.<br>
 05-09-2021 : thêm trang admin.<br>
