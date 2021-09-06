@@ -42,6 +42,8 @@ namespace MyAPI.DTOs
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        public bool EmailConfirmed { get; set; }
+
     }
     public class UserOrderInfoDTO
     {

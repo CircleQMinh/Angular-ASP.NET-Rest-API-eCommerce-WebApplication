@@ -10,6 +10,7 @@ import { User } from 'src/app/class/user';
 export class NavComponent implements OnInit {
   
   isCollapsed: boolean = true
+  
   isLogin: boolean = false
 
   user!:User

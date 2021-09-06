@@ -964,6 +964,9 @@ width: 100%;
     .chat-box{
         width: 70%;
     }
+    #side-info{
+        display: none;
+    }
 }
 @media (max-width: 575.98px) { 
     .HF-grid-item-heading{

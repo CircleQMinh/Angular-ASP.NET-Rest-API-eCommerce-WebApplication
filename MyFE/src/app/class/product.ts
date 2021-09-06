@@ -7,7 +7,7 @@ export class Product {
     name!:string;
     price!:number;
     description!:string;
-    unitsInStock!:number;
+    unitInStock!:number;
     category!:string;
     imgUrl!:string;
     lastUpdate!:string;
@@ -20,7 +20,7 @@ export class Product {
         this.name=name;
         this.description=des;
         this.price=price
-        this.unitsInStock=unit;
+        this.unitInStock=unit;
         this.category=cate;
         this.imgUrl=img;
         this.lastUpdate=last;
