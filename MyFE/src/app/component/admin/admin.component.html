@@ -1,47 +1,50 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
-    <div class="container">
-        <a href="index.html" class="navbar-brand">Blogen</a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav">
-                <li class="nav-item px-2">
-                    <a href="index.html" class="nav-link active">Dashboard</a>
-                </li>
-                <li class="nav-item px-2">
-                    <a href="posts.html" class="nav-link">Posts</a>
-                </li>
-                <li class="nav-item px-2">
-                    <a href="categories.html" class="nav-link">Categories</a>
-                </li>
-                <li class="nav-item px-2">
-                    <a href="users.html" class="nav-link">Users</a>
-                </li>
-            </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0">
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown mr-3">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-user"></i> Welcome Brad
+    <a class="navbar-brand" routerLink="/home">
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+            style="width: 40px;height: 40px;">Circle's Shop</a>
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
+        <ul class="navbar-nav  ml-auto ">
+            <li class="nav-item px-2">
+                <a  [class.active]="active_tab=='db'" (click)="switchTab('db')" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item px-2">
+                <a  [class.active]="active_tab=='order'"  (click)="switchTab('order')" class="nav-link">Orders</a>
+            </li>
+            <li class="nav-item px-2">
+                <a [class.active]="active_tab=='product'"  (click)="switchTab('product')" class="nav-link">Product</a>
+            </li>
+            <li class="nav-item px-2">
+                <a  [class.active]="active_tab=='user'"  (click)="switchTab('user')" class="nav-link">Users</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3">
+                <a  class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-user"></i> Welcome Brad
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> Profile
                     </a>
-                    <div class="dropdown-menu">
-                        <a href="profile.html" class="dropdown-item">
-                            <i class="fas fa-user-circle"></i> Profile
-                        </a>
-                        <a href="settings.html" class="dropdown-item">
-                            <i class="fas fa-cog"></i> Settings
-                        </a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="login.html" class="nav-link">
-                        <i class="fas fa-user-times"></i> Logout
+                    <a  class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
                     </a>
-                </li>
-            </ul>
-        </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a  class="nav-link">
+                    <i class="fas fa-user-times"></i> Logout
+                </a>
+            </li>
+        </ul>
     </div>
+
 </nav>
 
 <!-- HEADER -->
@@ -49,8 +52,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1>
+                <h1 *ngIf="active_tab=='bd'">
                     <i class="fas fa-cog"></i> Dashboard
+                </h1>
+                <h1 *ngIf="active_tab=='order'">
+                    <i class="fas fa-cart"></i> Orders
+                </h1>
+                <h1 *ngIf="active_tab=='product'">
+                    <i class="fas fa-bag"></i> Products
+                </h1>
+                <h1 *ngIf="active_tab=='user'">
+                    <i class="fas fa-users"></i> Users
                 </h1>
             </div>
         </div>
@@ -58,65 +70,108 @@
 </header>
 
 <!-- ACTIONS -->
-<section id="actions" class="py-4 mb-4 bg-light">
+<section id="actions" class="py-4 mb-4 bg-light" >
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addPostModal">
-                    <i class="fas fa-plus"></i> Add Post
+                <a  class="btn btn-primary btn-block"  (click)="switchTab('db')">
+                    <i class="fas fa-plus"></i> Dashboard
                 </a>
             </div>
-            <div class="col-md-3">
-                <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#addCategoryModal">
-                    <i class="fas fa-plus"></i> Add Category
+            <div class="col-md-3" *ngIf="active_tab!='order'">
+                <a  class="btn btn-success btn-block"  (click)="switchTab('order')">
+                    <i class="fas fa-plus"></i> Order
                 </a>
             </div>
-            <div class="col-md-3">
-                <a href="#" class="btn btn-warning btn-block" data-toggle="modal" data-target="#addUserModal">
-                    <i class="fas fa-plus"></i> Add User
+            <div class="col-md-3" *ngIf="active_tab!='product'">
+                <a  class="btn btn-warning btn-block"  (click)="switchTab('product')">
+                    <i class="fas fa-plus"></i> Product
+                </a>
+            </div>
+            <div class="col-md-3" *ngIf="active_tab!='user'">
+                <a class="btn btn-info btn-block"  (click)="switchTab('user')">
+                    <i class="fas fa-plus"></i> User
                 </a>
             </div>
         </div>
+        <hr>
     </div>
 </section>
 
 <!-- POSTS -->
-<section id="posts">
+<section id="posts" >
     <div class="container">
-        <div class="row">
-            <div class="col-md-9">
+
+        <div class="row" >
+     
+            <div class="col-md-9" *ngIf="active_tab=='user'">
                 <div class="card ">
                     <div class="card-header">
-                        <h4>Latest Posts</h4>
+                        <h4>Users</h4>
                         <button class="btn btn-info">
                             <i class="fas fa-plus"></i>
                         </button>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Role: </label>
+                                <select class="form-select" [(ngModel)]="role" (change)=" getUser()">
+                                    <option value="all" selected="true">All</option>
+                                    <option value="Administrator">Admin</option>
+                                    <option value="Shipper">Shipper</option>
+                                    <option value="User">User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Order: </label>
+                                <select class="form-select" [(ngModel)]="orderUser" (change)=" getUser()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Name">Name</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Page Size: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeUser" (change)=" getUser()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped  ">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Date</th>
-                                    <th>Date</th>
-                                    <th colspan="2"></th>
+
+                                    <th>Display Info</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Verified</th>
+                                    <th >Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Post One</td>
-                                    <td>Web Development</td>
-                                    <td>May 10 2018</td>
-                                    <td>May 10 2018</td>
+                                <tr *ngFor="let o of pagedUserList,index as i">
+
+                                    <td>
+                                        <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                                        <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+                                    </td>
+                                    <td style="word-break: break-all;">{{o.email}}</td>
+                                    <td>{{o.phoneNumber}}</td>
+                                    <td *ngIf="o.emailConfirmed">
+                                        <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                                    </td>
+                                    <td *ngIf="!o.emailConfirmed">
+                                        <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                                    </td>
                                     <td>
                                         <button class="btn btn-info">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                    </td>
-                                    <td>
                                         <button class="btn btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -125,26 +180,248 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberUser" [pageSize]="pageSizeUser"
+                                        [collectionSize]="userList.length" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getPagedUserList()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3">
+
+
+
+
+
+            <!-- ---------------------------------------------------------------------------------------------------- -->
+
+            <div class="col-md-9" *ngIf="active_tab=='order'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4>Order</h4>
+                        <button class="btn btn-info">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Status: </label>
+                                <select class="form-select" [(ngModel)]="status" (change)=" onPageSizeStatusChage()">
+                                    <option value="99" selected="true">All</option>
+                                    <option value="0">Not Checked</option>
+                                    <option value="1">Checked</option>
+                                    <option value="2">Delivering</option>
+                                    <option value="3">Done</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Order: </label>
+                                <select class="form-select" [(ngModel)]="orderOrder" (change)=" onPageSizeStatusChage()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Price">Total Price</option>
+                                    <option value="OrderDate">OrderDate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Page Size: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeOrder" (change)=" onPageSizeStatusChage()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped  ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Contact Info</th>
+                                    <th>Order Date</th>
+                                    <th>Total Item</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                    <th >Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of orderList,index as i">
+
+                                    <td>   
+                                        <p class="text-tron text-monospace">{{o.id}}</p>
+                                    </td>
+                                    <td >
+                                        <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                        <p class="text-tron text-monospace">{{o.address}}</p>
+                                        <p class="text-tron text-monospace">{{o.email}}</p>
+                                    </td>
+                                    <td><p class="text-tron text-monospace">{{o.orderDate}}</p></td>
+                                    <td>{{o.totalItem}}</td>
+                                    <td>{{(o.totalPrice).toFixed(2)}}</td>
+                                    <td *ngIf="o.status==0">
+                                        <p class="text-tron text-success"><i class="fas fa-times"></i>Not Checked</p>
+                                    </td>
+                                    <td *ngIf="o.status==1">
+                                        <p class="text-tron text-success"><i class="fas fa-edit"></i>Checked</p>
+                                    </td>
+                                    <td *ngIf="o.status==2">
+                                        <p class="text-tron text-success"><i class="fas fa-shipping-fast"></i>Delivering</p>
+                                    </td>
+                                    <td *ngIf="o.status==3">
+                                        <p class="text-tron text-success"><i class="fas fa-check"></i>Done</p>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
+                                        [collectionSize]="collectionSizeOrder" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getOrder()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- ------------------------------------------------------------------------------------------------------------------ -->
+
+            <div class="col-md-9" *ngIf="active_tab=='product'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4>Product</h4>
+                        <button class="btn btn-info">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Category: </label>
+                                <select class="form-select" [(ngModel)]="category" (change)=" onPageSizeCategoryChange()">
+                                    <option value="all" selected="true">All</option>
+                                    <option value="Fruit">Fruit</option>
+                                    <option value="Vegetable">Vegetable</option>
+                                    <option value="Confectionery">Confectionery</option>
+                                    <option value="Snack">Snack</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Order: </label>
+                                <select class="form-select" [(ngModel)]="orderProduct" (change)=" onPageSizeCategoryChange()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Price">Price</option>
+                                    <option value="Name">Name</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Page Size: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeProduct" (change)=" onPageSizeCategoryChange()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped  ">
+                            <thead class="thead-dark">
+                                <tr>
+
+                                    <th>Display Info</th>
+                                    <th>Price</th>
+                                    <th>UiS</th>
+                                    <th>Category</th>
+                                    <th >Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of productList,index as i">
+
+                                    <td>
+                                        <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                                        <p class="text-tron text-monospace">{{o.name}}</p>
+                                    </td>
+                                    <td>{{o.price}}</td>
+                                    <td>{{o.unitInStock}}</td>
+                                    <td >
+                                        <p class="text-tron text-success">{{o.category}}</p>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberProduct" [pageSize]="pageSizeProduct"
+                                        [collectionSize]="collectionSizeProduct" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getProduct()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-md-3" id='side-info'>
                 <div class="card text-center bg-primary text-white mb-3">
                     <div class="card-body">
-                        <h3>Posts</h3>
+                        <h3>Order</h3>
                         <h4 class="display-4">
-                            <i class="fas fa-pencil-alt"></i> 6
+                            <i class="fas fa-pencil-alt"></i> {{dashboardInfo.totalOrder}}
                         </h4>
-                        <a href="posts.html" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">View</a>
                     </div>
                 </div>
 
                 <div class="card text-center bg-success text-white mb-3">
                     <div class="card-body">
-                        <h3>Categories</h3>
+                        <h3>Product</h3>
                         <h4 class="display-4">
-                            <i class="fas fa-folder"></i> 4
+                            <i class="fas fa-folder"></i>{{dashboardInfo.totalProduct}}
                         </h4>
-                        <a href="categories.html" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">View</a>
                     </div>
                 </div>
 
@@ -152,9 +429,9 @@
                     <div class="card-body">
                         <h3>Users</h3>
                         <h4 class="display-4">
-                            <i class="fas fa-users"></i> 4
+                            <i class="fas fa-users"></i>{{dashboardInfo.totalUser}}
                         </h4>
-                        <a href="users.html" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">View</a>
                     </div>
                 </div>
             </div>

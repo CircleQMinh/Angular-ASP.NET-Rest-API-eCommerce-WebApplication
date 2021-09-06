@@ -43,7 +43,6 @@ namespace MyAPI.Controllers
         //}
 
         [HttpGet(Name ="GetProducts")]
-        //[Route("/all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProducts(string category,string order,int pageNumber,int pageSize)
@@ -69,6 +68,9 @@ namespace MyAPI.Controllers
                 var query = await _unitOfWork.Products.GetAll(expression, orderBy, null,pf);
                 var totalItem = await _unitOfWork.Products.GetCount(expression);
                 var results = _mapper.Map<IList<ProductDTO>>(query);
+         
+
+
                 return Ok(new { results, totalItem });
             }
             catch (Exception ex)
