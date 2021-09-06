@@ -14,3 +14,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 03-09-2021 : host thử website :triumph: .<br>
 04-09-2021 : nghĩ lễ :upside_down_face:.<br>
 05-09-2021 : thêm trang admin.<br>
+06-09-2021 : update thêm cho trang admin.<br> 
