@@ -173,7 +173,7 @@ namespace MyAPI.Controllers
                         orderBy = a => a.OrderBy(x => x.TotalPrice);
                         break;
                     case "OrderDate":
-                        orderBy = a => a.OrderBy(x => DateTime.ParseExact(x.OrderDate,"dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture));
+                        orderBy = a => a.OrderBy(x => x.OrderDate);
                         break;
                     case "Id":
                         orderBy = a => a.OrderBy(x => x.Id);
@@ -193,6 +193,82 @@ namespace MyAPI.Controllers
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrderForAdmin)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
+
+        [HttpPost("createUser")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateUser)}");
+                return BadRequest(ModelState);
+            }
+            var existingUser = await _userManager.FindByEmailAsync(unitDTO.Email);
+            if (existingUser != null)
+            {
+                var error = "Submitted data is invalid";
+                return BadRequest(new { error });
+            }
+            try
+            {
+                var user = _mapper.Map<APIUser>(unitDTO);
+                user.UserName = unitDTO.Email;
+                user.EmailConfirmed = true;
+                var result = await _userManager.CreateAsync(user, unitDTO.Password);
+
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+                await _userManager.AddToRolesAsync(user, unitDTO.Roles);
+
+
+
+                return Accepted(new {unitDTO  });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateUser)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
+        [HttpDelete("deleteUser", Name = "DeleteUser")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var existingUser = await _userManager.FindByIdAsync(id);
+            if (existingUser == null)
+            {
+                var error = "Submitted data is invalid";
+                return BadRequest(new { error });
+            }
+
+            try
+            {
+                await _userManager.DeleteAsync(existingUser);
+
+                var success = true;
+
+                return Accepted(new { success });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteUser)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
     }
