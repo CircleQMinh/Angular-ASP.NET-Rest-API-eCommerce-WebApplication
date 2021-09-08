@@ -58,7 +58,7 @@ namespace MyAPI.Controllers
         [HttpGet("users", Name = "GetUserForAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetUserForAdmin(string role,string order)
+        public async Task<IActionResult> GetUserForAdmin(string role,string order, string orderDir)
         {
             try
             {
@@ -66,13 +66,34 @@ namespace MyAPI.Controllers
                 switch (order)
                 {
                     case "Email":
-                        orderBy = a => a.OrderBy(x => x.Email);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Email);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Email);
+                        }
                         break;
                     case "Id":
-                        orderBy = a => a.OrderBy(x => x.Id);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
                         break;
                     case "Name":
-                        orderBy = a => a.OrderBy(x => x.DisplayName);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.DisplayName);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.DisplayName);
+                        }
                         break;
                 }
 
@@ -121,7 +142,7 @@ namespace MyAPI.Controllers
         [HttpGet("products", Name = "GetProductForAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProductForAdmin(string category,string order, int pageNumber, int pageSize)
+        public async Task<IActionResult> GetProductForAdmin(string category,string order, int pageNumber, int pageSize, string orderDir)
         {
             try
             {
@@ -130,13 +151,34 @@ namespace MyAPI.Controllers
                 switch (order)
                 {
                     case "Price":
-                        orderBy = a => a.OrderBy(x => x.Price);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Price);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Price);
+                        }
                         break;
                     case "Name":
-                        orderBy = a => a.OrderBy(x => x.Name);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Name);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Name);
+                        }
                         break;
                     case "Id":
-                        orderBy = a => a.OrderBy(x => x.Id);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
                         break;
                 }
                 if (category != "all")
@@ -161,33 +203,75 @@ namespace MyAPI.Controllers
         [HttpGet("orders", Name = "GetOrderForAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetOrderForAdmin(int status, string order, int pageNumber, int pageSize)
+        public async Task<IActionResult> GetOrderForAdmin(int status, string order, int pageNumber, int pageSize,string orderDir)
         {
             try
             {
                 Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
                 Expression<Func<Order, bool>> expression = null;
+                int flag = 0;
                 switch (order)
                 {
                     case "Price":
-                        orderBy = a => a.OrderBy(x => x.TotalPrice);
+                        if (orderDir=="Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.TotalPrice);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.TotalPrice);
+                        }
+                       
                         break;
                     case "OrderDate":
-                        orderBy = a => a.OrderBy(x => x.OrderDate);
+                        flag = 1;
                         break;
                     case "Id":
-                        orderBy = a => a.OrderBy(x => x.Id);
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
                         break;
                 }
                 if (status != 99)
                 {
                     expression = q => q.Status == status;
                 }
-                PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
-                var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
-                var result = _mapper.Map<IList<OrderDTO>>(query);
-                var count = await _unitOfWork.Orders.GetCount(expression);
-                return Ok(new { result,count });
+                if (flag==1)
+                {
+
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null);
+                    var result = _mapper.Map<IList<OrderDTO>>(query);
+                    var orderedList = result.OrderBy(x => DateTime.Parse(x.OrderDate)).ToList();
+                    List<OrderDTO> list = new List<OrderDTO>();
+                    if (orderDir == "Desc")
+                    {
+                        orderedList.Reverse();
+                    }
+                    for (int i=0;i<pageSize;i++)
+                    {
+                        if ((i + pageSize * (pageNumber - 1))<orderedList.Count)
+                        {
+                            list.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                        }
+                    }
+                 
+                    return Ok(new { result=list, count=orderedList.Count });
+                }
+                else
+                {
+                
+                    PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
+                    var result = _mapper.Map<IList<OrderDTO>>(query);
+                    var count = await _unitOfWork.Orders.GetCount(expression);
+                    return Ok(new { result, count });
+                }
+             
             }
             catch (Exception ex)
             {
