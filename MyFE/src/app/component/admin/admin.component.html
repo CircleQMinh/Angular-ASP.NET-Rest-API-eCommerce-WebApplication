@@ -136,6 +136,17 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirUser" (change)="  getUser()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Page Size: </label>
                                 <select class="form-select" [(ngModel)]="pageSizeUser" (change)=" getUser()">
                                     <option value="5" selected="true">5</option>
@@ -179,7 +190,8 @@
                                             (click)="openEditUserModal(changeProfile,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger admin-button" (click)="openDeleteUserModal(deleteUser,o.id)">
+                                        <button class="btn btn-danger admin-button"
+                                            (click)="openDeleteUserModal(deleteUser,o.id)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -213,9 +225,7 @@
                 <div class="card ">
                     <div class="card-header">
                         <h4>Order</h4>
-                        <button class="btn btn-info">
-                            <i class="fas fa-plus"></i>
-                        </button>
+
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
                                 <label>Status: </label>
@@ -228,12 +238,24 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Order: </label>
+                                <label>Order By: </label>
                                 <select class="form-select" [(ngModel)]="orderOrder"
                                     (change)=" onPageSizeStatusChage()">
                                     <option value="Id" selected="true">Id</option>
                                     <option value="Price">Total Price</option>
                                     <option value="OrderDate">OrderDate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirOrder"
+                                    (change)=" onPageSizeStatusChage()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -276,26 +298,34 @@
                                     <td>
                                         <p class="text-tron text-monospace">{{o.orderDate}}</p>
                                     </td>
-                                    <td>{{o.totalItem}}</td>
-                                    <td>{{(o.totalPrice).toFixed(2)}}</td>
-                                    <td *ngIf="o.status==0">
-                                        <p class="text-tron text-success"><i class="fas fa-times"></i>Not Checked</p>
-                                    </td>
-                                    <td *ngIf="o.status==1">
-                                        <p class="text-tron text-success"><i class="fas fa-edit"></i>Checked</p>
-                                    </td>
-                                    <td *ngIf="o.status==2">
-                                        <p class="text-tron text-success"><i class="fas fa-shipping-fast"></i>Delivering
-                                        </p>
-                                    </td>
-                                    <td *ngIf="o.status==3">
-                                        <p class="text-tron text-success"><i class="fas fa-check"></i>Done</p>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.totalItem}}</p>
                                     </td>
                                     <td>
-                                        <button class="btn btn-info admin-button">
+                                        <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                                    </td>
+                                    <td *ngIf="o.status==0">
+                                        <span class="badge bg-info text-dark">Not Checked</span>
+                                    </td>
+                                    <td *ngIf="o.status==1">
+                                        <span class="badge bg-success">Checked</span>
+                                    </td>
+                                    <td *ngIf="o.status==2">
+                                        <span class="badge bg-warning text-dark">Delivering</span>
+                                    </td>
+                                    <td *ngIf="o.status==3">
+                                        <span class="badge bg-danger">Done</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning admin-button"
+                                            (click)="openOrderInfoModal(order_info,o)">
+                                            <i class="fas fa-box-open"></i></button>
+                                        <button class="btn btn-info admin-button"
+                                            (click)="openEditOrderInfoModal(edit_order,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger admin-button">
+                                        <button class="btn btn-danger admin-button"
+                                            (click)="openDeleteOrderInfoModal(order_delete,o)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -328,7 +358,7 @@
                     <div class="card-header">
                         <h4>Product</h4>
                         <button class="btn btn-info" (click)="openAddProductModal(add_product)">
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-plus"></i> Add a product
                         </button>
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
@@ -349,6 +379,18 @@
                                     <option value="Id" selected="true">Id</option>
                                     <option value="Price">Price</option>
                                     <option value="Name">Name</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirProduct"
+                                    (change)="onPageSizeCategoryChange()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -389,10 +431,12 @@
                                         <p class="text-tron text-success">{{o.category}}</p>
                                     </td>
                                     <td>
-                                        <button class="btn btn-info admin-button" (click)="openEditProductModal(edit_product,o)">
+                                        <button class="btn btn-info admin-button"
+                                            (click)="openEditProductModal(edit_product,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger admin-button" (click)="openDeleteProductModal(deleteProductModal,o.id)">
+                                        <button class="btn btn-danger admin-button"
+                                            (click)="openDeleteProductModal(deleteProductModal,o.id)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -449,6 +493,30 @@
                         <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">View</a>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-9" *ngIf="active_tab=='db'">
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">Latest News - {{today|date}}</span>
+                    </div>
+                </nav>
+                <div class="d-flex flex-wrap justify-content-center">
+                    <div class="col-md-3" *ngFor="let p of news,index as i">
+                        <div class="post" *ngIf="i<newLimit">
+                            <a class="post-img" href="{{p.url}}"><img src="{{p.urlToImage}}" alt=""></a>
+                            <div class="post-body">
+                                <div class="post-meta">
+                                    
+                                    <span class="post-date">{{p.publishedAt | date}}</span>
+                                </div>
+                                <h3 class="post-title"><a href="{{p.url}}">{{p.title}}</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+     
+        
             </div>
         </div>
     </div>
@@ -660,8 +728,8 @@
         <form [formGroup]="rf2">
             <div class="form-group">
                 <label for="name">Product Name</label>
-                <p class="text-center" *ngIf="rf2.controls.name?.errors?.required&&showFormError" >
-                    <i class="fas fa-exclamation-triangle" ></i>Product name not
+                <p class="text-center" *ngIf="rf2.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Product name not
                     valid!
                 </p>
                 <div class="input-group">
@@ -677,24 +745,25 @@
                     valid!
                 </p>
                 <div class="input-group">
-                    <input id="price" class="form-control" placeholder="price..." name="price"
-                        type="number" formControlName="price" >
+                    <input id="price" class="form-control" placeholder="price..." name="price" type="number"
+                        formControlName="price">
                 </div>
                 <label for="des">Description</label>
-                <p class="text-center"  *ngIf="rf2.controls.des?.errors?.required&&showFormError">
+                <p class="text-center" *ngIf="rf2.controls.des?.errors?.required&&showFormError">
                     <i class="fas fa-exclamation-triangle"></i>Product description
                     is empty!
                 </p>
                 <div class="input-group">
-                    <textarea id="des" class="form-control" placeholder="description..." name="des" style="height: 80px;" formControlName="des"
-                  multiple></textarea>
+                    <textarea id="des" class="form-control" placeholder="description..." name="des"
+                        style="height: 80px;" formControlName="des" multiple></textarea>
                 </div>
                 <label for="uis">Unit in stock</label>
-                <p class="text-center" *ngIf="rf2.controls.uis?.errors?.required&&showFormError" ><i class="fas fa-exclamation-triangle"></i>Product unit not
+                <p class="text-center" *ngIf="rf2.controls.uis?.errors?.required&&showFormError"><i
+                        class="fas fa-exclamation-triangle"></i>Product unit not
                     valid!</p>
                 <div class="input-group">
                     <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
-                    formControlName="uis"  type="number">
+                        formControlName="uis" type="number">
                 </div>
                 <label for="cate">Category</label>
                 <div class="input-group">
@@ -708,7 +777,8 @@
                 <label for="img">Product Image</label>
                 <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
                 <div class="input-group">
-                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"   (change)="selectFileProduct($event)">
+                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                        (change)="selectFileProduct($event)">
                 </div>
                 <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{proImgUrl}}">
             </div>
@@ -745,8 +815,8 @@
         <form [formGroup]="rf3">
             <div class="form-group">
                 <label for="name">Product Name</label>
-                <p class="text-center" *ngIf="rf3.controls.name?.errors?.required&&showFormError" >
-                    <i class="fas fa-exclamation-triangle" ></i>Product name not
+                <p class="text-center" *ngIf="rf3.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Product name not
                     valid!
                 </p>
                 <div class="input-group">
@@ -762,24 +832,25 @@
                     valid!
                 </p>
                 <div class="input-group">
-                    <input id="price" class="form-control" placeholder="price..." name="price"
-                        type="number" formControlName="price" >
+                    <input id="price" class="form-control" placeholder="price..." name="price" type="number"
+                        formControlName="price">
                 </div>
                 <label for="des">Description</label>
-                <p class="text-center"  *ngIf="rf3.controls.des?.errors?.required&&showFormError">
+                <p class="text-center" *ngIf="rf3.controls.des?.errors?.required&&showFormError">
                     <i class="fas fa-exclamation-triangle"></i>Product description
                     is empty!
                 </p>
                 <div class="input-group">
-                    <textarea id="des" class="form-control" placeholder="description..." name="des" style="height: 80px;" formControlName="des"
-                  multiple></textarea>
+                    <textarea id="des" class="form-control" placeholder="description..." name="des"
+                        style="height: 80px;" formControlName="des" multiple></textarea>
                 </div>
                 <label for="uis">Unit in stock</label>
-                <p class="text-center" *ngIf="rf3.controls.uis?.errors?.required&&showFormError" ><i class="fas fa-exclamation-triangle"></i>Product unit not
+                <p class="text-center" *ngIf="rf3.controls.uis?.errors?.required&&showFormError"><i
+                        class="fas fa-exclamation-triangle"></i>Product unit not
                     valid!</p>
                 <div class="input-group">
                     <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
-                    formControlName="uis"  type="number">
+                        formControlName="uis" type="number">
                 </div>
                 <label for="cate">Category</label>
                 <div class="input-group">
@@ -793,7 +864,8 @@
                 <label for="img">Product Image</label>
                 <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
                 <div class="input-group">
-                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"   (change)="selectFileProduct($event)">
+                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                        (change)="selectFileProduct($event)">
                 </div>
                 <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{proImgUrl}}">
             </div>
@@ -832,10 +904,126 @@
         <div *ngIf="!isDeletingProduct">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="deleteProduct()"  >Yes</button>
+                (click)="deleteProduct()">Yes</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isDeletingProduct">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #order_info let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Order Details</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="loading-full" *ngIf="isGettingOrderDetail">
+            <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+        <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
+            <p>Total Item : {{selectedOrder.totalItem}}</p>
+            <p>Total Price : {{(selectedOrder.totalPrice).toFixed(2)}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="bdwT-0">Image</th>
+                        <th class="bdwT-0">Name</th>
+                        <th class="bdwT-0">Price</th>
+                        <th class="bdwT-0">Quantity</th>
+                        <th class="bdwT-0">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let od of selectedOrder.orderDetails">
+                        <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
+                        <td>{{ od.product.name }}</td>
+                        <td>${{ od.product.price }}</td>
+                        <td>{{ od.quantity }}</td>
+                        <td>${{ (od.product.price*od.quantity).toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Note : {{selectedOrder.note}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Close</button>
+    </div>
+</ng-template>
+
+
+<ng-template #edit_order let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Edit this order</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf4">
+            <div class="form-group">
+                <label for="status">Status</label>
+                <div class="input-group">
+                    <select id="status" class="form-control" placeholder="100" name="status" formControlName="status">
+                        <option value="0">Not approved</option>
+                        <option value="1">Approved</option>
+                    </select>
+                </div>
+                <label for="des">Note</label>
+
+                <div class="input-group">
+                    <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editOrder()">Edit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #order_delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete this order?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Any order and other infomation associate with
+            this order will also be deleted!</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteOrder()">Yes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingOrder">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>

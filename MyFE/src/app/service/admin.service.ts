@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Order } from '../class/order';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,8 @@ import { Observable } from 'rxjs';
 export class AdminService {
   // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
   apiUrl: string = "https://localhost:44324/api/";
+
+  apikey:string="3113feaeeb294cee92641b976ba196de"
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
   constructor(private http: HttpClient, private route: Router) { }
 
@@ -17,16 +20,16 @@ export class AdminService {
   }
 
 
-  getProducts(category: string, order: string, pageNumber: number, pageSize: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/products?category=${category}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getProducts(category: string, order: string, pageNumber: number, pageSize: number,orderDir:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}admin/products?category=${category}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`);
   }
 
-  getOrders(status: number, order: string, pageNumber: number, pageSize: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/orders?status=${status}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getOrders(status: number, order: string, pageNumber: number, pageSize: number,orderDir:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}admin/orders?status=${status}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`);
   }
 
-  getUsers(order: string, role: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/users?order=${order}&role=${role}`);
+  getUsers(order: string, role: string,orderDir:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}admin/users?order=${order}&role=${role}&orderDir=${orderDir}`);
   }
 
   createUser(email: string, password: string, userName: string, phoneNumber: string, role: string): Observable<any> {
@@ -70,5 +73,26 @@ export class AdminService {
   }
   deleteProduct(id:number):Observable<any>{
     return this.http.delete(`${this.apiUrl}product/${id}`)
+  }
+
+  editOrder(o:Order):Observable<any>{
+    return this.http.put(`${this.apiUrl}order/${o.id}`,{
+      contactName: o.contactName,
+      address: o.address,
+      phone:o.phone,
+      email: o.email,
+      paymentMethod: o.paymentMethod,
+      orderDate:o.orderDate,
+      totalItem: o.totalItem,
+      totalPrice: o.totalPrice,
+      note: o.note,
+      status: o.status
+    })
+  }
+  deleteOrder(id:number):Observable<any>{
+    return this.http.delete(`${this.apiUrl}order/${id}`)
+  }
+  getNew(category:string):Observable<any>{
+    return this.http.get(`https://newsapi.org/v2/top-headlines?category=${category}&country=us&apiKey=${this.apikey}`)
   }
 }

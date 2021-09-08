@@ -25,7 +25,7 @@ export class AdminComponent implements OnInit {
 
   user!: User
 
-  active_tab = "product"
+  active_tab = "db"
 
   userList: User[] = []
   pagedUserList: User[] = []
@@ -74,14 +74,31 @@ export class AdminComponent implements OnInit {
   selectedUserId = ""
 
   defaultProImgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
-  proImgUrl:any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
+  proImgUrl: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
   rf2!: FormGroup;
   rf3!: FormGroup;
   isCreatingProduct: boolean = false
-  editingProduct!:Product
+  editingProduct!: Product
   isEditingProduct: boolean = false
   isDeletingProduct: boolean = false
   deletingProductId = 0
+
+
+  isGettingOrderDetail: boolean = false
+  selectedOrder!: Order
+  rf4!: FormGroup
+  isEditingOrder:boolean = false
+  isDeletingOrder:boolean = false
+
+  orderDirOrder:any = "Asc"
+  orderDirUser:any = "Asc"
+  orderDirProduct:any = "Asc"
+
+
+  news:any[]=[]
+  today:string=formatDate(Date.now(), 'dd-MM-yyyy', 'en');
+  newLimit=8
+  newCategory:any[]=["technology","science","business","general","entertainment","health"]
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -107,11 +124,11 @@ export class AdminComponent implements OnInit {
       name: new FormControl('',
         [Validators.required]),
       price: new FormControl('',
-        [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]),
+        [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]),
       des: new FormControl('',
         [Validators.required]),
       uis: new FormControl('',
-        [Validators.required,Validators.pattern('^[0-9]*$')]),
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
       category: new FormControl('',
         [Validators.required])
     });
@@ -120,16 +137,21 @@ export class AdminComponent implements OnInit {
       name: new FormControl('',
         [Validators.required]),
       price: new FormControl('',
-        [Validators.required,Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]),
+        [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]),
       des: new FormControl('',
         [Validators.required]),
       uis: new FormControl('',
-        [Validators.required,Validators.pattern('^[0-9]*$')]),
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
       category: new FormControl('',
         [Validators.required])
     });
 
-
+    this.rf4 = new FormGroup({
+      status: new FormControl('',
+        [Validators.required]),
+      note: new FormControl('',
+        [Validators.required])
+    });
     this.adminService.getDashboardInfo().subscribe(
       data => {
         this.dashboardInfo = data
@@ -141,21 +163,25 @@ export class AdminComponent implements OnInit {
       }
     )
     this.isLoading = true
+   
+    this.getNew()
     this.getUser()
     this.getProduct()
     this.getOrder()
-
+    
 
 
   }
-
+  randomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   onPageSizeCategoryChange() {
     this.pageNumberProduct = 1
     this.getProduct()
   }
 
   getProduct() {
-    this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct).subscribe(
+    this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct,this.orderDirProduct).subscribe(
       data => {
         //console.log(data)
         this.productList = data.result
@@ -178,7 +204,7 @@ export class AdminComponent implements OnInit {
   getUser() {
 
     this.pageNumberUser = 1
-    this.adminService.getUsers(this.orderUser, this.role).subscribe(
+    this.adminService.getUsers(this.orderUser, this.role,this.orderDirUser).subscribe(
       data => {
         //console.log(data)
         this.userList = data.result
@@ -204,7 +230,7 @@ export class AdminComponent implements OnInit {
     }
   }
   getOrder() {
-    this.adminService.getOrders(this.status, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder).subscribe(
+    this.adminService.getOrders(this.status, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder,this.orderDirOrder).subscribe(
       data => {
         //console.log(data)
         this.orderList = data.result
@@ -307,7 +333,7 @@ export class AdminComponent implements OnInit {
   }
   updateUserList() {
     this.isLoading = true
-    this.adminService.getUsers(this.orderUser, this.role).subscribe(
+    this.adminService.getUsers(this.orderUser, this.role,this.orderDirUser).subscribe(
       data => {
         //console.log(data)
         this.userList = data.result
@@ -382,20 +408,20 @@ export class AdminComponent implements OnInit {
 
   openAddProductModal(add_product: any) {
     this.showFormError = false
-    this.proImgUrl=this.defaultProImgUrl
+    this.proImgUrl = this.defaultProImgUrl
     this.rf2.reset()
     this.rf2.controls["category"].setValue("Fruit")
     this.modalService.open(add_product, { ariaLabelledBy: 'modal-basic-title' })
   }
-  openEditProductModal(newPro: any,p:Product) {
+  openEditProductModal(newPro: any, p: Product) {
     this.showFormError = false
-    this.editingProduct=p
+    this.editingProduct = p
     this.rf3.controls["name"].setValue(this.editingProduct.name)
     this.rf3.controls["price"].setValue(this.editingProduct.price)
     this.rf3.controls["des"].setValue(this.editingProduct.description)
     this.rf3.controls["uis"].setValue(this.editingProduct.unitInStock)
     this.rf3.controls["category"].setValue(this.editingProduct.category)
-    this.proImgUrl=this.editingProduct.imgUrl
+    this.proImgUrl = this.editingProduct.imgUrl
     this.modalService.open(newPro, { ariaLabelledBy: 'modal-basic-title' })
   }
   openDeleteProductModal(deletePro: any, id: number) {
@@ -411,20 +437,20 @@ export class AdminComponent implements OnInit {
       // console.log(this.rf2.controls['des'].value)
       // console.log(this.rf2.controls['uis'].value)
       // console.log(this.rf2.controls['category'].value)
-      if(this.proImgUrl!=this.defaultProImgUrl){
+      if (this.proImgUrl != this.defaultProImgUrl) {
         this.authService.upLoadIMG(this.proImgUrl).subscribe(
-          data=>{
+          data => {
             this.proImgUrl = data.secure_url
             this.createProduct()
           },
-          error=>{
+          error => {
             this.isCreatingProduct = false
             console.log(error)
             this.toast.error(" An error has occurred ! Try again !")
           }
         )
       }
-      else{
+      else {
         this.createProduct()
       }
     }
@@ -434,80 +460,80 @@ export class AdminComponent implements OnInit {
     }
 
   }
-  createProduct(){
+  createProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
-    this.adminService.createProduct(this.rf2.controls['name'].value,this.rf2.controls['price'].value,this.rf2.controls['des'].value,
-    this.rf2.controls['uis'].value,this.rf2.controls['category'].value,this.proImgUrl,today).subscribe(
-      data=>{
-        this.toast.success("Add product successfully!")
-        this.isCreatingProduct = false
-        this.modalService.dismissAll()
-        this.getProduct()
-      },
-      error=>{
-        console.log(error)
-        this.isCreatingProduct = false
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
+    this.adminService.createProduct(this.rf2.controls['name'].value, this.rf2.controls['price'].value, this.rf2.controls['des'].value,
+      this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today).subscribe(
+        data => {
+          this.toast.success("Add product successfully!")
+          this.isCreatingProduct = false
+          this.modalService.dismissAll()
+          this.getProduct()
+        },
+        error => {
+          console.log(error)
+          this.isCreatingProduct = false
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
   }
 
-  tryEditProduct(){
+  tryEditProduct() {
     this.showFormError = true
-    this.isEditingProduct=true
-    if(this.rf3.valid){
-      if(this.proImgUrl!=this.editingProduct.imgUrl){
+    this.isEditingProduct = true
+    if (this.rf3.valid) {
+      if (this.proImgUrl != this.editingProduct.imgUrl) {
         this.authService.upLoadIMG(this.proImgUrl).subscribe(
-          data=>{
+          data => {
             this.proImgUrl = data.secure_url
             this.editProduct()
           },
-          error=>{
+          error => {
             console.log(error)
             this.isEditingProduct = false
             this.toast.error(" An error has occurred ! Try again !")
           }
         )
       }
-      else{
+      else {
         this.editProduct()
       }
     }
-    else{
+    else {
       this.isEditingProduct = false
       this.toast.error("The submitted data is not valid. Please correct it to continue")
     }
 
   }
-  editProduct(){
+  editProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
-    this.adminService.editProduct(this.editingProduct.id,this.rf3.controls['name'].value,this.rf3.controls['price'].value,this.rf3.controls['des'].value,
-    this.rf3.controls['uis'].value,this.rf3.controls['category'].value,this.proImgUrl,today).subscribe(
-      data=>{
-        this.toast.success("Edit product successfully!")
-        this.isEditingProduct = false
-        this.modalService.dismissAll()
-        this.getProduct()
-      },
-      error=>{
-        console.log(error)
-        this.isEditingProduct = false
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
+    this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
+      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
+        data => {
+          this.toast.success("Edit product successfully!")
+          this.isEditingProduct = false
+          this.modalService.dismissAll()
+          this.getProduct()
+        },
+        error => {
+          console.log(error)
+          this.isEditingProduct = false
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
   }
 
-  deleteProduct(){
+  deleteProduct() {
     this.isDeletingProduct = true
     this.adminService.deleteProduct(this.deletingProductId).subscribe(
-      data=>{
-      
+      data => {
+
         this.toast.success("Delete product successfully!")
         this.getProduct()
         this.modalService.dismissAll()
         this.isDeletingProduct = false
       },
-      error=>{
+      error => {
         console.log(error)
         this.isDeletingProduct = false
         this.toast.error(" An error has occurred ! Try again !")
@@ -534,9 +560,85 @@ export class AdminComponent implements OnInit {
     reader.onload = (_event) => {
       this.msg = "";
       this.proImgUrl = reader.result;
+
     }
   }
 
+  openOrderInfoModal(info: any, o: Order) {
+    this.showFormError = false
+    this.isGettingOrderDetail = true
+    this.selectedOrder = o
+    this.orderService.getOrderDetails(o.id).subscribe(
+      data => {
+        this.selectedOrder.orderDetails = data.orderDetails
+       
+        this.isGettingOrderDetail = false
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+    this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openEditOrderInfoModal(info: any, o: Order) {
+    this.showFormError = false
+    this.selectedOrder = o
+    this.rf4.controls["status"].setValue(o.status)
+    this.rf4.controls["note"].setValue(o.note)
+    this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
+  }
 
+  openDeleteOrderInfoModal(info: any, o: Order) {
+    this.showFormError = false
+    this.selectedOrder = o
+    this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
+  }
 
+  editOrder() {
+    this.isEditingOrder=true
+    this.selectedOrder.status=this.rf4.controls["status"].value
+    this.selectedOrder.note=this.rf4.controls["note"].value
+    this.adminService.editOrder(this.selectedOrder).subscribe(
+      data=>{
+        this.getOrder()
+        this.isEditingOrder=false
+        this.toast.success("Edit order successfully!")
+        this.modalService.dismissAll()
+      },
+      error=>{
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+
+  deleteOrder(){
+    this.isDeletingOrder = true
+    this.adminService.deleteOrder(this.selectedOrder.id).subscribe(
+      data => {
+
+        this.toast.success("Delete order successfully!")
+        this.getOrder()
+        this.modalService.dismissAll()
+        this.isDeletingOrder = false
+      },
+      error => {
+        console.log(error)
+        this.isDeletingOrder = false
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+
+  getNew() {
+    let index = this.randomInteger(0,5)
+
+    this.adminService.getNew(this.newCategory[index]).subscribe(
+      data=>{
+        this.news=data.articles
+        //console.log(this.news)
+      }
+    )
+  }
 }
