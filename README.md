@@ -16,3 +16,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 05-09-2021 : thêm trang admin.<br>
 06-09-2021 : update thêm cho trang admin.<br> 
 07-09-2021 : thêm chức năng quản lý người dùng và sản phẩm cho trang admin.<br> 
+08-09-2021 : thêm chức năng quản lý đơn hàng cho trang admin.<br>
