@@ -14,6 +14,7 @@ import { ProductInfoComponent } from './component/product-info/product-info.comp
 import { ProfileComponent } from './component/profile/profile.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
+import { ShipperComponent } from './component/shipper/shipper.component';
 import { TestComponent } from './component/test/test.component';
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'snack', component: ProductCategoryComponent },
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'shipper', component: ShipperComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];

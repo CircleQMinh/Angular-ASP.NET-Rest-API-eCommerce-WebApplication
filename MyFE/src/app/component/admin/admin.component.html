@@ -231,10 +231,11 @@
                                 <label>Status: </label>
                                 <select class="form-select" [(ngModel)]="status" (change)=" onPageSizeStatusChage()">
                                     <option value="99" selected="true">All</option>
-                                    <option value="0">Not Checked</option>
+                                    <option value="0">Not Check</option>
                                     <option value="1">Checked</option>
                                     <option value="2">Delivering</option>
                                     <option value="3">Done</option>
+                                    <option value="4">Canceled</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -305,7 +306,7 @@
                                         <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
                                     </td>
                                     <td *ngIf="o.status==0">
-                                        <span class="badge bg-info text-dark">Not Checked</span>
+                                        <span class="badge bg-info text-dark">Not Check</span>
                                     </td>
                                     <td *ngIf="o.status==1">
                                         <span class="badge bg-success">Checked</span>
@@ -316,12 +317,15 @@
                                     <td *ngIf="o.status==3">
                                         <span class="badge bg-danger">Done</span>
                                     </td>
+                                    <td *ngIf="o.status==4">
+                                        <span class="badge bg-secondary">Canceled</span>
+                                    </td>
                                     <td>
                                         <button class="btn btn-warning admin-button"
                                             (click)="openOrderInfoModal(order_info,o)">
                                             <i class="fas fa-box-open"></i></button>
                                         <button class="btn btn-info admin-button"
-                                            (click)="openEditOrderInfoModal(edit_order,o)">
+                                            (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0||o.status==1">
                                             <i class="far fa-edit"></i>
                                         </button>
                                         <button class="btn btn-danger admin-button"

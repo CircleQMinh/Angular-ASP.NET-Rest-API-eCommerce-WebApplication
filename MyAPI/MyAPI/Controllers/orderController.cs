@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyAPI.Configurations;
 using MyAPI.Data;
 using MyAPI.DTOs;
 using MyAPI.IRepository;
@@ -219,6 +220,207 @@ namespace MyAPI.Controllers
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrderDetail)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpGet("availableOrder", Name = "GetAvailableOrder")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAvailableOrder(int status, string order, int pageNumber, int pageSize, string orderDir)
+        {
+            try
+            {
+                Func<IQueryable<Order>, IOrderedQueryable<Order>> orderBy = null;
+                Expression<Func<Order, bool>> expression = null;
+                int flag = 0;
+                switch (order)
+                {
+                    case "Price":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.TotalPrice);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.TotalPrice);
+                        }
+
+                        break;
+                    case "OrderDate":
+                        flag = 1;
+                        break;
+                    case "Id":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
+                        break;
+                }
+                if (status != 99)
+                {
+                    expression = q => q.Status == status;
+                }
+                if (flag == 1)
+                {
+
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null);
+                    var result = _mapper.Map<IList<OrderDTO>>(query);
+                    var orderedList = result.OrderBy(x => DateTime.Parse(x.OrderDate)).ToList();
+                    List<OrderDTO> list = new List<OrderDTO>();
+                    if (orderDir == "Desc")
+                    {
+                        orderedList.Reverse();
+                    }
+                    for (int i = 0; i < pageSize; i++)
+                    {
+                        if ((i + pageSize * (pageNumber - 1)) < orderedList.Count)
+                        {
+                            list.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                        }
+                    }
+
+                    return Ok(new { result = list, count = orderedList.Count });
+                }
+                else
+                {
+
+                    PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
+                    var result = _mapper.Map<IList<OrderDTO>>(query);
+                    var count = await _unitOfWork.Orders.GetCount(expression);
+                    return Ok(new { result, count });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAvailableOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
+        [HttpPost("acceptOrder")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AcceptOrder(string shipperId,int orderId)
+        {
+
+            var existingShipper = await _unitOfWork.Users.Get(q => q.Id == shipperId);
+            if (existingShipper==null)
+            {
+                return  BadRequest("Shipper not exist");
+            }
+            var existingOrder = await _unitOfWork.Orders.Get(q => q.Id == orderId);
+            if (existingOrder==null)
+            {
+                return BadRequest("Order not exist");
+            }
+            if (existingOrder.Status!=1)
+            {
+                return BadRequest("Order not valid");
+            }
+            try
+            {
+                ShippingInfo si = new ShippingInfo();
+                si.OrderId = existingOrder.Id;
+                si.ShipperID = existingShipper.Id;
+                await _unitOfWork.ShippingInfos.Insert(si);
+                existingOrder.Status = 2;
+                _unitOfWork.Orders.Update(existingOrder);
+                await _unitOfWork.Save();
+
+
+                return Accepted(new {si });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(AcceptOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpGet("acceptedOrder", Name = "GetAcceptedOrder")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAcceptedOrder(string shipperId)
+        {
+            try
+            {
+                var sil = await _unitOfWork.ShippingInfos.GetAll(q => q.ShipperID == shipperId&&q.Order.Status==2,null,new List<string> { "Order"});
+
+                return Ok(new {sil });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAcceptedOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
+        [HttpPost("finishOrder")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> FinishOrder([FromBody] FinishOrderDTO unitDTO)
+        {
+
+            var existingShipper = await _unitOfWork.Users.Get(q => q.Id == unitDTO.shipperId);          
+            if (existingShipper == null)
+            {
+                return BadRequest("Shipper not exist");
+            }
+            var existingOrder = await _unitOfWork.Orders.Get(q => q.Id == unitDTO.orderId);
+            if (existingOrder == null)
+            {
+                return BadRequest("Order not exist");
+            }
+            if (existingOrder.Status != 2)
+            {
+                return BadRequest("Order not valid");
+            }
+            try
+            {
+                ShippingInfo si = await _unitOfWork.ShippingInfos.Get(q => q.OrderId == unitDTO.orderId && q.ShipperID == unitDTO.shipperId);
+                si.deliveryDate = unitDTO.date;
+                existingOrder.Status = unitDTO.status;
+                existingOrder.Note = unitDTO.note;
+
+                _unitOfWork.Orders.Update(existingOrder);
+                _unitOfWork.ShippingInfos.Update(si);
+                await _unitOfWork.Save();
+                return Accepted(new { si });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(FinishOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpGet("finishedOrder", Name = "GetFinishedOrder")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetFinishedOrder(string shipperId)
+        {
+            try
+            {
+                var sil = await _unitOfWork.ShippingInfos.GetAll(q => q.ShipperID == shipperId , null, new List<string> { "Order" });
+
+                 var result = _mapper.Map<IList<ShippingInfoDTO>>(sil);
+                 var orderedList = result.OrderBy(x => x.Order.Status).ThenBy(x=>x.Id).ToList();
+                return Ok(new { sil=orderedList });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetFinishedOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }
     }
