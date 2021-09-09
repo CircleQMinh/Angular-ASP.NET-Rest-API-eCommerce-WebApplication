@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
       // console.log(this.rf1.controls['password'].value)
       this.authService.signIn(this.rf1.controls['email'].value, this.rf1.controls['password'].value).subscribe(
         data => {
-          console.log(data)
+          //console.log(data)
 
           this.user=data.user
           this.user.roles=data.roles

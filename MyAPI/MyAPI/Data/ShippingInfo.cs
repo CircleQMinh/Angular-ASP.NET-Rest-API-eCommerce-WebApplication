@@ -16,5 +16,7 @@ namespace MyAPI.Data
         [ForeignKey(nameof(ShipperID))]
         public string ShipperID { get; set; }
         public virtual APIUser Shipper { get; set; }
+
+        public string deliveryDate { get; set; }
     }
 }

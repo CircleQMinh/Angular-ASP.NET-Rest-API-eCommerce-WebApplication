@@ -1,0 +1,488 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0">
+
+    <a class="navbar-brand" routerLink="/home">
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+            style="width: 40px;height: 40px;">Circle's Shop</a>
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
+        <ul class="navbar-nav  ml-auto ">
+            <li class="nav-item px-2">
+                <a [class.active]="active_tab=='av'" (click)="switchTab('av')" class="nav-link">Available Order</a>
+            </li>
+            <li class="nav-item px-2">
+                <a [class.active]="active_tab=='dv'" (click)="switchTab('dv')" class="nav-link">Delivering Order</a>
+            </li>
+            <li class="nav-item px-2">
+                <a [class.active]="active_tab=='his'" (click)="switchTab('his')" class="nav-link">History</a>
+            </li>
+
+        </ul>
+
+        <ul class="navbar-nav ml-auto" >
+            <li class="nav-item dropdown mr-3">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="!isLoading">
+                    <i class="fas fa-user"></i> Welcome {{user.displayName}}
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                    <a class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">
+                    <i class="fas fa-user-times"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+
+<!-- HEADER -->
+<header id="main-header" class="py-2 bg-primary text-white" *ngIf="active_tab=='av'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
+                <h1 >
+                    <i class="fas fa-search"></i> Find Order
+                </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='dv'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
+                <h1 >
+                    <i class="fas fa-clipboard-check"></i> Delivering Order
+                </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='his'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
+                <h1 >
+                    <i class="fas fa-history"></i> History
+                </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<section id="actions" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-primary btn-block" (click)="switchTab('av')">
+                    <i class="fas fa-search"></i> Find Order
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-success btn-block" (click)="switchTab('dv')">
+                    <i class="fas fa-clipboard-check"></i> Delivering Order
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-warning btn-block" (click)="switchTab('his')">
+                    <i class="fas fa-history"></i> History
+                </a>
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>
+
+<div class="loading-full" style="height: 100px;" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Please wait a sec...</p>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<div class="d-flex flex-wrap justify-content-around " *ngIf="!isLoading&&active_tab=='av'">
+
+    <div class="form-group">
+        <label>Order By: </label>
+        <select class="form-select" [(ngModel)]="orderOrder" (change)="onAvailableOrderFilterChange()">
+            <option value="Id" selected="true">Id</option>
+            <option value="Price">Total Price</option>
+            <option value="OrderDate">OrderDate</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Asc/Desc: </label>
+        <select class="form-select" [(ngModel)]="orderDirOrder" (change)="onAvailableOrderFilterChange()">
+            <option value="Asc">
+                <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+            </option>
+            <option value="Desc">
+                <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Page Size: </label>
+        <select class="form-select" [(ngModel)]="pageSizeOrder" (change)="onAvailableOrderFilterChange()">
+            <option value="5" selected="true">5</option>
+            <option value="2">2</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+</div>
+
+<div class="container" *ngIf="!isLoading&&active_tab=='av'">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-primary  ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Contact Info</th>
+                            <th>Order Date</th>
+                            <th>Total Item</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of orderList,index as i">
+
+                            <td>
+                                <p class="text-tron text-monospace">{{o.id}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                <p class="text-tron text-monospace">{{o.address}}</p>
+                                <p class="text-tron text-monospace">{{o.email}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                            </td>
+                            <td *ngIf="o.status==0">
+                                <span class="badge bg-info text-dark">Not Check</span>
+                            </td>
+                            <td *ngIf="o.status==1">
+                                <span class="badge bg-success">Checked</span>
+                            </td>
+                            <td *ngIf="o.status==2">
+                                <span class="badge bg-warning text-dark">Delivering</span>
+                            </td>
+                            <td *ngIf="o.status==3">
+                                <span class="badge bg-danger">Done</span>
+                            </td>
+                            <td *ngIf="o.status==4">
+                                <span class="badge bg-secondary">Canceled</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                    <i class="fas fa-box-open"></i></button>
+                                <button class="btn btn-success admin-button" (click)="openAcceptOrderInfoModal(order_accept,o)">
+                                    <i class="fas fa-vote-yea"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container d-flex justify-content-center " *ngIf="!isLoading&&active_tab=='av'">
+    <div class="row">
+        <div class="col">
+            <div id="ng-pagi">
+                <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
+                    [collectionSize]="collectionSizeOrder" [maxSize]="3" [boundaryLinks]=true
+                    (pageChange)="getAvailableOrder()" size="sm">
+                </ngb-pagination>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+
+<div class="container" *ngIf="!isLoading&&active_tab=='dv'">  
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-primary  ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Contact Info</th>
+                            <th>Order Date</th>
+                            <th>Total Item</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of orderList,index as i">
+
+                            <td>
+                                <p class="text-tron text-monospace">{{o.id}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                <p class="text-tron text-monospace">{{o.address}}</p>
+                                <p class="text-tron text-monospace">{{o.email}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                            </td>
+                            <td *ngIf="o.status==0">
+                                <span class="badge bg-info text-dark">Not Check</span>
+                            </td>
+                            <td *ngIf="o.status==1">
+                                <span class="badge bg-success">Checked</span>
+                            </td>
+                            <td *ngIf="o.status==2">
+                                <span class="badge bg-warning text-dark">Delivering</span>
+                            </td>
+                            <td *ngIf="o.status==3">
+                                <span class="badge bg-danger">Done</span>
+                            </td>
+                            <td *ngIf="o.status==4">
+                                <span class="badge bg-secondary">Canceled</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                    <i class="fas fa-box-open"></i></button>
+                                <button class="btn btn-success admin-button" (click)="openFinishOrderInfoModal(order_finish,o)">
+                                    <i class="fas fa-vote-yea"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+
+<div class="container" *ngIf="!isLoading&&active_tab=='his'">  
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-primary  ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Contact Info</th>
+                            <th>Order Date</th>
+                            <th>Total Item</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of orderList,index as i">
+
+                            <td>
+                                <p class="text-tron text-monospace">{{o.id}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                <p class="text-tron text-monospace">{{o.address}}</p>
+                                <p class="text-tron text-monospace">{{o.email}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                            </td>
+                            <td>
+                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                            </td>
+                            <td *ngIf="o.status==0">
+                                <span class="badge bg-info text-dark">Not Check</span>
+                            </td>
+                            <td *ngIf="o.status==1">
+                                <span class="badge bg-success">Checked</span>
+                            </td>
+                            <td *ngIf="o.status==2">
+                                <span class="badge bg-warning text-dark">Delivering</span>
+                            </td>
+                            <td *ngIf="o.status==3">
+                                <span class="badge bg-danger">Done</span>
+                            </td>
+                            <td *ngIf="o.status==4">
+                                <span class="badge bg-secondary">Canceled</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                    <i class="fas fa-box-open"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<ng-template #order_info let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Order Details</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="loading-full" *ngIf="isGettingOrderDetail">
+            <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+        <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
+            <p>Total Item : {{selectedOrder.totalItem}}</p>
+            <p>Total Price : {{(selectedOrder.totalPrice).toFixed(2)}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="bdwT-0">Image</th>
+                        <th class="bdwT-0">Name</th>
+                        <th class="bdwT-0">Price</th>
+                        <th class="bdwT-0">Quantity</th>
+                        <th class="bdwT-0">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let od of selectedOrder.orderDetails">
+                        <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
+                        <td>{{ od.product.name }}</td>
+                        <td>${{ od.product.price }}</td>
+                        <td>{{ od.quantity }}</td>
+                        <td>${{ (od.product.price*od.quantity).toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Note : {{selectedOrder.note}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #order_accept let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Accept this order?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Accept this order?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isAcceptingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="acceptOrder()">Yes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isAcceptingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+
+<ng-template #order_finish let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Finish this order</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf1">
+            <div class="form-group">
+                <label for="status">Status</label>
+                <div class="input-group">
+                    <select id="status" class="form-control" placeholder="100" name="status" formControlName="status">
+                        <option value="3">Done</option>
+                        <option value="4">Cancel</option>
+                    </select>
+                </div>
+                <label for="des">Note</label>
+
+                <div class="input-group">
+                    <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
+                </div>
+            </div>
+        </form>
+      
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isFinishingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="finishOrder()">Yes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isFinishingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>

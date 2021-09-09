@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit {
   pageNumberOrder = 1
   pageSizeOrder = 5
   orderOrder = "Id"
-  status = 99
+  status = 0
   collectionSizeOrder = 0
 
   isLoading = false
@@ -87,18 +87,18 @@ export class AdminComponent implements OnInit {
   isGettingOrderDetail: boolean = false
   selectedOrder!: Order
   rf4!: FormGroup
-  isEditingOrder:boolean = false
-  isDeletingOrder:boolean = false
+  isEditingOrder: boolean = false
+  isDeletingOrder: boolean = false
 
-  orderDirOrder:any = "Asc"
-  orderDirUser:any = "Asc"
-  orderDirProduct:any = "Asc"
+  orderDirOrder: any = "Asc"
+  orderDirUser: any = "Asc"
+  orderDirProduct: any = "Asc"
 
 
-  news:any[]=[]
-  today:string=formatDate(Date.now(), 'dd-MM-yyyy', 'en');
-  newLimit=8
-  newCategory:any[]=["technology","science","business","general","entertainment","health"]
+  news: any[] = []
+  today: string = formatDate(Date.now(), 'dd-MM-yyyy', 'en');
+  newLimit = 8
+  newCategory: any[] = ["technology", "science", "business", "general", "entertainment", "health"]
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -163,12 +163,12 @@ export class AdminComponent implements OnInit {
       }
     )
     this.isLoading = true
-   
+
     this.getNew()
     this.getUser()
     this.getProduct()
     this.getOrder()
-    
+
 
 
   }
@@ -181,7 +181,7 @@ export class AdminComponent implements OnInit {
   }
 
   getProduct() {
-    this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct,this.orderDirProduct).subscribe(
+    this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct, this.orderDirProduct).subscribe(
       data => {
         //console.log(data)
         this.productList = data.result
@@ -204,7 +204,7 @@ export class AdminComponent implements OnInit {
   getUser() {
 
     this.pageNumberUser = 1
-    this.adminService.getUsers(this.orderUser, this.role,this.orderDirUser).subscribe(
+    this.adminService.getUsers(this.orderUser, this.role, this.orderDirUser).subscribe(
       data => {
         //console.log(data)
         this.userList = data.result
@@ -230,7 +230,7 @@ export class AdminComponent implements OnInit {
     }
   }
   getOrder() {
-    this.adminService.getOrders(this.status, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder,this.orderDirOrder).subscribe(
+    this.adminService.getOrders(this.status, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder, this.orderDirOrder).subscribe(
       data => {
         //console.log(data)
         this.orderList = data.result
@@ -333,7 +333,7 @@ export class AdminComponent implements OnInit {
   }
   updateUserList() {
     this.isLoading = true
-    this.adminService.getUsers(this.orderUser, this.role,this.orderDirUser).subscribe(
+    this.adminService.getUsers(this.orderUser, this.role, this.orderDirUser).subscribe(
       data => {
         //console.log(data)
         this.userList = data.result
@@ -508,19 +508,19 @@ export class AdminComponent implements OnInit {
   editProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
-      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
-        data => {
-          this.toast.success("Edit product successfully!")
-          this.isEditingProduct = false
-          this.modalService.dismissAll()
-          this.getProduct()
-        },
-        error => {
-          console.log(error)
-          this.isEditingProduct = false
-          this.toast.error(" An error has occurred ! Try again !")
-        }
-      )
+    this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
+      data => {
+        this.toast.success("Edit product successfully!")
+        this.isEditingProduct = false
+        this.modalService.dismissAll()
+        this.getProduct()
+      },
+      error => {
+        console.log(error)
+        this.isEditingProduct = false
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
   }
 
   deleteProduct() {
@@ -571,7 +571,7 @@ export class AdminComponent implements OnInit {
     this.orderService.getOrderDetails(o.id).subscribe(
       data => {
         this.selectedOrder.orderDetails = data.orderDetails
-       
+
         this.isGettingOrderDetail = false
       },
       error => {
@@ -596,24 +596,24 @@ export class AdminComponent implements OnInit {
   }
 
   editOrder() {
-    this.isEditingOrder=true
-    this.selectedOrder.status=this.rf4.controls["status"].value
-    this.selectedOrder.note=this.rf4.controls["note"].value
+    this.isEditingOrder = true
+    this.selectedOrder.status = this.rf4.controls["status"].value
+    this.selectedOrder.note = this.rf4.controls["note"].value
     this.adminService.editOrder(this.selectedOrder).subscribe(
-      data=>{
+      data => {
         this.getOrder()
-        this.isEditingOrder=false
+        this.isEditingOrder = false
         this.toast.success("Edit order successfully!")
         this.modalService.dismissAll()
       },
-      error=>{
+      error => {
         console.log(error)
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }
 
-  deleteOrder(){
+  deleteOrder() {
     this.isDeletingOrder = true
     this.adminService.deleteOrder(this.selectedOrder.id).subscribe(
       data => {
@@ -632,11 +632,11 @@ export class AdminComponent implements OnInit {
   }
 
   getNew() {
-    let index = this.randomInteger(0,5)
+    let index = this.randomInteger(0, 5)
 
     this.adminService.getNew(this.newCategory[index]).subscribe(
-      data=>{
-        this.news=data.articles
+      data => {
+        this.news = data.articles
         //console.log(this.news)
       }
     )
