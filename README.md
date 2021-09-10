@@ -1,5 +1,5 @@
 # Angular-ASP.NET-Rest-API-eCommerce-WebApplication
-Host tại : http://circleqm.000webhostapp.com/#/home <br>
+Host tại : http://circle-shop-18110320.000webhostapp.com/#/home <br>
 Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 24-08-2021 : setup API, trang chủ.<br>
 25-08-2021 : trang thông tin sản phẩm, chức năng thêm sản phẩm vào giỏ hàng, trang thông tin giỏ hàng.<br>
@@ -19,3 +19,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 08-09-2021 : thêm chức năng quản lý đơn hàng cho trang admin.<br>
 09-09-2021 : thêm trang cho shipper.<br>
 10-09-2021 : thêm vài chức năng nhỏ cho trang admin và shipper.<br>
+11-09-2021 : update nhỏ cho trang profile.<br>
