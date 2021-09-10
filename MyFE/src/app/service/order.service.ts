@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
-  apiUrl: string = "https://localhost:44324/api/";
+  apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  // apiUrl: string = "https://localhost:44324/api/";
   constructor(private http: HttpClient, private route: Router) { }
 
   saveOrder(userID: string, contactName: string, address: string, phone: string, email: string,

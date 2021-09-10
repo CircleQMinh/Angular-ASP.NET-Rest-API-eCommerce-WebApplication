@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { OperatorFunction, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
@@ -42,6 +44,7 @@ export class AdminComponent implements OnInit {
   collectionSizeProduct = 0
 
   orderList: Order[] = []
+  shippingInfos:any[]=[]
   pageNumberOrder = 1
   pageSizeOrder = 5
   orderOrder = "Id"
@@ -100,10 +103,23 @@ export class AdminComponent implements OnInit {
   newLimit = 8
   newCategory: any[] = ["technology", "science", "business", "general", "entertainment", "health"]
 
+  keyword: any;
+  allProduct:Product[]=[]
+  formatterProduct = (x: Product) => x.name;
+
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
     private modalService: NgbModal) { }
 
+  searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
+  text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    map(term => term.length < 2 ? []
+      : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  )  
+
+  
   ngOnInit(): void {
 
     this.rf1 = new FormGroup({
@@ -163,13 +179,108 @@ export class AdminComponent implements OnInit {
       }
     )
     this.isLoading = true
+    this.getLocalStorage()
+    if(!this.isLogin){
+      this.router.navigateByUrl("/error")
+    }
+    else{
+      this.getUserInfo()
+      
+    }
 
-    this.getNew()
-    this.getUser()
-    this.getProduct()
-    this.getOrder()
+  }
+  selectedItemProduct(item: any,modal:any) {
+    this.showFormError = false
+    this.editingProduct = item.item
+    this.rf3.controls["name"].setValue(this.editingProduct.name)
+    this.rf3.controls["price"].setValue(this.editingProduct.price)
+    this.rf3.controls["des"].setValue(this.editingProduct.description)
+    this.rf3.controls["uis"].setValue(this.editingProduct.unitInStock)
+    this.rf3.controls["category"].setValue(this.editingProduct.category)
+    this.proImgUrl = this.editingProduct.imgUrl
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  getSearchData(){
+    this.productService.getProduct("all", "", 1, 999).subscribe(
+      data => {
+        //console.log(data)
+        this.allProduct = data.results
+
+      },
+      error => {
+        this.toast.error("Kết nối với API không được!")
+        console.log(error)
+      }
+    )
 
 
+  }
+
+  signOut() {
+    this.isLogin = false
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("user-id")
+    localStorage.removeItem("user-email")
+    localStorage.removeItem("login-timeOut")
+    localStorage.removeItem("user-disName")
+    localStorage.removeItem("user-imgUrl")
+    localStorage.removeItem("user-role")
+    this.router.navigateByUrl('/home')
+  }
+  getUserInfo() {
+    this.isLoading = true
+    this.authService.getUserInfo(this.user.id).subscribe(
+      data => {
+
+        this.user = data.user
+        this.user.roles = data.roles
+        if(this.user.roles[0]!="Administrator"){
+          this.router.navigateByUrl("/error")
+        }
+        this.getNew()
+        this.getUser()
+        this.getProduct()
+        this.getSearchData()
+        this.getOrder()
+        this.isLoading = false
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+  getLocalStorage() {
+    if(localStorage.getItem("isLogin")){
+   
+      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
+      let timeNow = new Date()
+  
+      if(timeOut.getTime()<timeNow.getTime()){
+        //console.log("time out remove key")
+        localStorage.removeItem("isLogin")
+        localStorage.removeItem("user-id")
+        localStorage.removeItem("user-email")
+        localStorage.removeItem("login-timeOut")
+        localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
+      }
+      else{
+        this.isLogin = Boolean(localStorage.getItem('isLogin'))
+        this.user=new User
+        this.user.id = localStorage.getItem('user-id')!
+        this.user.email = localStorage.getItem("user-email")!
+        this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
+        this.user.roles=[]
+        this.user.roles.push(localStorage.getItem("user-role")!)
+        //console.log("still login")
+      }
+    }
+    else{
+     // console.log("no login acc")
+    }
 
   }
   randomInteger(min: number, max: number): number {
@@ -234,6 +345,7 @@ export class AdminComponent implements OnInit {
       data => {
         //console.log(data)
         this.orderList = data.result
+        this.shippingInfos = data.shippingInfos
         this.collectionSizeOrder = data.count
         this.isLoading = false
       },

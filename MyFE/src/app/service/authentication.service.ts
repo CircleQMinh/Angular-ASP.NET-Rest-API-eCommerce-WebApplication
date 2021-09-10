@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
-  apiUrl: string = "https://localhost:44324/api/";
+  apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  // apiUrl: string = "https://localhost:44324/api/";
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
   constructor(private http: HttpClient, private route: Router) { }
 

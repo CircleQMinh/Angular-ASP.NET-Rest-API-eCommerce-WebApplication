@@ -5,7 +5,7 @@
     <div class="main-body">
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
-      
+
         </nav>
 
 
@@ -24,7 +24,8 @@
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
                                 <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
                                     Logout</button>
-                                <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i class="fas fa-key"></i>
+                                <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i
+                                        class="fas fa-key"></i>
                                     Password?</button>
                             </div>
                         </div>
@@ -44,9 +45,14 @@
                             <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
                                     class="far fa-heart"></i>
                                 Favorite</button>
-
-                            <button class="btn btn-outline-primary btn-block" ><i
-                                    class="fab fa-bitcoin"></i> Shop Xu</button>
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'" routerLink="/admin">
+                                <i class="fas fa-users-cog"></i> Administrator Page
+                            </button>
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'" routerLink="/shipper">
+                                <i class="fas fa-truck-loading"></i> Shipper Page
+                            </button>
+                            <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -155,8 +161,8 @@
                                         class="far fa-heart"></i>
                                     Favorite</button>
 
-                                <button class="btn btn-outline-primary btn-block"><i
-                                        class="fab fa-bitcoin"></i> Shop Xu</button>
+                                <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i> Shop
+                                    Xu</button>
                             </li>
                         </ul>
                     </ul>
@@ -209,7 +215,8 @@
                     <div class="card-header">
                         <h4 class="text-monospace">Track Your Order</h4>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==0">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==0">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -267,7 +274,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==1">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==1">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -325,7 +333,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==2">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==2">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -383,7 +392,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center mt-3 mb-3"  style=" margin-left: 10px;width: 95%;" *ngIf="currentOrder.status==3">
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==3">
                         <div class="col">
                             <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
                                 <div class="steps__wrapper-main steps__wrapper-checkers">
@@ -549,8 +559,8 @@
                                     class="far fa-heart"></i>
                                 Favorite</button>
 
-                            <button class="btn btn-outline-primary btn-block"><i
-                                    class="fab fa-bitcoin"></i> Shop Xu</button>
+                            <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i> Shop
+                                Xu</button>
                         </li>
                     </ul>
                 </div>

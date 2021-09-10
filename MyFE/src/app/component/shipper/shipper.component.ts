@@ -58,7 +58,7 @@ export class ShipperComponent implements OnInit {
     this.isLoading=true
     this.getLocalStorage()
     if(!this.isLogin){
-      this.router.navigateByUrl("/login")
+      this.router.navigateByUrl("/error")
     }
     else{
       this.getUserInfo()
@@ -99,7 +99,17 @@ export class ShipperComponent implements OnInit {
       }
     )
   }
-
+  signOut() {
+    this.isLogin = false
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("user-id")
+    localStorage.removeItem("user-email")
+    localStorage.removeItem("login-timeOut")
+    localStorage.removeItem("user-disName")
+    localStorage.removeItem("user-imgUrl")
+    localStorage.removeItem("user-role")
+    this.router.navigateByUrl('/home')
+  }
   getAvailableOrder(){
     this.isLoading=true
     this.orderService.getAvailableOrder(1,this.orderOrder,this.pageNumberOrder,this.pageSizeOrder,this.orderDirOrder).subscribe(

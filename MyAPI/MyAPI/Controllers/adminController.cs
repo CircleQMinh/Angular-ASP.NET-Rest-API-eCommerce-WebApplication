@@ -268,8 +268,15 @@ namespace MyAPI.Controllers
                     PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
                     var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
                     var result = _mapper.Map<IList<OrderDTO>>(query);
+                    List<ShortShippingInfo> shippingInfos = new List<ShortShippingInfo>();
+                    foreach (var item in result)
+                    {
+                        var si = await _unitOfWork.ShippingInfos.Get(q => q.OrderId == item.Id,new List<string> {"Shipper" });
+                        var si_map = _mapper.Map<ShortShippingInfo>(si);
+                        shippingInfos.Add(si_map);
+                    }
                     var count = await _unitOfWork.Orders.GetCount(expression);
-                    return Ok(new { result, count });
+                    return Ok(new { result, count, shippingInfos });
                 }
              
             }
