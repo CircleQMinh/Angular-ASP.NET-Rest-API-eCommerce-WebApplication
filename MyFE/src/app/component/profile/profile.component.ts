@@ -37,6 +37,8 @@ export class ProfileComponent implements OnInit {
   viewOrderDetails: boolean = false
   currentOrder!: Order
   currentOrderDetails: OrderDetail[] = []
+  currentOrderShippingInfo:any
+
 
   pageSizeOrder=5
   pageNumberOrder=1
@@ -213,7 +215,23 @@ export class ProfileComponent implements OnInit {
 
     this.currentOrder = o
     this.currentOrderDetails = od
-    this.currentOrder.status=this.randomInteger(0,3)
+    this.currentOrderShippingInfo=null!
+    if(this.currentOrder.status==2||this.currentOrder.status==3){
+      this.isLoading=true
+      this.orderService.getShippingInfo(this.currentOrder.id).subscribe(
+        data=>{
+          this.currentOrderShippingInfo=data.result
+          console.log(this.currentOrderShippingInfo)
+          this.isLoading=false
+        },
+        error=>{
+          this.isLoading=false
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+
+    }
     this.viewOrderDetails = true
   
   }

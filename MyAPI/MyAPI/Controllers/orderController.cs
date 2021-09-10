@@ -423,6 +423,26 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }
+
+        [HttpGet("getOrderShippingInfo", Name = "GetOrderShippingInfo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetOrderShippingInfo(int orderId)
+        {
+            try
+            {
+                var sil = await _unitOfWork.ShippingInfos.Get(q => q.OrderId == orderId,new List<string> { "Shipper"});
+
+                var result = _mapper.Map<ShortShippingInfo>(sil);
+
+                return Ok(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrderShippingInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
     }
 
 

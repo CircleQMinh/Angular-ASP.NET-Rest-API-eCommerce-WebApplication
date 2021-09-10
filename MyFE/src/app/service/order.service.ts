@@ -64,4 +64,8 @@ export class OrderService {
   getFinishedOrder(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}order/finishedOrder?shipperId=${id}`)
   }
+
+  getShippingInfo(id:number): Observable<any>{
+    return this.http.get(`${this.apiUrl}order/getOrderShippingInfo?orderId=${id}`)
+  }
 }
