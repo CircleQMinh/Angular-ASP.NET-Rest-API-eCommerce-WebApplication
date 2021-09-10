@@ -45,10 +45,12 @@
                             <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
                                     class="far fa-heart"></i>
                                 Favorite</button>
-                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'" routerLink="/admin">
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
+                                routerLink="/admin">
                                 <i class="fas fa-users-cog"></i> Administrator Page
                             </button>
-                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'" routerLink="/shipper">
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'"
+                                routerLink="/shipper">
                                 <i class="fas fa-truck-loading"></i> Shipper Page
                             </button>
                             <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
@@ -173,7 +175,7 @@
                     <div class="card-header">
                         <h4 class="text-monospace">Your Order</h4>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table ">
                         <thead class="thead-dark">
                             <tr>
                                 <th class="text-monospace">#</th>
@@ -452,50 +454,59 @@
                         </div>
                     </div>
                     <div class="card-header" style="margin-top: 50px;">
-                        <h4 class="text-monospace">Order Date - {{currentOrder.orderDate}}</h4>
-                        <h4 class="text-monospace">Contact Name - {{currentOrder.contactName}}</h4>
-                        <h4 class="text-monospace">Email - {{currentOrder.email}}</h4>
-                        <h4 class="text-monospace">Phone - {{currentOrder.phone}}</h4>
+                        <h4 class="text-monospace">Order Info</h4>
+                        <p class="text-monospace">Order Date - {{currentOrder.orderDate}}</p>
+                        <p class="text-monospace">Contact Name - {{currentOrder.contactName}}</p>
+                        <p class="text-monospace">Email - {{currentOrder.email}}</p>
+                        <p class="text-monospace">Phone - {{currentOrder.phone}}</p>
+                        <div *ngIf="currentOrderShippingInfo">
+                            <h4 class="text-monospace">Shipping Info</h4>
+                            <p class="text-monospace">Delivery Date : {{currentOrderShippingInfo.deliveryDate}}</p>
+                            <p class="text-monospace">Shipper : {{currentOrderShippingInfo.shipper.displayName}} </p>
+                        </div>
+
+                   
                     </div>
-                    <table class="table table-striped table-responsive">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th class="text-monospace">#</th>
-                                <th class="text-monospace">Product</th>
-                                <th class="text-monospace">Name</th>
-                                <th class="text-monospace">Quantity</th>
-                                <th class="text-monospace">Price</th>
-                                <th class="text-monospace">Subtotal</th>
+                    <div class="table-responsive">
+                        <table class="table ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-monospace">#</th>
+                                    <th class="text-monospace">Product</th>
+                                    <th class="text-monospace">Name</th>
+                                    <th class="text-monospace">Quantity</th>
+                                    <th class="text-monospace">Price</th>
+                                    <th class="text-monospace">Subtotal</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let o of currentOrderDetails,index as i">
-                                <td class="text-monospace">{{i}}</td>
-                                <td class="text-monospace"><img src="{{o.product.imgUrl}}"
-                                        style="height: 40px;width: 40px;"></td>
-                                <td class="text-monospace">{{o.product.name}}</td>
-                                <td class="text-monospace">{{(o.quantity)}} </td>
-                                <td class="text-monospace">{{(o.product.price)}} </td>
-                                <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of currentOrderDetails,index as i">
+                                    <td class="text-monospace">{{i}}</td>
+                                    <td class="text-monospace"><img src="{{o.product.imgUrl}}"
+                                            style="height: 40px;width: 40px;"></td>
+                                    <td class="text-monospace">{{o.product.name}}</td>
+                                    <td class="text-monospace">{{(o.quantity)}} </td>
+                                    <td class="text-monospace">{{(o.product.price)}} </td>
+                                    <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
 
-                            </tr>
-                            <tr class="table-primary">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="text-left"><strong>Item :</strong>
-                                    <p class="text-monospace">{{currentOrder.totalItem}}</p>
-                                </td>
-                                <td></td>
-                                <td class="text-left"><strong>Total :</strong>
-                                    <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
-                                </td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-left"><strong>Item :</strong>
+                                        <p class="text-monospace">{{currentOrder.totalItem}}</p>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-left"><strong>Total :</strong>
+                                        <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
+                                    </td>
 
-
-                            </tr>
-                        </tbody>
-                    </table>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="container d-flex justify-content-center " *ngIf="viewOrderDetails">
                     <div class="row">
