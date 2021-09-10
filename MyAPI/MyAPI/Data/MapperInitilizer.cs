@@ -30,6 +30,8 @@ namespace MyAPI.Data
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
 
             CreateMap<ShippingInfo, ShippingInfoDTO>().ReverseMap();
+            CreateMap<ShippingInfo, ShortShippingInfo>().ReverseMap();
+
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
             CreateMap<Review, CreateReviewDTO>().ReverseMap();

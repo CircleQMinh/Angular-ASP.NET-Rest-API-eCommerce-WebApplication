@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0" *ngIf="!isLoading">
 
     <a class="navbar-brand" routerLink="/home">
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
@@ -26,7 +26,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown mr-3">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-user"></i> Welcome Brad
+                    <i class="fas fa-user"></i> Welcome {{user.displayName}}
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item">
@@ -37,7 +37,7 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" (click)="signOut()">
                 <a class="nav-link">
                     <i class="fas fa-user-times"></i> Logout
                 </a>
@@ -47,20 +47,51 @@
 
 </nav>
 
-<!-- HEADER -->
-<header id="main-header" class="py-2 bg-primary text-white">
+
+
+<header id="main-header" class="py-2 bg-primary text-white" *ngIf="active_tab=='db'">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <h1 *ngIf="active_tab=='bd'">
+            <div class="col-md-6 " >
+                <h1 *ngIf="active_tab=='db'">
                     <i class="fas fa-cog"></i> Dashboard
                 </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='order'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='order'">
                     <i class="fas fa-cart"></i> Orders
                 </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='product'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='product'">
                     <i class="fas fa-bag"></i> Products
                 </h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<header id="main-header" class="py-2 bg-info text-white" *ngIf="active_tab=='user'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='user'">
                     <i class="fas fa-users"></i> Users
                 </h1>
@@ -69,8 +100,9 @@
     </div>
 </header>
 
+
 <!-- ACTIONS -->
-<section id="actions" class="py-4 mb-4 bg-light">
+<section id="actions" class="py-4 mb-4 bg-light" *ngIf="!isLoading">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -78,17 +110,17 @@
                     <i class="fas fa-plus"></i> Dashboard
                 </a>
             </div>
-            <div class="col-md-3" *ngIf="active_tab!='order'">
+            <div class="col-md-3" >
                 <a class="btn btn-success btn-block" (click)="switchTab('order')">
                     <i class="fas fa-plus"></i> Order
                 </a>
             </div>
-            <div class="col-md-3" *ngIf="active_tab!='product'">
+            <div class="col-md-3" >
                 <a class="btn btn-warning btn-block" (click)="switchTab('product')">
                     <i class="fas fa-plus"></i> Product
                 </a>
             </div>
-            <div class="col-md-3" *ngIf="active_tab!='user'">
+            <div class="col-md-3" >
                 <a class="btn btn-info btn-block" (click)="switchTab('user')">
                     <i class="fas fa-plus"></i> User
                 </a>
@@ -104,6 +136,22 @@
     </div>
     <p class="text monospace">Please wait a sec...</p>
 </div>
+<div class="col-md-9" *ngIf="active_tab=='product'"> 
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+               <input type="text" class="searchTerm" placeholder="What are you looking for?" 
+               [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" [inputFormatter]="formatterProduct"
+               (selectItem)="selectedItemProduct($event,edit_product)" >
+               <button type="submit" class="searchButton">
+                 <i class="fa fa-search"></i>
+              </button>
+            </div>
+         </div>
+    </div>
+
+</div>
+
 <!-- POSTS -->
 <section id="posts" *ngIf="!isLoading">
     <div class="container">
@@ -277,8 +325,9 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Contact Info</th>
+                                    <th >Contact Info</th>
                                     <th>Order Date</th>
+                                    <th>Delivery Date</th>
                                     <th>Total Item</th>
                                     <th>Total Price</th>
                                     <th>Status</th>
@@ -300,6 +349,13 @@
                                         <p class="text-tron text-monospace">{{o.orderDate}}</p>
                                     </td>
                                     <td>
+                                        <p class="text-tron text-monospace" *ngIf="shippingInfos[i]">
+                                            <span *ngIf="shippingInfos[i].deliveryDate">{{shippingInfos[i].deliveryDate}}</span> 
+                                            <span *ngIf="!shippingInfos[i].deliveryDate">---</span> 
+                                        </p>
+                                        <p class="text-tron text-monospace" *ngIf="!shippingInfos[i]" >---</p>
+                                    </td>
+                                    <td>
                                         <p class="text-tron text-monospace">{{o.totalItem}}</p>
                                     </td>
                                     <td>
@@ -316,6 +372,7 @@
                                     </td>
                                     <td *ngIf="o.status==3">
                                         <span class="badge bg-danger">Done</span>
+                                        
                                     </td>
                                     <td *ngIf="o.status==4">
                                         <span class="badge bg-secondary">Canceled</span>
@@ -1034,4 +1091,12 @@
             <p class="text monospace">Please wait a sec...</p>
         </div>
     </div>
+</ng-template>
+
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;" >
+    <div class="typeahead-tron">
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img" >
+        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
+    </div>
+
 </ng-template>

@@ -15,7 +15,12 @@ namespace MyAPI.DTOs
         public virtual APIUser Shipper { get; set; }
         public string deliveryDate { get; set; }
     }
-
+    public class ShortShippingInfo
+    {
+        public string ShipperID { get; set; }
+        public virtual UserInfoDTO Shipper { get; set; }
+        public string deliveryDate { get; set; }
+    }
     public class FinishOrderDTO
     {
         public string shipperId { get; set; }
