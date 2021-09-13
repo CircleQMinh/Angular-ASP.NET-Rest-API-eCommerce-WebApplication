@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import { OrderService } from 'src/app/service/order.service';
 
 @Component({
   selector: 'app-test',
@@ -9,47 +12,48 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 })
 export class TestComponent implements OnInit {
 
+  id=25
+  totalPrice=20000
+  signature=""
+  payUrl=""
 
-  constructor(private http: HttpClient,private authService:AuthenticationService) { }
+  constructor(private http: HttpClient,private authService:AuthenticationService,private orderService:OrderService,
+    private toast:HotToastService,private router:Router) { }
   ngOnInit(): void {
 
   }
 
-  //url; //Angular 8
-  url: any; //Angular 11, for stricter type
-  msg = "";
 
-  //selectFile(event) { //Angular 8
-  selectFile(event: any) { //Angular 11, for stricter type
-    if (!event.target.files[0] || event.target.files[0].length == 0) {
-      this.msg = 'You must select an image';
-      return;
-    }
-
-    var mimeType = event.target.files[0].type;
-
-    if (mimeType.match(/image\/*/) == null) {
-      this.msg = "Only images are supported";
-      return;
-    }
-
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-
-    reader.onload = (_event) => {
-      this.msg = "";
-      this.url = reader.result;
-    }
-  }
-  upload(){
-    this.authService.upLoadIMG(this.url).subscribe(
+  payWithMomo(){
+    this.orderService.getPaymentSig(this.id,this.totalPrice).subscribe(
       data=>{
         console.log(data)
+        this.signature=data.sig
+        console.log(this.signature)
+        this.getPayUrl()
       },
       error=>{
         console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
       }
-
     )
   }
+
+  getPayUrl(){
+    this.orderService.getPaymentUrl(this.id.toString(),this.totalPrice.toString(),this.signature).subscribe(
+      data=>{
+        console.log(data)
+        this.payUrl=data.payUrl
+        console.log(this.payUrl)
+        //this.router.navigateByUrl(this.payUrl)
+        window.location.href = this.payUrl
+
+      },error=>{
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+
+
 }

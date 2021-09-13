@@ -7,6 +7,7 @@ using MyAPI.Configurations;
 using MyAPI.Data;
 using MyAPI.DTOs;
 using MyAPI.IRepository;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -443,7 +444,60 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }
+
+
+        [HttpGet("getPaySign", Name = "GetPaySign")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPaySign(string Id,string totalPrice)
+        {
+            try
+            {
+                //string endpoint ="https://test-payment.momo.vn/v2/gateway/api/create";
+                string partnerCode = "MOMOEVY720210913";
+                string accessKey = "Vxo6vQMlwjbrGq3c";
+                string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
+                string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
+                string redirectUrl = "http://localhost:4200/#/test";
+                string notifyUrl = "http://localhost:4200/#/test";
+                //string requestType = "captureWallet";
+
+                string amount = totalPrice;
+                string orderId = Id;
+                string requestId = Id;
+                string extraData = "";
+
+                //Before sign HMAC SHA256 signature
+
+                string rH=
+                    "partnerCode=" + partnerCode +
+                    "&accessKey=" + accessKey +
+                    "&requestId=" + requestId +
+                    "&amount=" + amount +
+                    "&orderId=" + orderId +
+                    "&orderInfo=" + orderInfo +
+                    "&returnUrl=" + redirectUrl +
+                    "&notifyUrl=" + notifyUrl +
+                    "&extraData=" + extraData
+                    ;
+
+                MoMoSecurity crypto = new MoMoSecurity();
+                string sig= crypto.signSHA256(rH, serectkey);
+
+                return Ok(new { sig,rH,Id,totalPrice });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPaySign)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
     }
+
+
 
 
 

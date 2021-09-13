@@ -1,0 +1,7 @@
+{
+    "/gw_payment": {
+        "target": "https://test-payment.momo.vn/",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
