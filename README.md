@@ -20,3 +20,5 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 09-09-2021 : thêm trang cho shipper.<br>
 10-09-2021 : thêm vài chức năng nhỏ cho trang admin và shipper.<br>
 11-09-2021 : update nhỏ cho trang profile.<br>
+12-09-2021 : ....<br>
+13-09-2021 : setup api cho Momo.<br>
