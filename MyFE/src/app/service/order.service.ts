@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -7,8 +7,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
-  // apiUrl: string = "https://localhost:44324/api/";
+  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  apiUrl: string = "https://localhost:44324/api/";
+
+  momoUrl: string = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
+
+  headerDict = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  }
+  requestOptions = {
+    headers: new HttpHeaders(this.headerDict),
+  };
   constructor(private http: HttpClient, private route: Router) { }
 
   saveOrder(userID: string, contactName: string, address: string, phone: string, email: string,
@@ -51,7 +62,7 @@ export class OrderService {
     return this.http.get(`${this.apiUrl}order/acceptedOrder?shipperId=${id}`)
   }
 
-  finishOrder(shipperId: string, orderId: number, status: number,date:string ,note: string): Observable<any> {
+  finishOrder(shipperId: string, orderId: number, status: number, date: string, note: string): Observable<any> {
     return this.http.post(`${this.apiUrl}order/finishOrder`, {
       shipperId: shipperId,
       orderId: orderId,
@@ -65,7 +76,28 @@ export class OrderService {
     return this.http.get(`${this.apiUrl}order/finishedOrder?shipperId=${id}`)
   }
 
-  getShippingInfo(id:number): Observable<any>{
+  getShippingInfo(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}order/getOrderShippingInfo?orderId=${id}`)
   }
+
+  getPaymentSig(id: number, totalPrice: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}order/getPaySign?Id=${id}&totalPrice=${totalPrice}`)
+  }
+
+  getPaymentUrl(id: string, totalPrice: string, signature: string): Observable<any> {
+    return this.http.post(`/gw_payment/transactionProcessor`, {
+      accessKey: "Vxo6vQMlwjbrGq3c",
+      partnerCode: "MOMOEVY720210913",
+      requestType: "captureMoMoWallet",
+      notifyUrl: "http://localhost:4200/#/test",
+      returnUrl: "http://localhost:4200/#/test",
+      orderId: id,
+      amount: totalPrice,
+      orderInfo: "Thanh toán cho đơn hàng của CircleShop",
+      requestId: id,
+      extraData: "",
+      signature: signature
+    }, this.requestOptions)
+  }
+
 }
