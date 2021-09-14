@@ -447,7 +447,6 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getPaySign", Name = "GetPaySign")]
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPaySign(string Id,string totalPrice)
@@ -459,8 +458,12 @@ namespace MyAPI.Controllers
                 string accessKey = "Vxo6vQMlwjbrGq3c";
                 string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
                 string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
-                string redirectUrl = "http://localhost:4200/#/test";
-                string notifyUrl = "http://localhost:4200/#/test";
+                string redirectUrl = "http://localhost:4200/#/thankyou";
+                string notifyUrl = "http://localhost:4200/#/thankyou";
+
+                //string redirectUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string notifyUrl = "http://circle-shop-18110320.000webhostapp.com/#/checkout";
+
                 //string requestType = "captureWallet";
 
                 string amount = totalPrice;
@@ -494,6 +497,53 @@ namespace MyAPI.Controllers
             }
         }
 
+
+        [HttpGet("getVNPayUrl", Name = "getVNPayUrl")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetVNPayUrl(int totalPrice)
+        {
+            try
+            {
+                string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+                //string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                string returnUrl = "http://localhost:4200/#/thankyou";
+                string tmnCode = "V0A4GQCF";
+                string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
+
+                string price = (totalPrice * 100).ToString();
+                string orderInfo = "Thanh toan don hang cho CircleShop";
+
+
+
+                PayLib pay = new PayLib();
+
+                pay.AddRequestData("vnp_Version", "2.0.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
+                pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
+                pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
+                pay.AddRequestData("vnp_Amount",price); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+                pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
+                pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
+                pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
+                pay.AddRequestData("vnp_IpAddr", Util.GetIpAddress()); //Địa chỉ IP của khách hàng thực hiện giao dịch
+                pay.AddRequestData("vnp_Locale", "vn"); //Ngôn ngữ giao diện hiển thị - Tiếng Việt (vn), Tiếng Anh (en)
+                pay.AddRequestData("vnp_OrderInfo", orderInfo); //Thông tin mô tả nội dung thanh toán
+                pay.AddRequestData("vnp_OrderType", "other"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
+                pay.AddRequestData("vnp_ReturnUrl", returnUrl); //URL thông báo kết quả giao dịch khi Khách hàng kết thúc thanh toán
+                pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
+
+                string paymentUrl = pay.CreateRequestUrl(url, hashSecret);
+
+
+                return Ok(new { paymentUrl });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
 
     }
 

@@ -1,0 +1,48 @@
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Please wait a sec...</p>
+</div>
+
+<div class="thank-label" *ngIf="!isLoading&&payment_status=='OK'">
+    <div class="jumbotron text-center">
+        <h1 class="display-3">Thank You!</h1>
+        <p class="lead"><strong>Cám ơn bạn</strong> đã mua sắm với chúng tôi.</p>
+        <hr>
+        <p>
+            Gặp khó khăn? <a href="">Liên hệ ngay</a>
+        </p>
+        <p class="lead">
+            <a class="btn btn-primary btn-sm"role="button">Trở về trang chủ</a>
+        </p>
+    </div>
+</div>
+
+<div class="thank-label" *ngIf="!isLoading&&payment_status=='Cancel'">
+    <div class="jumbotron text-center">
+        <h1 class="display-3">Hủy hàng!</h1>
+        <p class="lead"><strong>Bạn đã hủy</strong> đơn hàng thành công.</p>
+        <hr>
+        <p>
+            Gặp khó khăn? <a href="">Liên hệ ngay</a>
+        </p>
+        <p class="lead">
+            <a class="btn btn-primary btn-sm" role="button">Trở về trang chủ</a>
+        </p>
+    </div>
+</div>
+
+<div class="thank-label" *ngIf="!isLoading&&payment_status=='Error'">
+    <div class="jumbotron text-center">
+        <h1 class="display-3">Lỗi hệ thống!</h1>
+        <p class="lead"><strong>Lỗi hệ thống đã xảy ra</strong> xin hãy thử lại sau.</p>
+        <hr>
+        <p>
+            Gặp khó khăn? <a href="">Liên hệ ngay</a>
+        </p>
+        <p class="lead">
+            <a class="btn btn-primary btn-sm" role="button">Trở về trang chủ</a>
+        </p>
+    </div>
+</div>

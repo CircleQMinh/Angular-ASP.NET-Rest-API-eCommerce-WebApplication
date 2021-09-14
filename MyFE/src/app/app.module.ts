@@ -29,6 +29,7 @@ import { ErrorComponent } from './component/error/error.component';
 import { ChatBoxComponent } from './component/chat-box/chat-box.component';
 import { AdminComponent } from './component/admin/admin.component';
 import { ShipperComponent } from './component/shipper/shipper.component';
+import { ThankyouComponent } from './component/thankyou/thankyou.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +53,8 @@ import { ShipperComponent } from './component/shipper/shipper.component';
     ErrorComponent,
     ChatBoxComponent,
     AdminComponent,
-    ShipperComponent
+    ShipperComponent,
+    ThankyouComponent
   ],
   imports: [
     BrowserModule,

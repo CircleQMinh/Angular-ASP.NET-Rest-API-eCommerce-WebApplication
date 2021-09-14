@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
   // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  // hostUrl:string="http://circle-shop-18110320.000webhostapp.com/#/"
+
+  hostUrl:string="http://localhost:4200/#/"
   apiUrl: string = "https://localhost:44324/api/";
 
   momoUrl: string = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
@@ -89,8 +92,8 @@ export class OrderService {
       accessKey: "Vxo6vQMlwjbrGq3c",
       partnerCode: "MOMOEVY720210913",
       requestType: "captureMoMoWallet",
-      notifyUrl: "http://localhost:4200/#/test",
-      returnUrl: "http://localhost:4200/#/test",
+      notifyUrl: `${this.hostUrl}thankyou`,
+      returnUrl: `${this.hostUrl}thankyou`,
       orderId: id,
       amount: totalPrice,
       orderInfo: "Thanh toán cho đơn hàng của CircleShop",
@@ -98,6 +101,10 @@ export class OrderService {
       extraData: "",
       signature: signature
     }, this.requestOptions)
+  }
+
+  getVNPayURL(totalPrice:number):Observable<any>{
+    return this.http.get(`${this.apiUrl}order/getVNPayUrl?totalPrice=${totalPrice}`)
   }
 
 }

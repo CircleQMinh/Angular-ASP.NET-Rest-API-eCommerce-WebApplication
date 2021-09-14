@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
 import { CartService } from 'src/app/service/cart.service';
@@ -42,7 +43,7 @@ export class CheckoutComponent implements OnInit {
     if (this.totalItem == 0) {
       this.router.navigateByUrl("/cart")
     }
-    if(!this.isLogin){
+    if (!this.isLogin) {
       this.router.navigateByUrl("/cart")
     }
     this.rf1 = new FormGroup({
@@ -73,12 +74,12 @@ export class CheckoutComponent implements OnInit {
     this.cartItemsQuantity = this.cartService.cartItemsQuantity
   }
   getLocalStorageLoginInfo() {
-    if(localStorage.getItem("isLogin")){
-   
-      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
+    if (localStorage.getItem("isLogin")) {
+
+      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
       let timeNow = new Date()
-  
-      if(timeOut.getTime()<timeNow.getTime()){
+
+      if (timeOut.getTime() < timeNow.getTime()) {
         //console.log("time out remove key")
         localStorage.removeItem("isLogin")
         localStorage.removeItem("user-id")
@@ -88,20 +89,20 @@ export class CheckoutComponent implements OnInit {
         localStorage.removeItem("user-imgUrl")
         localStorage.removeItem("user-role")
       }
-      else{
+      else {
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user=new User
+        this.user = new User
         this.user.id = localStorage.getItem('user-id')!
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
-        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
-        this.user.roles=[]
+        this.user.imgUrl = localStorage.getItem("user-imgUrl")!
+        this.user.roles = []
         this.user.roles.push(localStorage.getItem("user-role")!)
         //console.log("still login")
       }
     }
-    else{
-     // console.log("no login acc")
+    else {
+      // console.log("no login acc")
     }
 
   }
@@ -120,26 +121,62 @@ export class CheckoutComponent implements OnInit {
     console.log()
 
     if (this.rf1.valid) {
-
       let address = this.rf1.controls["address"].value + " " + this.rf1.controls["street"].value + " " +
         this.rf1.controls["ward"].value + " " + this.rf1.controls["district"].value + " TP.HCM"
       //console.log(address)
       let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
-      // console.log(today)
-      this.isLoading = true
-      this.orderService.saveOrder(this.user.id, this.rf1.controls["contactname"].value, address, this.rf1.controls["phone"].value,
-        this.rf1.controls["email"].value, this.rf1.controls["billOption"].value, today, this.totalItem, this.totalPrice,
-        this.rf1.controls["note"].value).subscribe(
-          data => {
-            //console.log(data)
-            this.saveOrderDetail(data.order_id)
-            this.cartService.emptyCart()
-          },
-          error => {
-            console.log(error)
-            this.toast.error(" An error has occurred ! Try again !")
-          }
-        )
+      if (this.rf1.controls["billOption"].value == "momo") {
+
+      }
+      else if (this.rf1.controls["billOption"].value == "vnpay") {
+
+        let curOrder = new Order
+        curOrder.address =address
+        curOrder.contactName=this.rf1.controls["contactname"].value
+        curOrder.email=this.rf1.controls["email"].value
+        curOrder.note=this.rf1.controls["note"].value
+        curOrder.orderDate=today
+        curOrder.paymentMethod=this.rf1.controls["billOption"].value
+        curOrder.phone= this.rf1.controls["phone"].value
+        curOrder.totalItem=this.totalItem
+        curOrder.totalPrice=this.totalPrice
+        curOrder.userID=this.user.id
+        localStorage.setItem("user-current-order",JSON.stringify(curOrder))
+
+
+          this.orderService.getVNPayURL(this.totalPrice * 100).subscribe(
+            data => {
+              window.location.href = data.paymentUrl
+
+
+            },
+            error => {
+              console.log(error)
+              this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
+            }
+          )
+      }
+      else {
+
+        // console.log(today)
+        this.isLoading = true
+        this.orderService.saveOrder(
+          this.user.id,
+          this.rf1.controls["contactname"].value, address,
+          this.rf1.controls["phone"].value,
+          this.rf1.controls["email"].value, this.rf1.controls["billOption"].value, today, this.totalItem, this.totalPrice,
+          this.rf1.controls["note"].value).subscribe(
+            data => {
+              //console.log(data)
+              this.saveOrderDetail(data.order_id)
+              this.cartService.emptyCart()
+            },
+            error => {
+              console.log(error)
+              this.toast.error(" An error has occurred ! Try again !")
+            }
+          )
+      }
     }
     else {
       window.scrollTo(0, 0)

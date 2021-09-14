@@ -12,7 +12,7 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class TestComponent implements OnInit {
 
-  id=25
+  id=97904
   totalPrice=20000
   signature=""
   payUrl=""
@@ -46,7 +46,10 @@ export class TestComponent implements OnInit {
         this.payUrl=data.payUrl
         console.log(this.payUrl)
         //this.router.navigateByUrl(this.payUrl)
-        window.location.href = this.payUrl
+        if(this.payUrl){
+          window.location.href = this.payUrl
+        }
+ 
 
       },error=>{
         console.log(error)

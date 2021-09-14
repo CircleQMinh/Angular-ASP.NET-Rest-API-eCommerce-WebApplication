@@ -16,6 +16,7 @@ import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 import { ShipperComponent } from './component/shipper/shipper.component';
 import { TestComponent } from './component/test/test.component';
+import { ThankyouComponent } from './component/thankyou/thankyou.component';
 
 const routes: Routes = [
 
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'shipper', component: ShipperComponent },
+  { path: 'thankyou', component: ThankyouComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];
