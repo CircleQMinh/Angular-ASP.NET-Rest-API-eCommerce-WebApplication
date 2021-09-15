@@ -33,6 +33,7 @@ export class CartService {
         this.totalPrice=Number(localStorage.getItem("totalPrice"))
         this.cartItems=JSON.parse(localStorage.getItem("cartItems")!)
         this.cartItemsQuantity=JSON.parse(localStorage.getItem("cartItemsQuantity")!)
+        this.computeCartTotals()
         //console.log("cart not timeout")
       }
     }

@@ -126,35 +126,36 @@ export class CheckoutComponent implements OnInit {
       //console.log(address)
       let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
       if (this.rf1.controls["billOption"].value == "momo") {
-
+        this.saveOrderToLocal(address, today)
+        let momo_id = formatDate(Date.now(), 'ddMMyyyyhhmmss', 'en');
+        let sign = ""
+        this.orderService.getPaymentSig(Number(momo_id),this.totalPrice*100).subscribe(
+          data=>{
+            sign=data.sig
+            this.payWithMomo(momo_id,sign)
+          },
+          error=>{
+            console.log(error)
+            this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
+          }
+        )
       }
       else if (this.rf1.controls["billOption"].value == "vnpay") {
 
-        let curOrder = new Order
-        curOrder.address =address
-        curOrder.contactName=this.rf1.controls["contactname"].value
-        curOrder.email=this.rf1.controls["email"].value
-        curOrder.note=this.rf1.controls["note"].value
-        curOrder.orderDate=today
-        curOrder.paymentMethod=this.rf1.controls["billOption"].value
-        curOrder.phone= this.rf1.controls["phone"].value
-        curOrder.totalItem=this.totalItem
-        curOrder.totalPrice=this.totalPrice
-        curOrder.userID=this.user.id
-        localStorage.setItem("user-current-order",JSON.stringify(curOrder))
+        this.saveOrderToLocal(address, today)
 
 
-          this.orderService.getVNPayURL(this.totalPrice * 100).subscribe(
-            data => {
-              window.location.href = data.paymentUrl
+        this.orderService.getVNPayURL(this.totalPrice * 100).subscribe(
+          data => {
+            window.location.href = data.paymentUrl
 
 
-            },
-            error => {
-              console.log(error)
-              this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
-            }
-          )
+          },
+          error => {
+            console.log(error)
+            this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
+          }
+        )
       }
       else {
 
@@ -183,6 +184,37 @@ export class CheckoutComponent implements OnInit {
       this.toast.error("The submitted data is not valid. Please correct it to continue")
     }
 
+  }
+  saveOrderToLocal(address: any, today: any) {
+    let curOrder = new Order
+    curOrder.address = address
+    curOrder.contactName = this.rf1.controls["contactname"].value
+    curOrder.email = this.rf1.controls["email"].value
+    curOrder.note = this.rf1.controls["note"].value
+    curOrder.orderDate = today
+    curOrder.paymentMethod = this.rf1.controls["billOption"].value
+    curOrder.phone = this.rf1.controls["phone"].value
+    curOrder.totalItem = this.totalItem
+    curOrder.totalPrice = this.totalPrice
+    curOrder.userID = this.user.id
+    localStorage.setItem("user-current-order", JSON.stringify(curOrder))
+  }
+  payWithMomo(id:string,sign:any){
+    let payUrl=""
+    this.orderService.getPaymentUrl(id,(this.totalPrice*100).toString(),sign).subscribe(
+      data=>{
+        console.log(data)
+        payUrl=data.payUrl
+        if(payUrl){
+          window.location.href = payUrl
+        }
+ 
+
+      },error=>{
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
   }
   saveOrderDetail(data: number) {
     let orderID = data

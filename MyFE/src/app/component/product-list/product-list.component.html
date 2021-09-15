@@ -16,19 +16,21 @@
     <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
         <div class="col">
             <div class="section-title">
-                <h2 class="text-tron">Our Product</h2>
+                <h2 class="text-tron">Sản Phẩm của Shop</h2>
             </div>
             <div class="featured__controls" >
                 <ul>
                     <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">All</a></li>
-                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Fruit</a></li>
+                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Trái cây</a></li>
                     <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
-                        <a class="text-tron">Vegetables</a>
+                        <a class="text-tron">Rau củ</a>
                     </li>
                     <li [class.active]="category=='Confectionery'" (click)="switchCategory('Confectionery')">
-                        <a class="text-tron">Confectionery</a>
+                        <a class="text-tron">Bánh kẹo</a>
                     </li>
                     <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a class="text-tron">Snack</a></li>
+                    <li [class.active]="category=='AnimalProduct'" (click)="switchCategory('AnimalProduct')"><a class="text-tron">Thịt tươi sống</a></li>
+                    <li [class.active]="category=='CannedFood'" (click)="switchCategory('CannedFood')"><a class="text-tron">Đồ hộp</a></li>
                 </ul>
             </div>
         </div>
@@ -74,8 +76,8 @@
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a href="#">{{pro.name}}</a></h6>
-                        <h5>${{pro.price}}</h5>
+                        <h6><a >{{pro.name}}</a></h6>
+                        <h5>{{pro.price}} VND</h5>
                     </div>
                 </div>
             </div>
