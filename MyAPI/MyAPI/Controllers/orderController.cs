@@ -507,6 +507,7 @@ namespace MyAPI.Controllers
             {
                 string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
                 //string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+
                 string returnUrl = "http://localhost:4200/#/thankyou";
                 string tmnCode = "V0A4GQCF";
                 string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
