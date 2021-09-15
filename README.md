@@ -23,3 +23,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 12-09-2021 : ....<br>
 13-09-2021 : setup api cho Momo.<br>
 14-09-2021 : setup api cho VNPay.<br>
+15-09-2021 : chỉnh sửa nhỏ cho api.<br>
