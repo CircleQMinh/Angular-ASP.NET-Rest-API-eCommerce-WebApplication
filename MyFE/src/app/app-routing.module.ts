@@ -11,6 +11,9 @@ import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
+import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
+import { ProfileOrderInfoComponent } from './component/profile-order-info/profile-order-info.component';
+import { ProfileOrderComponent } from './component/profile-order/profile-order.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
@@ -38,6 +41,9 @@ const routes: Routes = [
   { path: 'confectionery', component: ProductCategoryComponent },
   { path: 'snack', component: ProductCategoryComponent },
   { path: 'profile/:id', component: ProfileComponent },
+  { path: 'profile/:id/favorite', component: ProfileFavoriteComponent },
+  { path: 'profile/:id/order', component: ProfileOrderComponent },
+  { path: 'profile/:id/order/:oid', component: ProfileOrderInfoComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'shipper', component: ShipperComponent },
   { path: 'thankyou', component: ThankyouComponent },

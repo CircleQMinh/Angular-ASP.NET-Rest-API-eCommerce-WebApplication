@@ -30,6 +30,9 @@ import { ChatBoxComponent } from './component/chat-box/chat-box.component';
 import { AdminComponent } from './component/admin/admin.component';
 import { ShipperComponent } from './component/shipper/shipper.component';
 import { ThankyouComponent } from './component/thankyou/thankyou.component';
+import { ProfileOrderComponent } from './component/profile-order/profile-order.component';
+import { ProfileOrderInfoComponent } from './component/profile-order-info/profile-order-info.component';
+import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +57,10 @@ import { ThankyouComponent } from './component/thankyou/thankyou.component';
     ChatBoxComponent,
     AdminComponent,
     ShipperComponent,
-    ThankyouComponent
+    ThankyouComponent,
+    ProfileOrderComponent,
+    ProfileOrderInfoComponent,
+    ProfileFavoriteComponent
   ],
   imports: [
     BrowserModule,

@@ -62,6 +62,7 @@ export class ProfileComponent implements OnInit {
     this.getLocalStorage()
     if (!this.isLogin) {
       this.router.navigateByUrl("/login")
+      this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
     }
     if (this.user.id != this.userID) {
       this.router.navigateByUrl("/error")
@@ -82,6 +83,8 @@ export class ProfileComponent implements OnInit {
         this.getOrderDetails()
         this.getPagedOrder()
         this.getPagedFavProduct()
+        console.log(this.userInfo)
+        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
       },
       error => {
@@ -106,7 +109,20 @@ export class ProfileComponent implements OnInit {
     });
 
   }
-
+  signOut() {
+    this.isLogin = false
+    let a = this.router.url
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("user-id")
+    localStorage.removeItem("user-email")
+    localStorage.removeItem("login-timeOut")
+    localStorage.removeItem("user-disName")
+    localStorage.removeItem("user-imgUrl")
+    localStorage.removeItem("user-role")
+    localStorage.removeItem("user-info")
+    this.router.navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigateByUrl(a))
+  }
   getLocalStorage() {
     if(localStorage.getItem("isLogin")){
    

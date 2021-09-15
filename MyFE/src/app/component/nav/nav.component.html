@@ -1,6 +1,4 @@
-
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top "  >
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top ">
     <a class="navbar-brand" routerLink="/home">
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
             style="width: 40px;height: 40px;">Circle's Shop</a>
@@ -10,67 +8,82 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent"  [collapse]="isCollapsed">
-        <ul class="navbar-nav ml-auto topnav" >
-
-            <li class="nav-item" >
-                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart"></i> Product</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" [collapse]="isCollapsed">
+        <form class="d-flex top-nav-searchbar" >
+            <input class="form-control me-2 " type="search" placeholder="Tìm sản phẩm mà bạn quan tâm ..." aria-label="Search" name="search"
+            [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto topnav">
+        
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart"></i> Sản phẩm</a>
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
                     <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
                         <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
                             Year</button> -->
-                        <a class="nav-link"  ngbDropdownToggle><i class="fas fa-bars"></i> Category</a>    
-                        <div class="dropdown-menu dd-menu" ngbDropdownMenu >
-                            <a routerLink="/products" ngbDropdownItem ><i class="fas fa-clipboard-list"></i>
-                                All</a>
+                        <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars"></i> Danh mục</a>
+                        <div class="dropdown-menu dd-menu" ngbDropdownMenu>
+                            <a routerLink="/products" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
+                                Toàn bộ</a>
                             <hr>
-                            <a routerLink="/fruit" ngbDropdownItem ><i class="fas fa-apple-alt"></i>
-                                Fruit</a>
-                            <a routerLink="/vegetable" ngbDropdownItem ><i class="fas fa-carrot"></i>
-                                Vegetable</a>
-                            <a routerLink="/confectionary" ngbDropdownItem ><i class="fas fa-candy-cane"></i>
-                                Confectionery</a>
-                            <a routerLink="/snack" ngbDropdownItem ><i class="fas fa-cookie-bite"></i>
+                            <a routerLink="/fruit" ngbDropdownItem><i class="fas fa-apple-alt"></i>
+                                Trái cây</a>
+                            <a routerLink="/vegetable" ngbDropdownItem><i class="fas fa-carrot"></i>
+                                Rau củ</a>
+                            <a routerLink="/confectionary" ngbDropdownItem><i class="fas fa-candy-cane"></i>
+                                Bánh kẹo</a>
+                            <a routerLink="/snack" ngbDropdownItem><i class="fas fa-cookie-bite"></i>
                                 Snack</a>
-
+                            <a routerLink="/animalproduct" ngbDropdownItem><i class="fas fa-drumstick-bite"></i>
+                                Thịt tươi sống</a>
+                            <a routerLink="/cannedfood" ngbDropdownItem><i class="fas fa-spray-can"></i>
+                                Đồ hộp</a>
                         </div>
 
                     </div>
                 </div>
-            </li>          
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="far fa-newspaper"></i> News&Blog</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="far fa-question-circle"></i> Info</a>
-            </li>   
+                <a class="nav-link" href="#"><i class="far fa-newspaper"></i> Tin tức & Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-question-circle"></i> Liên hệ</a>
+            </li>
             <li class="nav-item" *ngIf="!isLogin">
-                <a class="nav-link" routerLink="/login"><i
-                        class="fas fa-sign-in-alt"></i> Login</a>
+                <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
             </li>
             <li class="nav-item dropdown" *ngIf="isLogin">
                 <div class="btn-group ">
                     <div class="btn-group mr-3" ngbDropdown role="group">
-                        <a class="nav-link"  aria-label="dropdownMenu1" id="dropdownMenu1"
-                            ngbDropdownToggle>
+                        <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" ngbDropdownToggle>
                             <i class="far fa-user"></i>
-                            My Account</a>
+                            {{user.displayName}}</a>
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1">
-                            <a ngbDropdownItem routerLink="/profile/{{user.id}}"><i class="fas fa-clipboard-list"></i> My
-                                Profile</a>
+                            <a ngbDropdownItem routerLink="/profile/{{user.id}}"><i class="fas fa-clipboard-list"></i>
+                                Tài khoản</a>
                             <hr>
                             <a ngbDropdownItem (click)="signOut()"><i class="fas fa-sign-out-alt"></i>
-                                Logout</a>
+                                Đăng xuất</a>
 
                         </div>
                     </div>
                 </div>
-            </li>  
-         
+            </li>
+
         </ul>
     </div>
 
 
 </nav>
+
+
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;"  >
+    <div >
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img" >
+        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
+    </div>
+
+</ng-template>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { User } from '../class/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,9 @@ export class AuthenticationService {
   // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
   apiUrl: string = "https://localhost:44324/api/";
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
+
+  userInfo!:User
+
   constructor(private http: HttpClient, private route: Router) { }
 
   signUp(email: string, password: string, userName: string, phoneNumber: string): Observable<any> {

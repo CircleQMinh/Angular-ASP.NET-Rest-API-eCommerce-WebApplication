@@ -8,7 +8,9 @@
 <div class="container" *ngIf="!isLoading">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
-        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Product</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Sản phẩm</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">{{displayCategory}}</a></li>
+        
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
     <div class="row justify-content-center">
@@ -22,38 +24,36 @@
             <p class="lead">{{product.description}}</p>
             <div class="product_meta">
                 <span class="posted_in">
-                    <strong>Categories :</strong>
-                    <a rel="tag"> {{ product.category}}</a>
+                    <strong>Danh mục :</strong>
+                    <a rel="tag"> {{ getDisplayCategory(product.category)}}</a>
 
                 </span>
                 <span class="posted_in">
-                    <strong>Favorite :</strong>
+                    <strong>Yêu thích :</strong>
                     <a rel="tag"> {{ product.favoritedUsers.length}} <i class="fas fa-users"></i></a>
 
                 </span>
             </div>
             <div class="m-bot15">
-                <strong>Price :
+                <strong>Giá :
 
                 </strong>
                 <span class="pro-price">
-                    ${{product.price}}
+                    {{product.price}} VND
                 </span>
             </div>
             <p>
                 <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
-                        class="fa fa-shopping-cart"></i> Add to
-                    Cart
+                        class="fa fa-shopping-cart"></i> Thêm vào giỏ
                 </button>
-                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i class="far fa-heart"></i> Add to
-                    Favorite
+                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i class="far fa-heart"></i> Yêu thích
                 </button>
 
             </p>
         </div>
     </div>
     <blockquote class="blockquote mt-4 ml-5">
-        <p class="text-monospace text-tron text-center" style="margin-right: 3rem;">Recommended Products</p>
+        <p class="text-monospace text-tron text-center" style="margin-right: 3rem;">Các sản phẩm tương tự</p>
     </blockquote>
     <div class="slick-list">
         <div class="slick-track product-similar">
@@ -82,10 +82,10 @@
         </div>
     </div>
     <div class="div-center-content mt-5">
-        <h2 class="pdp-mod-section-title outer-title text-tron">Ratings &amp; Reviews of '{{product.name}}'</h2>
-        <p class="text-monospace text-tron"><i class="far fa-star"></i><b>Rating({{(avgRating).toFixed(2)}}) </b></p>
+        <h2 class="pdp-mod-section-title outer-title text-tron">Đánh giá &amp; Nhận xét của '{{product.name}}'</h2>
+        <p class="text-monospace text-tron"><i class="far fa-star"></i><b>Đánh giá({{(avgRating).toFixed(2)}}) </b></p>
         <p class="text-monospace text-tron" *ngIf="product.reviews.length==0">
-            No one has rated this product!
+            Chưa có đánh giá cho sản phẩm này!
         </p>
         <p>
             5<i class="far fa-star"></i>({{fivestar}})
@@ -120,12 +120,12 @@
 
     <div class="d-flex justify-content-center mt-5">
         <header class="head-comment fmsidWidgetCommentListHead mr-3"><i class="far fa-comments"></i> <b>
-                Reviews</b><span class="fmsidWidgetCommentListHeadText"></span> (<span
+                Nhận xét</b><span class="fmsidWidgetCommentListHeadText"></span> (<span
                 class="fmsidWidgetCommentListCount">{{product.reviews.length}}</span>)
         </header>
-        <div>Sort by : <select class="select select-history select-lg" name="sort" (change)="sortChange()" [(ngModel)]="sort">
-                <option value="d" selected="true">Newest</option>
-                <option value="a">Oldest</option>
+        <div>Sắp xếp : <select class="select select-history select-lg" name="sort" (change)="sortChange()" [(ngModel)]="sort">
+                <option value="d" selected="true">Mới nhất</option>
+                <option value="a">Cũ nhất</option>
             </select>
         </div>
         <!-- <div>Rating : <select class="select select-history select-lg" name="rating">
@@ -187,16 +187,16 @@
     </div>
 
     <div *ngIf="product.reviews.length==0" class="mt-5">
-        <p>There is no review for this product!</p>
+        <p>Chưa có nhận xét nào cho sản phẩm này!</p>
     </div>
     <div class="mt-5">
-        <p><b>Write your review</b></p>
+        <p><b>Viết nhận xét của bạn</b></p>
 
         <div class="form-group" *ngIf="isLogin&&!alreadyReview||reWriteReview">
             <ngb-rating [(ngModel)]="rating" [max]=5 name="rating"></ngb-rating>
             <div class="form-text small">
-                <div *ngIf="rating" class="text-success">Thanks!</div>
-                <div *ngIf="!rating" class="text-danger">Please rate this product!</div>
+                <div *ngIf="rating" class="text-success">Cảm ơn!</div>
+                <div *ngIf="!rating" class="text-danger">Hãy đánh giá sản phẩm này!</div>
             </div>
         </div>
 
@@ -205,21 +205,21 @@
             <div class="input review-box"><textarea class="text-cmt fmsidWidgetCommentMessage"
                     placeholder="Your review..." name="review" [(ngModel)]="review"></textarea></div>
             <p class="sent-cmt clearfix"><a id="btnSubmit" class="btnSubmit disabled fmsidWidgetCommentBtnSend"
-                    (click)="addReview()">Send</a>
+                    (click)="addReview()">Gửi</a>
             </p>
 
         </div>
         <div *ngIf="!isLogin">
             <p>
-                Login to write review about this product!
+                Đăng nhập để viết nhận xét về sản phẩm này!
             </p>
         </div>
         <div *ngIf="isLogin&&alreadyReview">
             <p>
-                You already write a review for this product.
+                Bạn đã viết nhận xét về sản phẩm này.
             </p>
-            <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Edit Review</button>
-            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false" *ngIf="reWriteReview">Cancel</button>
+            <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Chỉnh sửa nhận xét </button>
+            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false" *ngIf="reWriteReview">Hủy</button>
         </div>
         <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="isLogin&&alreadyReview">
             <div class="shopee-product-rating">
