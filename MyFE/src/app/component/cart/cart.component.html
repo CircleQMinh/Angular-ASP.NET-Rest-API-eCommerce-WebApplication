@@ -1,9 +1,14 @@
-<a class="float-btn-cart" routerLink="/cart">
+<div class="float-btn-cart-container">
+
+
+  <a class="float-btn-cart" routerLink="/cart">
     <i class="fas fa-shopping-cart float-btn-icon"></i>
-</a>
-<a class="float-btn-cart-number">
-  <p class="text-monospace">{{totalItem}}</p>
-</a>
-<a class="float-btn-cart-price">
-    <p class="text-monospace">{{(totalPrice).toFixed(2)}}$</p>
   </a>
+  <a class="float-btn-cart-number animate__animated animate__zoomIn animate__faster ">
+    <p class="text-monospace">{{totalItem}}</p>
+  </a>
+  <a class="float-btn-cart-price animate__animated animate__zoomIn animate__faster">
+    <p class="text-monospace"><span>{{(totalPrice) | number:'1.0':'en-US' }}</span> VND</p>
+  </a>
+
+</div>

@@ -36,22 +36,23 @@ export class ProductInfoComponent implements OnInit {
 
   alreadyReview = false
   reviewedContent = {
-    userId:"",
-    imgUrl:"",
-    username:"",
-    date:"",
-    star:0,
-    content:"",
+    userId: "",
+    imgUrl: "",
+    username: "",
+    date: "",
+    star: 0,
+    content: "",
   }
-  reWriteReview=false
+  reWriteReview = false
 
-  pageReview=1
-  pageSizeReview=3
-  pagedReview:Review[]=[]
+  pageReview = 1
+  pageSizeReview = 3
+  pagedReview: Review[] = []
 
-  sort="d"
-  ratingFilter=0
+  sort = "d"
+  ratingFilter = 0
 
+  displayCategory = ""
 
   constructor(private router: Router, private route: ActivatedRoute, private proService: ProductService, private toast: HotToastService
     , private cartService: CartService, private authService: AuthenticationService) { }
@@ -71,18 +72,20 @@ export class ProductInfoComponent implements OnInit {
 
   }
 
-  sortChange(){
-    if(this.sort=="d"){
-      this.product.reviews.sort((a, b) =>{
-        var c:any = new Date(a.date);
-        var d:any = new Date(b.date);
-        return d-c})
+  sortChange() {
+    if (this.sort == "d") {
+      this.product.reviews.sort((a, b) => {
+        var c: any = new Date(a.date);
+        var d: any = new Date(b.date);
+        return d - c
+      })
     }
-    else{
-      this.product.reviews.sort((a, b) =>{
-        var c:any = new Date(a.date);
-        var d:any = new Date(b.date);
-        return c-d})
+    else {
+      this.product.reviews.sort((a, b) => {
+        var c: any = new Date(a.date);
+        var d: any = new Date(b.date);
+        return c - d
+      })
     }
     this.getPagedReviews()
   }
@@ -90,7 +93,7 @@ export class ProductInfoComponent implements OnInit {
   getPagedReviews() {
     this.pagedReview = []
     for (let i = 0; i < this.pageSizeReview; i++) {
-      if(this.product.reviews[i + this.pageSizeReview * (this.pageReview - 1)]){
+      if (this.product.reviews[i + this.pageSizeReview * (this.pageReview - 1)]) {
         this.pagedReview.push(this.product.reviews[i + this.pageSizeReview * (this.pageReview - 1)])
       }
 
@@ -104,20 +107,22 @@ export class ProductInfoComponent implements OnInit {
     this.isLoading = true
     this.proService.getProductInfo(this.id).subscribe(
       data => {
-       // console.log(data)
+        // console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
-        
-       // console.log(this.product)
+        this.displayCategory=this.getDisplayCategory(this.product.category)
+
+        // console.log(this.product)
         this.getRandomProduct()
         this.getProductRating()
-        this.product.reviews.sort((a, b) =>{
-          var c:any = new Date(a.date);
-          var d:any = new Date(b.date);
-          return d-c})
-        this.getPagedReviews() 
+        this.product.reviews.sort((a, b) => {
+          var c: any = new Date(a.date);
+          var d: any = new Date(b.date);
+          return d - c
+        })
+        this.getPagedReviews()
         this.checkIfReviewed()
-        
+
         //console.log(this.alreadyReview)
 
         this.isLoading = false
@@ -127,6 +132,25 @@ export class ProductInfoComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+
+  getDisplayCategory(cate: string): string {
+    switch (cate) {
+      case "Fruit":
+        return "Trái cây"
+      case "Vegetable":
+        return "Rau củ"
+      case "Snack":
+        return "Snack"
+      case "Confectionery":
+        return "Bánh kẹo"
+      case "CannedFood":
+        return "Đồ hộp"
+      case "AnimalProduct":
+        return "Thịt tươi sống"
+      default:
+        return ""
+    }
   }
 
   getProductRating() {
@@ -149,28 +173,28 @@ export class ProductInfoComponent implements OnInit {
           break
       }
     });
-    this.avgRating= (this.fivestar*5+this.fourstar*4+this.threestar*3+this.twostar*2+this.onestar)/this.product.reviews.length
+    this.avgRating = (this.fivestar * 5 + this.fourstar * 4 + this.threestar * 3 + this.twostar * 2 + this.onestar) / this.product.reviews.length
   }
 
-  checkIfReviewed(){
+  checkIfReviewed() {
 
-    if(this.isLogin){
+    if (this.isLogin) {
 
       this.product.reviews.forEach(element => {
-        if(element.user.id==this.user.id){
-          this.alreadyReview=true
-          this.reviewedContent.userId=element.user.id
-          this.reviewedContent.username=element.user.displayName
-          this.reviewedContent.content=element.content
-          this.reviewedContent.star=element.star
-          this.reviewedContent.date=element.date
-          this.reviewedContent.imgUrl=element.user.imgUrl
+        if (element.user.id == this.user.id) {
+          this.alreadyReview = true
+          this.reviewedContent.userId = element.user.id
+          this.reviewedContent.username = element.user.displayName
+          this.reviewedContent.content = element.content
+          this.reviewedContent.star = element.star
+          this.reviewedContent.date = element.date
+          this.reviewedContent.imgUrl = element.user.imgUrl
           //console.log(this.reviewedContent)
         }
       });
     }
 
-  
+
   }
 
   getLocalStorage() {
@@ -209,7 +233,7 @@ export class ProductInfoComponent implements OnInit {
   }
   getRandomProduct() {
 
-    this.randomProducts=[]
+    this.randomProducts = []
     for (let i = 0; i < 5; i++) {
       let id = this.randomInteger(1, 100)
       this.proService.getProductInfo(String(id)).subscribe(
@@ -295,7 +319,7 @@ export class ProductInfoComponent implements OnInit {
     }
   }
   addReviewLocal(r: Review) {
-  
+
     let isExist = false
     let index = 0
     for (let i = 0; i < this.product.reviews.length; i++) {

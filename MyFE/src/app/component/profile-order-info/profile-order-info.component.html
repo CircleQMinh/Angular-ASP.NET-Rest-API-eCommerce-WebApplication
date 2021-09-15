@@ -1,0 +1,384 @@
+<app-nav></app-nav>
+
+
+<div class="container mt-3"  *ngIf="!isLoading">
+    <div class="main-body">
+
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a
+                        class="breadcrumb-link">{{userInfo.displayName}}</a>
+                </li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Đơn hàng</a></li>
+            </ol>
+        </nav>
+
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150"
+                                *ngIf="userInfo.imgUrl">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
+                            <div class="mt-3">
+                                <h4>{{userInfo.displayName}}</h4>
+                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
+                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
+                                    Logout</button>
+                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
+                                    Password?</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group ">
+                        <ul class="list-group ">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                                <button class="btn btn-outline-primary btn-block"routerLink="/profile/{{userInfo.id}}" ><i
+                                    class="fas fa-user"></i> Thông tin</button>
+    
+                                <button class="btn btn-primary btn-block"
+                                    routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
+                                    Đơn hàng</button>
+    
+                                <button class="btn btn-outline-primary btn-block"
+                                    routerLink="/profile/{{userInfo.id}}/favorite"><i class="far fa-heart"></i>
+                                    Yêu thích</button>
+                                <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
+                                    routerLink="/admin">
+                                    <i class="fas fa-users-cog"></i> Quản trị viên
+                                </button>
+                                <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'"
+                                    routerLink="/shipper">
+                                    <i class="fas fa-truck-loading"></i> Trang giao hàng
+                                </button>
+                                <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
+                                </button>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">        
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-monospace">Theo dõi đơn hàng của bạn</h4>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==0">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đang giao
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==1">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đang giao
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==2">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đang giao
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==3">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đang giao
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    4
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header" style="margin-top: 50px;">
+                        <h4 class="text-monospace">Thông tin đơn hàng</h4>
+                        <p class="text-monospace">Ngày đặt hàng - {{currentOrder.orderDate}}</p>
+                        <p class="text-monospace">Tên liên lạc - {{currentOrder.contactName}}</p>
+                        <p class="text-monospace">Email - {{currentOrder.email}}</p>
+                        <p class="text-monospace">SDT - {{currentOrder.phone}}</p>
+                        <div *ngIf="currentOrderShippingInfo">
+                            <h4 class="text-monospace">Thông tin giao hàng</h4>
+                            <p class="text-monospace">Ngày giao : {{currentOrderShippingInfo.deliveryDate}}</p>
+                            <p class="text-monospace">Shipper : {{currentOrderShippingInfo.shipper.displayName}} </p>
+                        </div>
+
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-monospace">#</th>
+                                    <th class="text-monospace">Sản phẩm</th>
+                                    <th class="text-monospace">Tên</th>
+                                    <th class="text-monospace">Số lượng</th>
+                                    <th class="text-monospace">Giá</th>
+                                    <th class="text-monospace">Subtotal</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of currentOrderDetails,index as i">
+                                    <td class="text-monospace">{{i}}</td>
+                                    <td class="text-monospace"><img src="{{o.product.imgUrl}}"
+                                            style="height: 40px;width: 40px;"></td>
+                                    <td class="text-monospace">{{o.product.name}}</td>
+                                    <td class="text-monospace">{{(o.quantity)}} </td>
+                                    <td class="text-monospace">{{(o.product.price)}} </td>
+                                    <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
+
+                                </tr>
+                                <tr class="table-primary">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-left"><strong>Tổng SP :</strong>
+                                        <p class="text-monospace">{{currentOrder.totalItem}}</p>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-left"><strong>Tổng tiền :</strong>
+                                        <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="container d-flex justify-content-center " >
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-outline-danger" routerLink="/profile/{{userInfo.id}}/order" >Quay lại danh sách đơn hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Xin hãy chờ một xíu...</p>
+</div>
+
+<app-footer></app-footer>

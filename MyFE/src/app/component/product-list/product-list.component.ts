@@ -69,6 +69,7 @@ export class ProductListComponent implements OnInit {
         //console.log(data)
         this.products = data.results
         this.collectionSize = data.totalItem
+        localStorage.setItem("products",JSON.stringify(this.products))
         this.isLoading = false
       },
       error => {

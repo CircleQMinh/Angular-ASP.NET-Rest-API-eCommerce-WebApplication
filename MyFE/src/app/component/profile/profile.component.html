@@ -5,10 +5,13 @@
     <div class="main-body">
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
-
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a
+                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
+            </ol>
         </nav>
-
-
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
                 <div class="card">
@@ -22,7 +25,7 @@
                                 <h4>{{userInfo.displayName}}</h4>
                                 <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
-                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
+                                <button class="btn btn-danger btn-block" (click)="signOut()"><i class="fas fa-sign-out-alt"></i>
                                     Logout</button>
                                 <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i
                                         class="fas fa-key"></i>
@@ -35,23 +38,23 @@
                     <ul class="list-group ">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                            <button class="btn btn-primary btn-block" (click)="switchTab('profile')"><i
-                                    class="fas fa-user"></i> Profile</button>
+                            <button class="btn btn-primary btn-block"routerLink="/profile/{{userInfo.id}}" ><i
+                                class="fas fa-user"></i> Thông tin</button>
 
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('order')"><i
-                                    class="fas fa-shopping-cart"></i>
-                                Order</button>
+                            <button class="btn btn-outline-primary btn-block"
+                                routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
+                                Đơn hàng</button>
 
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
-                                    class="far fa-heart"></i>
-                                Favorite</button>
+                            <button class="btn btn-outline-primary btn-block"
+                                routerLink="/profile/{{userInfo.id}}/favorite"><i class="far fa-heart"></i>
+                                Yêu thích</button>
                             <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
                                 routerLink="/admin">
-                                <i class="fas fa-users-cog"></i> Administrator Page
+                                <i class="fas fa-users-cog"></i> Quản trị viên
                             </button>
                             <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'"
                                 routerLink="/shipper">
-                                <i class="fas fa-truck-loading"></i> Shipper Page
+                                <i class="fas fa-truck-loading"></i> Trang giao hàng
                             </button>
                             <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
                             </button>
@@ -101,7 +104,7 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <button class="btn btn-info " (click)="openChangeModal(changeProfile)">Edit</button>
+                                <button class="btn btn-info " (click)="openChangeModal(changeProfile)">Chỉnh sửa</button>
                             </div>
                         </div>
                     </div>
@@ -112,532 +115,12 @@
     </div>
 </div>
 
-
-<div class="container mt-3" *ngIf="!isLoading&&selectedTab=='order'">
-    <div class="main-body">
-
-        <nav aria-label="breadcrumb" class="main-breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
-                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a
-                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
-            </ol>
-        </nav>
-
-
-        <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150"
-                                *ngIf="userInfo.imgUrl">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
-                            <div class="mt-3">
-                                <h4>{{userInfo.displayName}}</h4>
-                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
-                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
-                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
-                                    Logout</button>
-                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
-                                    Password?</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <ul class="list-group ">
-                        <ul class="list-group ">
-                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-
-                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i
-                                        class="fas fa-user"></i> Profile</button>
-
-                                <button class="btn btn-primary btn-block" (click)="switchTab('order')"><i
-                                        class="fas fa-shopping-cart"></i>
-                                    Order</button>
-
-                                <button class="btn btn-outline-primary btn-block" (click)="switchTab('favorite')"><i
-                                        class="far fa-heart"></i>
-                                    Favorite</button>
-
-                                <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i> Shop
-                                    Xu</button>
-                            </li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card" *ngIf="!viewOrderDetails">
-                    <div class="card-header">
-                        <h4 class="text-monospace">Your Order</h4>
-                    </div>
-                    <table class="table ">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th class="text-monospace">#</th>
-                                <th class="text-monospace">Date</th>
-                                <th class="text-monospace">Total Item</th>
-                                <th class="text-monospace">Total Price</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let o of pagedOrder">
-                                <td class="text-monospace">{{o.id}}</td>
-                                <td class="text-monospace">{{o.orderDate}}</td>
-                                <td class="text-monospace">{{o.totalItem}}</td>
-                                <td class="text-monospace">{{(o.totalPrice).toFixed(2)}} </td>
-                                <td>
-                                    <a class="btn btn-info" (click)="viewDetail(o,o.orderDetails)">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="container d-flex justify-content-center " *ngIf="!viewOrderDetails">
-                    <div class="row">
-                        <div class="col">
-                            <div id="ng-pagi">
-                                <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
-                                    [collectionSize]="userInfo.orders.length" [maxSize]="3" [boundaryLinks]=true
-                                    (pageChange)="getPagedOrder()" size="sm">
-                                </ngb-pagination>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="card" *ngIf="viewOrderDetails">
-                    <div class="card-header">
-                        <h4 class="text-monospace">Track Your Order</h4>
-                    </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
-                        *ngIf="currentOrder.status==0">
-                        <div class="col">
-                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
-                                <div class="steps__wrapper-main steps__wrapper-checkers">
-                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
-                                    </div>
-                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    1
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    2
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Checked
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    3
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    4
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
-                        *ngIf="currentOrder.status==1">
-                        <div class="col">
-                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
-                                <div class="steps__wrapper-main steps__wrapper-checkers">
-                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
-                                    </div>
-                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    1
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    2
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Checked
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    3
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    4
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
-                        *ngIf="currentOrder.status==2">
-                        <div class="col">
-                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
-                                <div class="steps__wrapper-main steps__wrapper-checkers">
-                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
-                                    </div>
-                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    1
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    2
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Checked
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    3
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="">
-                                            <a class="">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    4
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
-                        *ngIf="currentOrder.status==3">
-                        <div class="col">
-                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
-                                <div class="steps__wrapper-main steps__wrapper-checkers">
-                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
-                                    </div>
-                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    1
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Saved</p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    2
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Checked
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    3
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Delivering
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
-                                                <span
-                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
-                                                    <span class="before"></span>
-                                                    <span class="after"></span>
-                                                    4
-                                                </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-header" style="margin-top: 50px;">
-                        <h4 class="text-monospace">Order Info</h4>
-                        <p class="text-monospace">Order Date - {{currentOrder.orderDate}}</p>
-                        <p class="text-monospace">Contact Name - {{currentOrder.contactName}}</p>
-                        <p class="text-monospace">Email - {{currentOrder.email}}</p>
-                        <p class="text-monospace">Phone - {{currentOrder.phone}}</p>
-                        <div *ngIf="currentOrderShippingInfo">
-                            <h4 class="text-monospace">Shipping Info</h4>
-                            <p class="text-monospace">Delivery Date : {{currentOrderShippingInfo.deliveryDate}}</p>
-                            <p class="text-monospace">Shipper : {{currentOrderShippingInfo.shipper.displayName}} </p>
-                        </div>
-
-                   
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table ">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th class="text-monospace">#</th>
-                                    <th class="text-monospace">Product</th>
-                                    <th class="text-monospace">Name</th>
-                                    <th class="text-monospace">Quantity</th>
-                                    <th class="text-monospace">Price</th>
-                                    <th class="text-monospace">Subtotal</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let o of currentOrderDetails,index as i">
-                                    <td class="text-monospace">{{i}}</td>
-                                    <td class="text-monospace"><img src="{{o.product.imgUrl}}"
-                                            style="height: 40px;width: 40px;"></td>
-                                    <td class="text-monospace">{{o.product.name}}</td>
-                                    <td class="text-monospace">{{(o.quantity)}} </td>
-                                    <td class="text-monospace">{{(o.product.price)}} </td>
-                                    <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
-
-                                </tr>
-                                <tr class="table-primary">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-left"><strong>Item :</strong>
-                                        <p class="text-monospace">{{currentOrder.totalItem}}</p>
-                                    </td>
-                                    <td></td>
-                                    <td class="text-left"><strong>Total :</strong>
-                                        <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
-                                    </td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="container d-flex justify-content-center " *ngIf="viewOrderDetails">
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-outline-danger" (click)="viewOrderDetails=!viewOrderDetails">Back to
-                                Order List</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-3" *ngIf="!isLoading&&selectedTab=='favorite'">
-    <div class="main-body">
-
-        <nav aria-label="breadcrumb" class="main-breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
-                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a
-                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
-            </ol>
-        </nav>
-
-
-        <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150"
-                                *ngIf="userInfo.imgUrl">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
-                            <div class="mt-3">
-                                <h4>{{userInfo.displayName}}</h4>
-                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
-                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
-                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
-                                    Logout</button>
-                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
-                                    Password?</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <ul class="list-group ">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('profile')"><i
-                                    class="fas fa-user"></i> Profile</button>
-
-                            <button class="btn btn-outline-primary btn-block" (click)="switchTab('order')"><i
-                                    class="fas fa-shopping-cart"></i>
-                                Order</button>
-
-                            <button class="btn btn-primary btn-block" (click)="switchTab('favorite')"><i
-                                    class="far fa-heart"></i>
-                                Favorite</button>
-
-                            <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i> Shop
-                                Xu</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-
-                <div class="card-header">
-                    <h4 class="text-monospace">Your Favorite</h4>
-                </div>
-                <section *ngIf="!isLoading">
-                    <div class="container-fluid dflex-jus">
-
-                        <div class="row justify-content-center" style="width: 80%;">
-
-                            <div *ngFor="let pro of pagedFavProduct  " class="gradient-border"
-                                style=" margin: 20px;margin-bottom: 100px;width: 200px;">
-                                <div class="featured__item">
-                                    <div class="featured__item__pic set-bg"
-                                        [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
-                                        ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
-                                        placement="auto" container="body">
-                                        <ul class="featured__item__pic__hover">
-                                            <li ngbTooltip="Remove from Favorite" container="body"><a
-                                                    (click)="removeFromFav(pro)" class="bg-danger"><i
-                                                        class="fas fa-heart-broken"></i></a></li>
-                                            <li ngbTooltip="View product page" container="body"
-                                                routerLink="/product/{{pro.id}}"><a><i class="fas fa-info"></i></a></li>
-                                            <li ngbTooltip="Add to cart" container="body" (click)="addToCart(pro)"><a><i
-                                                        class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="featured__item__text">
-                                        <h6><a href="#">{{pro.name}}</a></h6>
-                                        <h5>${{pro.price}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-                <div class="container d-flex justify-content-center ">
-                    <div class="row">
-                        <div class="col">
-                            <div id="ng-pagi">
-                                <ngb-pagination [(page)]="pageNumberFav" [pageSize]="pageSizeFav"
-                                    [collectionSize]="userInfo.favoriteProducts.length" [maxSize]="3"
-                                    [boundaryLinks]=true (pageChange)="getPagedFavProduct()" size="sm">
-                                </ngb-pagination>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
 
 <div class="loading-full" *ngIf="isLoading">
     <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="text monospace">Please wait a sec...</p>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
 </div>
 
 
@@ -646,13 +129,13 @@
 
 <ng-template #changeProfile let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Change profile info</h4>
+        <h4 class="modal-title" id="modal-basic-title">Đổi thông tin</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <label for="img">Profile Image</label>
+        <label for="img">Ảnh đại diện</label>
         <div class="input-group">
             <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
                 (change)="selectFile($event)">
@@ -662,11 +145,11 @@
             <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
         </div>
 
-        <label for="des">Name</label>
+        <label for="des">Tên</label>
         <div class="input-group">
             <input id="des" class="form-control" placeholder="Name..." name="name" [(ngModel)]="newName">
         </div>
-        <label for="uis">Phone</label>
+        <label for="uis">SDT</label>
         <div class="input-group">
             <input id="uis" class="form-control" placeholder="Phone..." name="phone" [(ngModel)]="newPhone">
         </div>
@@ -675,14 +158,14 @@
         <div *ngIf="!isUpdateProfile">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="saveProfile()">Save</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="saveProfile()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isUpdateProfile">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>

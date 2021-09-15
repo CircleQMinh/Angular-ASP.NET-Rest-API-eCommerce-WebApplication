@@ -1,7 +1,7 @@
 <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
     <div class="wrap">
         <div class="search">
-           <input type="text" class="searchTerm" placeholder="What are you looking for?" 
+           <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" 
            [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)" >
            <button type="submit" class="searchButton">
              <i class="fa fa-search"></i>
@@ -104,8 +104,8 @@
 </div>
 
 
-<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;" >
-    <div class="typeahead-tron">
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;"  >
+    <div >
         <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img" >
         <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
     </div>
