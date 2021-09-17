@@ -25,3 +25,5 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 14-09-2021 : setup api cho VNPay.<br>
 15-09-2021 : chỉnh sửa nhỏ cho api.<br>
 16-09-2021 : chỉnh sửa homepage, tách profile component.<br>
+17-09-2021 : việt hóa database và website.<br>
+18-09-2021 : việt hóa database và website.<br>
