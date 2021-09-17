@@ -20,7 +20,7 @@
             </div>
             <div class="featured__controls" >
                 <ul>
-                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">All</a></li>
+                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">Toàn bộ</a></li>
                     <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Trái cây</a></li>
                     <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
                         <a class="text-tron">Rau củ</a>
@@ -67,17 +67,17 @@
                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
                         container="body">
                         <ul class="featured__item__pic__hover">
-                            <li ngbTooltip="Add to Favorite" container="body"><a (click)="addToFav(pro)"><i
+                            <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="View product page" container="body" routerLink="/product/{{pro.id}}"><a><i
+                            <li ngbTooltip="Xem thông tin" container="body" routerLink="/product/{{pro.id}}"><a><i
                                         class="fas fa-info"></i></a></li>
-                            <li ngbTooltip="Add to cart" container="body" (click)="addToCart(pro)"><a><i
+                            <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro)"><a><i
                                         class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
                     <div class="featured__item__text">
                         <h6><a >{{pro.name}}</a></h6>
-                        <h5>{{pro.price}} VND</h5>
+                        <h5>{{pro.price |   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </h5>
                     </div>
                 </div>
             </div>

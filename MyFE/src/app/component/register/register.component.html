@@ -5,14 +5,14 @@
     <div class="div-center-content" style="margin-bottom: 20px;">
 
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
-        <strong style="display: block;font-size: 20px;" class="text-monospace">Sign Up</strong>
-        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">You already login as '{{user.displayName}}' using {{user.email}}</p>
+        <strong style="display: block;font-size: 20px;" class="text-monospace">Đăng ký tài khoản</strong>
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">Bạn đã đăng nhập với tài khoản '{{user.displayName}}' sử dụng email : {{user.email}}</p>
     </div>
 
     <form novalidate (ngSubmit)="trySignUp()" class="row justify-content-md-center" [formGroup]="rf1" *ngIf="!isLogin">
         <div class="col-md-8">
             <div class="col alert alert-danger" role="alert" *ngIf="unknown_error&&showFormError">
-                An error has occurred ! Try again !
+                Có lỗi xảy ra ! Xin hãy thử lại.
             </div>
             <div class="form-group row">
                 <label for="example-text-input" class="col-2 col-form-label">
@@ -24,13 +24,13 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.email?.errors?.required&&showFormError">
-                Email is required!
+                Email chưa nhập !
             </div>
             <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
-                Email is not valid!
+                Email không hợp lệ!
             </div>
             <div class="col alert alert-danger" role="alert" *ngIf="email_exist_error&&showFormError">
-                Email is already been used!
+                Email đã được sử dụng!
             </div>
             <div class="form-group row">
                 <label for="example-email-input" class="col-2 col-form-label">
@@ -42,23 +42,23 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.password?.errors?.required&&showFormError">
-                Password is required!
+                Password chưa nhập!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['password'].hasError('minlength')&&showFormError">
-                Password is must be atleast 8 characters!
+                Password phải có 8 kí tự!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['password'].hasError('pattern')&&showFormError">
-                Password must satisfy these requirements : <br>
-                    Lowercase letters <br>
-                    Uppercase letters <br>
-                    Numbers <br>
-                    Special characters <br>
+                Password phải thõa : <br>
+                    Chữ thường <br>
+                    Chữ in <br>
+                    Số <br>
+                    Kí tự đặc biệt <br>
             </div>
             <div class="form-group row">
                 <label for="example-url-fb" class="col-2 col-form-label">
-                    Username:
+                    Tên tài khoản:
                 </label>
                 <div class="col-10">
                     <input class="form-control" type="text" id="example-url-fb" formControlName="username">
@@ -66,16 +66,16 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.username?.errors?.required&&showFormError">
-                Username is required!
+                Tên tài khoản chưa nhập!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['username'].hasError('minlength')&&showFormError">
-                Username is must be atleast 3 characters!
+                Tên tài khoản phải ít nhất 3 kí tự!
             </div>
 
             <div class="form-group row">
                 <label for="example-url-fb" class="col-2 col-form-label">
-                    Phone:
+                    SDT:
                 </label>
                 <div class="col-10">
                     <input class="form-control" type="tel" id="example-url-fb-sdas" formControlName="phone">
@@ -83,11 +83,11 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
-                Phone number is required!
+                SDT chưa nhập!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['phone'].hasError('pattern')&&showFormError">
-                Phone is invalid!
+                SDT không hợp lệ!
             </div>
 
             <div class="form-group row" *ngIf="!isLoading&&!isRegistered">
@@ -105,14 +105,14 @@
 
                     </div>
 
-                    <p style="color: rgb(0, 0, 0);" > Loading ...</p>
+                    <p style="color: rgb(0, 0, 0);" > Đang tải ...</p>
                 </div>
             </div>
             <div class="form-group row" *ngIf="isRegistered">
                 <div class="col " style="display: flex;
                 justify-content: center;">
-                    <p style="color: rgb(0, 0, 0);" > We have sent an email with a confirmation link to your email address.
-                         In order to complete the sign-up process, please click the confirmation link.</p>
+                    <p style="color: rgb(0, 0, 0);" >Shop đã gửi email xác nhận tài khoản đến email của bạn. Hãy kiểm tra email 
+                        để hoàn tất quá trình đăng ký tài khoản</p>
                 </div>
             </div>
         </div>
@@ -126,11 +126,10 @@
         <div class="col">
             <div class="d-flex flex-column justify-content-center">
 
-                <p class="text-monospace"> Already registered ?  </p><button class="btn btn-danger" routerLink="/login"
-               >Sign
-                In</button>
-                <p class="text-monospace" style="margin-top:15px;"> Forgot password ?  </p><button class="btn btn-warning" routerLink="/password-recover"
-                >Click here</button>
+                <p class="text-monospace"> Đã có tài khoản ?  </p><button class="btn btn-danger" routerLink="/login"
+               >Đăng nhập</button>
+                <p class="text-monospace" style="margin-top:15px;"> Quên mật khẩu ?  </p><button class="btn btn-warning" routerLink="/password-recover"
+                >Khôi phục</button>
             </div>
         </div>
     </div>
