@@ -41,6 +41,12 @@ export class ProductCategoryComponent implements OnInit {
     else if(this.router.url.includes("confectionery")){
       this.category="Confectionery"
     }
+    else if(this.router.url.includes("animalproduct")){
+      this.category="AnimalProduct"
+    }
+    else if(this.router.url.includes("cannedfood")){
+      this.category="CannedFood"
+    }
     else{
       this.category="Snack"
     }
@@ -82,7 +88,7 @@ export class ProductCategoryComponent implements OnInit {
       data => {
         //console.log(data)
         this.products = data.results
-        this.collectionSize = data.totalItem
+        //this.collectionSize = data.totalItem
         this.isLoading = false
       },
       error => {

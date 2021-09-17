@@ -4,11 +4,13 @@
 <div class="container form-reg" style="margin-top: 100px;">
     <div class="div-center-content" style="margin-bottom: 20px;">
 
-        <img  src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
-        <strong style="display: block;font-size: 20px;" class="text-monospace">Login</strong>
-      <!-- //  <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
-        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">You already login as '{{user.displayName}}' using {{user.email}}</p>
-        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="login_error">Wrong password or email!</p>
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
+        <strong style="display: block;font-size: 20px;" class="text-monospace">Đăng nhập</strong>
+        <!-- //  <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">Bạn đã đăng nhập với tài khoản
+            '{{user.displayName}}' sử dụng email : {{user.email}}</p>
+        <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="login_error">Sai mật khẩu hoặc sai
+            email!</p>
     </div>
 
     <form novalidate (ngSubmit)="trySignIn()" class="row justify-content-md-center" [formGroup]="rf1" *ngIf="!isLogin">
@@ -23,10 +25,10 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.email?.errors?.required&&showFormError">
-                Email is required!
+                Chưa nhập email!
             </div>
             <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
-                Email is not valid!
+                Email không hợp lệ!
             </div>
             <div class="form-group row">
                 <label for="example-email-input" class="col-2 col-form-label">
@@ -38,42 +40,50 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.password?.errors?.required&&showFormError">
-                Password is required!
+                Chưa nhập password !
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['password'].hasError('minlength')&&showFormError">
-                Password is must be atleast 8 characters!
+                Password phải có ít nhất 8 kí tự!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls['password'].hasError('pattern')&&showFormError">
+                Password phải thỏa : <br>
+                Chữ thường <br>
+                Chữ in <br>
+                Số <br>
+                Kí tự đặc biệt <br>
             </div>
             <div class="spinner-border text-primary" role="status" *ngIf="isLoading">
 
             </div>
 
-            <p style="color: rgb(8, 8, 8);" *ngIf="isLoading"> Please wait a sec ...</p>
-            <div class="form-group row" *ngIf="!isLoading"> 
+            <p style="color: rgb(8, 8, 8);" *ngIf="isLoading"> Xin chờ 1 xíu ...</p>
+            <div class="form-group row" *ngIf="!isLoading">
                 <div class="col " style="display: flex;
                 justify-content: center;">
                     <!-- <a routerLink="/register">Sign Up</a><br> -->
-                    <button class="btn btn-primary" type="submit">Login</button>
+                    <button class="btn btn-primary" type="submit">Đăng nhập</button>
 
                 </div>
             </div>
         </div>
     </form>
-    
+
 
     <!-- <pre>{{rf1.value|json}}</pre>
     <pre>{{rf1.valid|json}}</pre> -->
 </div>
-<div class="div-center-content"> 
+<div class="div-center-content">
     <div class="row justify-content-md-center">
         <div class="col">
             <div class="d-flex flex-column justify-content-center">
-    
-    
-                <p class="text-monospace"> New here ? : <button class="btn btn-danger" routerLink="/register" style="margin-left: 10px;">Sign
-                        Up</button></p>
-                <p class="text-monospace"> Forgot password ? : <button class="btn btn-warning" routerLink="/password-recover"
-                        style="margin-left: 10px;">Click here</button></p>
+
+
+                <p class="text-monospace"> Chưa có tài khoản ? : <button class="btn btn-danger" routerLink="/register"
+                        style="margin-left: 10px;">Đăng ký</button></p>
+                <p class="text-monospace"> Quên mật khẩu ? : <button class="btn btn-warning"
+                        routerLink="/password-recover" style="margin-left: 10px;">Khôi phục</button></p>
             </div>
         </div>
     </div>

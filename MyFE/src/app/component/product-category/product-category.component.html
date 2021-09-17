@@ -1,20 +1,38 @@
 <app-nav></app-nav>
-<section id="share-section" class="bg-light text-muted py-5" *ngIf="category=='all'||category=='Vegetable'">
+<section id="share-section" class="bg-light py-5" *ngIf="category=='all'">
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="https://img.freepik.com/free-photo/product-package-boxes-shopping-bag-cart-with-laptop-online-shopping-delivery-concept_38716-138.jpg?size=626&ext=jpg" alt=""
+                    class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-8">
+                <h3>Circle's Shop</h3>
+                <p>Là 1 trong những website đi chợ online đầu tiên tại Việt Nam, Circle's Shop đã mang lại nhiều ưu thế cũng như cạnh tranh mạnh mẽ so với cách đi chợ truyền thống</p>
+                <button class="btn btn-success float-right"  (click)="scroll(top);">Shop Now
+                    <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="share-section" class="bg-light py-5" *ngIf="category=='Vegetable'">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <img src="https://indiandownunder.com.au/wp-content/uploads/2017/11/veggies.jpg" alt=""
                     class="img-fluid mb-3 rounded-circle">
             </div>
-            <div class="col-md-6">
-                <h3>Vegetables</h3>
-                <p>Fresh from the markets daily.</p>
+            <div class="col-md-8">
+                <h3>Rau củ</h3>
+                <p>Tươi sống từ nông trại mỗi ngày.</p>
                 <div class="d-flex">
                     <div class="p-4 align-self-start">
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        FREE home delivery with bill from 200,000 VND
+                        Đảm bảo rau sạch và 100% không thuốc trừ sâu
                     </div>
                 </div>
 
@@ -23,30 +41,29 @@
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        ❤️❤️❤️ Healthy and refreshing
+                        Dễ dàng chế biến và tích trữ
                     </div>
                 </div>
-                <button class="btn btn-success float-right" routerLink="/vegetable"  (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
 </section>
-<section id="create-section" class="py-5" *ngIf="category=='all'||category=='Fruit'">
+<section id="create-section" class="py-5" *ngIf="category=='Fruit'">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 order-2 ">
+            <div class="col-md-4 order-2 ">
                 <img src="https://www.ieltsvietop.vn/wp-content/uploads/2020/06/tu-vung-trai-cay.jpg" alt=""
                     class="img-fluid mb-3 rounded-circle">
             </div>
-            <div class="col-md-6 order-1 order-tron">
-                <h3>Fruit</h3>
-                <p>Check out our weekly specials.</p>
+            <div class="col-md-8 order-1 order-tron">
+                <h3>Trái cây</h3>
+                <p>Được lấy từ trang trại mỗi tuần</p>
                 <div class="d-flex">
                     <div class="p-4 align-self-start">
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        Apples, grapes... any kind of fruit gives me the energy I need to get through my busy day.
+                       Trái cây ngọt và mát. Ăn là nghiền!
                     </div>
                 </div>
 
@@ -55,30 +72,29 @@
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        ❤️❤️❤️ 100% original
+                        100 % tự nhiên không thuốc kích thích
                     </div>
                 </div>
-                <button class="btn btn-success " routerLink="/fruit" (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
 </section>
-<section id="share-section" class="bg-light text-muted py-5" *ngIf="category=='all'||category=='Snack'">
+<section id="share-section" class="bg-light py-5" *ngIf="category=='Snack'">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <img src="https://toplist.vn/images/800px/fritos-198624.jpg" alt=""
                     class="img-fluid mb-3 rounded-circle">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <h3>Snack</h3>
-                <p>Lots of delicioust snack!</p>
+                <p>Rất nhiều loại bimbim và snack để chọn!</p>
                 <div class="d-flex">
                     <div class="p-4 align-self-start">
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        What you want to have today? 
+                        Càng ăn càng nghiền!
                     </div>
                 </div>
 
@@ -87,30 +103,29 @@
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        ❤️❤️❤️ Special sales for the special day  
+                        ❤️ Chia sẻ với bạn bè những bịch snack ngon nào!
                     </div>
                 </div>
-                <button class="btn btn-success float-right" routerLink="/snack" (click)="scroll(top);">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
 </section>
-<section id="create-section" class="py-5" *ngIf="category=='all'||category=='Confectionery'">
+<section id="create-section" class="py-5" *ngIf="category=='Confectionery'">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 order-2">
+            <div class="col-md-4 order-2">
                 <img src="https://songhantourist.com/upload/articles-images/images/chon-lua-keo-kitkat-nhieu-huong-vi.jpg"
                     alt="" class="img-fluid mb-3 rounded-circle">
             </div>
-            <div class="col-md-6 order-1 order-tron">
-                <h3>Confectionery</h3>
-                <p>A wide range of confectionery</p>
+            <div class="col-md-8 order-1 order-tron">
+                <h3>Bánh kẹo</h3>
+                <p>Bánh kẹo các loại từ các nhãn hiệu cao cấp</p>
                 <div class="d-flex">
                     <div class="p-4 align-self-start">
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        Money can’t buy happiness, but it can buy cakes!
+                        Tiền không mua được hạnh phúc nhưng mua dược bánh kẹo ngon!
                     </div>
                 </div>
 
@@ -119,16 +134,75 @@
                         <i class="fas fa-check fa-2x"></i>
                     </div>
                     <div class="p-4 align-self-end">
-                        ❤️❤️❤️ Money-back guarantee if the product is not as expected
+                        Hoàn tiền nếu giá rẻ hơn!
                     </div>
                 </div>
-                <button class="btn btn-success " routerLink="/confectionery">Shop Now <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
 </section>
+<section id="share-section" class="bg-light  py-5" *ngIf="category=='AnimalProduct'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="https://www.professorshouse.com/wp-content/uploads/2015/03/food-16.jpg" alt=""
+                    class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-8">
+                <h3>Thịt tươi sống</h3>
+                <p>Thịt heo, bò, gà và hải sản các loại.</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        Miễn phí giao hàng với đơn hàng trên 200.000 VND
+                    </div>
+                </div>
 
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        Tươi và bổ dưỡng.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="create-section" class="py-5" *ngIf="category=='CannedFood'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 order-2">
+                <img src="https://kenh14cdn.com/2018/4/7/photo-1-crop-152306902435758431049.jpg"
+                    alt="" class="img-fluid mb-3 rounded-circle">
+            </div>
+            <div class="col-md-8 order-1 order-tron">
+                <h3>Đồ hộp</h3>
+                <p>Sản phẩm đóng hộp từ các thương hiệu hàng đầu Việt Nam.</p>
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        Sản phẩm đóng hộp chất lượng cao!
+                    </div>
+                </div>
 
+                <div class="d-flex">
+                    <div class="p-4 align-self-start">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <div class="p-4 align-self-end">
+                        Dễ dàng vận chuyển và bảo quản.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
     <div class="wrap">
         <div class="search">
@@ -147,22 +221,22 @@
     <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
         <div class="col">
             <div class="section-title">
-                <h2 class="text-tron">Our Product</h2>
+                <h2 class="text-tron">Sản phẩm của chúng tôi</h2>
             </div>
             <div class="featured__controls">
                 <ul>
-                    <li [class.active]="category=='all'" routerLink="/products"><a class="text-tron">All</a>
+                    <li [class.active]="category=='all'" routerLink="/products"><a class="text-tron">Toàn bộ</a>
                     </li>
-                    <li [class.active]="category=='Fruit'" routerLink="/fruit"><a
-                            class="text-tron">Fruit</a></li>
-                    <li [class.active]="category=='Vegetable'"routerLink="/vegetable">
-                        <a class="text-tron">Vegetables</a>
+                    <li [class.active]="category=='Fruit'" routerLink="/fruit"><a class="text-tron">Trái cây</a></li>
+                    <li [class.active]="category=='Vegetable'" routerLink="/vegetable">
+                        <a class="text-tron">Rau củ</a>
                     </li>
                     <li [class.active]="category=='Confectionery'" routerLink="/confectionery">
-                        <a class="text-tron">Confectionery</a>
+                        <a class="text-tron">Bánh kẹo</a>
                     </li>
-                    <li [class.active]="category=='Snack'" routerLink="/snack"><a
-                            class="text-tron">Snack</a></li>
+                    <li [class.active]="category=='Snack'" routerLink="/snack"><a class="text-tron">Snack</a></li>
+                    <li [class.active]="category=='AnimalProduct'" routerLink="/animalproduct"><a class="text-tron">Thịt tươi sống</a></li>
+                    <li [class.active]="category=='CannedFood'" routerLink="/cannedfood"><a class="text-tron">Đồ hộp</a></li>
                 </ul>
             </div>
         </div>
@@ -201,15 +275,17 @@
                         <ul class="featured__item__pic__hover">
                             <li ngbTooltip="Add to Favorite" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="View product page" container="body" routerLink="/product/{{pro.id}}"><a><i
-                                        class="fas fa-info"></i></a></li>
+                            <li ngbTooltip="View product page" container="body" routerLink="/product/{{pro.id}}">
+                                <a><i class="fas fa-info"></i></a>
+                            </li>
                             <li ngbTooltip="Add to cart" container="body" (click)="addToCart(pro)"><a><i
                                         class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
                     <div class="featured__item__text">
                         <h6><a href="#">{{pro.name}}</a></h6>
-                        <h5>${{pro.price}}</h5>
+                        <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -237,7 +313,7 @@
 
 
 <ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;">
-    <div class="typeahead-tron">
+    <div>
         <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img">
         <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
     </div>

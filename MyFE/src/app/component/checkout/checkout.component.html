@@ -6,7 +6,7 @@
                     Home
                 </a>
             </li>
-            <li><a class="breadcrumb-link"><span itemprop="name">Checkout</span></a></li>
+            <li><a class="breadcrumb-link"><span itemprop="name">Thanh toán</span></a></li>
 
         </ol>
     </div>
@@ -25,7 +25,7 @@
                                     <span class="after"></span>
                                     1
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Giỏ hàng</p>
                             </a>
                         </li>
                         <li class="complete" style="background-color: greenyellow">
@@ -35,7 +35,7 @@
                                     <span class="after"></span>
                                     2
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Login</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Đăng nhập</p>
                             </a>
                         </li>
                         <li class="complete" style="background-color: greenyellow">
@@ -45,7 +45,7 @@
                                     <span class="after"></span>
                                     3
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Thanh toán</p>
                             </a>
                         </li>
                         <li class="">
@@ -55,7 +55,7 @@
                                     <span class="after"></span>
                                     4
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
                             </a>
                         </li>
                     </ul>
@@ -70,7 +70,7 @@
 
                     <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
                         style="width: 50%;">
-                    <strong style="display: block;font-size: 20px;" class="text-monospace">Contact Infomation</strong>
+                    <strong style="display: block;font-size: 20px;" class="text-monospace">Thông tin liên lạc</strong>
                     <!-- <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
                 </div>
                 <form novalidate (ngSubmit)="submitInfo()" class="row justify-content-md-center" [formGroup]="rf1">
@@ -89,15 +89,15 @@
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.email?.errors?.required&&showFormError">
-                            Email is required!
+                            Email chưa điền!
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.email?.errors?.email&&showFormError">
-                            Email is not valid!
+                            Email không hợp lệ!
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Name:
+                                Tên liên lạc:
                             </label>
                             <div class="col-10">
                                 <input class="form-control" type="text" id="example-url-fb"
@@ -106,12 +106,12 @@
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.contactname?.errors?.required&&showFormError">
-                            Contact name is required!
+                            Chưa điền tên liên lạc!
                         </div>
 
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Phone:
+                                SDT:
                             </label>
                             <div class="col-10">
                                 <input class="form-control" type="tel" id="example-url-fb-sdas" formControlName="phone">
@@ -119,11 +119,11 @@
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
-                            Phone number is required!
+                            Chưa điền SDT!
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls['phone'].hasError('pattern')&&showFormError">
-                            Phone is invalid!
+                            SDT không hợp lệ!
                         </div>
                         <div class="div-center-content" style="margin-bottom: 20px;">
                             <strong style="display: block;font-size: 20px;" class="text-monospace">Address</strong>
@@ -131,7 +131,7 @@
 
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Address:
+                                Địa chỉ:
                             </label>
                             <div class="col-10">
                                 <input class="form-control" type="text" id="example-url-fb-sdas"
@@ -140,11 +140,11 @@
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.address?.errors?.required&&showFormError">
-                            Address is required!
+                            Chưa nhập địa chỉ!
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Street:
+                                Đường:
                             </label>
                             <div class="col-10">
                                 <input class="form-control" type="text" id="example-url-fb-sdas"
@@ -153,11 +153,11 @@
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.street?.errors?.required&&showFormError">
-                            Street is required!
+                            Nhập tên đường!
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Ward:
+                                Phường:
                             </label>
                             <div class="col-10">
                                 <select class="form-select" aria-label="Default select example" formControlName="ward">
@@ -168,7 +168,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                District:
+                                Quận:
                             </label>
                             <div class="col-10">
                                 <select class="form-select" aria-label="Default select example"
@@ -183,12 +183,12 @@
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Payment:
+                                Phương thức thanh toán:
                             </label>
                             <div class="col-10">
                                 <select class="form-select" aria-label="Default select example"
                                     formControlName="billOption">
-                                    <option selected value="cash">Cash</option>
+                                    <option selected value="cash">Tiền mặt</option>
                                     <option selected value="momo">Momo</option>
                                     <option selected value="vnpay">VNPay</option>
                                 </select>
@@ -196,15 +196,15 @@
                         </div>
                         <div class="div-center-content" style="margin-bottom: 20px;">
                             <strong style="display: block;font-size: 20px;" class="text-monospace">
-                                Note</strong>
+                                Ghi chú</strong>
                         </div>
                         <div class="form-group row">
                             <label for="example-url-fb" class="col-2 col-form-label">
-                                Note:
+                                Ghi chú cho đơn hàng:
                             </label>
                             <div class="col-10">
                                 <input class="form-control" type="text" id="example-url-fb-sdas"
-                                    formControlName="note" placeholder="Note for this order...">
+                                    formControlName="note" placeholder="Ghi chú cho đơn hàng...">
                             </div>
                         </div>
                         <div class="form-group row ">
@@ -213,14 +213,14 @@
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                                 <p>
-                                   Please wait a sec ... !
+                                   Xin chờ 1 xíu... !
                                 </p>
                             </div>
                         </div>
                         <div class="form-group row" *ngIf="!isLoading">
                             <div class="col " style="display: flex;
                         justify-content: center;">
-                                <button class="btn btn-primary" type="submit">Submit</button>
+                                <button class="btn btn-primary" type="submit">Gửi đơn</button>
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
                                     <span class="after"></span>
                                     1
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Giỏ hàng</p>
                             </a>
                         </li>
                         <li class="complete" style="background-color: greenyellow">
@@ -257,7 +257,7 @@
                                     <span class="after"></span>
                                     2
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Login</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Đăng nhập</p>
                             </a>
                         </li>
                         <li class="complete" style="background-color: greenyellow">
@@ -267,7 +267,7 @@
                                     <span class="after"></span>
                                     3
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Thanh toán</p>
                             </a>
                         </li>
                         <li class="complete" style="background-color: greenyellow">
@@ -277,7 +277,7 @@
                                     <span class="after"></span>
                                     4
                                 </span>
-                                <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
                             </a>
                         </li>
                     </ul>
@@ -292,7 +292,7 @@
 
                     <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
                         style="width: 50%;">
-                    <strong style="display: block;font-size: 20px;" class="text-monospace">Thank you for shopping with us!</strong>
+                    <strong style="display: block;font-size: 20px;" class="text-monospace">Đơn hàng đã được ghi nhận. Cảm ơn bạn đã mua sắm với chúng tôi!</strong>
                   
                 </div>
             </div>

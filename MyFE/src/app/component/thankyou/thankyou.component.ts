@@ -52,7 +52,7 @@ export class ThankyouComponent implements OnInit {
     if(this.vnp_ResponseCode=="00"){
       this.payment_status="OK"
       this.user_Order=JSON.parse(localStorage.getItem("user-current-order")!)
-      this.orderService.saveOrder(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
+      this.orderService.saveOrderPrePay(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
         ,this.user_Order.email,this.user_Order.paymentMethod,this.user_Order.orderDate,this.user_Order.totalItem
         ,this.user_Order.totalPrice,this.user_Order.note).subscribe(
           data=>{
@@ -89,7 +89,7 @@ export class ThankyouComponent implements OnInit {
     else if(this.momo_ResponCode=="0"){
       this.payment_status="OK"
       this.user_Order=JSON.parse(localStorage.getItem("user-current-order")!)
-      this.orderService.saveOrder(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
+      this.orderService.saveOrderPrePay(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
         ,this.user_Order.email,this.user_Order.paymentMethod,this.user_Order.orderDate,this.user_Order.totalItem
         ,this.user_Order.totalPrice,this.user_Order.note).subscribe(
           data=>{

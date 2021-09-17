@@ -41,6 +41,22 @@ export class OrderService {
       status: 0
     })
   }
+  saveOrderPrePay(userID: string, contactName: string, address: string, phone: string, email: string,
+    paymentMethod: string, orderDate: string, totalItem: number, totalPrice: number, note: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}order`, {
+      userID: userID,
+      contactName: contactName,
+      address: address,
+      phone: phone,
+      email: email,
+      paymentMethod: paymentMethod,
+      orderDate: orderDate,
+      totalItem: totalItem,
+      totalPrice: totalPrice,
+      note: note,
+      status: 1
+    })
+  }
   saveOrderDetail(orderId: number, productID: number, quantity: number): Observable<any> {
     return this.http.post(`${this.apiUrl}order/addOrderDetails`, {
       productId: productID,

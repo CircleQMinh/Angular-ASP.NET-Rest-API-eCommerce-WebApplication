@@ -6,12 +6,12 @@
                     Home
                 </a>
             </li>
-            <li><a class="breadcrumb-link"><span itemprop="name">Cart</span></a></li>
+            <li><a class="breadcrumb-link"><span itemprop="name">Giỏ hàng</span></a></li>
 
         </ol>
         <div class="col" *ngIf="cartItems.length==0">
             <p class="lead text-center" style="margin-bottom: 500px;">
-                Your cart is empty! Add some items to cart now!
+                Giỏ hàng của bạn rỗng! Hãy thêm vài sản phẩm vào giỏ hàng đi!
             </p>
         </div>
     </div>
@@ -32,7 +32,7 @@
                                         <span class="after"></span>
                                         1
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Cart</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Giỏ hàng</p>
                                 </a>
                             </li>
                             <li class="">
@@ -42,7 +42,7 @@
                                         <span class="after"></span>
                                         2
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Login</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Đăng nhập</p>
                                 </a>
                             </li>
                             <li class="">
@@ -52,7 +52,7 @@
                                         <span class="after"></span>
                                         3
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Checkout</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Thanh toán</p>
                                 </a>
                             </li>
                             <li class="">
@@ -62,7 +62,7 @@
                                         <span class="after"></span>
                                         4
                                     </span>
-                                    <p class="font__family-montserrat font__size-15 steps__title">Done</p>
+                                    <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
                                 </a>
                             </li>
                         </ul>
@@ -77,11 +77,11 @@
                     <table class="table table-cart" style="margin-top: 20px;width: 100%;table-layout : fixed">
                         <thead>
                             <tr>
-                                <th style="text-align: center;">Product</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th style="text-align: center;">Sản phẩm</th>
+                                <th>Tên</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,7 +98,7 @@
                                 </td>
                                 <td aria-label="Price">
                                     <span
-                                        class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">${{o.price}}</span>
+                                        class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price |currency:'VND':''}} <span style="text-decoration: underline;">đ</span></span>
                                 </td>
                                 <td class="d-flex justify-content-center">
 
@@ -113,7 +113,7 @@
                                 </td>
                                 <td aria-label="Total">
                                     <span
-                                        class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">${{(cartItemsQuantity[i]*o.price).toFixed(2)}}</span>
+                                        class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(cartItemsQuantity[i]*o.price) |currency:'VND':''}} <span style="text-decoration: underline;">đ</span></span>
                                 </td>
                             </tr>
 
@@ -124,27 +124,27 @@
                 <div class="brk-cart__footer">
                     <div class="brk-cart__footer-coupon">
 
-                        <button type="button" class="btn btn-secondary" (click)="checkOut()">Checkout <i
+                        <button type="button" class="btn btn-success" (click)="checkOut()">Thanh toán <i
                                 class="fas fa-dollar-sign"></i></button>
-                        <button type="button" class="btn btn-secondary" routerLink="/home">Continue Shopping <i
+                        <button type="button" class="btn btn-warning" routerLink="/products">Tiếp tục Shopping <i
                                 class="fas fa-shopping-cart"></i></button>
 
                     </div>
                     <div class="brk-cart__footer-total">
                         <div class="brk-cart__footer-total-item font__family-montserrat">
-                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Total Item : </div>
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Tổng SP : </div>
                             <div class="font__size-16 line-height-1-25 font__weight-bold brk-base-font-color">
                                 {{totalItem}}
                             </div>
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
-                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Total : </div>
-                            <div class="font__size-14 line-height-1-5 font__weight-bold">${{(totalPrice).toFixed(2)}}
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Tổng tiền : </div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">{{(totalPrice) |currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
                             </div>
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
-                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Shipping and Handling</div>
-                            <div class="font__size-14 line-height-1-5 font__weight-bold">Free Shipping</div>
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Giao hàng và vận chuyển</div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">Free</div>
                         </div>
 
                     </div>

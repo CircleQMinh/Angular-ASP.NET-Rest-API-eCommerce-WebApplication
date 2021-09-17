@@ -40,6 +40,8 @@ const routes: Routes = [
   { path: 'vegetable', component: ProductCategoryComponent },
   { path: 'confectionery', component: ProductCategoryComponent },
   { path: 'snack', component: ProductCategoryComponent },
+  { path: 'animalproduct', component: ProductCategoryComponent },
+  { path: 'cannedfood', component: ProductCategoryComponent },
   { path: 'profile/:id', component: ProfileComponent },
   { path: 'profile/:id/favorite', component: ProfileFavoriteComponent },
   { path: 'profile/:id/order', component: ProfileOrderComponent },
