@@ -4,6 +4,7 @@
 }
 body{
     width: 100%;
+    min-height: 100%;
 }
 .dd-menu a{
     color: black!important;
@@ -503,6 +504,10 @@ a:hover{color:#51aa1b;}
 @-webkit-keyframes bounce{0%,20%,50%,80%,100%{-webkit-transform:translateY(0);transform:translateY(0);}40%{-webkit-transform:translateY(-30px);transform:translateY(-30px);}60%{-webkit-transform:translateY(-15px);transform:translateY(-15px);}}
 @keyframes bounce{0%,20%,50%,80%,100%{-moz-transform:translateY(0);-ms-transform:translateY(0);-webkit-transform:translateY(0);transform:translateY(0);}40%{-moz-transform:translateY(-30px);-ms-transform:translateY(-30px);-webkit-transform:translateY(-30px);transform:translateY(-30px);}60%{-moz-transform:translateY(-15px);-ms-transform:translateY(-15px);-webkit-transform:translateY(-15px);transform:translateY(-15px);}}
 
+
+
+
+
 .shop-info{
     border: 2px solid;
     border-radius: 20px;
@@ -511,7 +516,48 @@ a:hover{color:#51aa1b;}
     /* margin-right: 10px; */
     width: 90%;
 }
+.rss-feed{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
 
+}
+.rss-feed a img{
+    width: 250px!important;
+    height: 150px!important;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.rss-feed a{
+    display: inline;
+    text-decoration: revert!important;
+}
+.rss-feed #text{
+    display: inline;
+}
+.rss-feed-inner{
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 20px;
+    display: content;
+}
+.feed-title{
+    height: 72px;
+}
+.feed-time{
+    height: 24px;
+}
+#chuyen-muc{
+    border: solid 1px green;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
 .panel {
     border: none;
     box-shadow: none;
@@ -960,7 +1006,7 @@ ngb-typeahead-window.dropdown-menu {
     margin-top: 10%;
 }
 .top-nav-searchbar{
-    width: 700px;
+    width: 650px;
 }
 
 @media (max-width: 1399.98px) { 
@@ -1013,6 +1059,9 @@ ngb-typeahead-window.dropdown-menu {
         width: 70%;
     }
     #side-info{
+        display: none;
+    }
+    #secondary-feed{
         display: none;
     }
 }

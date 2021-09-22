@@ -225,7 +225,7 @@ export class ShipperComponent implements OnInit {
       data=>{
 
         this.getAvailableOrder()
-        this.toast.success("You accept this order!")
+        this.toast.success("Bạn đã nhận giao đơn hàng!")
         this.isAcceptingOrder=false
         this.modalService.dismissAll()
       },
@@ -237,7 +237,7 @@ export class ShipperComponent implements OnInit {
   }
   openFinishOrderInfoModal(info: any, o: Order) {
     this.selectedOrder = o
-    this.rf1.controls["note"].setValue("Successful delivery!")
+    this.rf1.controls["note"].setValue("Giao hàng thành công!")
     this.rf1.controls["status"].setValue(3)
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
   }
@@ -250,7 +250,7 @@ export class ShipperComponent implements OnInit {
       data=>{
 
         this.getAcceptedOrder()
-        this.toast.success("You finish this order!")
+        this.toast.success("Đã hoàn thành đơn hàng!")
         this.isAcceptingOrder=false
         this.modalService.dismissAll()
       },

@@ -34,12 +34,17 @@ export class NavComponent implements OnInit {
     }
 
   }
+  newSearch(){
+
+    this.router.navigateByUrl('/', {skipLocationChange: true})
+    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword } }));
+  }
 
   searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
   text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
-    map(term => term.length < 2 ? []
+    map(term => term.length < 1 ? []
       : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
   )
   selectedItem(item: any) {

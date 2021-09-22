@@ -3,7 +3,7 @@
         <div class="search">
            <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" 
            [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)" >
-           <button type="submit" class="searchButton">
+           <button type="submit" class="searchButton" (click)="newSearch()">
              <i class="fa fa-search"></i>
           </button>
         </div>

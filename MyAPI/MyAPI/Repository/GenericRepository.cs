@@ -123,6 +123,7 @@ namespace MyAPI.Repository
             await _db.AddRangeAsync(entities);
         }
 
+
         public void Update(T entity)
         {
             _db.Attach(entity);

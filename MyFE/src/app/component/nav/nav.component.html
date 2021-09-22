@@ -12,7 +12,7 @@
         <form class="d-flex top-nav-searchbar" >
             <input class="form-control me-2 " type="search" placeholder="Tìm sản phẩm mà bạn quan tâm ..." aria-label="Search" name="search"
             [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
-            <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+            <button class="btn btn-outline-light" type="submit" (click)="newSearch()"><i class="fas fa-search"></i></button>
         </form>
         <ul class="navbar-nav ml-auto topnav">
         
@@ -47,7 +47,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="far fa-newspaper"></i> Tin tức & Blog</a>
+                <a class="nav-link" routerLink="/news"><i class="far fa-newspaper"></i> Tin tức & Blog</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#"><i class="far fa-question-circle"></i> Liên hệ</a>

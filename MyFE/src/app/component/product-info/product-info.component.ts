@@ -254,11 +254,11 @@ export class ProductInfoComponent implements OnInit {
     if (localStorage.getItem("isLogin")) {
       this.authService.addToFav(localStorage.getItem('user-id')!, pro.id).subscribe(
         data => {
-          if (data.success) {
-            this.toast.success("Product added to favorite list successfully")
+          if(data.success){
+            this.toast.success("Sản phẩm đã thêm vào yêu thích")
           }
-          else {
-            this.toast.info("This product is already on your favorite list")
+          else{
+            this.toast.info("Sản phẩm đã nằm trong yêu thích")
           }
         },
         error => {
@@ -268,13 +268,13 @@ export class ProductInfoComponent implements OnInit {
       )
     }
     else {
-      this.toast.info("Login to add this product to your favorite list")
+      this.toast.info("Đăng nhập để thêm sản phẩm vào yêu thích")
     }
 
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)
-    this.toast.success("Product added to cart!")
+    this.toast.success("Đã thêm sản phẩm vào giỏ!")
   }
 
   addReview() {

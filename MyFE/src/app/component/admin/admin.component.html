@@ -13,20 +13,20 @@
                 <a [class.active]="active_tab=='db'" (click)="switchTab('db')" class="nav-link">Dashboard</a>
             </li>
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='order'" (click)="switchTab('order')" class="nav-link">Orders</a>
+                <a [class.active]="active_tab=='order'" (click)="switchTab('order')" class="nav-link">Đơn hàng</a>
             </li>
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='product'" (click)="switchTab('product')" class="nav-link">Product</a>
+                <a [class.active]="active_tab=='product'" (click)="switchTab('product')" class="nav-link">Sản phẩm</a>
             </li>
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='user'" (click)="switchTab('user')" class="nav-link">Users</a>
+                <a [class.active]="active_tab=='user'" (click)="switchTab('user')" class="nav-link">Người dùng</a>
             </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown mr-3">
+            <li class="nav-item dropdown mr-3" routerLink="/profile/{{user.id}}">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-user"></i> Welcome {{user.displayName}}
+                    <i class="fas fa-user"></i> Xin chào {{user.displayName}}
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item">
@@ -39,7 +39,7 @@
             </li>
             <li class="nav-item" (click)="signOut()">
                 <a class="nav-link">
-                    <i class="fas fa-user-times"></i> Logout
+                    <i class="fas fa-user-times"></i> Đăng xuất
                 </a>
             </li>
         </ul>
@@ -67,7 +67,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='order'">
-                    <i class="fas fa-cart"></i> Orders
+                    <i class="fas fa-cart"></i> Đơn hàng
                 </h1>
 
             </div>
@@ -81,7 +81,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='product'">
-                    <i class="fas fa-bag"></i> Products
+                    <i class="fas fa-bag"></i> Sản phẩm
                 </h1>
             </div>
         </div>
@@ -93,7 +93,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 *ngIf="active_tab=='user'">
-                    <i class="fas fa-users"></i> Users
+                    <i class="fas fa-users"></i> Người dùng
                 </h1>
             </div>
         </div>
@@ -112,17 +112,17 @@
             </div>
             <div class="col-md-3" >
                 <a class="btn btn-success btn-block" (click)="switchTab('order')">
-                    <i class="fas fa-plus"></i> Order
+                    <i class="fas fa-plus"></i> Đơn hàng
                 </a>
             </div>
             <div class="col-md-3" >
                 <a class="btn btn-warning btn-block" (click)="switchTab('product')">
-                    <i class="fas fa-plus"></i> Product
+                    <i class="fas fa-plus"></i> Sản phẩm
                 </a>
             </div>
             <div class="col-md-3" >
                 <a class="btn btn-info btn-block" (click)="switchTab('user')">
-                    <i class="fas fa-plus"></i> User
+                    <i class="fas fa-plus"></i> Người dùng
                 </a>
             </div>
         </div>
@@ -134,7 +134,7 @@
     <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="text monospace">Please wait a sec...</p>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
 </div>
 <div class="col-md-9" *ngIf="active_tab=='product'"> 
     <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
@@ -163,24 +163,24 @@
                     <div class="card-header">
                         <h4>Users</h4>
                         <button class="btn btn-info " (click)="openAddUserModal(newUser)">
-                            <i class="fas fa-plus"></i> Add a User
+                            <i class="fas fa-plus"></i> Thêm tài khoản
                         </button>
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
                                 <label>Role: </label>
                                 <select class="form-select" [(ngModel)]="role" (change)=" getUser()">
-                                    <option value="all" selected="true">All</option>
+                                    <option value="all" selected="true">Toàn bộ</option>
                                     <option value="Administrator">Admin</option>
                                     <option value="Shipper">Shipper</option>
                                     <option value="User">User</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Order: </label>
+                                <label>Sắp xếp theo: </label>
                                 <select class="form-select" [(ngModel)]="orderUser" (change)=" getUser()">
                                     <option value="Id" selected="true">Id</option>
                                     <option value="Email">Email</option>
-                                    <option value="Name">Name</option>
+                                    <option value="Name">Tên</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -195,7 +195,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Page Size: </label>
+                                <label>Hiển thị: </label>
                                 <select class="form-select" [(ngModel)]="pageSizeUser" (change)=" getUser()">
                                     <option value="5" selected="true">5</option>
                                     <option value="2">2</option>
@@ -211,11 +211,11 @@
                             <thead class="thead-dark">
                                 <tr>
 
-                                    <th>Display Info</th>
+                                    <th>Thông tin</th>
                                     <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Verified</th>
-                                    <th>Action</th>
+                                    <th>SDT</th>
+                                    <th>Đã xác thực</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -272,27 +272,27 @@
             <div class="col-md-9" *ngIf="active_tab=='order'">
                 <div class="card ">
                     <div class="card-header">
-                        <h4>Order</h4>
+                        <h4>Đơn hàng</h4>
 
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
-                                <label>Status: </label>
+                                <label>Trạng thái: </label>
                                 <select class="form-select" [(ngModel)]="status" (change)=" onPageSizeStatusChage()">
-                                    <option value="99" selected="true">All</option>
-                                    <option value="0">Not Check</option>
-                                    <option value="1">Checked</option>
-                                    <option value="2">Delivering</option>
-                                    <option value="3">Done</option>
-                                    <option value="4">Canceled</option>
+                                    <option value="99" selected="true">Tất cả</option>
+                                    <option value="0">Chưa duyệt</option>
+                                    <option value="1">Đã duyệt</option>
+                                    <option value="2">Đang giao</option>
+                                    <option value="3">Hoàn thành</option>
+                                    <option value="4">Hủy</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Order By: </label>
+                                <label>Sắp xếp theo: </label>
                                 <select class="form-select" [(ngModel)]="orderOrder"
                                     (change)=" onPageSizeStatusChage()">
                                     <option value="Id" selected="true">Id</option>
-                                    <option value="Price">Total Price</option>
-                                    <option value="OrderDate">OrderDate</option>
+                                    <option value="Price">Tổng giá </option>
+                                    <option value="OrderDate">Ngày đặt</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -308,7 +308,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Page Size: </label>
+                                <label>Hiển thị: </label>
                                 <select class="form-select" [(ngModel)]="pageSizeOrder"
                                     (change)=" onPageSizeStatusChage()">
                                     <option value="5" selected="true">5</option>
@@ -325,13 +325,13 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Id</th>
-                                    <th >Contact Info</th>
-                                    <th>Order Date</th>
-                                    <th>Delivery Date</th>
-                                    <th>Total Item</th>
-                                    <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th >Thông tin liên lạc</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày giao</th>
+                                    <th>Số SP</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -359,23 +359,22 @@
                                         <p class="text-tron text-monospace">{{o.totalItem}}</p>
                                     </td>
                                     <td>
-                                        <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                                        <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                     </td>
                                     <td *ngIf="o.status==0">
-                                        <span class="badge bg-info text-dark">Not Check</span>
+                                        <span class="badge bg-info text-dark">Chưa duyệt</span>
                                     </td>
                                     <td *ngIf="o.status==1">
-                                        <span class="badge bg-success">Checked</span>
+                                        <span class="badge bg-success">Đã duyệt</span>
                                     </td>
                                     <td *ngIf="o.status==2">
-                                        <span class="badge bg-warning text-dark">Delivering</span>
+                                        <span class="badge bg-warning text-dark">Đang giao</span>
                                     </td>
                                     <td *ngIf="o.status==3">
-                                        <span class="badge bg-danger">Done</span>
-                                        
+                                        <span class="badge bg-danger">Hoàn thành</span>
                                     </td>
                                     <td *ngIf="o.status==4">
-                                        <span class="badge bg-secondary">Canceled</span>
+                                        <span class="badge bg-secondary">Hủy</span>
                                     </td>
                                     <td>
                                         <button class="btn btn-warning admin-button"
@@ -417,29 +416,31 @@
             <div class="col-md-9" *ngIf="active_tab=='product'">
                 <div class="card ">
                     <div class="card-header">
-                        <h4>Product</h4>
+                        <h4>Sản phẩm</h4>
                         <button class="btn btn-info" (click)="openAddProductModal(add_product)">
-                            <i class="fas fa-plus"></i> Add a product
+                            <i class="fas fa-plus"></i> Thêm 1 SP
                         </button>
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
-                                <label>Category: </label>
+                                <label>Danh mục: </label>
                                 <select class="form-select" [(ngModel)]="category"
                                     (change)=" onPageSizeCategoryChange()">
-                                    <option value="all" selected="true">All</option>
-                                    <option value="Fruit">Fruit</option>
-                                    <option value="Vegetable">Vegetable</option>
-                                    <option value="Confectionery">Confectionery</option>
+                                    <option value="all" selected="true">Tất cả</option>
+                                    <option value="Fruit">Trái cây</option>
+                                    <option value="Vegetable">Rau củ</option>
+                                    <option value="Confectionery">Bánh kẹo</option>
                                     <option value="Snack">Snack</option>
+                                    <option value="AnimalProduct">Thịt tươi sống</option>
+                                    <option value="CannedFood">Đồ hộp</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Order: </label>
+                                <label>Sắp xếp theo: </label>
                                 <select class="form-select" [(ngModel)]="orderProduct"
                                     (change)=" onPageSizeCategoryChange()">
                                     <option value="Id" selected="true">Id</option>
-                                    <option value="Price">Price</option>
-                                    <option value="Name">Name</option>
+                                    <option value="Price">Giá</option>
+                                    <option value="Name">Tên</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -472,11 +473,11 @@
                             <thead class="thead-dark">
                                 <tr>
 
-                                    <th>Display Info</th>
-                                    <th>Price</th>
-                                    <th>UiS</th>
-                                    <th>Category</th>
-                                    <th>Action</th>
+                                    <th>Thông tin</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Danh mục</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -486,7 +487,7 @@
                                         <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                                         <p class="text-tron text-monospace">{{o.name}}</p>
                                     </td>
-                                    <td>{{o.price}}</td>
+                                    <td>{{o.price| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                                     <td>{{o.unitInStock}}</td>
                                     <td>
                                         <p class="text-tron text-success">{{o.category}}</p>
@@ -527,31 +528,31 @@
             <div class="col-md-3" id='side-info'>
                 <div class="card text-center bg-primary text-white mb-3">
                     <div class="card-body">
-                        <h3>Order</h3>
+                        <h3>Đơn hàng chưa duyệt</h3>
                         <h4 class="display-4">
                             <i class="fas fa-pencil-alt"></i> {{dashboardInfo.totalOrder}}
                         </h4>
-                        <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">Xem</a>
                     </div>
                 </div>
 
                 <div class="card text-center bg-success text-white mb-3">
                     <div class="card-body">
-                        <h3>Product</h3>
+                        <h3>Sản phẩm</h3>
                         <h4 class="display-4">
                             <i class="fas fa-folder"></i>{{dashboardInfo.totalProduct}}
                         </h4>
-                        <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">Xem</a>
                     </div>
                 </div>
 
                 <div class="card text-center bg-warning text-white mb-3">
                     <div class="card-body">
-                        <h3>Users</h3>
+                        <h3>Người dùng</h3>
                         <h4 class="display-4">
                             <i class="fas fa-users"></i>{{dashboardInfo.totalUser}}
                         </h4>
-                        <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">View</a>
+                        <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">Xem</a>
                     </div>
                 </div>
             </div>
@@ -559,7 +560,7 @@
             <div class="col-md-9" *ngIf="active_tab=='db'">
                 <nav class="navbar navbar-light bg-light">
                     <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1">Latest News - {{today|date}}</span>
+                        <span class="navbar-brand mb-0 h1">Tin tức mới nhất - {{today|date}}</span>
                     </div>
                 </nav>
                 <div class="d-flex flex-wrap justify-content-center">
@@ -612,7 +613,7 @@
 
 <ng-template #changeProfile let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Change profile info</h4>
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa tài khoản</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -628,11 +629,11 @@
             <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
         </div>
 
-        <label for="des">Name</label>
+        <label for="des">Tên</label>
         <div class="input-group">
             <input id="des" class="form-control" placeholder="Name..." name="name" [(ngModel)]="newName">
         </div>
-        <label for="uis">Phone</label>
+        <label for="uis">SDT</label>
         <div class="input-group">
             <input id="uis" class="form-control" placeholder="Phone..." name="phone" [(ngModel)]="newPhone">
         </div>
@@ -641,14 +642,14 @@
         <div *ngIf="!isUpdateProfile">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="saveProfile()">Save</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="saveProfile()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isUpdateProfile">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -656,7 +657,7 @@
 
 <ng-template #newUser let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add user </h4>
+        <h4 class="modal-title" id="modal-basic-title">Thêm tài khoản </h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -670,10 +671,10 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.email?.errors?.required&&showFormError">
-                Email is required!
+                Email chưa điền!
             </div>
             <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
-                Email is not valid!
+                Email chưa hợp lệ!
             </div>
 
             <label for="pass">Password</label>
@@ -683,32 +684,32 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.password?.errors?.required&&showFormError">
-                Password is required!
+                Password chưa điền!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['password'].hasError('minlength')&&showFormError">
-                Password is must be atleast 8 characters!
+                Password phải có ít nhất 8 kí tự!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['password'].hasError('pattern')&&showFormError">
-                Password must satisfy these requirements : <br>
-                Lowercase letters <br>
-                Uppercase letters <br>
-                Numbers <br>
-                Special characters <br>
+                Password phải thõa : <br>
+                Chữ thường <br>
+                Chữ in <br>
+                Số <br>
+                Kí tự đặc biệt <br>
             </div>
 
-            <label for="des">Username</label>
+            <label for="des">Tên tài khoản</label>
             <div class="input-group">
                 <input id="des" class="form-control" placeholder="Username..." name="name" formControlName="username">
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.username?.errors?.required&&showFormError">
-                Username is required!
+                Tên tài khoản chưa điền!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['username'].hasError('minlength')&&showFormError">
-                Username is must be atleast 3 characters!
+                Tên tài khoản ít nhất 3 kí tự!
             </div>
             <label for="uis">Phone</label>
             <div class="input-group">
@@ -717,18 +718,18 @@
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
-                Phone number is required!
+                SDT chưa điền!
             </div>
             <div class="col alert alert-danger" role="alert"
                 *ngIf="rf1.controls['phone'].hasError('pattern')&&showFormError">
-                Phone is invalid!
+                SDT chưa hợp lệ!
             </div>
             <label for="role">Role</label>
             <div class="input-group">
                 <select class="form-select" formControlName="role">
                     <option value="Administrator">Administrator</option>
                     <option value="Shipper">Shipper</option>
-                    <option selected value="User">User</option>
+                    <option selected value="User">Khách</option>
                 </select>
             </div>
         </form>
@@ -737,14 +738,14 @@
         <div *ngIf="!isCreatingUser">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="createProfile()">Save</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="createProfile()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isCreatingUser">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -752,26 +753,26 @@
 
 <ng-template #deleteUser let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete user </h4>
+        <h4 class="modal-title" id="modal-basic-title">Xóa tài khoản </h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p class="text-tron text-monospace">Delete this user?</p>
+        <p class="text-tron text-monospace">Xóa tài khoản này?</p>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isDeletingUser">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="deleteProfile()">Yes</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="deleteProfile()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isDeletingUser">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chơ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -780,7 +781,7 @@
 
 <ng-template #add_product let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add a product</h4>
+        <h4 class="modal-title" id="modal-basic-title">Thêm sản phẩm</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -788,37 +789,32 @@
     <div class="modal-body">
         <form [formGroup]="rf2">
             <div class="form-group">
-                <label for="name">Product Name</label>
+                <label for="name">Tên SP</label>
                 <p class="text-center" *ngIf="rf2.controls.name?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product name not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
                 </p>
                 <div class="input-group">
                     <input id="name" class="form-control" placeholder="name..." name="name" formControlName="name">
                 </div>
-                <label for="price">Price</label>
+                <label for="price">Giá</label>
                 <p class="text-center" *ngIf="rf2.controls.price?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product price not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
                 </p>
                 <p class="text-center" *ngIf="rf2.controls['price'].hasError('pattern')&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product price not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
                 </p>
                 <div class="input-group">
                     <input id="price" class="form-control" placeholder="price..." name="price" type="number"
                         formControlName="price">
                 </div>
-                <label for="des">Description</label>
+                <label for="des">Mổ tả</label>
                 <p class="text-center" *ngIf="rf2.controls.des?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product description
-                    is empty!
-                </p>
+                    <i class="fas fa-exclamation-triangle"></i>Mô tả SP
                 <div class="input-group">
                     <textarea id="des" class="form-control" placeholder="description..." name="des"
                         style="height: 80px;" formControlName="des" multiple></textarea>
                 </div>
-                <label for="uis">Unit in stock</label>
+                <label for="uis">Số lượng</label>
                 <p class="text-center" *ngIf="rf2.controls.uis?.errors?.required&&showFormError"><i
                         class="fas fa-exclamation-triangle"></i>Product unit not
                     valid!</p>
@@ -826,16 +822,18 @@
                     <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
                         formControlName="uis" type="number">
                 </div>
-                <label for="cate">Category</label>
+                <label for="cate">Danh mục</label>
                 <div class="input-group">
                     <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
-                        <option value="Fruit" selected>Fruit</option>
-                        <option value="Vegetable">Vegetable</option>
-                        <option value="Confectionery">Confectionery</option>
+                        <option value="Fruit" selected>Trái cây</option>
+                        <option value="Vegetable">Rau củ</option>
+                        <option value="Confectionery">Bánh kẹo</option>
                         <option value="Snack">Snack</option>
+                        <option value="AnimalProduct">Thịt tươi sống</option>
+                        <option value="CannedFood">Đồ hợp</option>
                     </select>
                 </div>
-                <label for="img">Product Image</label>
+                <label for="img">Ảnh SP</label>
                 <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
                 <div class="input-group">
                     <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
@@ -849,14 +847,14 @@
         <div *ngIf="!isCreatingProduct">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="addProduct()">Add</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="addProduct()">Thêm</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isCreatingProduct">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -867,7 +865,7 @@
 
 <ng-template #edit_product let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Edit a product</h4>
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa SP</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -875,37 +873,32 @@
     <div class="modal-body">
         <form [formGroup]="rf3">
             <div class="form-group">
-                <label for="name">Product Name</label>
+                <label for="name">Tên SP</label>
                 <p class="text-center" *ngIf="rf3.controls.name?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product name not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
                 </p>
                 <div class="input-group">
                     <input id="name" class="form-control" placeholder="name..." name="name" formControlName="name">
                 </div>
-                <label for="price">Price</label>
+                <label for="price">Giá</label>
                 <p class="text-center" *ngIf="rf3.controls.price?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product price not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
                 </p>
                 <p class="text-center" *ngIf="rf3.controls['price'].hasError('pattern')&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product price not
-                    valid!
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
                 </p>
                 <div class="input-group">
                     <input id="price" class="form-control" placeholder="price..." name="price" type="number"
                         formControlName="price">
                 </div>
-                <label for="des">Description</label>
+                <label for="des">Mô tả</label>
                 <p class="text-center" *ngIf="rf3.controls.des?.errors?.required&&showFormError">
-                    <i class="fas fa-exclamation-triangle"></i>Product description
-                    is empty!
-                </p>
+                    <i class="fas fa-exclamation-triangle"></i>Mô tả SP
                 <div class="input-group">
                     <textarea id="des" class="form-control" placeholder="description..." name="des"
                         style="height: 80px;" formControlName="des" multiple></textarea>
                 </div>
-                <label for="uis">Unit in stock</label>
+                <label for="uis">Số lượng</label>
                 <p class="text-center" *ngIf="rf3.controls.uis?.errors?.required&&showFormError"><i
                         class="fas fa-exclamation-triangle"></i>Product unit not
                     valid!</p>
@@ -913,16 +906,18 @@
                     <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
                         formControlName="uis" type="number">
                 </div>
-                <label for="cate">Category</label>
+                <label for="cate">Danh mục</label>
                 <div class="input-group">
                     <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
-                        <option value="Fruit" selected>Fruit</option>
-                        <option value="Vegetable">Vegetable</option>
-                        <option value="Confectionery">Confectionery</option>
+                        <option value="Fruit" selected>Trái cây</option>
+                        <option value="Vegetable">Rau củ</option>
+                        <option value="Confectionery">Bánh kẹo</option>
                         <option value="Snack">Snack</option>
+                        <option value="AnimalProduct">Thịt tươi sống</option>
+                        <option value="CannedFood">Đồ hợp</option>
                     </select>
                 </div>
-                <label for="img">Product Image</label>
+                <label for="img">Ảnh SP</label>
                 <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
                 <div class="input-group">
                     <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
@@ -953,26 +948,26 @@
 
 <ng-template #deleteProductModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete product </h4>
+        <h4 class="modal-title" id="modal-basic-title">Xóa sản phẩm </h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p class="text-tron text-monospace">Delete this product?</p>
+        <p class="text-tron text-monospace">Xóa sản phẩm này?</p>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isDeletingProduct">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="deleteProduct()">Yes</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="deleteProduct()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isDeletingProduct">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -980,7 +975,7 @@
 
 <ng-template #order_info let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Order Details</h4>
+        <h4 class="modal-title" id="modal-basic-title">Thông tin đơn hàng</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -990,43 +985,43 @@
             <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
         <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
-            <p>Total Item : {{selectedOrder.totalItem}}</p>
-            <p>Total Price : {{(selectedOrder.totalPrice).toFixed(2)}}</p>
+            <p>Tổng SP : {{selectedOrder.totalItem}}</p>
+            <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="bdwT-0">Image</th>
-                        <th class="bdwT-0">Name</th>
-                        <th class="bdwT-0">Price</th>
-                        <th class="bdwT-0">Quantity</th>
-                        <th class="bdwT-0">Subtotal</th>
+                        <th class="bdwT-0">SP</th>
+                        <th class="bdwT-0">Tên</th>
+                        <th class="bdwT-0">Giá</th>
+                        <th class="bdwT-0">Số lượng</th>
+                        <th class="bdwT-0">Giá lẻ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let od of selectedOrder.orderDetails">
                         <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
                         <td>{{ od.product.name }}</td>
-                        <td>${{ od.product.price }}</td>
+                        <td>${{ od.product.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                         <td>{{ od.quantity }}</td>
-                        <td>${{ (od.product.price*od.quantity).toFixed(2) }}</td>
+                        <td>${{ (od.product.price*od.quantity)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                     </tr>
                 </tbody>
             </table>
-            <p>Note : {{selectedOrder.note}}</p>
+            <p>Ghi chú : {{selectedOrder.note}}</p>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Close</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
     </div>
 </ng-template>
 
 
 <ng-template #edit_order let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Edit this order</h4>
+        <h4 class="modal-title" id="modal-basic-title">Duyệt đơn hàng</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -1034,14 +1029,14 @@
     <div class="modal-body">
         <form [formGroup]="rf4">
             <div class="form-group">
-                <label for="status">Status</label>
+                <label for="status">Trạng thái</label>
                 <div class="input-group">
                     <select id="status" class="form-control" placeholder="100" name="status" formControlName="status">
-                        <option value="0">Not approved</option>
-                        <option value="1">Approved</option>
+                        <option value="0">Chưa duyệt</option>
+                        <option value="1">Đã duyệt</option>
                     </select>
                 </div>
-                <label for="des">Note</label>
+                <label for="des">Ghi chú</label>
 
                 <div class="input-group">
                     <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
@@ -1053,42 +1048,41 @@
         <div *ngIf="!isEditingOrder">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="editOrder()">Edit</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="editOrder()">Duyệt</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isEditingOrder">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
 
 <ng-template #order_delete let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete this order?</h4>
+        <h4 class="modal-title" id="modal-basic-title">Xóa đơn hàng?</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
 
-        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Any order and other infomation associate with
-            this order will also be deleted!</p>
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên quan đến đơn hàng sẽ bị xóa!</p>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isDeletingOrder">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="deleteOrder()">Yes</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+                (click)="deleteOrder()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isDeletingOrder">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>

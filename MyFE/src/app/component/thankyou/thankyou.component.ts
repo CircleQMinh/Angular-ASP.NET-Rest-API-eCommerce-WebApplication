@@ -114,7 +114,7 @@ export class ThankyouComponent implements OnInit {
 
   saveOrderDetail(data: number) {
     let orderID = data
-    console.log(orderID)
+    //console.log(orderID)
     for (let i = 0; i < this.cartItems.length; i++) {
       this.orderService.saveOrderDetail(orderID, this.cartItems[i].id, this.cartItemsQuantity[i]).subscribe(
         data => {
