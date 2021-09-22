@@ -1,0 +1,63 @@
+<app-nav></app-nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div id="secondary-feed" class="widget-area " role="complementary">
+                <aside id="chuyen-muc" class="widget widget_categories"><span class="widget-title "><span>Chuyên
+                            mục</span></span>
+                    <div class="is-divider small"></div>
+                    <ul>
+                        <li class="cat-item cat-item-18 current-cat active"><a aria-current="page"
+                                href="https://cuahangtienloi24h.com/chuyen-muc/meo-hay/">Mẹo hay</a></li>
+                        <li class="cat-item cat-item-1"><a href="https://cuahangtienloi24h.com/chuyen-muc/mon-ngon/">Món
+                                ngon</a></li>
+                        <li class="cat-item cat-item-17"><a href="https://cuahangtienloi24h.com/chuyen-muc/tin-tuc/"
+                                title="
+                ">Tin tức</a></li>
+                    </ul>
+                </aside>
+                <aside id="chuyen-muc" class="widget widget_recent_entries"> <span class="widget-title "><span>Bài
+                            mới</span></span>
+                    <div class="is-divider small"></div>
+                    <ul>
+                        <li> <a
+                                href="https://cuahangtienloi24h.com/huong-dan-che-bien-ca-hoi-cho-be-an-com-hoac-an-dam/">Hướng
+                                dẫn chế biến cá hồi cho bé ăn cơm hoặc ăn dặm</a></li>
+                        <li> <a
+                                href="https://cuahangtienloi24h.com/cach-so-che-rau-cu-qua-dung-cach-an-toan-cho-suc-khoe/">Cách
+                                sơ chế rau củ quả đúng cách, an toàn cho sức khỏe</a></li>
+                        <li> <a href="https://cuahangtienloi24h.com/nen-mua-ca-chua-thuong-hay-ca-chua-bi/">Nên mua cà
+                                chua thường hay cà chua bi?</a></li>
+                        <li> <a
+                                href="https://cuahangtienloi24h.com/mang-cut-lam-mon-gi-ngon-top-5-mon-ngon-ma-don-gian-tu-mang-cut/">Măng
+                                cụt làm món gì ngon? Top 5 món ngon mà đơn giản từ măng cụt</a></li>
+                        <li> <a
+                                href="https://cuahangtienloi24h.com/tac-dung-cua-mong-toi-an-ngon-song-khoe-cung-mong-toi/">Tác
+                                dụng của mồng tơi – Ăn ngon sống khoẻ cùng mồng tơi</a></li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <p class="lead text-monospace">
+                <u>Tin tức</u>
+            </p>
+            <div class="row">
+                <div class="rss-feed col-sm-3 my-3 p-1" *ngFor="let o of feed" >
+                    <div class="rss-feed-inner">
+                        <p class="feed-title text-monospace"><b>{{o.title}}</b></p>
+                        <p class="feed-time"><i class="far fa-clock"></i> {{o.published | date}} - <i class="far fa-user"></i> Admin</p>
+                        <div class="" [innerHTML]="o.description">
+
+                        </div>
+                    </div>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-footer></app-footer>

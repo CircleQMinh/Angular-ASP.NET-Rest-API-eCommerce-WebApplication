@@ -458,11 +458,11 @@ namespace MyAPI.Controllers
                 string accessKey = "Vxo6vQMlwjbrGq3c";
                 string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
                 string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
-                //string redirectUrl = "http://localhost:4200/#/thankyou";
-                //string notifyUrl = "http://localhost:4200/#/thankyou";
+                string redirectUrl = "http://localhost:4200/#/thankyou";
+                string notifyUrl = "http://localhost:4200/#/thankyou";
 
-                string redirectUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
-                string notifyUrl = "http://circle-shop-18110320.000webhostapp.com/#/checkout";
+                //string redirectUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string notifyUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
 
                 //string requestType = "captureWallet";
 
@@ -506,9 +506,9 @@ namespace MyAPI.Controllers
             try
             {
                 string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
 
-                //string returnUrl = "http://localhost:4200/#/thankyou";
+                string returnUrl = "http://localhost:4200/#/thankyou";
                 string tmnCode = "V0A4GQCF";
                 string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
 

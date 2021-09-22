@@ -1,0 +1,66 @@
+<app-nav></app-nav>
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
+</div>
+<div class="container" *ngIf="!isLoading">
+    <div class="row">
+        <div class="col">
+            <p class="lead text-monospace text-center mt-5">Tìm thấy {{products.length}} sản phẩm !</p>
+            <div class="div-center-content" style="margin-bottom: 15px;" id='searchBarProduct'>
+                <div class="wrap">
+                    <div class="search">
+                        <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?"
+                            [(ngModel)]="keyword" (keydown.enter)="newSearch()">
+                        <button type="submit" class="searchButton" (click)="newSearch()">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container-fluid dflex-jus" >
+                <div class="row justify-content-center" style="width: 80%;">
+
+                    <div *ngFor="let pro of products  " class="gradient-border"
+                        style=" margin: 20px;margin-bottom: 100px;">
+                        <div class="featured__item">
+                            <div class="featured__item__pic set-bg"
+                                [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                                ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
+                                container="body">
+                                <ul class="featured__item__pic__hover">
+                                    <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
+                                                class="fa fa-heart"></i></a></li>
+                                    <li ngbTooltip="Xem thông tin" container="body" routerLink="/product/{{pro.id}}">
+                                        <a><i class="fas fa-info"></i></a>
+                                    </li>
+                                    <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro)"><a><i
+                                                class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="featured__item__text">
+                                <h6><a>{{pro.name}}</a></h6>
+                                <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 400px;" *ngIf="products.length==0">
+                <p class="text-monospace text-center">
+                   
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<app-footer></app-footer>

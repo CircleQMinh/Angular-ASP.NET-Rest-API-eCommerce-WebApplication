@@ -118,7 +118,6 @@ export class CheckoutComponent implements OnInit {
     // console.log(this.rf1.controls["street"].value)
     // console.log(this.rf1.controls["address"].value)
     // console.log(this.rf1.controls["billOption"].value)
-    console.log()
 
     if (this.rf1.valid) {
       let address = this.rf1.controls["address"].value + " " + this.rf1.controls["street"].value + " " +
@@ -129,7 +128,7 @@ export class CheckoutComponent implements OnInit {
         this.saveOrderToLocal(address, today)
         let momo_id = formatDate(Date.now(), 'ddMMyyyyhhmmss', 'en');
         let sign = ""
-        this.orderService.getPaymentSig(Number(momo_id),this.totalPrice*100).subscribe(
+        this.orderService.getPaymentSig(Number(momo_id),this.totalPrice).subscribe(
           data=>{
             sign=data.sig
             this.payWithMomo(momo_id,sign)
@@ -145,7 +144,7 @@ export class CheckoutComponent implements OnInit {
         this.saveOrderToLocal(address, today)
 
 
-        this.orderService.getVNPayURL(this.totalPrice * 100).subscribe(
+        this.orderService.getVNPayURL(this.totalPrice ).subscribe(
           data => {
             window.location.href = data.paymentUrl
 
@@ -201,7 +200,7 @@ export class CheckoutComponent implements OnInit {
   }
   payWithMomo(id:string,sign:any){
     let payUrl=""
-    this.orderService.getPaymentUrl(id,(this.totalPrice*100).toString(),sign).subscribe(
+    this.orderService.getPaymentUrl(id,(this.totalPrice).toString(),sign).subscribe(
       data=>{
         console.log(data)
         payUrl=data.payUrl

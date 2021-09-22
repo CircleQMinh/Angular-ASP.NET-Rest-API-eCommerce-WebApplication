@@ -10,13 +10,13 @@
     <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
         <ul class="navbar-nav  ml-auto ">
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='av'" (click)="switchTab('av')" class="nav-link">Available Order</a>
+                <a [class.active]="active_tab=='av'" (click)="switchTab('av')" class="nav-link">Đơn hàng </a>
             </li>
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='dv'" (click)="switchTab('dv')" class="nav-link">Delivering Order</a>
+                <a [class.active]="active_tab=='dv'" (click)="switchTab('dv')" class="nav-link">Đơn hàng đã nhận</a>
             </li>
             <li class="nav-item px-2">
-                <a [class.active]="active_tab=='his'" (click)="switchTab('his')" class="nav-link">History</a>
+                <a [class.active]="active_tab=='his'" (click)="switchTab('his')" class="nav-link">Lịch sử</a>
             </li>
 
         </ul>
@@ -24,7 +24,7 @@
         <ul class="navbar-nav ml-auto" >
             <li class="nav-item dropdown mr-3">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="!isLoading">
-                    <i class="fas fa-user"></i> Welcome {{user.displayName}}
+                    <i class="fas fa-user"></i> Xin chào {{user.displayName}}
                 </a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item">
@@ -37,7 +37,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link">
-                    <i class="fas fa-user-times"></i> Logout
+                    <i class="fas fa-user-times"></i> Đăng xuất
                 </a>
             </li>
         </ul>
@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 >
-                    <i class="fas fa-search"></i> Find Order
+                    <i class="fas fa-search"></i> Tìm đơn hàng
                 </h1>
 
             </div>
@@ -65,7 +65,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 >
-                    <i class="fas fa-clipboard-check"></i> Delivering Order
+                    <i class="fas fa-clipboard-check"></i> Đơn hàng đã nhận
                 </h1>
 
             </div>
@@ -79,7 +79,7 @@
         <div class="row">
             <div class="col-md-6 " >
                 <h1 >
-                    <i class="fas fa-history"></i> History
+                    <i class="fas fa-history"></i> Lịch sử
                 </h1>
 
             </div>
@@ -94,17 +94,17 @@
         <div class="row">
             <div class="col-md-4">
                 <a class="btn btn-primary btn-block" (click)="switchTab('av')">
-                    <i class="fas fa-search"></i> Find Order
+                    <i class="fas fa-search"></i> Tìm đơn hàng
                 </a>
             </div>
             <div class="col-md-4">
                 <a class="btn btn-success btn-block" (click)="switchTab('dv')">
-                    <i class="fas fa-clipboard-check"></i> Delivering Order
+                    <i class="fas fa-clipboard-check"></i> Đơn hàng đã nhận
                 </a>
             </div>
             <div class="col-md-4">
                 <a class="btn btn-warning btn-block" (click)="switchTab('his')">
-                    <i class="fas fa-history"></i> History
+                    <i class="fas fa-history"></i> Lịch sử
                 </a>
             </div>
         </div>
@@ -116,18 +116,18 @@
     <div class="spinner-border text-info" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="text monospace">Please wait a sec...</p>
+    <p class="text monospace">Xin chờ 1 lúc...</p>
 </div>
 
 <!-- ---------------------------------------------------------------------------------------------------------- -->
 <div class="d-flex flex-wrap justify-content-around " *ngIf="!isLoading&&active_tab=='av'">
 
     <div class="form-group">
-        <label>Order By: </label>
+        <label>Sắp xếp theo: </label>
         <select class="form-select" [(ngModel)]="orderOrder" (change)="onAvailableOrderFilterChange()">
             <option value="Id" selected="true">Id</option>
-            <option value="Price">Total Price</option>
-            <option value="OrderDate">OrderDate</option>
+            <option value="Price">Tổng giá</option>
+            <option value="OrderDate">Ngày đặt</option>
         </select>
     </div>
     <div class="form-group">
@@ -142,7 +142,7 @@
         </select>
     </div>
     <div class="form-group">
-        <label>Page Size: </label>
+        <label>Hiển thị: </label>
         <select class="form-select" [(ngModel)]="pageSizeOrder" (change)="onAvailableOrderFilterChange()">
             <option value="5" selected="true">5</option>
             <option value="2">2</option>
@@ -161,12 +161,12 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Id</th>
-                            <th>Contact Info</th>
-                            <th>Order Date</th>
-                            <th>Total Item</th>
-                            <th>Total Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Thông tin liên lạc</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng SP</th>
+                            <th>Tổng Gái</th>
+                            <th>Trạng thái</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -187,22 +187,22 @@
                                 <p class="text-tron text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
                             <td *ngIf="o.status==0">
-                                <span class="badge bg-info text-dark">Not Check</span>
+                                <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
                             <td *ngIf="o.status==1">
-                                <span class="badge bg-success">Checked</span>
+                                <span class="badge bg-success">Đã duyệt</span>
                             </td>
                             <td *ngIf="o.status==2">
-                                <span class="badge bg-warning text-dark">Delivering</span>
+                                <span class="badge bg-warning text-dark">Đang giao</span>
                             </td>
                             <td *ngIf="o.status==3">
-                                <span class="badge bg-danger">Done</span>
+                                <span class="badge bg-danger">Hoàn thành</span>
                             </td>
                             <td *ngIf="o.status==4">
-                                <span class="badge bg-secondary">Canceled</span>
+                                <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
                                 <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
@@ -243,12 +243,12 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Id</th>
-                            <th>Contact Info</th>
-                            <th>Order Date</th>
-                            <th>Total Item</th>
-                            <th>Total Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Thông tin liên lạc</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng SP</th>
+                            <th>Tổng Gái</th>
+                            <th>Trạng thái</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -269,22 +269,22 @@
                                 <p class="text-tron text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
                             <td *ngIf="o.status==0">
-                                <span class="badge bg-info text-dark">Not Check</span>
+                                <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
                             <td *ngIf="o.status==1">
-                                <span class="badge bg-success">Checked</span>
+                                <span class="badge bg-success">Đã duyệt</span>
                             </td>
                             <td *ngIf="o.status==2">
-                                <span class="badge bg-warning text-dark">Delivering</span>
+                                <span class="badge bg-warning text-dark">Đang giao</span>
                             </td>
                             <td *ngIf="o.status==3">
-                                <span class="badge bg-danger">Done</span>
+                                <span class="badge bg-danger">Hoàn thành</span>
                             </td>
                             <td *ngIf="o.status==4">
-                                <span class="badge bg-secondary">Canceled</span>
+                                <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
                                 <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
@@ -313,12 +313,12 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Id</th>
-                            <th>Contact Info</th>
-                            <th>Order Date</th>
-                            <th>Total Item</th>
-                            <th>Total Price</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Thông tin liên lạc</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng SP</th>
+                            <th>Tổng Gái</th>
+                            <th>Trạng thái</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -339,22 +339,22 @@
                                 <p class="text-tron text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice).toFixed(2)}}</p>
+                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
                             <td *ngIf="o.status==0">
-                                <span class="badge bg-info text-dark">Not Check</span>
+                                <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
                             <td *ngIf="o.status==1">
-                                <span class="badge bg-success">Checked</span>
+                                <span class="badge bg-success">Đã duyệt</span>
                             </td>
                             <td *ngIf="o.status==2">
-                                <span class="badge bg-warning text-dark">Delivering</span>
+                                <span class="badge bg-warning text-dark">Đang giao</span>
                             </td>
                             <td *ngIf="o.status==3">
-                                <span class="badge bg-danger">Done</span>
+                                <span class="badge bg-danger">Hoàn thành</span>
                             </td>
                             <td *ngIf="o.status==4">
-                                <span class="badge bg-secondary">Canceled</span>
+                                <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
                                 <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
@@ -384,48 +384,48 @@
             <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
         <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
-            <p>Total Item : {{selectedOrder.totalItem}}</p>
-            <p>Total Price : {{(selectedOrder.totalPrice).toFixed(2)}}</p>
+            <p>Tổng SP : {{selectedOrder.totalItem}}</p>
+            <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="bdwT-0">Image</th>
-                        <th class="bdwT-0">Name</th>
-                        <th class="bdwT-0">Price</th>
-                        <th class="bdwT-0">Quantity</th>
-                        <th class="bdwT-0">Subtotal</th>
+                        <th class="bdwT-0">SP</th>
+                        <th class="bdwT-0">Tên</th>
+                        <th class="bdwT-0">Giá</th>
+                        <th class="bdwT-0">Số lượng</th>
+                        <th class="bdwT-0">Giá lẻ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let od of selectedOrder.orderDetails">
                         <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
                         <td>{{ od.product.name }}</td>
-                        <td>${{ od.product.price }}</td>
+                        <td>${{ od.product.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                         <td>{{ od.quantity }}</td>
-                        <td>${{ (od.product.price*od.quantity).toFixed(2) }}</td>
+                        <td>${{ (od.product.price*od.quantity)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                     </tr>
                 </tbody>
             </table>
-            <p>Note : {{selectedOrder.note}}</p>
+            <p>Ghi chú : {{selectedOrder.note}}</p>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Close</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
     </div>
 </ng-template>
 
 <ng-template #order_accept let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Accept this order?</h4>
+        <h4 class="modal-title" id="modal-basic-title">Nhận giao đơn hàng này?</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Accept this order?</p>
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Bạn nhận giao đơn hàng này?</p>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isAcceptingOrder">
@@ -438,7 +438,7 @@
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>
@@ -447,7 +447,7 @@
 
 <ng-template #order_finish let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Finish this order</h4>
+        <h4 class="modal-title" id="modal-basic-title">Hoàn thành đơn hàng này?</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -458,11 +458,11 @@
                 <label for="status">Status</label>
                 <div class="input-group">
                     <select id="status" class="form-control" placeholder="100" name="status" formControlName="status">
-                        <option value="3">Done</option>
-                        <option value="4">Cancel</option>
+                        <option value="3">Đã giao xong</option>
+                        <option value="4">Bị hủy</option>
                     </select>
                 </div>
-                <label for="des">Note</label>
+                <label for="des">Ghi chú</label>
 
                 <div class="input-group">
                     <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
@@ -482,7 +482,7 @@
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text monospace">Please wait a sec...</p>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>

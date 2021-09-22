@@ -9,6 +9,7 @@ import { ErrorComponent } from './component/error/error.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
+import { NewsComponent } from './component/news/news.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
@@ -17,6 +18,7 @@ import { ProfileOrderComponent } from './component/profile-order/profile-order.c
 import { ProfileComponent } from './component/profile/profile.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
+import { SearchComponent } from './component/search/search.component';
 import { ShipperComponent } from './component/shipper/shipper.component';
 import { TestComponent } from './component/test/test.component';
 import { ThankyouComponent } from './component/thankyou/thankyou.component';
@@ -49,6 +51,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'shipper', component: ShipperComponent },
   { path: 'thankyou', component: ThankyouComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'news', component: NewsComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];

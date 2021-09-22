@@ -80,23 +80,30 @@ namespace MyAPI.Controllers
             }
         }
 
-
-        [HttpGet("{id:int}", Name = "GetProduct")]
-
+        //thiết lập endpoint của api
+        [HttpGet("{id:int}", Name = "GetProduct")] 
+        //thiết lập hình thức trả lời của api
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetProduct(int id)
+        //hàm mà api sẽ gọi
+        public async Task<IActionResult> GetProduct(int id)//nhận vào 1 id
         {
             try
             {
+                // câu truy vấn sử dụng repo Products
                 var query = await _unitOfWork.Products.Get(q => q.Id == id,new List<string> { "FavoritedUsers"});
+                // sử dụng mapper để map dữ liệu thành 1 DTO(data tranfer object)
                 var result = _mapper.Map<FullProductDTO>(query);
+                // câu truy vấn 2 sử dụng repo Reviews
                 var query2 = await _unitOfWork.Reviews.GetAll(q => q.ProductId == id,null, new List<string> { "User" });
+                //sử dụng mapper
                 var reviews = _mapper.Map<IList<ReviewDTO>>(query2);
+                //trả lời request
                 return Ok(new { result,reviews });
             }
             catch (Exception ex)
             {
+                //nếu có lỗi
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetProduct)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
             }
@@ -202,6 +209,30 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+
+
+        [HttpGet("search",Name = "SearchProducts")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SearchProducts(string keyword)
+        {
+            try
+            {
+                var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(keyword),null,null);
+                var result = _mapper.Map<IList<ProductDTO>>(query);
+
+
+
+                return Ok(new {result  });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetProducts)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
 
     }
 }

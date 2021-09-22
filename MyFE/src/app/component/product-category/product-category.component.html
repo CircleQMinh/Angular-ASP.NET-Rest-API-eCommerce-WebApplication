@@ -207,8 +207,8 @@
     <div class="wrap">
         <div class="search">
             <input type="text" class="searchTerm" placeholder="What are you looking for?" [(ngModel)]="keyword"
-                [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
-            <button type="submit" class="searchButton">
+                [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)" (keyup.enter)="test()">
+            <button type="submit" class="searchButton" (click)="newSearch()">
                 <i class="fa fa-search"></i>
             </button>
         </div>

@@ -33,6 +33,8 @@ import { ThankyouComponent } from './component/thankyou/thankyou.component';
 import { ProfileOrderComponent } from './component/profile-order/profile-order.component';
 import { ProfileOrderInfoComponent } from './component/profile-order-info/profile-order-info.component';
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
+import { SearchComponent } from './component/search/search.component';
+import { NewsComponent } from './component/news/news.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +62,9 @@ import { ProfileFavoriteComponent } from './component/profile-favorite/profile-f
     ThankyouComponent,
     ProfileOrderComponent,
     ProfileOrderInfoComponent,
-    ProfileFavoriteComponent
+    ProfileFavoriteComponent,
+    SearchComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,

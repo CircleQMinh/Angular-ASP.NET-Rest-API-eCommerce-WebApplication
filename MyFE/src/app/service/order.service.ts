@@ -104,7 +104,7 @@ export class OrderService {
   }
 
   getPaymentUrl(id: string, totalPrice: string, signature: string): Observable<any> {
-    return this.http.post(`/gw_payment/transactionProcessor`, {
+    return this.http.post(`https://test-payment.momo.vn/gw_payment/transactionProcessor`, {
       accessKey: "Vxo6vQMlwjbrGq3c",
       partnerCode: "MOMOEVY720210913",
       requestType: "captureMoMoWallet",

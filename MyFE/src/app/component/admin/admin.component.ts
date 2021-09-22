@@ -265,6 +265,7 @@ export class AdminComponent implements OnInit {
         localStorage.removeItem("user-disName")
         localStorage.removeItem("user-imgUrl")
         localStorage.removeItem("user-role")
+        localStorage.removeItem("user-info")
       }
       else{
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
@@ -379,14 +380,14 @@ export class AdminComponent implements OnInit {
 
   selectFile(event: any) { //Angular 11, for stricter type
     if (!event.target.files[0] || event.target.files[0].length == 0) {
-      this.msg = 'You must select an image';
+      this.msg = 'Bạn phải chọn 1 hình ảnh';
       return;
     }
 
     var mimeType = event.target.files[0].type;
 
     if (mimeType.match(/image\/*/) == null) {
-      this.msg = "Only images are supported";
+      this.msg = "File phải là hình ảnh";
       return;
     }
 
@@ -434,6 +435,7 @@ export class AdminComponent implements OnInit {
         //console.log(data)
         this.modalService.dismissAll()
         this.updateUserList()
+        this.toast.success("Chỉnh sửa thành công")
         this.isUpdateProfile = false
       },
       error => {
@@ -481,6 +483,7 @@ export class AdminComponent implements OnInit {
             console.log(data)
             this.updateUserList()
             this.isCreatingUser = false
+            this.toast.success("Thêm thành công!")
             this.modalService.dismissAll()
           },
           error => {
@@ -493,7 +496,7 @@ export class AdminComponent implements OnInit {
     }
     else {
       this.isCreatingUser = false
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Dữ liệu nhập chưa hợp lệ. Xin hãy thử lại!")
     }
 
   }
@@ -568,7 +571,7 @@ export class AdminComponent implements OnInit {
     }
     else {
       this.isCreatingProduct = false
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Dữ liệu nhập chưa hợp lệ. Xin hãy thử lại!")
     }
 
   }
@@ -577,7 +580,7 @@ export class AdminComponent implements OnInit {
     this.adminService.createProduct(this.rf2.controls['name'].value, this.rf2.controls['price'].value, this.rf2.controls['des'].value,
       this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today).subscribe(
         data => {
-          this.toast.success("Add product successfully!")
+          this.toast.success("Thêm thành công!")
           this.isCreatingProduct = false
           this.modalService.dismissAll()
           this.getProduct()
@@ -613,7 +616,7 @@ export class AdminComponent implements OnInit {
     }
     else {
       this.isEditingProduct = false
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Dữ liệu nhập chưa hợp lệ. Xin hãy thử lại!")
     }
 
   }
@@ -622,7 +625,7 @@ export class AdminComponent implements OnInit {
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
     this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
       data => {
-        this.toast.success("Edit product successfully!")
+        this.toast.success("Chỉnh sửa thành công!")
         this.isEditingProduct = false
         this.modalService.dismissAll()
         this.getProduct()
@@ -640,7 +643,7 @@ export class AdminComponent implements OnInit {
     this.adminService.deleteProduct(this.deletingProductId).subscribe(
       data => {
 
-        this.toast.success("Delete product successfully!")
+        this.toast.success("Xóa thành công!")
         this.getProduct()
         this.modalService.dismissAll()
         this.isDeletingProduct = false
@@ -655,14 +658,14 @@ export class AdminComponent implements OnInit {
 
   selectFileProduct(event: any) { //Angular 11, for stricter type
     if (!event.target.files[0] || event.target.files[0].length == 0) {
-      this.msg = 'You must select an image';
+      this.msg = 'Bạn phải chọn hình ảnh';
       return;
     }
 
     var mimeType = event.target.files[0].type;
 
     if (mimeType.match(/image\/*/) == null) {
-      this.msg = "Only images are supported";
+      this.msg = "File phải là hình ảnh";
       return;
     }
 
@@ -715,7 +718,7 @@ export class AdminComponent implements OnInit {
       data => {
         this.getOrder()
         this.isEditingOrder = false
-        this.toast.success("Edit order successfully!")
+        this.toast.success("Chỉnh sửa thành công!")
         this.modalService.dismissAll()
       },
       error => {
@@ -730,7 +733,7 @@ export class AdminComponent implements OnInit {
     this.adminService.deleteOrder(this.selectedOrder.id).subscribe(
       data => {
 
-        this.toast.success("Delete order successfully!")
+        this.toast.success("Xóa thành công!")
         this.getOrder()
         this.modalService.dismissAll()
         this.isDeletingOrder = false
