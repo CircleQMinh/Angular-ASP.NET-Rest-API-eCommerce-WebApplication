@@ -27,3 +27,7 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 16-09-2021 : chỉnh sửa homepage, tách profile component.<br>
 17-09-2021 : việt hóa database và website.<br>
 18-09-2021 : việt hóa database và website.<br>
+19-09-2021 : tiểu luận.<br>
+20-09-2021 : tiểu luận.<br>
+21-09-2021 : tiểu luận.<br>
+22-09-2021 : thêm trang tìm kiếm và tin tức.<br>
