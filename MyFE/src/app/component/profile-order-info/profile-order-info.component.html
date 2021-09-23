@@ -314,6 +314,7 @@
                         <p class="text-monospace">Tên liên lạc - {{currentOrder.contactName}}</p>
                         <p class="text-monospace">Email - {{currentOrder.email}}</p>
                         <p class="text-monospace">SDT - {{currentOrder.phone}}</p>
+                        <p class="text-monospace">Thanh toán - {{getPaymentMethod(currentOrder.paymentMethod)}}</p>
                         <div *ngIf="currentOrderShippingInfo">
                             <h4 class="text-monospace">Thông tin giao hàng</h4>
                             <p class="text-monospace">Ngày giao : {{currentOrderShippingInfo.deliveryDate}}</p>
@@ -342,8 +343,8 @@
                                             style="height: 40px;width: 40px;"></td>
                                     <td class="text-monospace">{{o.product.name}}</td>
                                     <td class="text-monospace">{{(o.quantity)}} </td>
-                                    <td class="text-monospace">{{(o.product.price)}} </td>
-                                    <td class="text-monospace">{{(o.quantity*o.product.price).toFixed(2)}} </td>
+                                    <td class="text-monospace">{{(o.product.price)|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span>  </td>
+                                    <td class="text-monospace">{{(o.quantity*o.product.price) | currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </td>
 
                                 </tr>
                                 <tr class="table-primary">
@@ -355,7 +356,7 @@
                                     </td>
                                     <td></td>
                                     <td class="text-left"><strong>Tổng tiền :</strong>
-                                        <p>{{(currentOrder.totalPrice).toFixed(2)}}</p>
+                                        <p>{{(currentOrder.totalPrice)|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </p>
                                     </td>
 
                                 </tr>

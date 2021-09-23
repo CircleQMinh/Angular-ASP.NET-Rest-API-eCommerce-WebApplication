@@ -263,7 +263,7 @@ export class ProductInfoComponent implements OnInit {
         },
         error => {
           console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.toast.error("Có lỗi xảy ra ! Xin hãy thử lại !")
         }
       )
     }
@@ -279,11 +279,11 @@ export class ProductInfoComponent implements OnInit {
 
   addReview() {
     if (this.rating == undefined) {
-      this.toast.error("You haven't rate this product yet!")
+      this.toast.error("Bạn chưa đánh giá sản phẩm!")
     }
     else {
       if (this.review.trim().length == 0) {
-        this.toast.error("Review can't be empty!")
+        this.toast.error("Nhận xét không được trống!")
       }
       else {
 
@@ -302,16 +302,16 @@ export class ProductInfoComponent implements OnInit {
           data => {
             if (!data.update) {
 
-              this.toast.success("Review posted!")
+              this.toast.success("Đã đăng nhận xét!")
             }
             else {
-              this.toast.success("Review edited!")
+              this.toast.success("Đã chỉnh sửa nhận xét!")
             }
             this.addReviewLocal(r)
           },
           error => {
             console.log(error)
-            this.toast.error(" An error has occurred ! Try again !")
+            this.toast.error("Có lỗi xảy ra ! Xin hãy thử lại !")
           }
         )
 

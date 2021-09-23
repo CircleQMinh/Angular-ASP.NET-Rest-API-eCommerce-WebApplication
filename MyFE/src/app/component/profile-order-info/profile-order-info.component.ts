@@ -122,4 +122,17 @@ export class ProfileOrderInfoComponent implements OnInit {
     }
 
   }
+  getPaymentMethod(method:string):string{
+    if(method=="cash"){
+
+      return "Tiền mặt"
+    }
+    else if(method=="vnpay"){
+      return "VNPay"
+    }
+    else if(method=="momo"){
+      return "Momo"
+    }
+    return "?"
+  }
 }

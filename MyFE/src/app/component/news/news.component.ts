@@ -8,27 +8,43 @@ import  {parse} from 'rss-to-json';
 })
 export class NewsComponent implements OnInit {
 
-  feed:any[]=[]
+  category="food"
+  food:any[]=[]
+  tip:any[]=[]
   rss:any
 
   constructor() { }
 
   ngOnInit(): void {
-   this.getNew()
+    window.scrollTo(0,0)
+    this.getNewAboutFood()
+    this.getNetAboutTip()
   }
 
-  getNew(){
+  getNewAboutFood(){
     let config:any
 
     (async () => {
     
         var rss = await parse('https://thanhnien.vn/rss/van-hoa/mon-ngon-ha-noi.rss',config);
         console.log(rss.items);
-        this.feed=rss.items
-        this.rss=rss
+        this.food=rss.items
 
     })();
 
+
+  }
+
+  getNetAboutTip(){
+    let config:any
+
+    (async () => {
+    
+        var rss = await parse('https://thanhnien.vn/rss/suc-khoe/song-vui-khoe.rss',config);
+        console.log(rss.items);
+        this.tip=rss.items
+
+    })();
 
   }
 

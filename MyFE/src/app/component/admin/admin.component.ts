@@ -89,6 +89,7 @@ export class AdminComponent implements OnInit {
 
   isGettingOrderDetail: boolean = false
   selectedOrder!: Order
+  selectedShippingInfo:any
   rf4!: FormGroup
   isEditingOrder: boolean = false
   isDeletingOrder: boolean = false
@@ -686,7 +687,7 @@ export class AdminComponent implements OnInit {
     this.orderService.getOrderDetails(o.id).subscribe(
       data => {
         this.selectedOrder.orderDetails = data.orderDetails
-
+        this.getOrderShippingInfo(o.id)
         this.isGettingOrderDetail = false
       },
       error => {
@@ -695,6 +696,17 @@ export class AdminComponent implements OnInit {
       }
     )
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  getOrderShippingInfo(id:any){
+    this.orderService.getShippingInfo(id).subscribe(
+      data=>{
+        this.selectedShippingInfo=data.result
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
   }
   openEditOrderInfoModal(info: any, o: Order) {
     this.showFormError = false

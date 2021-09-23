@@ -990,6 +990,8 @@
         <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
             <p>Tổng SP : {{selectedOrder.totalItem}}</p>
             <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+            <p *ngIf="selectedShippingInfo">Shipper : {{selectedShippingInfo.shipper.displayName}}</p>
+            <p *ngIf="selectedShippingInfo">Ngày giao : {{selectedShippingInfo.deliveryDate}}</p>
             <table class="table">
                 <thead>
                     <tr>
