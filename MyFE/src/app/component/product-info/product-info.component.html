@@ -6,17 +6,17 @@
     <p class="text monospace">Please wait a sec...</p>
 </div>
 <div class="container" *ngIf="!isLoading">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
         <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Sản phẩm</a></li>
         <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">{{displayCategory}}</a></li>
-        
+
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="pro-img-details d-flex justify-content-center" style="border: solid;"> <img
-                    src="{{product.imgUrl}}" alt="" class="product-img"></div>
+            <div class="pro-img-details d-flex justify-content-center p-3" style="border: solid;"> <img
+                    src="{{product.imgUrl}}" alt="" class="product-img animate__animated animate__zoomIn"></div>
         </div>
         <div class="col-md-6">
             <h4 class="pro-d-title mt-3"> <a href="#" class="mt-2 text-monospace text-lg lead"> {{product.name}} </a>
@@ -39,14 +39,15 @@
 
                 </strong>
                 <span class="pro-price">
-                    {{product.price}} VND
+                    {{product.price|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> 
                 </span>
             </div>
             <p>
                 <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
                         class="fa fa-shopping-cart"></i> Thêm vào giỏ
                 </button>
-                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i class="far fa-heart"></i> Yêu thích
+                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i
+                        class="far fa-heart"></i> Yêu thích
                 </button>
 
             </p>
@@ -58,7 +59,7 @@
     <div class="slick-list">
         <div class="slick-track product-similar">
 
-            <div class="slick-slide slick-active" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
+            <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
                 *ngFor="let o of randomProducts" (click)="goToProductPage(o.id)">
                 <div>
                     <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
@@ -66,8 +67,7 @@
                             <div class="Item__ProductImgWrapper-sc-m1oy8w-6 dgEsBx">
                                 <div class="Item__ThumbnailWrapper-sc-m1oy8w-7 jTPYDY">
                                     <picture class="webpimg-container">
-                                        <!-- <source type="image/webp"
-                                            srcset="https://salt.tikicdn.com/cache/200x200/ts/product/d6/bd/97/20d1ef37a3355741639f448f02a9f1ea.jpg.webp"> -->
+
                                         <img alt="{{o.imgUrl}}" src="{{o.imgUrl}}"
                                             class="WebpImg__StyledImg-sc-h3ozu8-0 fWjUGo">
                                     </picture>
@@ -75,7 +75,7 @@
                             </div>
                             <div class="title" style="max-height: 40px; height: auto;">{{o.name}}</div>
 
-                            <p class="price">{{o.price}}$</p>
+                            <p class="price">{{o.price|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </p>
                         </a></div>
                 </div>
             </div>
@@ -123,7 +123,8 @@
                 Nhận xét</b><span class="fmsidWidgetCommentListHeadText"></span> (<span
                 class="fmsidWidgetCommentListCount">{{product.reviews.length}}</span>)
         </header>
-        <div>Sắp xếp : <select class="select select-history select-lg" name="sort" (change)="sortChange()" [(ngModel)]="sort">
+        <div>Sắp xếp : <select class="select select-history select-lg" name="sort" (change)="sortChange()"
+                [(ngModel)]="sort">
                 <option value="d" selected="true">Mới nhất</option>
                 <option value="a">Cũ nhất</option>
             </select>
@@ -140,7 +141,7 @@
     </div>
     <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="product.reviews.length!=0">
         <div *ngFor="let r of pagedReview " class="shopee-product-rating">
-            <div >
+            <div>
 
 
                 <a class="shopee-product-rating__avatar">
@@ -177,8 +178,8 @@
             <div class="col">
                 <div id="ng-pagi">
                     <ngb-pagination [(page)]="pageReview" [pageSize]="pageSizeReview"
-                        [collectionSize]="product.reviews.length" [maxSize]="3"
-                        [boundaryLinks]=true (pageChange)="getPagedReviews()" size="sm">
+                        [collectionSize]="product.reviews.length" [maxSize]="3" [boundaryLinks]=true
+                        (pageChange)="getPagedReviews()" size="sm">
                     </ngb-pagination>
                 </div>
 
@@ -218,24 +219,26 @@
             <p>
                 Bạn đã viết nhận xét về sản phẩm này.
             </p>
-            <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Chỉnh sửa nhận xét </button>
-            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false" *ngIf="reWriteReview">Hủy</button>
+            <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Chỉnh
+                sửa nhận xét </button>
+            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false"
+                *ngIf="reWriteReview">Hủy</button>
         </div>
         <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="isLogin&&alreadyReview">
             <div class="shopee-product-rating">
                 <div>
-    
+
                     <a class="shopee-product-rating__avatar">
                         <div class="shopee-avatar">
                             <img src="{{reviewedContent.imgUrl}}" style="width: 40px;height: 40px;border-radius: 50%;">
                         </div>
                     </a>
-    
+
                     <div class="shopee-product-rating__main"><a
                             class="shopee-product-rating__author-name">{{reviewedContent.username}}</a>
                         <div class="shopee-product-rating__rating">
-                            <svg *ngFor="let i of [].constructor(reviewedContent.star)" enable-background="new 0 0 15 15"
-                                viewBox="0 0 15 15" x="0" y="0"
+                            <svg *ngFor="let i of [].constructor(reviewedContent.star)"
+                                enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0"
                                 class="shopee-svg-icon icon-rating-solid--active icon-rating-solid">
                                 <polygon
                                     points="7.5 .8 9.7 5.4 14.5 5.9 10.7 9.1 11.8 14.2 7.5 11.6 3.2 14.2 4.3 9.1 .5 5.9 5.3 5.4"
@@ -252,5 +255,3 @@
 
 </div>
 <app-footer></app-footer>
-
-

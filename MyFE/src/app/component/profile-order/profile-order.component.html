@@ -84,7 +84,7 @@
                                 <td class="text-monospace">{{o.id}}</td>
                                 <td class="text-monospace">{{o.orderDate}}</td>
                                 <td class="text-monospace">{{o.totalItem}}</td>
-                                <td class="text-monospace">{{(o.totalPrice).toFixed(2)}} </td>
+                                <td class="text-monospace">{{(o.totalPrice)|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span>  </td>
                                 <td>
                                     <a class="btn btn-info" routerLink="/profile/{{userInfo.id}}/order/{{o.id}}">
                                         <i class="fas fa-angle-double-right"></i> Details

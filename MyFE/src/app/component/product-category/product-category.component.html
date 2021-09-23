@@ -269,7 +269,7 @@
 
             <div *ngFor="let pro of content  " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
                         container="body">
                         <ul class="featured__item__pic__hover">

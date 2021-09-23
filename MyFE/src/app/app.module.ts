@@ -35,6 +35,7 @@ import { ProfileOrderInfoComponent } from './component/profile-order-info/profil
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
 import { SearchComponent } from './component/search/search.component';
 import { NewsComponent } from './component/news/news.component';
+import { ContactComponent } from './component/contact/contact.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +65,8 @@ import { NewsComponent } from './component/news/news.component';
     ProfileOrderInfoComponent,
     ProfileFavoriteComponent,
     SearchComponent,
-    NewsComponent
+    NewsComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

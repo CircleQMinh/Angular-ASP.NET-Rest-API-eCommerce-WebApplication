@@ -5,6 +5,7 @@ import { AdminComponent } from './component/admin/admin.component';
 import { CartInfoComponent } from './component/cart-info/cart-info.component';
 import { CheckoutComponent } from './component/checkout/checkout.component';
 import { ConfirmAccountComponent } from './component/confirm-account/confirm-account.component';
+import { ContactComponent } from './component/contact/contact.component';
 import { ErrorComponent } from './component/error/error.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { HomeComponent } from './component/home/home.component';
@@ -53,6 +54,7 @@ const routes: Routes = [
   { path: 'thankyou', component: ThankyouComponent },
   { path: 'search', component: SearchComponent },
   { path: 'news', component: NewsComponent },
+  { path: 'contact', component: ContactComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];
