@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Employee } from 'src/app/class/employee';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
@@ -27,7 +28,7 @@ export class AdminComponent implements OnInit {
 
   user!: User
 
-  active_tab = "db"
+  active_tab = "employee"
 
   userList: User[] = []
   pagedUserList: User[] = []
@@ -97,7 +98,7 @@ export class AdminComponent implements OnInit {
   orderDirOrder: any = "Asc"
   orderDirUser: any = "Asc"
   orderDirProduct: any = "Asc"
-
+  orderDirEmployee: any = "Asc"
 
   news: any[] = []
   today: string = formatDate(Date.now(), 'dd-MM-yyyy', 'en');
@@ -106,6 +107,14 @@ export class AdminComponent implements OnInit {
 
   keyword: any;
   allProduct:Product[]=[]
+
+  employeeList:Employee[]=[]
+  pagedEmployeeList: Employee[] = []
+  pageNumberEmployee = 1
+  pageSizeEmployee = 5
+  orderEmployee = "Id"
+  roleEmployee = "all"
+
   formatterProduct = (x: Product) => x.name;
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
@@ -242,6 +251,7 @@ export class AdminComponent implements OnInit {
         this.getUser()
         this.getProduct()
         this.getSearchData()
+        this.getEmployee()
         this.getOrder()
         this.isLoading = false
       },
@@ -767,5 +777,42 @@ export class AdminComponent implements OnInit {
         //console.log(this.news)
       }
     )
+  }
+
+  getEmployee(){
+    this.employeeList=[]
+    this.adminService.getEmployees(this.orderEmployee,this.roleEmployee,this.orderDirEmployee).subscribe(
+      data=>{
+        console.log(data)
+        for(let i=0;i<data.count;i++){
+          let e = new Employee
+          e=data.result[i]
+          e.roles=data.roles[i]
+          e.Address=data.employeeInfo[i].address
+          e.CMND=data.employeeInfo[i].cmnd
+          e.Salary=data.employeeInfo[i].salary
+          e.Sex=data.employeeInfo[i].sex
+          e.StartDate=data.employeeInfo[i].startDate
+          e.Status=data.employeeInfo[i].status
+          this.employeeList.push(e)
+          
+        }
+        console.log(this.employeeList)
+        this.getPagedEmployee()
+      },
+      error=>{
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+  getPagedEmployee(){
+    this.pagedEmployeeList = []
+    for (let i = 0; i < this.pageSizeEmployee; i++) {
+      if (this.employeeList[i + this.pageSizeEmployee * (this.pageNumberEmployee - 1)]) {
+        this.pagedEmployeeList.push(this.employeeList[i + this.pageSizeEmployee * (this.pageNumberEmployee - 1)])
+      }
+
+    }
   }
 }

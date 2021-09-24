@@ -22,6 +22,7 @@ namespace MyAPI.Data
         public DbSet<ShippingInfo> ShippingInfos { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<EmployeeInfo> EmployeeInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

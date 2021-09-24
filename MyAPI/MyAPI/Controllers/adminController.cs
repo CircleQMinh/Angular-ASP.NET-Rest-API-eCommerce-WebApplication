@@ -139,6 +139,105 @@ namespace MyAPI.Controllers
         }
 
 
+        [HttpGet("employees", Name = "GetEmployeeForAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetEmployeeForAdmin(string role, string order, string orderDir)
+        {
+            try
+            {
+                Func<IQueryable<APIUser>, IOrderedQueryable<APIUser>> orderBy = null;
+                switch (order)
+                {
+                    case "Email":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Email);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Email);
+                        }
+                        break;
+                    case "Id":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
+                        break;
+                    case "Name":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.DisplayName);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.DisplayName);
+                        }
+                        break;
+                }
+
+                var query = await _unitOfWork.Users.GetAll(null, orderBy, null);
+
+
+                var roles = new List<IList<string>>();
+
+                if (role != "all")
+                {
+                    var result = new List<UserInfoDTO>();
+                    var employeeInfo = new List<EmployeeDTO>();
+                    foreach (var item in query)
+                    {
+                        var r = await _userManager.GetRolesAsync(item);
+                        if (r.Contains(role))
+                        {
+                            roles.Add(r);
+                            var u = _mapper.Map<UserInfoDTO>(item);
+                            result.Add(u);
+                            var i = await _unitOfWork.EmployeeInfos.Get(q => q.EmployeeID == u.Id);
+                            var info = _mapper.Map<EmployeeDTO>(i);
+                            employeeInfo.Add(info);
+                        }
+                    }
+                    var count = result.Count;
+
+                    return Ok(new { result, count, roles,employeeInfo });
+                }
+                else
+                {
+                    var result = new List<UserInfoDTO>();
+                    var employeeInfo = new List<EmployeeDTO>();
+                    foreach (var item in query)
+                    {
+                        var r = await _userManager.GetRolesAsync(item);
+                        if (r.Contains("Shipper")||r.Contains("Employee"))
+                        {
+                            roles.Add(r);
+                            var u = _mapper.Map<UserInfoDTO>(item);
+                            result.Add(u);
+                            var i = await _unitOfWork.EmployeeInfos.Get(q => q.EmployeeID == u.Id);
+                            var info = _mapper.Map<EmployeeDTO>(i);
+                            employeeInfo.Add(info);
+                        }
+                      
+                    }
+                    var count = result.Count;
+                    return Ok(new { result, count, roles,employeeInfo });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetEmployeeForAdmin)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
+
         [HttpGet("products", Name = "GetProductForAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

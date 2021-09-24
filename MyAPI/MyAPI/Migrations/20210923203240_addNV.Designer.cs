@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210923203240_addNV")]
+    partial class addNV
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,29 +65,29 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6f2a1a4c-a8c6-43ba-aef0-0bb0bf2aa0e1",
-                            ConcurrencyStamp = "e91599ab-9374-41fd-9348-76c14487c92d",
+                            Id = "048b6848-51f0-402a-8469-07d11755199b",
+                            ConcurrencyStamp = "5c843edc-ef80-4378-b3b8-87f31ffe86c7",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "1dea07a2-5724-452b-ae23-75cba48072a1",
-                            ConcurrencyStamp = "5816f10e-d92d-4aee-90b6-67af17180020",
+                            Id = "2f5cad26-7b07-48b3-810d-5631355f31c6",
+                            ConcurrencyStamp = "a1167276-5269-4289-8ab4-ee472cf9a2be",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "f4dd100f-ebc5-4811-90eb-4177095847a8",
-                            ConcurrencyStamp = "0d0f2ee3-08da-47fa-8d1c-72956fb915ce",
+                            Id = "f270c9b5-e807-4b07-bd73-ccd789160e07",
+                            ConcurrencyStamp = "1770d79d-9b64-4414-9177-0bed344edcd6",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "e65571ea-628d-4885-be7d-67168f6f6140",
-                            ConcurrencyStamp = "66bdecac-5797-4524-851c-82966f050036",
+                            Id = "d825adb8-960e-4ea6-8f45-b5f07a830069",
+                            ConcurrencyStamp = "f90ec82a-dd6d-4c6c-bbc0-fb4377fca38e",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -293,6 +295,9 @@ namespace MyAPI.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("imgUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

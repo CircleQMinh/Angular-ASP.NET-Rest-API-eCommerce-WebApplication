@@ -35,6 +35,9 @@ namespace MyAPI.Data
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
             CreateMap<Review, CreateReviewDTO>().ReverseMap();
+
+            CreateMap<EmployeeInfo, EmployeeDTO>().ReverseMap();
+
         }
     }
 }
