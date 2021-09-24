@@ -32,6 +32,10 @@ export class AdminService {
     return this.http.get(`${this.apiUrl}admin/users?order=${order}&role=${role}&orderDir=${orderDir}`);
   }
 
+  getEmployees(order: string, role: string,orderDir:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}admin/employees?order=${order}&role=${role}&orderDir=${orderDir}`);
+  }
+
   createUser(email: string, password: string, userName: string, phoneNumber: string, role: string): Observable<any> {
     return this.http.post(`${this.apiUrl}admin/createUser`, {
       email: email,

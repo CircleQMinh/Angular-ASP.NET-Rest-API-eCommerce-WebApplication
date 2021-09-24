@@ -16,6 +16,7 @@ namespace MyAPI.Repository
         private IGenericRepository<APIUser> _user;
         private IGenericRepository<ShippingInfo> _shippingInfo;
         private IGenericRepository<Review> _review;
+        private IGenericRepository<EmployeeInfo> _employeeInfo;
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -26,6 +27,8 @@ namespace MyAPI.Repository
         public IGenericRepository<APIUser> Users => _user ??= new GenericRepository<APIUser>(_context);
         public IGenericRepository<ShippingInfo> ShippingInfos => _shippingInfo ??= new GenericRepository<ShippingInfo>(_context);
         public IGenericRepository<Review> Reviews => _review ??= new GenericRepository<Review>(_context);
+
+        public IGenericRepository<EmployeeInfo> EmployeeInfos => _employeeInfo ??= new GenericRepository<EmployeeInfo>(_context);
         public void Dispose()
         {
             _context.Dispose();

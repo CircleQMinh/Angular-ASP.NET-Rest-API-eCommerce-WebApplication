@@ -263,8 +263,111 @@
                 </div>
             </div>
 
+            <!-- ---------------------------------------------------------------------------------------------------- -->
 
+            <div class="col-md-9" *ngIf="active_tab=='employee'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4>Employee</h4>
+                        <button class="btn btn-info " (click)="openAddUserModal(newUser)">
+                            <i class="fas fa-plus"></i> Thêm tài khoản
+                        </button>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Role: </label>
+                                <select class="form-select" [(ngModel)]="roleEmployee" (change)=" getEmployee()">
+                                    <option value="all" selected="true">Toàn bộ</option>
+                                    <option value="Employee">Nhân viên</option>
+                                    <option value="Shipper">Shipper</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sắp xếp theo: </label>
+                                <select class="form-select" [(ngModel)]="orderEmployee" (change)=" getEmployee()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Name">Tên</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirEmployee" (change)="  getEmployee()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hiển thị: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeEmployee" (change)=" getEmployee()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped  ">
+                            <thead class="thead-dark">
+                                <tr>
 
+                                    <th>Thông tin</th>
+                                    <th>Email</th>
+                                    <th>SDT</th>
+                                    <th>Đã xác thực</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of pagedEmployeeList,index as i">
+
+                                    <td>
+                                        <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                                        <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+                                    </td>
+                                    <td style="word-break: break-all;">{{o.email}}</td>
+                                    <td>{{o.phoneNumber}}</td>
+                                    <td *ngIf="o.emailConfirmed">
+                                        <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                                    </td>
+                                    <td *ngIf="!o.emailConfirmed">
+                                        <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info admin-button"
+                                            (click)="openEditUserModal(changeProfile,o)">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger admin-button"
+                                            (click)="openDeleteUserModal(deleteUser,o.id)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberEmployee" [pageSize]="pageSizeEmployee"
+                                        [collectionSize]="employeeList.length" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getPagedEmployee()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <!-- ---------------------------------------------------------------------------------------------------- -->
