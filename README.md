@@ -33,3 +33,5 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 22-09-2021 : thêm trang tìm kiếm và tin tức.<br>
 23-09-2021 : chỉnh sửa nhiều thứ, visual update.<br>
 24-09-2021 : thêm quản lý nhân viên.<br>
+25-09-2021 : hoàn thành quản lý nhân viên.<br>
+26-09-2021 : hoàn thành quản lý nhân viên.<br>
