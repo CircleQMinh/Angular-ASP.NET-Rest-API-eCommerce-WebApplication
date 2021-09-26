@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit {
   collectionSizeProduct = 0
 
   orderList: Order[] = []
-  shippingInfos:any[]=[]
+  shippingInfos: any[] = []
   pageNumberOrder = 1
   pageSizeOrder = 5
   orderOrder = "Id"
@@ -62,6 +62,7 @@ export class AdminComponent implements OnInit {
 
 
   urlIMG: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
+  defaultImgUrl: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
   uploadedUrlImg: any
   msg = "";
   newName!: string
@@ -90,7 +91,7 @@ export class AdminComponent implements OnInit {
 
   isGettingOrderDetail: boolean = false
   selectedOrder!: Order
-  selectedShippingInfo:any
+  selectedShippingInfo: any
   rf4!: FormGroup
   isEditingOrder: boolean = false
   isDeletingOrder: boolean = false
@@ -106,14 +107,21 @@ export class AdminComponent implements OnInit {
   newCategory: any[] = ["technology", "science", "business", "general", "entertainment", "health"]
 
   keyword: any;
-  allProduct:Product[]=[]
+  allProduct: Product[] = []
 
-  employeeList:Employee[]=[]
+  employeeList: Employee[] = []
   pagedEmployeeList: Employee[] = []
   pageNumberEmployee = 1
   pageSizeEmployee = 5
   orderEmployee = "Id"
   roleEmployee = "all"
+  rf5!: FormGroup
+  rf6!: FormGroup
+  isCreatingEmployee = false
+  isEditingEmployee = false
+  isDeletingEmployee = false
+  editingEmployee!:Employee
+  deletingEmployee!:Employee
 
   formatterProduct = (x: Product) => x.name;
 
@@ -122,14 +130,14 @@ export class AdminComponent implements OnInit {
     private modalService: NgbModal) { }
 
   searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    map(term => term.length < 2 ? []
-      : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-  )  
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
 
-  
+
   ngOnInit(): void {
 
     this.rf1 = new FormGroup({
@@ -178,6 +186,50 @@ export class AdminComponent implements OnInit {
       note: new FormControl('',
         [Validators.required])
     });
+    this.rf5 = new FormGroup({
+      email: new FormControl('',
+        [Validators.required, Validators.email]),
+      password: new FormControl('',
+        [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]),
+      username: new FormControl('',
+        [Validators.required, Validators.minLength(3)]),
+      phone: new FormControl("",
+        [Validators.required, Validators.pattern('[- +()0-9]+')]),
+      role: new FormControl('',
+        [Validators.required]),
+      address: new FormControl('',
+        [Validators.required]),
+      sex: new FormControl('',
+        [Validators.required]),
+      salary: new FormControl('',
+        [Validators.required, Validators.pattern("^[0-9]*$")]),
+      startDate: new FormControl('',
+        [Validators.required]),
+      cmnd: new FormControl('',
+        [Validators.pattern('^[0-9]{12}$'), Validators.required]),
+    });
+    this.rf5.controls["role"].setValue("Employee")
+    this.rf5.controls["sex"].setValue("M")
+
+
+    this.rf6 = new FormGroup({
+      username: new FormControl('',
+        [Validators.required, Validators.minLength(3)]),
+      phone: new FormControl("",
+        [Validators.required, Validators.pattern('[- +()0-9]+')]),
+      role: new FormControl('',
+        [Validators.required]),
+      address: new FormControl('',
+        [Validators.required]),
+      sex: new FormControl('',
+        [Validators.required]),
+      salary: new FormControl('',
+        [Validators.required, Validators.pattern("^[0-9]*$")]),
+      startDate: new FormControl('',
+        [Validators.required]),
+      cmnd: new FormControl('',
+        [Validators.pattern('^[0-9]{12}$'), Validators.required]),
+    });
     this.adminService.getDashboardInfo().subscribe(
       data => {
         this.dashboardInfo = data
@@ -190,16 +242,16 @@ export class AdminComponent implements OnInit {
     )
     this.isLoading = true
     this.getLocalStorage()
-    if(!this.isLogin){
+    if (!this.isLogin) {
       this.router.navigateByUrl("/error")
     }
-    else{
+    else {
       this.getUserInfo()
-      
+
     }
 
   }
-  selectedItemProduct(item: any,modal:any) {
+  selectedItemProduct(item: any, modal: any) {
     this.showFormError = false
     this.editingProduct = item.item
     this.rf3.controls["name"].setValue(this.editingProduct.name)
@@ -210,7 +262,7 @@ export class AdminComponent implements OnInit {
     this.proImgUrl = this.editingProduct.imgUrl
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-  getSearchData(){
+  getSearchData() {
     this.productService.getProduct("all", "", 1, 999).subscribe(
       data => {
         //console.log(data)
@@ -244,7 +296,7 @@ export class AdminComponent implements OnInit {
 
         this.user = data.user
         this.user.roles = data.roles
-        if(this.user.roles[0]!="Administrator"){
+        if (this.user.roles[0] != "Administrator") {
           this.router.navigateByUrl("/error")
         }
         this.getNew()
@@ -262,12 +314,12 @@ export class AdminComponent implements OnInit {
     )
   }
   getLocalStorage() {
-    if(localStorage.getItem("isLogin")){
-   
-      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
+    if (localStorage.getItem("isLogin")) {
+
+      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
       let timeNow = new Date()
-  
-      if(timeOut.getTime()<timeNow.getTime()){
+
+      if (timeOut.getTime() < timeNow.getTime()) {
         //console.log("time out remove key")
         localStorage.removeItem("isLogin")
         localStorage.removeItem("user-id")
@@ -278,20 +330,20 @@ export class AdminComponent implements OnInit {
         localStorage.removeItem("user-role")
         localStorage.removeItem("user-info")
       }
-      else{
+      else {
         this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user=new User
+        this.user = new User
         this.user.id = localStorage.getItem('user-id')!
         this.user.email = localStorage.getItem("user-email")!
         this.user.displayName = localStorage.getItem("user-disName")!
-        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
-        this.user.roles=[]
+        this.user.imgUrl = localStorage.getItem("user-imgUrl")!
+        this.user.roles = []
         this.user.roles.push(localStorage.getItem("user-role")!)
         //console.log("still login")
       }
     }
-    else{
-     // console.log("no login acc")
+    else {
+      // console.log("no login acc")
     }
 
   }
@@ -634,19 +686,19 @@ export class AdminComponent implements OnInit {
   editProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
-    this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
-      data => {
-        this.toast.success("Chỉnh sửa thành công!")
-        this.isEditingProduct = false
-        this.modalService.dismissAll()
-        this.getProduct()
-      },
-      error => {
-        console.log(error)
-        this.isEditingProduct = false
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
+      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
+        data => {
+          this.toast.success("Chỉnh sửa thành công!")
+          this.isEditingProduct = false
+          this.modalService.dismissAll()
+          this.getProduct()
+        },
+        error => {
+          console.log(error)
+          this.isEditingProduct = false
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
   }
 
   deleteProduct() {
@@ -707,10 +759,10 @@ export class AdminComponent implements OnInit {
     )
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
   }
-  getOrderShippingInfo(id:any){
+  getOrderShippingInfo(id: any) {
     this.orderService.getShippingInfo(id).subscribe(
-      data=>{
-        this.selectedShippingInfo=data.result
+      data => {
+        this.selectedShippingInfo = data.result
       },
       error => {
         console.log(error)
@@ -779,34 +831,34 @@ export class AdminComponent implements OnInit {
     )
   }
 
-  getEmployee(){
-    this.employeeList=[]
-    this.adminService.getEmployees(this.orderEmployee,this.roleEmployee,this.orderDirEmployee).subscribe(
-      data=>{
+  getEmployee() {
+    this.employeeList = []
+    this.adminService.getEmployees(this.orderEmployee, this.roleEmployee, this.orderDirEmployee).subscribe(
+      data => {
         console.log(data)
-        for(let i=0;i<data.count;i++){
+        for (let i = 0; i < data.count; i++) {
           let e = new Employee
-          e=data.result[i]
-          e.roles=data.roles[i]
-          e.Address=data.employeeInfo[i].address
-          e.CMND=data.employeeInfo[i].cmnd
-          e.Salary=data.employeeInfo[i].salary
-          e.Sex=data.employeeInfo[i].sex
-          e.StartDate=data.employeeInfo[i].startDate
-          e.Status=data.employeeInfo[i].status
+          e = data.result[i]
+          e.roles = data.roles[i]
+          e.Address = data.employeeInfo[i].address
+          e.CMND = data.employeeInfo[i].cmnd
+          e.Salary = data.employeeInfo[i].salary
+          e.Sex = data.employeeInfo[i].sex
+          e.StartDate = data.employeeInfo[i].startDate
+          e.Status = data.employeeInfo[i].status
           this.employeeList.push(e)
-          
+
         }
         console.log(this.employeeList)
         this.getPagedEmployee()
       },
-      error=>{
+      error => {
         console.log(error)
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }
-  getPagedEmployee(){
+  getPagedEmployee() {
     this.pagedEmployeeList = []
     for (let i = 0; i < this.pageSizeEmployee; i++) {
       if (this.employeeList[i + this.pageSizeEmployee * (this.pageNumberEmployee - 1)]) {
@@ -815,4 +867,156 @@ export class AdminComponent implements OnInit {
 
     }
   }
+
+  openAddEmployeeModal(modal: any) {
+    this.showFormError = false
+    this.urlIMG = this.defaultImgUrl
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openEditEmployeeModal(modal: any, e: Employee) {
+    this.editingEmployee=e
+    this.showFormError = false
+    this.urlIMG = e.imgUrl
+    this.rf6.controls["address"].setValue(e.Address)
+    this.rf6.controls["cmnd"].setValue(e.CMND)
+    this.rf6.controls["salary"].setValue(e.Salary)
+    this.rf6.controls["sex"].setValue(e.Sex)
+    this.rf6.controls["startDate"].setValue(e.StartDate)
+    this.rf6.controls["username"].setValue(e.displayName)
+    this.rf6.controls["role"].setValue(e.roles[0])
+    this.rf6.controls["phone"].setValue(e.phoneNumber)
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openDeleteEmployeeModal(modal: any, e:Employee){
+    this.deletingEmployee=e
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  addEmployee() {
+    this.showFormError = true
+    this.isCreatingEmployee = true
+    if (this.rf5.valid) {
+      let e = new Employee
+      let p = this.rf5.controls["password"].value
+      e.phoneNumber=this.rf5.controls["phone"].value
+      e.Address = this.rf5.controls["address"].value
+      e.CMND = this.rf5.controls["cmnd"].value
+      e.Salary = this.rf5.controls["salary"].value
+      e.Sex = this.rf5.controls["sex"].value
+      e.StartDate = this.rf5.controls["startDate"].value
+      e.Status = 0
+      e.displayName = this.rf5.controls["username"].value
+      e.email = this.rf5.controls["email"].value
+      e.roles = []
+      e.roles.push(this.rf5.controls["role"].value)
+      console.log(e)
+      //console.log(this.urlIMG)
+      // this.toast.success("valid")
+      if (this.urlIMG != this.defaultImgUrl) {
+        this.authService.upLoadIMG(this.urlIMG).subscribe(
+          data => {
+            console.log(data)
+            e.imgUrl = data.secure_url
+            this.createEmployee(e, p)
+          },
+          error => {
+            this.toast.error("Up ảnh không được")
+            console.log(error)
+          }
+        )
+      }
+      else {
+        e.imgUrl = this.defaultImgUrl
+        this.createEmployee(e, p)
+      }
+    }
+    else {
+      this.toast.error("Thông tin nhập chưa hợp lệ")
+    }
+  }
+
+  createEmployee(e: Employee, p: any) {
+
+    this.adminService.createEmployee(e, p).subscribe(
+      data => {
+        console.log(data)
+        this.toast.success("Thêm nhân viên thành công!")
+        this.isCreatingEmployee = false
+        this.modalService.dismissAll()
+      },
+      error => {
+        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        this.isCreatingEmployee = false
+        console.log(error)
+      }
+    )
+  }
+
+
+  editEmployee() {
+    if(this.rf6.valid){
+      this.isEditingEmployee=true
+      this.editingEmployee.Address = this.rf6.controls["address"].value
+      this.editingEmployee.CMND = this.rf6.controls["cmnd"].value
+      this.editingEmployee.Salary = this.rf6.controls["salary"].value
+      this.editingEmployee.Sex = this.rf6.controls["sex"].value
+      this.editingEmployee.StartDate = this.rf6.controls["startDate"].value
+      this.editingEmployee.Status = 0
+      this.editingEmployee.displayName = this.rf6.controls["username"].value
+      this.editingEmployee.roles = []
+      this.editingEmployee.roles.push(this.rf6.controls["role"].value)
+      if(this.urlIMG!=this.editingEmployee.imgUrl){
+        this.authService.upLoadIMG(this.urlIMG).subscribe(
+          data => {
+            console.log(data)
+            this.editingEmployee.imgUrl = data.secure_url
+            this.updateEmployee()
+          },
+          error => {
+            this.toast.error("Up ảnh không được")
+            console.log(error)
+          }
+        )
+      }
+      else{
+        this.updateEmployee()
+      }
+    }
+    else{
+      this.toast.error("Dữ liệu nhập chưa hợp lệ!")
+    }
+  }
+  updateEmployee() {
+    this.adminService.editEmployee(this.editingEmployee,this.editingEmployee.id).subscribe(
+      data => {
+        console.log(data)
+        this.toast.success("Chỉnh sửa nhân viên thành công!")
+        this.isEditingEmployee = false
+        this.modalService.dismissAll()
+      },
+      error => {
+        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        this.isEditingEmployee = false
+        console.log(error)
+      }
+    )
+  }
+
+  deleteEmployee() {
+
+    //console.log(this.selectedUserId)
+    this.isDeletingEmployee = true
+    this.adminService.deleteUser(this.deletingEmployee.id).subscribe(
+      data => {
+        console.log(data)
+        this.isDeletingEmployee = false
+        this.toast.success("Xóa nhân viên thành công")!
+        this.modalService.dismissAll()
+      },
+      error => {
+        this.toast.error(" An error has occurred ! Try again !")
+        this.isDeletingEmployee = false
+      }
+    )
+  }
+  
 }

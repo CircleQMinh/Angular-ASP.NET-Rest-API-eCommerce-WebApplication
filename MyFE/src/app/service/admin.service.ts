@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Employee } from '../class/employee';
 import { Order } from '../class/order';
 
 @Injectable({
@@ -98,5 +99,37 @@ export class AdminService {
   }
   getNew(category:string):Observable<any>{
     return this.http.get(`https://newsapi.org/v2/top-headlines?category=${category}&country=us&apiKey=${this.apikey}`)
+  }
+
+  createEmployee(e:Employee,password:any): Observable<any> {
+    return this.http.post(`${this.apiUrl}admin/createEmployee`, {
+      password: password,
+      email: e.email,
+      address: e.Address,
+      imgUrl: e.imgUrl,
+      sex: e.Sex,
+      salary: e.Salary,
+      cmnd: e.CMND,
+      startDate: e.StartDate,
+      status: 0,
+      displayName: e.displayName,
+      phoneNumber: e.phoneNumber,
+      roles: e.roles
+    })
+  }
+
+  editEmployee(e:Employee,id:any): Observable<any> {
+    return this.http.put(`${this.apiUrl}admin/editEmployee?id=${id}`, {
+      address: e.Address,
+      imgUrl: e.imgUrl,
+      sex: e.Sex,
+      salary: e.Salary,
+      cmnd: e.CMND,
+      startDate: e.StartDate,
+      status: 0,
+      displayName: e.displayName,
+      phoneNumber: e.phoneNumber,
+      roles: e.roles
+    })
   }
 }

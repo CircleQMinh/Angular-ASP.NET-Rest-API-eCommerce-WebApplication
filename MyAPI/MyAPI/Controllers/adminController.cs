@@ -458,8 +458,149 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteUser)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
+            }
+        }
+
+
+        [HttpPost("createEmployee")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateEmployee)}");
+                return BadRequest(ModelState);
+            }
+            var existingUser = await _userManager.FindByEmailAsync(unitDTO.Email);
+            if (existingUser != null)
+            {
+                var error = "Email đã được sử dụng!";
+                return BadRequest(new { error });
+            }
+            try
+            {
+                var user = new APIUser();
+                user.DisplayName = unitDTO.DisplayName;
+                user.imgUrl = unitDTO.imgUrl;
+                user.Email = unitDTO.Email;
+                user.PhoneNumber = unitDTO.PhoneNumber;
+                user.UserName = unitDTO.Email;
+                user.EmailConfirmed = true;
+                var result = await _userManager.CreateAsync(user, unitDTO.Password);
+
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+                await _userManager.AddToRolesAsync(user, unitDTO.Roles);
+
+                var employeeInfo = new EmployeeInfo();
+                employeeInfo.EmployeeID = user.Id;
+                employeeInfo.Salary = unitDTO.Salary;
+                employeeInfo.Sex = unitDTO.Sex;
+                employeeInfo.StartDate = unitDTO.StartDate;
+                employeeInfo.Status = unitDTO.Status;
+                employeeInfo.Address = unitDTO.Address;
+                employeeInfo.CMND = unitDTO.CMND;
+
+                await _unitOfWork.EmployeeInfos.Insert(employeeInfo);
+                await _unitOfWork.Save();
+
+
+                return Accepted(new { employee=user,employeeInfo });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateUser)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+
+        [HttpPut("editEmployee")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditEmployee(string id,[FromBody] EditEmployeeDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid PUT attempt in {nameof(EditEmployee)}");
+                return BadRequest(ModelState);
+            }
+            var emp = await _userManager.FindByIdAsync(id);
+            if (emp == null)
+            {
+                var error = "Không tìm thấy người dùng!";
+                return BadRequest(new { error });
+            }
+            try
+            {
+                var empInfo = await _unitOfWork.EmployeeInfos.Get(q => q.EmployeeID == id);
+                var role = await _userManager.GetRolesAsync(emp);
+                await _userManager.RemoveFromRolesAsync(emp, role);
+
+                emp.imgUrl = unitDTO.imgUrl;
+                emp.PhoneNumber = unitDTO.PhoneNumber;
+                emp.DisplayName = unitDTO.DisplayName;
+                await _userManager.AddToRoleAsync(emp, unitDTO.Roles[0]);
+                _unitOfWork.Users.Update(emp);
+
+                empInfo.Address = unitDTO.Address;
+                empInfo.CMND = unitDTO.CMND;
+                empInfo.Salary = unitDTO.Salary;
+                empInfo.Sex = unitDTO.Sex;
+                empInfo.StartDate = unitDTO.StartDate;
+                empInfo.Status = unitDTO.Status;
+                _unitOfWork.EmployeeInfos.Update(empInfo);
+                await _unitOfWork.Save();
+
+                return Accepted(new {success=true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditEmployee)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+        [HttpDelete("deleteEmployee", Name = "DeleteEmployee")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteEmployee(string id)
+        {
+            var existingUser = await _userManager.FindByIdAsync(id);
+            if (existingUser == null)
+            {
+                var error = "Submitted data is invalid";
+                return BadRequest(new { error });
+            }
+
+            try
+            {
+                var empInfo = await _unitOfWork.EmployeeInfos.Get(q => q.EmployeeID == id);
+                await _unitOfWork.EmployeeInfos.Delete(empInfo.Id);
+                await _unitOfWork.Save();
+                await _userManager.DeleteAsync(existingUser);
+
+                var success = true;
+
+                return Accepted(new { success });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteEmployee)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
     }
+
 }

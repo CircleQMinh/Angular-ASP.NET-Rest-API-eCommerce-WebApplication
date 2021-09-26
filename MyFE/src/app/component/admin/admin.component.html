@@ -125,6 +125,11 @@
                     <i class="fas fa-plus"></i> Người dùng
                 </a>
             </div>
+            <div class="col-md-3" >
+                <a class="btn btn-info btn-block" (click)="switchTab('employee')">
+                    <i class="fas fa-plus"></i> Nhân viên
+                </a>
+            </div>
         </div>
         <hr>
     </div>
@@ -269,8 +274,8 @@
                 <div class="card ">
                     <div class="card-header">
                         <h4>Employee</h4>
-                        <button class="btn btn-info " (click)="openAddUserModal(newUser)">
-                            <i class="fas fa-plus"></i> Thêm tài khoản
+                        <button class="btn btn-info " (click)="openAddEmployeeModal(newEmployee)">
+                            <i class="fas fa-plus"></i> Thêm nhân viên
                         </button>
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
@@ -320,6 +325,8 @@
                                     <th>Thông tin</th>
                                     <th>Email</th>
                                     <th>SDT</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Lương</th>
                                     <th>Đã xác thực</th>
                                     <th></th>
                                 </tr>
@@ -333,6 +340,8 @@
                                     </td>
                                     <td style="word-break: break-all;">{{o.email}}</td>
                                     <td>{{o.phoneNumber}}</td>
+                                    <td>{{o.Address}}</td>
+                                    <td>{{o.Salary}}</td>
                                     <td *ngIf="o.emailConfirmed">
                                         <p class="text-tron text-success"><i class="fas fa-check"></i></p>
                                     </td>
@@ -341,11 +350,11 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-info admin-button"
-                                            (click)="openEditUserModal(changeProfile,o)">
+                                            (click)="openEditEmployeeModal(edit_Employee,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
                                         <button class="btn btn-danger admin-button"
-                                            (click)="openDeleteUserModal(deleteUser,o.id)">
+                                            (click)="openDeleteEmployeeModal(delete_Employee,o)">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -760,7 +769,7 @@
 
 <ng-template #newUser let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Thêm tài khoản </h4>
+        <h4 class="modal-title" id="modal-basic-title">Thêm người dùng</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -830,8 +839,6 @@
             <label for="role">Role</label>
             <div class="input-group">
                 <select class="form-select" formControlName="role">
-                    <option value="Administrator">Administrator</option>
-                    <option value="Shipper">Shipper</option>
                     <option selected value="User">Khách</option>
                 </select>
             </div>
@@ -1198,4 +1205,294 @@
         <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
     </div>
 
+</ng-template>
+
+
+
+<ng-template #newEmployee let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm nhân viên </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf5">
+            <label for="email">Email</label>
+            <div class="input-group">
+                <input id="email" class="form-control" placeholder="Email..." name="email" formControlName="email">
+
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.email?.errors?.required&&showFormError">
+                Email chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert" *ngIf="rf5.controls.email?.errors?.email&&showFormError">
+                Email chưa hợp lệ!
+            </div>
+
+            <label for="pass">Password</label>
+            <div class="input-group">
+                <input id="pass" class="form-control" placeholder="Password..." name="pass" type="password"
+                    formControlName="password">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.password?.errors?.required&&showFormError">
+                Password chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['password'].hasError('minlength')&&showFormError">
+                Password phải có ít nhất 8 kí tự!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['password'].hasError('pattern')&&showFormError">
+                Password phải thõa : <br>
+                Chữ thường <br>
+                Chữ in <br>
+                Số <br>
+                Kí tự đặc biệt <br>
+            </div>
+
+            <label for="des">Tên</label>
+            <div class="input-group">
+                <input id="des" class="form-control" placeholder="Username..." name="name" formControlName="username">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.username?.errors?.required&&showFormError">
+                Tên  chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['username'].hasError('minlength')&&showFormError">
+                Tên ít nhất 3 kí tự!
+            </div>
+            <label for="role">Giới tính</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="sex">
+                    <option value="M">Nam</option>
+                    <option value="F">Nữ</option>
+                </select>
+            </div>
+            <label for="cmnd">CMND</label>
+            <div class="input-group">
+                <input id="cmnd" class="form-control" placeholder="CMND..." name="phone" type="tel"
+                    formControlName="cmnd">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.cmnd?.errors?.required&&showFormError">
+                CMND chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['cmnd'].hasError('pattern')&&showFormError">
+                CMND chưa hợp lệ!
+            </div>
+            <label for="uis">SDT</label>
+            <div class="input-group">
+                <input id="uis" class="form-control" placeholder="Phone..." name="phone" type="tel"
+                    formControlName="phone">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.phone?.errors?.required&&showFormError">
+                SDT chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['phone'].hasError('pattern')&&showFormError">
+                SDT chưa hợp lệ!
+            </div>
+            <label for="address">Địa chỉ</label>
+            <div class="input-group">
+                <input id="address" class="form-control" placeholder="Address..." name="phone" type="text"
+                    formControlName="address">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.address?.errors?.required&&showFormError">
+                Địa chỉ chưa điền!
+            </div>
+            <label for="salary">Lương</label>
+            <div class="input-group">
+                <input id="salary" class="form-control" placeholder="Salary..." name="phone" type="tel"
+                    formControlName="salary">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls.salary?.errors?.required&&showFormError">
+                Lương chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf5.controls['salary'].hasError('pattern')&&showFormError">
+                Lương chưa hợp lệ!
+            </div>
+            <label for="startDate">Ngày bắt đầu</label>
+            <div class="input-group">
+                <input id="startDate" class="form-control" placeholder="Salary..." name="phone" type="date"
+                    formControlName="startDate">
+            </div>
+            <label for="role">Role</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="role">
+                    <option value="Employee">Nhân viên</option>
+                    <option value="Shipper">Shipper</option>
+                </select>
+            </div>
+            <label for="img">Profile Image</label>
+            <div class="input-group">
+                <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                    (change)="selectFile($event)">
+            </div>
+            <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isCreatingEmployee">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="addEmployee()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isCreatingEmployee">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+
+<ng-template #edit_Employee let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa nhân viên </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf6">
+            <label for="des">Tên</label>
+            <div class="input-group">
+                <input id="des" class="form-control" placeholder="Username..." name="name" formControlName="username">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.username?.errors?.required&&showFormError">
+                Tên  chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls['username'].hasError('minlength')&&showFormError">
+                Tên ít nhất 3 kí tự!
+            </div>
+            <label for="role">Giới tính</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="sex">
+                    <option value="M">Nam</option>
+                    <option value="F">Nữ</option>
+                </select>
+            </div>
+            <label for="cmnd">CMND</label>
+            <div class="input-group">
+                <input id="cmnd" class="form-control" placeholder="CMND..." name="phone" type="tel"
+                    formControlName="cmnd">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.cmnd?.errors?.required&&showFormError">
+                CMND chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls['cmnd'].hasError('pattern')&&showFormError">
+                CMND chưa hợp lệ!
+            </div>
+            <label for="uis">SDT</label>
+            <div class="input-group">
+                <input id="uis" class="form-control" placeholder="Phone..." name="phone" type="tel"
+                    formControlName="phone">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.phone?.errors?.required&&showFormError">
+                SDT chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls['phone'].hasError('pattern')&&showFormError">
+                SDT chưa hợp lệ!
+            </div>
+            <label for="address">Địa chỉ</label>
+            <div class="input-group">
+                <input id="address" class="form-control" placeholder="Address..." name="phone" type="text"
+                    formControlName="address">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.address?.errors?.required&&showFormError">
+                Địa chỉ chưa điền!
+            </div>
+            <label for="salary">Lương</label>
+            <div class="input-group">
+                <input id="salary" class="form-control" placeholder="Salary..." name="phone" type="tel"
+                    formControlName="salary">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.salary?.errors?.required&&showFormError">
+                Lương chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls['salary'].hasError('pattern')&&showFormError">
+                Lương chưa hợp lệ!
+            </div>
+            <label for="startDate">Ngày bắt đầu</label>
+            <div class="input-group">
+                <input id="startDate" class="form-control" placeholder="Salary..." name="phone" type="date"
+                    formControlName="startDate">
+            </div>
+            <label for="role">Role</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="role">
+                    <option value="Employee">Nhân viên</option>
+                    <option value="Shipper">Shipper</option>
+                </select>
+            </div>
+            <label for="img">Profile Image</label>
+            <div class="input-group">
+                <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                    (change)="selectFile($event)">
+            </div>
+            <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingEmployee">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editEmployee()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingEmployee">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #delete_Employee let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa nhân viên này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa nhân viên này?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingEmployee">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteEmployee()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingEmployee">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chơ 1 xíu...</p>
+        </div>
+    </div>
 </ng-template>

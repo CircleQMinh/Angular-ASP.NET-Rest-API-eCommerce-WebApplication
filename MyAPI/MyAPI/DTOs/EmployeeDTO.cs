@@ -17,10 +17,10 @@ namespace MyAPI.DTOs
         public int Status { get; set; }
     }
 
-    public class EditEmployeeDTO 
+    public class CreateEmployeeDTO 
     {
-        public string EmployeeID { get; set; }
-
+        public string Password { get; set; }
+        public string Email { get; set; }
         public string Address { get; set; }
         public string imgUrl { get; set; }
         public string Sex { get; set; }
@@ -33,5 +33,21 @@ namespace MyAPI.DTOs
 
         public string PhoneNumber { get; set; }
         public ICollection<string> Roles { get; set; }
+    }
+
+    public class EditEmployeeDTO
+    {
+        public string Address { get; set; }
+        public string imgUrl { get; set; }
+        public string Sex { get; set; }
+        public int Salary { get; set; }
+        public string CMND { get; set; }
+        public string StartDate { get; set; }
+        public int Status { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string PhoneNumber { get; set; }
+        public IList<string> Roles { get; set; }
     }
 }
