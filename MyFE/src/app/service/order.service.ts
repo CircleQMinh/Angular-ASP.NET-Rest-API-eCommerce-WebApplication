@@ -92,7 +92,10 @@ export class OrderService {
   }
 
   getFinishedOrder(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}order/finishedOrder?shipperId=${id}`)
+    return this.http.get(`${this.apiUrl}order/shipperOrderHistory?shipperId=${id}`)
+  }
+  getShipperOrderHistory(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}order/shipperOrderHistory?shipperId=${id}`)
   }
 
   getShippingInfo(id: number): Observable<any> {

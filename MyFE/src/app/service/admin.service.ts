@@ -37,12 +37,12 @@ export class AdminService {
     return this.http.get(`${this.apiUrl}admin/employees?order=${order}&role=${role}&orderDir=${orderDir}`);
   }
 
-  createUser(email: string, password: string, userName: string, phoneNumber: string, role: string): Observable<any> {
+  createUser(email: string, password: string, userName: string, phoneNumber: string, role: string,imgUrl:string): Observable<any> {
     return this.http.post(`${this.apiUrl}admin/createUser`, {
       email: email,
       password: password,
       displayName: userName,
-      imgUrl: "https://el.tvu.edu.vn/images/avatar/no-avatar.png",
+      imgUrl: imgUrl,
       phoneNumber: phoneNumber,
       roles: [
         role

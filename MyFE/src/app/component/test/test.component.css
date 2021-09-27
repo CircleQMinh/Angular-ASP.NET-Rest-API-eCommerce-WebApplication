@@ -1,0 +1,55 @@
+/*! CSS Used from: https://colorlib.com/etc/tb/Table_Fixed_Header/vendor/bootstrap/css/bootstrap.min.css */
+@media print{
+    *,::after,::before{text-shadow:none!important;box-shadow:none!important;}
+    thead{display:table-header-group;}
+    tr{page-break-inside:avoid;}
+    }
+    *,::after,::before{box-sizing:inherit;}
+    table{border-collapse:collapse;}
+    th{text-align:left;}
+    /*! CSS Used from: https://colorlib.com/etc/tb/Table_Fixed_Header/vendor/perfect-scrollbar/perfect-scrollbar.css */
+    .ps{overflow:hidden!important;overflow-anchor:none;-ms-overflow-style:none;touch-action:auto;-ms-touch-action:auto;}
+    .ps__rail-x{display:none;opacity:0;transition:background-color .2s linear,opacity .2s linear;-webkit-transition:background-color .2s linear,opacity .2s linear;height:15px;bottom:0;position:absolute;}
+    .ps__rail-y{display:none;opacity:0;transition:background-color .2s linear,opacity .2s linear;-webkit-transition:background-color .2s linear,opacity .2s linear;width:15px;right:0;position:absolute;}
+    .ps--active-y>.ps__rail-y{display:block;background-color:transparent;}
+    .ps:hover>.ps__rail-x,.ps:hover>.ps__rail-y{opacity:.6;}
+    .ps__rail-x:hover,.ps__rail-y:hover,.ps__rail-x:focus,.ps__rail-y:focus{background-color:#eee;opacity:.9;}
+    .ps__thumb-x{background-color:#aaa;border-radius:6px;transition:background-color .2s linear,height .2s ease-in-out;-webkit-transition:background-color .2s linear,height .2s ease-in-out;height:6px;bottom:2px;position:absolute;}
+    .ps__thumb-y{background-color:#aaa;border-radius:6px;transition:background-color .2s linear,width .2s ease-in-out;-webkit-transition:background-color .2s linear,width .2s ease-in-out;width:6px;right:2px;position:absolute;}
+    .ps__rail-x:hover>.ps__thumb-x,.ps__rail-x:focus>.ps__thumb-x{background-color:#999;height:11px;}
+    .ps__rail-y:hover>.ps__thumb-y,.ps__rail-y:focus>.ps__thumb-y{background-color:#999;width:11px;}
+    @media screen and (-ms-high-contrast:active),(-ms-high-contrast:none){
+    .ps{overflow:auto!important;}
+    }
+    /*! CSS Used from: https://colorlib.com/etc/tb/Table_Fixed_Header/css/util.css */
+    .m-b-110{margin-bottom:110px;}
+    /*! CSS Used from: https://colorlib.com/etc/tb/Table_Fixed_Header/css/main.css */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    .js-pscroll{position:relative;overflow:hidden;}
+    .table100 .ps__rail-y{width:9px;background-color:transparent;opacity:1!important;right:5px;}
+    .table100 .ps__rail-y::before{content:"";display:block;position:absolute;background-color:#ebebeb;border-radius:5px;width:100%;height:calc(100% - 30px);left:0;top:15px;}
+    .table100 .ps__rail-y .ps__thumb-y{width:100%;right:0;background-color:transparent;opacity:1!important;}
+    .table100 .ps__rail-y .ps__thumb-y::before{content:"";display:block;position:absolute;background-color:#ccc;border-radius:5px;width:100%;height:calc(100% - 30px);left:0;top:15px;}
+    .table100{background-color:#fff;}
+    table{width:100%;}
+    th,td{font-weight:unset;padding-right:10px;}
+    .column1{width:33%;padding-left:40px;}
+    .column2{width:13%;}
+    .column3{width:22%;}
+    .column4{width:19%;}
+    .column5{width:13%;}
+    .table100-head th{padding-top:18px;padding-bottom:18px;}
+    .table100-body td{padding-top:16px;padding-bottom:16px;}
+    .table100{position:relative;padding-top:60px;}
+    .table100-head{position:absolute;width:100%;top:0;left:0;}
+    .table100-body{max-height:585px;overflow:auto;}
+    .table100.ver1 th{font-family:Lato-Bold;font-size:18px;color:#fff;line-height:1.4;background-color:#6c7ae0;}
+    .table100.ver1 td{font-family:Lato-Regular;font-size:15px;color:gray;line-height:1.4;}
+    .table100.ver1 .table100-body tr:nth-child(even){background-color:#f8f6ff;}
+    .table100.ver1{border-radius:10px;overflow:hidden;box-shadow:0 0 40px 0 rgba(0,0,0,.15);-moz-box-shadow:0 0 40px 0 rgba(0,0,0,.15);-webkit-box-shadow:0 0 40px 0 rgba(0,0,0,.15);-o-box-shadow:0 0 40px 0 rgba(0,0,0,.15);-ms-box-shadow:0 0 40px 0 rgba(0,0,0,.15);}
+    .table100.ver1 .ps__rail-y{right:5px;}
+    .table100.ver1 .ps__rail-y::before{background-color:#ebebeb;}
+    .table100.ver1 .ps__rail-y .ps__thumb-y::before{background-color:#ccc;}
+    /*! CSS Used fontfaces */
+    @font-face{font-family:Lato-Bold;src:url(https://colorlib.com/etc/tb/Table_Fixed_Header/fonts/Lato/Lato-Bold.ttf);}
+    @font-face{font-family:Lato-Regular;src:url(https://colorlib.com/etc/tb/Table_Fixed_Header/fonts/Lato/Lato-Regular.ttf);}

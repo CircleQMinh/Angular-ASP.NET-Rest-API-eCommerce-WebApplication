@@ -405,10 +405,10 @@ namespace MyAPI.Controllers
         }
 
 
-        [HttpGet("finishedOrder", Name = "GetFinishedOrder")]
+        [HttpGet("shipperOrderHistory", Name = "GetShipperOrderHistory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetFinishedOrder(string shipperId)
+        public async Task<IActionResult> GetShipperOrderHistory(string shipperId)
         {
             try
             {
@@ -420,7 +420,7 @@ namespace MyAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetFinishedOrder)}");
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetShipperOrderHistory)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }

@@ -358,8 +358,14 @@ namespace MyAPI.Controllers
                             list.Add(orderedList[i + pageSize * (pageNumber - 1)]);
                         }
                     }
-                 
-                    return Ok(new { result=list, count=orderedList.Count });
+                    List<ShortShippingInfo> shippingInfos = new List<ShortShippingInfo>();
+                    foreach (var item in orderedList)
+                    {
+                        var si = await _unitOfWork.ShippingInfos.Get(q => q.OrderId == item.Id, new List<string> { "Shipper" });
+                        var si_map = _mapper.Map<ShortShippingInfo>(si);
+                        shippingInfos.Add(si_map);
+                    }
+                    return Ok(new { result=list, count=orderedList.Count, shippingInfos });
                 }
                 else
                 {
@@ -401,7 +407,7 @@ namespace MyAPI.Controllers
             var existingUser = await _userManager.FindByEmailAsync(unitDTO.Email);
             if (existingUser != null)
             {
-                var error = "Submitted data is invalid";
+                var error = "Email đã được sử dụng";
                 return BadRequest(new { error });
             }
             try
@@ -443,7 +449,7 @@ namespace MyAPI.Controllers
             var existingUser = await _userManager.FindByIdAsync(id);
             if (existingUser == null)
             {
-                var error = "Submitted data is invalid";
+                var error = "Không tìm thấy người dùng! Xin hãy thử lại";
                 return BadRequest(new { error });
             }
 

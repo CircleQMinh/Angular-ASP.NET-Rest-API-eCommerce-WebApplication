@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit {
   pageNumberUser = 1
   pageSizeUser = 5
   orderUser = "Id"
-  role = "all"
+  role = "User"
 
   productList: Product[] = []
   pageNumberProduct = 1
@@ -114,14 +114,18 @@ export class AdminComponent implements OnInit {
   pageNumberEmployee = 1
   pageSizeEmployee = 5
   orderEmployee = "Id"
-  roleEmployee = "all"
+  roleEmployee = "Employee"
   rf5!: FormGroup
   rf6!: FormGroup
   isCreatingEmployee = false
   isEditingEmployee = false
   isDeletingEmployee = false
-  editingEmployee!:Employee
-  deletingEmployee!:Employee
+  editingEmployee!: Employee
+  deletingEmployee!: Employee
+
+  isGettingShipperHistory=false
+  selectedShipperId:any
+  selectedShipperHistory:any[]=[]
 
   formatterProduct = (x: Product) => x.name;
 
@@ -379,7 +383,7 @@ export class AdminComponent implements OnInit {
   getUser() {
 
     this.pageNumberUser = 1
-    this.adminService.getUsers(this.orderUser, this.role, this.orderDirUser).subscribe(
+    this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
       data => {
         //console.log(data)
         this.userList = data.result
@@ -432,7 +436,10 @@ export class AdminComponent implements OnInit {
     this.modalService.open(changeIMG, { ariaLabelledBy: 'modal-basic-title' })
   }
   openAddUserModal(newUser: any) {
+    this.urlIMG = this.defaultImgUrl
     this.showFormError = false
+    this.rf1.reset()
+    this.rf1.controls["role"].setValue("User")
     this.modalService.open(newUser, { ariaLabelledBy: 'modal-basic-title' })
   }
 
@@ -497,7 +504,7 @@ export class AdminComponent implements OnInit {
       data => {
         //console.log(data)
         this.modalService.dismissAll()
-        this.updateUserList()
+        this.getUser()
         this.toast.success("Chỉnh sửa thành công")
         this.isUpdateProfile = false
       },
@@ -508,28 +515,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  updateUserList() {
-    this.isLoading = true
-    this.adminService.getUsers(this.orderUser, this.role, this.orderDirUser).subscribe(
-      data => {
-        //console.log(data)
-        this.userList = data.result
-        this.userList.forEach((element, index: number) => {
-          element.roles = data.roles[index]
-        });
-        this.getPagedUserList()
-        this.isLoading = false
-        //console.log(this.userList)
-      },
-      error => {
-        console.log(error)
-        this.isLoading = false
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
-  }
-
-
   createProfile() {
     this.isCreatingUser = true
     this.showFormError = true
@@ -541,17 +526,19 @@ export class AdminComponent implements OnInit {
       // console.log(this.rf1.controls['phone'].value)
       // console.log(this.rf1.controls['role'].value)
       this.adminService.createUser(this.rf1.controls['email'].value, this.rf1.controls['password'].value,
-        this.rf1.controls['username'].value, this.rf1.controls['phone'].value, this.rf1.controls['role'].value).subscribe(
+        this.rf1.controls['username'].value, this.rf1.controls['phone'].value, this.rf1.controls['role'].value, this.urlIMG).subscribe(
           data => {
             console.log(data)
-            this.updateUserList()
+            this.getUser()
             this.isCreatingUser = false
             this.toast.success("Thêm thành công!")
             this.modalService.dismissAll()
           },
           error => {
-            this.toast.error(" An error has occurred ! Try again !")
+            console.log(error.error.error)
+            this.toast.error(error.error.error)
             this.isCreatingUser = false
+            //this.modalService.dismissAll()
           }
         )
 
@@ -572,7 +559,8 @@ export class AdminComponent implements OnInit {
       data => {
         console.log(data)
         this.isDeletingUser = false
-        this.updateUserList()
+        this.getUser()
+        this.toast.success("Xóa thành công")
         this.modalService.dismissAll()
       },
       error => {
@@ -835,7 +823,7 @@ export class AdminComponent implements OnInit {
     this.employeeList = []
     this.adminService.getEmployees(this.orderEmployee, this.roleEmployee, this.orderDirEmployee).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
         for (let i = 0; i < data.count; i++) {
           let e = new Employee
           e = data.result[i]
@@ -849,7 +837,7 @@ export class AdminComponent implements OnInit {
           this.employeeList.push(e)
 
         }
-        console.log(this.employeeList)
+        //console.log(this.employeeList)
         this.getPagedEmployee()
       },
       error => {
@@ -874,7 +862,7 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   openEditEmployeeModal(modal: any, e: Employee) {
-    this.editingEmployee=e
+    this.editingEmployee = e
     this.showFormError = false
     this.urlIMG = e.imgUrl
     this.rf6.controls["address"].setValue(e.Address)
@@ -887,8 +875,23 @@ export class AdminComponent implements OnInit {
     this.rf6.controls["phone"].setValue(e.phoneNumber)
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-  openDeleteEmployeeModal(modal: any, e:Employee){
-    this.deletingEmployee=e
+  openDeleteEmployeeModal(modal: any, e: Employee) {
+    this.deletingEmployee = e
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openShipperHistoryModal(modal: any, id:any) {
+    this.selectedShipperId=id
+    this.selectedShipperHistory=[]
+    this.orderService.getShipperOrderHistory(this.selectedShipperId).subscribe(
+      data=>{
+        console.log(data)
+        this.selectedShipperHistory=data.sil
+      },
+      error=>{
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        console.log(error)
+      }
+    )
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   addEmployee() {
@@ -897,7 +900,7 @@ export class AdminComponent implements OnInit {
     if (this.rf5.valid) {
       let e = new Employee
       let p = this.rf5.controls["password"].value
-      e.phoneNumber=this.rf5.controls["phone"].value
+      e.phoneNumber = this.rf5.controls["phone"].value
       e.Address = this.rf5.controls["address"].value
       e.CMND = this.rf5.controls["cmnd"].value
       e.Salary = this.rf5.controls["salary"].value
@@ -908,13 +911,13 @@ export class AdminComponent implements OnInit {
       e.email = this.rf5.controls["email"].value
       e.roles = []
       e.roles.push(this.rf5.controls["role"].value)
-      console.log(e)
+      //console.log(e)
       //console.log(this.urlIMG)
       // this.toast.success("valid")
       if (this.urlIMG != this.defaultImgUrl) {
         this.authService.upLoadIMG(this.urlIMG).subscribe(
           data => {
-            console.log(data)
+            //console.log(data)
             e.imgUrl = data.secure_url
             this.createEmployee(e, p)
           },
@@ -938,13 +941,14 @@ export class AdminComponent implements OnInit {
 
     this.adminService.createEmployee(e, p).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
         this.toast.success("Thêm nhân viên thành công!")
         this.isCreatingEmployee = false
         this.modalService.dismissAll()
       },
       error => {
-        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        console.log(error.error.error)
+        this.toast.error(error.error.error)
         this.isCreatingEmployee = false
         console.log(error)
       }
@@ -953,8 +957,9 @@ export class AdminComponent implements OnInit {
 
 
   editEmployee() {
-    if(this.rf6.valid){
-      this.isEditingEmployee=true
+    this.showFormError = true
+    if (this.rf6.valid) {
+      this.isEditingEmployee = true
       this.editingEmployee.Address = this.rf6.controls["address"].value
       this.editingEmployee.CMND = this.rf6.controls["cmnd"].value
       this.editingEmployee.Salary = this.rf6.controls["salary"].value
@@ -964,7 +969,7 @@ export class AdminComponent implements OnInit {
       this.editingEmployee.displayName = this.rf6.controls["username"].value
       this.editingEmployee.roles = []
       this.editingEmployee.roles.push(this.rf6.controls["role"].value)
-      if(this.urlIMG!=this.editingEmployee.imgUrl){
+      if (this.urlIMG != this.editingEmployee.imgUrl) {
         this.authService.upLoadIMG(this.urlIMG).subscribe(
           data => {
             console.log(data)
@@ -977,16 +982,16 @@ export class AdminComponent implements OnInit {
           }
         )
       }
-      else{
+      else {
         this.updateEmployee()
       }
     }
-    else{
+    else {
       this.toast.error("Dữ liệu nhập chưa hợp lệ!")
     }
   }
   updateEmployee() {
-    this.adminService.editEmployee(this.editingEmployee,this.editingEmployee.id).subscribe(
+    this.adminService.editEmployee(this.editingEmployee, this.editingEmployee.id).subscribe(
       data => {
         console.log(data)
         this.toast.success("Chỉnh sửa nhân viên thành công!")
@@ -1018,5 +1023,5 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  
+
 }
