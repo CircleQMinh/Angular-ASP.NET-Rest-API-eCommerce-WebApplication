@@ -51,7 +51,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
-                <h1 >
+                <h1 class="text-tron">
                     <i class="fas fa-search"></i> Tìm đơn hàng
                 </h1>
 
@@ -64,7 +64,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
-                <h1 >
+                <h1 class="text-tron">
                     <i class="fas fa-clipboard-check"></i> Đơn hàng đã nhận
                 </h1>
 
@@ -78,7 +78,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
-                <h1 >
+                <h1 class="text-tron">
                     <i class="fas fa-history"></i> Lịch sử
                 </h1>
 
@@ -156,7 +156,7 @@
 <div class="container" *ngIf="!isLoading&&active_tab=='av'">
     <div class="row">
         <div class="col">
-            <div class="table-responsive">
+            <div class="table-responsive sh-table">
                 <table class="table table-striped table-primary  ">
                     <thead class="thead-dark">
                         <tr>
@@ -173,21 +173,21 @@
                         <tr *ngFor="let o of orderList,index as i">
 
                             <td>
-                                <p class="text-tron text-monospace">{{o.id}}</p>
+                                <p class="text-monospace">{{o.id}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{o.contactName}}</p>
-                                <p class="text-tron text-monospace">{{o.address}}</p>
-                                <p class="text-tron text-monospace">{{o.email}}</p>
+                                <p class=" text-monospace">{{o.contactName}}</p>
+                                <p class="text-monospace">{{o.address}}</p>
+                                <p class=" text-monospace">{{o.email}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                                <p class="text-monospace">{{o.orderDate}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                                <p class="text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
                             <td *ngIf="o.status==0">
                                 <span class="badge bg-info text-dark">Chưa duyệt</span>
@@ -205,9 +205,9 @@
                                 <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
-                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                <button class="btn btn-warning btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
                                     <i class="fas fa-box-open"></i></button>
-                                <button class="btn btn-success admin-button" (click)="openAcceptOrderInfoModal(order_accept,o)">
+                                <button class="btn btn-success  btn-sm admin-button mr-2" (click)="openAcceptOrderInfoModal(order_accept,o)">
                                     <i class="fas fa-vote-yea"></i></button>
                             </td>
                         </tr>
@@ -287,9 +287,9 @@
                                 <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
-                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                <button class="btn btn-warning  btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
                                     <i class="fas fa-box-open"></i></button>
-                                <button class="btn btn-success admin-button" (click)="openFinishOrderInfoModal(order_finish,o)">
+                                <button class="btn btn-success  btn-sm admin-button mr-2" (click)="openFinishOrderInfoModal(order_finish,o)">
                                     <i class="fas fa-vote-yea"></i></button>
                             </td>
                         </tr>
@@ -357,7 +357,7 @@
                                 <span class="badge bg-secondary">Hủy</span>
                             </td>
                             <td>
-                                <button class="btn btn-warning admin-button" (click)="openOrderInfoModal(order_info,o)">
+                                <button class="btn btn-warning  btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
                                     <i class="fas fa-box-open"></i></button>
                             </td>
                         </tr>

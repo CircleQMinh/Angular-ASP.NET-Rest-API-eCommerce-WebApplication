@@ -36,6 +36,7 @@ import { ProfileFavoriteComponent } from './component/profile-favorite/profile-f
 import { SearchComponent } from './component/search/search.component';
 import { NewsComponent } from './component/news/news.component';
 import { ContactComponent } from './component/contact/contact.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +77,8 @@ import { ContactComponent } from './component/contact/contact.component';
     HttpClientModule,
     FormsModule, ReactiveFormsModule,
     HotToastModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

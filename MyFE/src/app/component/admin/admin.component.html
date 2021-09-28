@@ -707,6 +707,79 @@
             </div>
 
 
+            <!-- ------------------------------------------------------------------------------------- -->
+
+            <div class="col p-5" *ngIf="active_tab=='tk'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i> Thống kê doanh thu</h4>
+                        <hr>
+                        <div class="d-flex justify-content-evenly">
+                            <form [formGroup]="rf7" class="d-flex justify-content-evenly">
+                                <div class="form-group">
+                                    <label>Từ ngày : </label>
+                                    <input class="form-control" type="date" formControlName="from"
+                                        (change)="getSaleChart()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Đến ngày : </label>
+                                    <input class="form-control" type="date" formControlName="to" (change)="getSaleChart()">
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                        <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
+                            [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Doanh thu'" [timeline]=true
+                            [results]="saleChart" (select)="onSelect($event)" (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)">
+                        </ngx-charts-line-chart>
+                    </div>
+                </div>
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i> Thống kê đơn hàng</h4>
+                        <hr>
+                        <div class="d-flex justify-content-evenly">
+                            <form [formGroup]="rf8" class="d-flex justify-content-evenly">
+                                <div class="form-group">
+                                    <label>Từ ngày : </label>
+                                    <input class="form-control" type="date" formControlName="from"
+                                        (change)="getOrderChart()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Đến ngày : </label>
+                                    <input class="form-control" type="date" formControlName="to" (change)="getOrderChart()">
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                        <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
+                            [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Số đơn hàng'" [timeline]=true
+                            [results]="orderChart" (select)="onSelect($event)" (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)">
+                        </ngx-charts-line-chart>
+                    </div>
+                </div>
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i> Thống kê sản phẩm</h4>
+                        <hr>
+
+                    </div>
+                    <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                        <ngx-charts-pie-chart [results]="productChart"
+                            [gradient]=true [legend]=true 
+                            [labels]=true [doughnut]=false (select)="onSelect($event)"
+                            (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                        </ngx-charts-pie-chart>
+                    </div>
+                </div>
+            </div>
+
 
 
             <div class="col-md-3" id='side-info' *ngIf="active_tab=='db'">

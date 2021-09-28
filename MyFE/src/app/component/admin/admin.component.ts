@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
 
   user!: User
 
-  active_tab = "employee"
+  active_tab = "tk"
 
   userList: User[] = []
   pagedUserList: User[] = []
@@ -123,9 +123,31 @@ export class AdminComponent implements OnInit {
   editingEmployee!: Employee
   deletingEmployee!: Employee
 
-  isGettingShipperHistory=false
-  selectedShipperId:any
-  selectedShipperHistory:any[]=[]
+  isGettingShipperHistory = false
+  selectedShipperId: any
+  selectedShipperHistory: any[] = []
+
+  saleChart: any[] = [
+    {
+      "name": "Doanh thu",
+      "series": [
+
+      ]
+    }
+  ];
+  orderChart: any[] = [
+    {
+      "name": "Số đơn hàng",
+      "series": [
+
+      ]
+    }
+  ];
+  productChart:any[]=[
+
+  ]
+  rf7!:FormGroup
+  rf8!:FormGroup
 
   formatterProduct = (x: Product) => x.name;
 
@@ -143,6 +165,7 @@ export class AdminComponent implements OnInit {
 
 
   ngOnInit(): void {
+
 
     this.rf1 = new FormGroup({
       email: new FormControl('',
@@ -234,6 +257,19 @@ export class AdminComponent implements OnInit {
       cmnd: new FormControl('',
         [Validators.pattern('^[0-9]{12}$'), Validators.required]),
     });
+
+    this.rf7 =  new FormGroup({
+      from: new FormControl('',
+        [Validators.required]),
+      to: new FormControl('',
+        [Validators.required])
+    });
+    this.rf8 =  new FormGroup({
+      from: new FormControl('',
+        [Validators.required]),
+      to: new FormControl('',
+        [Validators.required])
+    });
     this.adminService.getDashboardInfo().subscribe(
       data => {
         this.dashboardInfo = data
@@ -308,6 +344,18 @@ export class AdminComponent implements OnInit {
         this.getProduct()
         this.getSearchData()
         this.getEmployee()
+        let to = new Date
+        let from = new Date
+        from.setDate(from.getDate()-7)
+        
+        this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
+        this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
+        this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
+        this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
+
+        this.getSaleChart()
+        this.getOrderChart()
+        this.getProductChart()
         this.getOrder()
         this.isLoading = false
       },
@@ -879,15 +927,15 @@ export class AdminComponent implements OnInit {
     this.deletingEmployee = e
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-  openShipperHistoryModal(modal: any, id:any) {
-    this.selectedShipperId=id
-    this.selectedShipperHistory=[]
+  openShipperHistoryModal(modal: any, id: any) {
+    this.selectedShipperId = id
+    this.selectedShipperHistory = []
     this.orderService.getShipperOrderHistory(this.selectedShipperId).subscribe(
-      data=>{
+      data => {
         console.log(data)
-        this.selectedShipperHistory=data.sil
+        this.selectedShipperHistory = data.sil
       },
-      error=>{
+      error => {
         this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
         console.log(error)
       }
@@ -1022,6 +1070,106 @@ export class AdminComponent implements OnInit {
         this.isDeletingEmployee = false
       }
     )
+  }
+
+
+  getSaleChart() {
+    let from = this.rf7.controls["from"].value
+    let to = this.rf7.controls["to"].value
+    this.saleChart[0]["series"] = []
+    this.adminService.getSalesChart(from, to).subscribe(
+      data => {
+        data.result.forEach((element: any) => {
+          this.saleChart[0]["series"].push(
+            { name: element.Date, value: Number(element.Total) }
+          )
+   
+        });
+        this.saleChart = [...this.saleChart]
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+
+  getOrderChart() {
+    let from = this.rf8.controls["from"].value
+    let to = this.rf8.controls["to"].value
+    this.orderChart[0]["series"] = []
+    this.adminService.getSalesChart(from, to).subscribe(
+      data => {
+        data.result.forEach((element: any) => {
+          this.orderChart[0]["series"].push(
+            { name: element.Date, value: Number(element.NumberOfOrder) }
+          )
+        });
+        this.orderChart = [...this.orderChart]
+    
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+
+  getProductChart(){
+    this.productChart=[]
+    this.adminService.getProductChart().subscribe(
+      data=>{
+        console.log(data.result)
+        this.productChart=data.result
+
+        this.productChart = [...this.productChart]
+      },
+      error=>{
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+
+  // prepareSaleChartData(data:any[]):any[]{
+  //   var result:any[]=[]
+  //   for(let i=0;i<data.length;i++){
+  //     var exist=false
+  //     for(let j=0;j<result.length;j++){
+  //       if(data[i].name==result[j].name){
+  //         exist=true
+  //       }
+  //     }
+  //     if(exist){
+  //       for(let j=0;j<result.length;j++){
+  //         if(data[i].name==result[j].name){
+            
+  //           result[j].value+=data[i].value
+  //           break
+  //         }
+  //       }
+  //     }
+  //     else{
+  //       result.push( { name: data[i].name, value: Number(data[i].value) })
+  //     }
+  //   }
+  //   return result
+  // }
+
+
+
+  // -------------Example-------------------------------------------------
+
+  onSelect(data: any): void {
+    //console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data: any): void {
+    //console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data: any): void {
+   // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
 }

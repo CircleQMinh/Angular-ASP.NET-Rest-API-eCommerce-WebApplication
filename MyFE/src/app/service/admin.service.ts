@@ -132,4 +132,12 @@ export class AdminService {
       roles: e.roles
     })
   }
+
+  getSalesChart(from:string,to:string):Observable<any>{
+    return this.http.get(`${this.apiUrl}admin/getSalesChart?from=${from}&to=${to}`)
+  }
+
+  getProductChart():Observable<any>{
+    return this.http.get(`${this.apiUrl}admin/getProductChart`)
+  }
 }
