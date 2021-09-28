@@ -607,6 +607,103 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
+        [HttpGet("getSalesChart", Name = "GetSalesChart")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetSalesChart(string from,string to)
+        {
+            try
+            {
+                DateTime dfrom = DateTime.ParseExact(from, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                DateTime dto = DateTime.ParseExact(to, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+
+                var si = await _unitOfWork.ShippingInfos.GetAll(q => q.Order.Status==3,null ,new List<string> { "Shipper","Order" });
+                var si_map = _mapper.Map< IList<ShippingInfoDTO>>(si);
+
+                var list = new List<Dictionary<string, string>>();
+                var result = new List<Dictionary<string, string>>();
+                foreach (var item in si_map)
+                {
+                    item.deliveryDate = item.deliveryDate.Substring(0, 10);
+                    DateTime dt = DateTime.ParseExact(item.deliveryDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    if (dt>=dfrom&&dt<=dto)
+                    {
+                        var dic = new Dictionary<string, string>();
+                        dic.Add("Date", item.deliveryDate);
+                        dic.Add("Total", item.Order.TotalPrice.ToString());
+                        dic.Add("NumberOfOrder", 1.ToString());
+                        list.Add(dic);
+                    }
+                }
+                for (int i=0;i<list.Count;i++)
+                {
+                    var exist = false;
+                    for(int j = 0; j < result.Count; j++)
+                    {
+                        if (list[i]["Date"]==result[j]["Date"])
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (exist)
+                    {
+                        for (int j=0;j<result.Count;j++)
+                        {
+                            if (list[i]["Date"] == result[j]["Date"])
+                            {
+                                result[j]["Total"] = (Double.Parse(result[j]["Total"]) + Double.Parse(list[i]["Total"])).ToString();
+                                result[j]["NumberOfOrder"] = (Double.Parse(result[j]["NumberOfOrder"]) + Double.Parse(list[i]["NumberOfOrder"])).ToString();
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        result.Add(list[i]);
+                    }
+                }
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetSalesChart)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
+
+        [HttpGet("getProductChart", Name = "GetProductChart")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProductChart()
+        {
+            try
+            {
+                var result = new List<Dictionary<string, string>>();
+                List<string> cate = new List<string> {"Fruit","Vegetable","Confectionery","Snack","AnimalProduct","CannedFood" };
+                List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
+
+                for (int i=0;i<cate.Count;i++)
+                {
+                    var count = await _unitOfWork.Products.GetCount(q => q.Category == cate[i]);
+                    var dic = new Dictionary<string, string>();
+                    dic.Add("name", cateVN[i]);
+                    dic.Add("value", count.ToString());
+                    result.Add(dic);
+                }
+
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetProductChart)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
     }
 
 }

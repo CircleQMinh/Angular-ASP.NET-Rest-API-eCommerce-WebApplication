@@ -10,9 +10,9 @@ namespace MyAPI.DTOs
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public Order Order { get; set; }
+        public OrderDTO Order { get; set; }
         public string ShipperID { get; set; }
-        public virtual APIUser Shipper { get; set; }
+        public virtual UserInfoDTO Shipper { get; set; }
         public string deliveryDate { get; set; }
     }
     public class ShortShippingInfo

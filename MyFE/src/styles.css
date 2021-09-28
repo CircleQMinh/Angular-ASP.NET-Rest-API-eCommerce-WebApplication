@@ -1199,6 +1199,12 @@ ngb-typeahead-window.dropdown-menu {
         height: 250px;
         width: 250px;        
     }
+    .sh-table{
+        font-size: 10px;
+    }
+    .sh-table table thead tr td p{
+        font-size: 10px;
+    }
 }
 
 @media (max-width: 300px) { 
