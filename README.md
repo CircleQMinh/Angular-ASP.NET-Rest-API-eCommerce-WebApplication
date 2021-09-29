@@ -37,3 +37,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 26-09-2021 : hoàn thành quản lý nhân viên.<br>
 27-09-2021 : update trang admin.<br>
 28-09-2021 : thêm thống kê.<br>
+29-09-2021 : hoàn thành thống kê.<br>
