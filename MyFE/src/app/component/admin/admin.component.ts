@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
 
   user!: User
 
-  active_tab = "tk"
+  active_tab = "db"
 
   userList: User[] = []
   pagedUserList: User[] = []
@@ -101,11 +101,6 @@ export class AdminComponent implements OnInit {
   orderDirProduct: any = "Asc"
   orderDirEmployee: any = "Asc"
 
-  news: any[] = []
-  today: string = formatDate(Date.now(), 'dd-MM-yyyy', 'en');
-  newLimit = 8
-  newCategory: any[] = ["technology", "science", "business", "general", "entertainment", "health"]
-
   keyword: any;
   allProduct: Product[] = []
 
@@ -143,18 +138,42 @@ export class AdminComponent implements OnInit {
       ]
     }
   ];
-  productChart:any[]=[
+  productChart: any[] = []
 
-  ]
-  rf7!:FormGroup
-  rf8!:FormGroup
+  categoryChart: any[] = []
 
-  formatterProduct = (x: Product) => x.name;
+  numberOfTopProduct = 10
+  topSaleProduct: any[] = []
+  topSaleProductCount = 1
+
+  rf7!: FormGroup
+  rf8!: FormGroup
+
+  dbSaleChartData: any[] = [
+    {
+      "name": "Doanh thu",
+      "series": [
+
+      ]
+    }
+  ];
+  dbOrderChart: any[] = [
+    {
+      "name": "Số đơn hàng",
+      "series": [
+
+      ]
+    }
+  ];
+  DBcategoryChart: any[] = []
+
+  DBtopSaleProduct: any[] = []
+  DBtopSaleProductCount = 1
+
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
     private modalService: NgbModal) { }
-
   searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
@@ -162,11 +181,7 @@ export class AdminComponent implements OnInit {
       map(term => term.length < 2 ? []
         : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
-
-
   ngOnInit(): void {
-
-
     this.rf1 = new FormGroup({
       email: new FormControl('',
         [Validators.required, Validators.email]),
@@ -180,7 +195,6 @@ export class AdminComponent implements OnInit {
         [Validators.required])
     });
     this.rf1.controls["role"].setValue("User")
-
     this.rf2 = new FormGroup({
       name: new FormControl('',
         [Validators.required]),
@@ -193,7 +207,6 @@ export class AdminComponent implements OnInit {
       category: new FormControl('',
         [Validators.required])
     });
-
     this.rf3 = new FormGroup({
       name: new FormControl('',
         [Validators.required]),
@@ -206,7 +219,6 @@ export class AdminComponent implements OnInit {
       category: new FormControl('',
         [Validators.required])
     });
-
     this.rf4 = new FormGroup({
       status: new FormControl('',
         [Validators.required]),
@@ -237,8 +249,6 @@ export class AdminComponent implements OnInit {
     });
     this.rf5.controls["role"].setValue("Employee")
     this.rf5.controls["sex"].setValue("M")
-
-
     this.rf6 = new FormGroup({
       username: new FormControl('',
         [Validators.required, Validators.minLength(3)]),
@@ -258,35 +268,32 @@ export class AdminComponent implements OnInit {
         [Validators.pattern('^[0-9]{12}$'), Validators.required]),
     });
 
-    this.rf7 =  new FormGroup({
+    this.rf7 = new FormGroup({
       from: new FormControl('',
         [Validators.required]),
       to: new FormControl('',
         [Validators.required])
     });
-    this.rf8 =  new FormGroup({
+    this.rf8 = new FormGroup({
       from: new FormControl('',
         [Validators.required]),
       to: new FormControl('',
         [Validators.required])
     });
-    this.adminService.getDashboardInfo().subscribe(
-      data => {
-        this.dashboardInfo = data
-        //console.log(this.dashboardInfo)
-      },
-      error => {
-        console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
-    this.isLoading = true
+    let to = new Date
+    let from = new Date
+    from.setDate(from.getDate() - 7)
+    this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
+    this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
+    this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
+    this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
+
     this.getLocalStorage()
     if (!this.isLogin) {
       this.router.navigateByUrl("/error")
     }
     else {
-      this.getUserInfo()
+      this.getAdminInfo()
 
     }
 
@@ -329,35 +336,70 @@ export class AdminComponent implements OnInit {
     localStorage.removeItem("user-role")
     this.router.navigateByUrl('/home')
   }
-  getUserInfo() {
+  getDBInfo() {
+    this.adminService.getDashboardInfo().subscribe(
+      data => {
+        this.dashboardInfo = data
+        //console.log(this.dashboardInfo)
+        this.isLoading = false
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+    let from = this.rf7.controls["from"].value
+    let to = this.rf7.controls["to"].value
+    this.dbSaleChartData[0]["series"] = []
+    this.adminService.getSalesChart(from, to).subscribe(
+      data => {
+        data.result.forEach((element: any) => {
+          this.dbSaleChartData[0]["series"].push(
+            { name: element.Date, value: Number(element.Total) }
+          )
+          this.dbOrderChart[0]["series"].push(
+            { name: element.Date, value: Number(element.NumberOfOrder) }
+          )
+        });
+        this.dbOrderChart = [...this.dbOrderChart]
+        this.dbSaleChartData = [...this.dbSaleChartData]
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+    this.adminService.getTopProductChart(5).subscribe(
+      data => {
+        this.DBtopSaleProductCount = data.maxCount
+        data.result.forEach((element: any) => {
+          this.DBtopSaleProduct.push({ name: element.product.name, count: element.quantity })
+
+        });
+        data.cateCount.forEach((element: any) => {
+          this.DBcategoryChart.push({ name: element["name"], value: element["value"] })
+        });
+        this.DBcategoryChart = [...this.DBcategoryChart]
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+  getAdminInfo() {
     this.isLoading = true
     this.authService.getUserInfo(this.user.id).subscribe(
       data => {
+
 
         this.user = data.user
         this.user.roles = data.roles
         if (this.user.roles[0] != "Administrator") {
           this.router.navigateByUrl("/error")
         }
-        this.getNew()
-        this.getUser()
-        this.getProduct()
         this.getSearchData()
-        this.getEmployee()
-        let to = new Date
-        let from = new Date
-        from.setDate(from.getDate()-7)
-        
-        this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
-        this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
-        this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
-        this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
-
-        this.getSaleChart()
-        this.getOrderChart()
-        this.getProductChart()
-        this.getOrder()
-        this.isLoading = false
+        this.getDBInfo()
       },
       error => {
         console.log(error)
@@ -397,7 +439,6 @@ export class AdminComponent implements OnInit {
     else {
       // console.log("no login acc")
     }
-
   }
   randomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -406,7 +447,6 @@ export class AdminComponent implements OnInit {
     this.pageNumberProduct = 1
     this.getProduct()
   }
-
   getProduct() {
     this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct, this.orderDirProduct).subscribe(
       data => {
@@ -421,13 +461,11 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   onPageSizeStatusChage() {
 
     this.pageNumberOrder = 1
     this.getOrder()
   }
-
   getUser() {
 
     this.pageNumberUser = 1
@@ -463,19 +501,46 @@ export class AdminComponent implements OnInit {
         this.orderList = data.result
         this.shippingInfos = data.shippingInfos
         this.collectionSizeOrder = data.count
-        this.isLoading = false
       },
       error => {
         console.log(error)
-        this.isLoading = false
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }
   switchTab(s: string) {
     this.active_tab = s
+    this.isLoading=true
+    switch (s) {
+      case "db":
+        this.isLoading=false
+        break
+      case "order":
+        this.getOrder()
+        this.isLoading=false
+        break
+      case "product":
+        this.getProduct()
+        this.isLoading=false
+        break
+      case "user":
+        this.getUser()
+        this.isLoading=false
+        break
+      case "employee":
+        this.getEmployee()
+        this.isLoading=false
+        break
+      case "tk":
+        this.getSaleChart()
+        this.getOrderChart()
+        this.getProductChart()
+        this.getCateChart()
+        this.getTopSaleProduct()
+        this.isLoading=false
+        break
+    }
   }
-
   openEditUserModal(changeIMG: any, u: User) {
     this.editingUser = u
     this.newName = this.editingUser.displayName
@@ -490,12 +555,10 @@ export class AdminComponent implements OnInit {
     this.rf1.controls["role"].setValue("User")
     this.modalService.open(newUser, { ariaLabelledBy: 'modal-basic-title' })
   }
-
   openDeleteUserModal(deleteUser: any, id: string) {
     this.selectedUserId = id
     this.modalService.open(deleteUser, { ariaLabelledBy: 'modal-basic-title' })
   }
-
   selectFile(event: any) { //Angular 11, for stricter type
     if (!event.target.files[0] || event.target.files[0].length == 0) {
       this.msg = 'Bạn phải chọn 1 hình ảnh';
@@ -517,7 +580,6 @@ export class AdminComponent implements OnInit {
       this.urlIMG = reader.result;
     }
   }
-
   saveProfile() {
     this.upLoadAndUpdateProfile()
 
@@ -598,7 +660,6 @@ export class AdminComponent implements OnInit {
     }
 
   }
-
   deleteProfile() {
 
     //console.log(this.selectedUserId)
@@ -617,9 +678,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
-
-
   openAddProductModal(add_product: any) {
     this.showFormError = false
     this.proImgUrl = this.defaultProImgUrl
@@ -691,7 +749,6 @@ export class AdminComponent implements OnInit {
         }
       )
   }
-
   tryEditProduct() {
     this.showFormError = true
     this.isEditingProduct = true
@@ -736,7 +793,6 @@ export class AdminComponent implements OnInit {
         }
       )
   }
-
   deleteProduct() {
     this.isDeletingProduct = true
     this.adminService.deleteProduct(this.deletingProductId).subscribe(
@@ -754,7 +810,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   selectFileProduct(event: any) { //Angular 11, for stricter type
     if (!event.target.files[0] || event.target.files[0].length == 0) {
       this.msg = 'Bạn phải chọn hình ảnh';
@@ -777,7 +832,6 @@ export class AdminComponent implements OnInit {
 
     }
   }
-
   openOrderInfoModal(info: any, o: Order) {
     this.showFormError = false
     this.isGettingOrderDetail = true
@@ -813,13 +867,11 @@ export class AdminComponent implements OnInit {
     this.rf4.controls["note"].setValue(o.note)
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
   }
-
   openDeleteOrderInfoModal(info: any, o: Order) {
     this.showFormError = false
     this.selectedOrder = o
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
   }
-
   editOrder() {
     this.isEditingOrder = true
     this.selectedOrder.status = this.rf4.controls["status"].value
@@ -837,7 +889,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   deleteOrder() {
     this.isDeletingOrder = true
     this.adminService.deleteOrder(this.selectedOrder.id).subscribe(
@@ -855,18 +906,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
-  getNew() {
-    let index = this.randomInteger(0, 5)
-
-    this.adminService.getNew(this.newCategory[index]).subscribe(
-      data => {
-        this.news = data.articles
-        //console.log(this.news)
-      }
-    )
-  }
-
   getEmployee() {
     this.employeeList = []
     this.adminService.getEmployees(this.orderEmployee, this.roleEmployee, this.orderDirEmployee).subscribe(
@@ -903,7 +942,6 @@ export class AdminComponent implements OnInit {
 
     }
   }
-
   openAddEmployeeModal(modal: any) {
     this.showFormError = false
     this.urlIMG = this.defaultImgUrl
@@ -984,7 +1022,6 @@ export class AdminComponent implements OnInit {
       this.toast.error("Thông tin nhập chưa hợp lệ")
     }
   }
-
   createEmployee(e: Employee, p: any) {
 
     this.adminService.createEmployee(e, p).subscribe(
@@ -1002,8 +1039,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
-
   editEmployee() {
     this.showFormError = true
     if (this.rf6.valid) {
@@ -1053,7 +1088,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   deleteEmployee() {
 
     //console.log(this.selectedUserId)
@@ -1071,8 +1105,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
-
   getSaleChart() {
     let from = this.rf7.controls["from"].value
     let to = this.rf7.controls["to"].value
@@ -1083,7 +1115,7 @@ export class AdminComponent implements OnInit {
           this.saleChart[0]["series"].push(
             { name: element.Date, value: Number(element.Total) }
           )
-   
+
         });
         this.saleChart = [...this.saleChart]
       },
@@ -1093,7 +1125,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   getOrderChart() {
     let from = this.rf8.controls["from"].value
     let to = this.rf8.controls["to"].value
@@ -1106,7 +1137,39 @@ export class AdminComponent implements OnInit {
           )
         });
         this.orderChart = [...this.orderChart]
-    
+
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+  getProductChart() {
+    this.productChart = []
+    this.adminService.getProductChart().subscribe(
+      data => {
+        //console.log(data.result)
+        this.productChart = data.result
+
+        this.productChart = [...this.productChart]
+      },
+      error => {
+        console.log(error)
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+  getCateChart() {
+    this.categoryChart = []
+    this.adminService.getTopProductChart(10).subscribe(
+      data => {
+        //console.log(data)
+        data.cateCount.forEach((element: any) => {
+          //console.log(element)
+          this.categoryChart.push({ name: element["name"], value: element["value"] })
+        });
+        this.categoryChart = [...this.categoryChart]
       },
       error => {
         console.log(error)
@@ -1115,22 +1178,23 @@ export class AdminComponent implements OnInit {
     )
   }
 
-  getProductChart(){
-    this.productChart=[]
-    this.adminService.getProductChart().subscribe(
-      data=>{
-        console.log(data.result)
-        this.productChart=data.result
+  getTopSaleProduct() {
+    this.topSaleProduct = []
+    this.adminService.getTopProductChart(this.numberOfTopProduct).subscribe(
+      data => {
+        this.topSaleProductCount = data.maxCount
+        data.result.forEach((element: any) => {
+          this.topSaleProduct.push({ name: element.product.name, count: element.quantity })
 
-        this.productChart = [...this.productChart]
+        });
+        //console.log(topSaleProductCount)
       },
-      error=>{
+      error => {
         console.log(error)
         this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
       }
     )
   }
-
   // prepareSaleChartData(data:any[]):any[]{
   //   var result:any[]=[]
   //   for(let i=0;i<data.length;i++){
@@ -1143,7 +1207,7 @@ export class AdminComponent implements OnInit {
   //     if(exist){
   //       for(let j=0;j<result.length;j++){
   //         if(data[i].name==result[j].name){
-            
+
   //           result[j].value+=data[i].value
   //           break
   //         }
@@ -1169,7 +1233,7 @@ export class AdminComponent implements OnInit {
   }
 
   onDeactivate(data: any): void {
-   // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
 }

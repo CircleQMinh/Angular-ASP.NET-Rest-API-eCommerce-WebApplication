@@ -26,6 +26,7 @@ namespace MyAPI.Data
             CreateMap<Order, FullOrderDTO>().ReverseMap();
 
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, TKOrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, FullOrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
 

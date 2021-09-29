@@ -15,7 +15,10 @@ namespace MyAPI.DTOs
 
         public int Quantity { get; set; }
     }
-
+    public class TKOrderDetailDTO : OrderDetailDTO
+    {
+        public Product Product { get; set; }
+    }
     public class CreateOrderDetailDTO : OrderDetailDTO
     {
         public int OrderId { get; set; }

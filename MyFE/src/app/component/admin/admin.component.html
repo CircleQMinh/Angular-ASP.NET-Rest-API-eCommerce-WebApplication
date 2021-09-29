@@ -723,7 +723,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Đến ngày : </label>
-                                    <input class="form-control" type="date" formControlName="to" (change)="getSaleChart()">
+                                    <input class="form-control" type="date" formControlName="to"
+                                        (change)="getSaleChart()">
                                 </div>
                             </form>
                         </div>
@@ -750,7 +751,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Đến ngày : </label>
-                                    <input class="form-control" type="date" formControlName="to" (change)="getOrderChart()">
+                                    <input class="form-control" type="date" formControlName="to"
+                                        (change)="getOrderChart()">
                                 </div>
                             </form>
                         </div>
@@ -771,71 +773,165 @@
 
                     </div>
                     <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
-                        <ngx-charts-pie-chart [results]="productChart"
-                            [gradient]=true [legend]=true 
-                            [labels]=true [doughnut]=false (select)="onSelect($event)"
-                            (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                        <ngx-charts-pie-chart [results]="productChart" [gradient]=true [legend]=true [labels]=true
+                            [doughnut]=false (select)="onSelect($event)" (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)">
                         </ngx-charts-pie-chart>
                     </div>
                 </div>
+
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán theo danh mục</h4>
+                        <hr>
+
+                    </div>
+                    <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                        <ngx-charts-bar-vertical [results]="categoryChart" [gradient]=true [xAxis]=true [yAxis]=true
+                            [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxisLabel]="'Danh mục'"
+                            [yAxisLabel]="'Số lượng bán'" (select)="onSelect($event)">
+                        </ngx-charts-bar-vertical>
+                    </div>
+
+                </div>
+
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán nhiều nhất</h4>
+                        <hr>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Hiển thị: </label>
+                                <select class="form-select" [(ngModel)]="numberOfTopProduct" (change)="getTopSaleProduct()">
+                                    <option value="10" selected="true">Top 10</option>
+                                    <option value="20">Top 20</option>
+                                    <option value="30">Top 30</option>
+                                    <option value="50">Top 50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="div-center-content mt-5" *ngIf="!isLoading">
+                        <p *ngFor="let o of topSaleProduct"> 
+                            {{o["name"]}} - Số lượng bán : {{o["count"]}}
+                            <ngb-progressbar  type="success" [value]="(o['count']/topSaleProductCount)*100">
+                            </ngb-progressbar>
+                        </p>
+
+                    </div>
+                </div>
             </div>
 
 
 
-            <div class="col-md-3" id='side-info' *ngIf="active_tab=='db'">
-                <div class="card text-center bg-primary text-white mb-3">
-                    <div class="card-body">
-                        <h3>Đơn hàng chưa duyệt</h3>
-                        <h4 class="display-4">
-                            <i class="fas fa-pencil-alt"></i> {{dashboardInfo.totalOrder}}
-                        </h4>
-                        <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">Xem</a>
+            <div class="col" id='side-info' *ngIf="active_tab=='db'">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card text-center bg-primary text-white mb-3">
+                            <div class="card-body">
+                                <h3>Đơn hàng chưa duyệt</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-pencil-alt"></i> {{dashboardInfo.totalOrder}}
+                                </h4>
+                                <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">Xem</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-4">
 
-                <div class="card text-center bg-success text-white mb-3">
-                    <div class="card-body">
-                        <h3>Sản phẩm</h3>
-                        <h4 class="display-4">
-                            <i class="fas fa-folder"></i>{{dashboardInfo.totalProduct}}
-                        </h4>
-                        <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">Xem</a>
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3>Sản phẩm</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-folder"></i>{{dashboardInfo.totalProduct}}
+                                </h4>
+                                <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">Xem</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="card text-center bg-warning text-white mb-3">
-                    <div class="card-body">
-                        <h3>Người dùng</h3>
-                        <h4 class="display-4">
-                            <i class="fas fa-users"></i>{{dashboardInfo.totalUser}}
-                        </h4>
-                        <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">Xem</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-9" *ngIf="active_tab=='db'">
-                <nav class="navbar navbar-light bg-light">
-                    <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1">Tin tức mới nhất - {{today|date}}</span>
-                    </div>
-                </nav>
-                <div class="d-flex flex-wrap justify-content-center">
-                    <div class="col-md-3" *ngFor="let p of news,index as i">
-                        <div class="post" *ngIf="i<newLimit">
-                            <a class="post-img" href="{{p.url}}"><img src="{{p.urlToImage}}" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-meta">
-
-                                    <span class="post-date">{{p.publishedAt | date}}</span>
-                                </div>
-                                <h3 class="post-title"><a href="{{p.url}}">{{p.title}}</a></h3>
+                    <div class="col-4">
+                        <div class="card text-center bg-warning text-white mb-3">
+                            <div class="card-body">
+                                <h3>Người dùng</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-users"></i>{{dashboardInfo.totalUser}}
+                                </h4>
+                                <a (click)="switchTab('user')" class="btn btn-outline-light btn-sm">Xem</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
+                <div class="row">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4><i class="fas fa-box-open"></i> Thống kê doanh thu</h4>
+                            <hr>
+                        </div>
+                        <div class="card-body border-tron">
+                            <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
+                                    [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Doanh thu'" [timeline]=true
+                                    [results]="dbSaleChartData" (select)="onSelect($event)" (activate)="onActivate($event)"
+                                    (deactivate)="onDeactivate($event)">
+                                </ngx-charts-line-chart>
+                            </div>
+                        </div>
+                 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card-header">
+                            <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán theo danh mục</h4>
+                            <hr>
+    
+                        </div>
+                        <div class="card-body border-tron">
+                            <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                                <ngx-charts-bar-vertical [results]="DBcategoryChart" [gradient]=true [xAxis]=true [yAxis]=true
+                                    [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxisLabel]="'Danh mục'"
+                                    [yAxisLabel]="'Số lượng bán'" (select)="onSelect($event)">
+                                </ngx-charts-bar-vertical>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card-header">
+                            <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán nhiều nhất</h4>
+                            <hr>
+    
+                        </div>
+                        <div class="card-body border-tron">
+                            <div class="div-center-content" *ngIf="!isLoading">
+                                <p *ngFor="let o of DBtopSaleProduct"> 
+                                    {{o["name"]}} - Số lượng bán : {{o["count"]}}
+                                    <ngb-progressbar  type="success" [value]="(o['count']/DBtopSaleProductCount)*100">
+                                    </ngb-progressbar>
+                                </p>
+        
+                            </div>
+                        </div>
+                
+                    </div>
+                </div>          
+                <div class="row">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4><i class="fas fa-box-open"></i> Thống kê đơn hàng</h4>
+                        </div>
+                        <div class="card-body border-tron">
+                            <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
+                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
+                                    [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Số đơn hàng'" [timeline]=true
+                                    [results]="dbOrderChart" (select)="onSelect($event)" (activate)="onActivate($event)"
+                                    (deactivate)="onDeactivate($event)">
+                                </ngx-charts-line-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
