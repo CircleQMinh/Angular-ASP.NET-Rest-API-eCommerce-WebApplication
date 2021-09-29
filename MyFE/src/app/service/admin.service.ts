@@ -140,4 +140,8 @@ export class AdminService {
   getProductChart():Observable<any>{
     return this.http.get(`${this.apiUrl}admin/getProductChart`)
   }
+
+  getTopProductChart(top:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}admin/getTopProductChart?top=${top}`)
+  }
 }

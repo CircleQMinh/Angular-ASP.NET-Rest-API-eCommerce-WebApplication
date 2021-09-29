@@ -704,6 +704,80 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }
+
+
+        [HttpGet("getTopProductChart", Name = "GetTopProductChart")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetTopProductChart(int top)
+        {
+            try
+            {
+                List<string> cate = new List<string> { "Fruit", "Vegetable", "Confectionery", "Snack", "AnimalProduct", "CannedFood" };
+                List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
+                var pro = await _unitOfWork.OrderDetails.GetAll(q => q.Order.Status == 3, null, new List<string> { "Product"});
+                var pro_map = _mapper.Map<IList<TKOrderDetailDTO>>(pro);
+
+                var result = new List<TKOrderDetailDTO>();
+                var listCate = new List<Dictionary<string, string>>();
+                for (int i=0;i<cate.Count;i++)
+                {
+                    var dic = new Dictionary<string, string>();
+                    dic.Add("name", cate[i]);
+                    dic.Add("value", 0.ToString());
+                    listCate.Add(dic);
+                }
+
+                foreach (var item in pro_map)
+                {
+                    var exist = false;
+
+                    for (int i=0;i<result.Count;i++)
+                    {
+                        if (result[i].ProductId==item.ProductId)
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (exist)
+                    {
+                        for (int j = 0; j < result.Count; j++)
+                        {
+                            if (result[j].ProductId == item.ProductId)
+                            {
+                                result[j].Quantity += item.Quantity;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+
+                    for (int i=0;i<listCate.Count;i++)
+                    {
+                        if (item.Product.Category==listCate[i]["name"])
+                        {
+                            listCate[i]["value"] = (int.Parse(listCate[i]["value"])+item.Quantity).ToString();
+                        }
+                    }
+
+                }
+                for (int i=0;i<listCate.Count;i++)
+                {
+                    listCate[i]["name"] = cateVN[i];
+                }
+                result.Sort((a,b) => b.Quantity-a.Quantity);
+                var maxCount = result.Max(q => q.Quantity);
+                return Accepted(new { result=result.Take(top),cateCount=listCate,maxCount });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetTopProductChart)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
     }
 
 }
