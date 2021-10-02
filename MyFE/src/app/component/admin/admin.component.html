@@ -61,7 +61,7 @@
 
 
 
-<header id="main-header" class="py-2 bg-primary text-white" *ngIf="active_tab=='db'">
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='db'">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -74,7 +74,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='order'">
+<header id="main-header" class="py-2 bg-danger text-white" *ngIf="active_tab=='order'">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -141,12 +141,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3 mb-3">
-                <a class="btn btn-primary btn-block" (click)="switchTab('db')">
+                <a class="btn btn-success btn-block" (click)="switchTab('db')">
                     <i class="fas fa-home"></i> Dashboard
                 </a>
             </div>
             <div class="col-md-3 mb-3">
-                <a class="btn btn-success btn-block" (click)="switchTab('order')">
+                <a class="btn btn-danger btn-block" (click)="switchTab('order')">
                     <i class="fas fa-shopping-cart"></i> Đơn hàng
                 </a>
             </div>
@@ -181,7 +181,7 @@
     </div>
     <p class="text monospace">Xin chờ 1 xíu...</p>
 </div>
-<div class="col-md-9" *ngIf="active_tab=='product'">
+<div class="col" *ngIf="active_tab=='product'">
     <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
         <div class="wrap">
             <div class="search">
@@ -782,7 +782,7 @@
 
                 <div class="card ">
                     <div class="card-header">
-                        <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán theo danh mục</h4>
+                        <h4><i class="fas fa-box-open"></i> Thống kế sản phẩm bán theo danh mục</h4>
                         <hr>
 
                     </div>
@@ -797,7 +797,7 @@
 
                 <div class="card ">
                     <div class="card-header">
-                        <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán nhiều nhất</h4>
+                        <h4><i class="fas fa-box-open"></i> Thống kế sản phẩm bán nhiều nhất</h4>
                         <hr>
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
@@ -884,7 +884,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="card-header">
-                            <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán theo danh mục</h4>
+                            <h4><i class="fas fa-certificate"></i> Thống kế sản phẩm bán theo danh mục</h4>
                             <hr>
     
                         </div>
@@ -899,7 +899,7 @@
                     </div>
                     <div class="col-6">
                         <div class="card-header">
-                            <h4><i class="fas fa-box-open"></i>Thống kế sản phẩm bán nhiều nhất</h4>
+                            <h4><i class="fas fa-box-open"></i> Thống kế sản phẩm bán nhiều nhất</h4>
                             <hr>
     
                         </div>
@@ -919,7 +919,7 @@
                 <div class="row">
                     <div class="card ">
                         <div class="card-header">
-                            <h4><i class="fas fa-box-open"></i> Thống kê đơn hàng</h4>
+                            <h4><i class="fas fa-sign"></i> Thống kê đơn hàng</h4>
                         </div>
                         <div class="card-body border-tron">
                             <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">

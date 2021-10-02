@@ -22,6 +22,8 @@ export class NavComponent implements OnInit {
 
   products:Product[]=[]
   keyword: any;
+  priceRange:any = "0,999999"
+  stringCate:string = "all"
   constructor(private router:Router,private proService:ProductService,private toast:HotToastService) { }
 
   ngOnInit(): void {
@@ -37,7 +39,7 @@ export class NavComponent implements OnInit {
   newSearch(){
 
     this.router.navigateByUrl('/', {skipLocationChange: true})
-    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword } }));
+    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword ,category: this.stringCate,priceRange:this.priceRange} }));
   }
 
   searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>

@@ -215,17 +215,32 @@ namespace MyAPI.Controllers
         [HttpGet("search",Name = "SearchProducts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SearchProducts(string keyword)
+        public async Task<IActionResult> SearchProducts(string keyword, string priceRange,  string category)
         {
+            if (!ModelState.IsValid )
+            {
+                _logger.LogError($"Invalid attempt in {nameof(SearchProducts)}");
+                return BadRequest(ModelState);
+            }
             try
             {
+                string[] range = priceRange.Split(",");
+                string[] cate = category.Split(",");
+
                 var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(keyword),null,null);
-                var result = _mapper.Map<IList<ProductDTO>>(query);
-
-
-
-                return Ok(new {result  });
+                var list = _mapper.Map<IList<ProductDTO>>(query);
+                var rs = new List<ProductDTO>();
+                foreach (var item in list)
+                {
+                    if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price > Int32.Parse(range[0]) && item.Price < Int32.Parse(range[1]))
+                    {
+                        rs.Add(item);
+                    }
+                }
+                return Ok(new {result=rs,total=rs.Count  });
             }
+
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetProducts)}");

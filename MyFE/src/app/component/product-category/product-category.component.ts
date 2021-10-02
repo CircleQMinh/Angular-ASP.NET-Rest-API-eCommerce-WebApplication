@@ -25,6 +25,9 @@ export class ProductCategoryComponent implements OnInit {
 
   isLoading: boolean = false
   category:any
+
+  priceRange:any = "0,999999"
+  stringCate:string = "all"
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
     private router: Router,private authService:AuthenticationService ) { }
 
@@ -133,8 +136,9 @@ export class ProductCategoryComponent implements OnInit {
   }
   newSearch(){
 
+
     this.router.navigateByUrl('/', {skipLocationChange: true})
-    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword } }));
+    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword ,category: this.stringCate,priceRange:this.priceRange} }));
   }
   test(){
     console.log(this.keyword)
