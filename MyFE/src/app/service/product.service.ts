@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
- // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
   apiUrl:string="https://localhost:44324/api/";
   constructor(private http: HttpClient,private route:Router) { }
 
@@ -20,8 +20,8 @@ export class ProductService {
     return this.http.get(`${this.apiUrl}product/${id}`);
   }
   
-  getSearchProductResult(keyword:string):Observable<any>{
-    return this.http.get(`${this.apiUrl}product/search?keyword=${keyword}`)
+  getSearchProductResult(keyword:string,priceRange:string,cate:string):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/search?keyword=${keyword}&priceRange=${priceRange}&category=${cate}`)
   }
 
 }

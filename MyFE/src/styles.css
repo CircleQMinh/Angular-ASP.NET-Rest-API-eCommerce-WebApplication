@@ -1051,6 +1051,10 @@ ngb-typeahead-window.dropdown-menu {
     border-radius: 20px;
 }
 
+.border-filter{
+    border-right: solid 1px darkblue;
+}
+
 @media (max-width: 1399.98px) { 
     .float-btn-nav{
         display: none;

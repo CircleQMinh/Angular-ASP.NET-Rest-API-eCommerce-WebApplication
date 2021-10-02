@@ -26,6 +26,9 @@ export class ChatBoxComponent implements OnInit {
     this.showHideChat()
     this.getChat()
   }
+  tranformDate(string:any){
+
+  }
   scrollToBottom() {
 
     let a = document.getElementById("chat_content")
@@ -53,7 +56,7 @@ export class ChatBoxComponent implements OnInit {
     }
     else {
       setTimeout(() => {
-        this.authService.addChatMess(this.user.displayName, formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss a z', 'en'), this.message, this.user.roles[0]).subscribe(
+        this.authService.addChatMess(this.user.displayName, formatDate(Date.now(), 'MMMM d, y, h:mm:ss a z', 'en'), this.message, this.user.roles[0]).subscribe(
           data => {
             console.log("mess sent")
           },

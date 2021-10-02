@@ -47,4 +47,12 @@ namespace MyAPI.DTOs
 
         public virtual ICollection<ReviewDTO> Reviews { get; set; }
     }
+
+    public class SearchProductDTO
+    {
+        public string keyword { get; set; }
+        public List<string> categories { get; set; }
+
+        public Dictionary<string,int> priceRange { get; set; }
+    }
 }
