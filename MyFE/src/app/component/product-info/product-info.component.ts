@@ -59,7 +59,9 @@ export class ProductInfoComponent implements OnInit {
 
   ngOnInit(): void {
     window.scrollTo(0, 0)
-    this.getLocalStorage()
+    this.authService.getLocalStorage()
+    this.user=this.authService.user
+    this.isLogin=this.authService.isLogin
     this.route.paramMap.subscribe(
       params => {
         this.updateInfo()
@@ -103,7 +105,9 @@ export class ProductInfoComponent implements OnInit {
 
   updateInfo() {
     this.id = this.route.snapshot.paramMap.get("id")!
-    this.getLocalStorage()
+    this.authService.getLocalStorage()
+    this.user=this.authService.user
+    this.isLogin=this.authService.isLogin
     this.isLoading = true
     this.proService.getProductInfo(this.id).subscribe(
       data => {
@@ -197,36 +201,6 @@ export class ProductInfoComponent implements OnInit {
 
   }
 
-  getLocalStorage() {
-    if (localStorage.getItem("isLogin")) {
-
-      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
-      let timeNow = new Date()
-
-      if (timeOut.getTime() < timeNow.getTime()) {
-        //console.log("time out remove key")
-        localStorage.removeItem("isLogin")
-        localStorage.removeItem("user-id")
-        localStorage.removeItem("user-email")
-        localStorage.removeItem("login-timeOut")
-        localStorage.removeItem("user-disName")
-        localStorage.removeItem("user-imgUrl")
-      }
-      else {
-        this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user = new User
-        this.user.id = localStorage.getItem('user-id')!
-        this.user.email = localStorage.getItem("user-email")!
-        this.user.displayName = localStorage.getItem("user-disName")!
-        this.user.imgUrl = localStorage.getItem("user-imgUrl")!
-        //console.log("still login")
-      }
-    }
-    else {
-      // console.log("no login acc")
-    }
-
-  }
   goToProductPage(id: number) {
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([`/product/${id}`]));

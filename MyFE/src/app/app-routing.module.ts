@@ -11,6 +11,7 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { NewsComponent } from './component/news/news.component';
+import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
@@ -55,6 +56,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'news', component: NewsComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'quanly', component: NhanvienComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];

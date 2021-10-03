@@ -37,6 +37,7 @@ import { SearchComponent } from './component/search/search.component';
 import { NewsComponent } from './component/news/news.component';
 import { ContactComponent } from './component/contact/contact.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +68,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ProfileFavoriteComponent,
     SearchComponent,
     NewsComponent,
-    ContactComponent
+    ContactComponent,
+    NhanvienComponent
   ],
   imports: [
     BrowserModule,

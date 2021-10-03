@@ -1,7 +1,7 @@
 <app-nav></app-nav>
 
 
-<div class="container mt-3"  *ngIf="!isLoading">
+<div class="container mt-3" *ngIf="!isLoading">
     <div class="main-body">
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
@@ -29,9 +29,11 @@
                                 <h4>{{userInfo.displayName}}</h4>
                                 <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
-                                <button class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i>
+                                <button class="btn btn-danger btn-block" (click)="signOut()"><i
+                                        class="fas fa-sign-out-alt"></i>
                                     Logout</button>
-                                <button class="btn btn-outline-info btn-block"><i class="fas fa-key"></i>
+                                <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i
+                                        class="fas fa-key"></i>
                                     Password?</button>
                             </div>
                         </div>
@@ -42,23 +44,27 @@
                         <ul class="list-group ">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                                <button class="btn btn-outline-primary btn-block"routerLink="/profile/{{userInfo.id}}" ><i
-                                    class="fas fa-user"></i> Thông tin</button>
-    
-                                <button class="btn btn-primary btn-block"
-                                    routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
+                                <button class="btn btn-outline-primary btn-block"
+                                    routerLink="/profile/{{userInfo.id}}"><i class="fas fa-user"></i> Thông tin</button>
+
+                                <button class="btn btn-primary btn-block" routerLink="/profile/{{userInfo.id}}/order"><i
+                                        class="fas fa-shopping-cart"></i>
                                     Đơn hàng</button>
-    
+
                                 <button class="btn btn-outline-primary btn-block"
                                     routerLink="/profile/{{userInfo.id}}/favorite"><i class="far fa-heart"></i>
                                     Yêu thích</button>
-                                <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
-                                    routerLink="/admin">
+                                <button class="btn btn-outline-primary btn-block"
+                                    *ngIf="userInfo.roles[0]=='Administrator'" routerLink="/admin">
                                     <i class="fas fa-users-cog"></i> Quản trị viên
                                 </button>
                                 <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'"
                                     routerLink="/shipper">
                                     <i class="fas fa-truck-loading"></i> Trang giao hàng
+                                </button>
+                                <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Employee'"
+                                    routerLink="/quanly">
+                                    <i class="fas fa-users-cog"></i> Quản lý shop
                                 </button>
                                 <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
                                 </button>
@@ -67,7 +73,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">        
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="text-monospace">Theo dõi đơn hàng của bạn</h4>
@@ -123,7 +129,8 @@
                                                     <span class="after"></span>
                                                     4
                                                 </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -182,7 +189,8 @@
                                                     <span class="after"></span>
                                                     4
                                                 </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -241,7 +249,8 @@
                                                     <span class="after"></span>
                                                     4
                                                 </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -300,7 +309,8 @@
                                                     <span class="after"></span>
                                                     4
                                                 </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành</p>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -338,13 +348,16 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let o of currentOrderDetails,index as i">
-                                    <td class="text-monospace">{{i}}</td>
+                                    <td class="text-monospace">{{i+1}}</td>
                                     <td class="text-monospace"><img src="{{o.product.imgUrl}}"
                                             style="height: 40px;width: 40px;"></td>
                                     <td class="text-monospace">{{o.product.name}}</td>
                                     <td class="text-monospace">{{(o.quantity)}} </td>
-                                    <td class="text-monospace">{{(o.product.price)|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span>  </td>
-                                    <td class="text-monospace">{{(o.quantity*o.product.price) | currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </td>
+                                    <td class="text-monospace">{{(o.product.price)| currency:'VND':''}} <span
+                                            style="text-decoration: underline;">đ</span> </td>
+                                    <td class="text-monospace">{{(o.quantity*o.product.price) | currency:'VND':''}}
+                                        <span style="text-decoration: underline;">đ</span>
+                                    </td>
 
                                 </tr>
                                 <tr class="table-primary">
@@ -356,7 +369,8 @@
                                     </td>
                                     <td></td>
                                     <td class="text-left"><strong>Tổng tiền</strong>
-                                        <p>{{(currentOrder.totalPrice)|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </p>
+                                        <p>{{(currentOrder.totalPrice)| currency:'VND':''}} <span
+                                                style="text-decoration: underline;">đ</span> </p>
                                     </td>
 
                                 </tr>
@@ -364,10 +378,11 @@
                         </table>
                     </div>
                 </div>
-                <div class="container d-flex justify-content-center " >
+                <div class="container d-flex justify-content-center ">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-outline-danger" routerLink="/profile/{{userInfo.id}}/order" >Quay lại danh sách đơn hàng</button>
+                            <button class="btn btn-outline-danger" routerLink="/profile/{{userInfo.id}}/order">Quay lại
+                                danh sách đơn hàng</button>
                         </div>
                     </div>
                 </div>

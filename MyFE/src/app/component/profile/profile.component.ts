@@ -59,7 +59,10 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userID = this.route.snapshot.paramMap.get("id")
     //console.log(this.userID)
-    this.getLocalStorage()
+    this.authService.getLocalStorage()
+    this.user=this.authService.user
+    this.isLogin=this.authService.isLogin
+
     if (!this.isLogin) {
       this.router.navigateByUrl("/login")
       this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
@@ -83,7 +86,7 @@ export class ProfileComponent implements OnInit {
         this.getOrderDetails()
         this.getPagedOrder()
         this.getPagedFavProduct()
-        console.log(this.userInfo)
+        //console.log(this.userInfo)
         localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
       },
@@ -110,51 +113,12 @@ export class ProfileComponent implements OnInit {
 
   }
   signOut() {
-    this.isLogin = false
     let a = this.router.url
-    localStorage.removeItem("isLogin")
-    localStorage.removeItem("user-id")
-    localStorage.removeItem("user-email")
-    localStorage.removeItem("login-timeOut")
-    localStorage.removeItem("user-disName")
-    localStorage.removeItem("user-imgUrl")
-    localStorage.removeItem("user-role")
-    localStorage.removeItem("user-info")
+    this.authService.signOut()
+    this.isLogin = this.authService.isLogin
+    this.user=this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
-  }
-  getLocalStorage() {
-    if(localStorage.getItem("isLogin")){
-   
-      let timeOut= new Date(localStorage.getItem("login-timeOut")!)
-      let timeNow = new Date()
-  
-      if(timeOut.getTime()<timeNow.getTime()){
-        //console.log("time out remove key")
-        localStorage.removeItem("isLogin")
-        localStorage.removeItem("user-id")
-        localStorage.removeItem("user-email")
-        localStorage.removeItem("login-timeOut")
-        localStorage.removeItem("user-disName")
-        localStorage.removeItem("user-imgUrl")
-        localStorage.removeItem("user-role")
-      }
-      else{
-        this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user=new User
-        this.user.id = localStorage.getItem('user-id')!
-        this.user.email = localStorage.getItem("user-email")!
-        this.user.displayName = localStorage.getItem("user-disName")!
-        this.user.imgUrl=localStorage.getItem("user-imgUrl")!
-        this.user.roles=[]
-        this.user.roles.push(localStorage.getItem("user-role")!)
-        //console.log("still login")
-      }
-    }
-    else{
-     // console.log("no login acc")
-    }
-
   }
   openChangeModal(changeIMG: any) {
     this.newName = this.userInfo.displayName
