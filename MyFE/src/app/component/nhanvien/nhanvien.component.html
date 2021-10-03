@@ -1,0 +1,759 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 sticky-top" *ngIf="!isLoading">
+
+    <a class="navbar-brand" routerLink="/home">
+        <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+            style="width: 40px;height: 40px;">Circle's Shop</a>
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
+        <ul class="navbar-nav  ml-auto ">
+            <li class="nav-item px-2">
+                <a href="javascript:void(0)" [class.active]="active_tab=='db'" (click)="switchTab('db')"
+                    class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+            </li>
+            <li class="nav-item px-2">
+                <a href="javascript:void(0)" [class.active]="active_tab=='order'" (click)="switchTab('order')"
+                    class="nav-link"><i class="fas fa-shopping-cart"></i> Đơn hàng</a>
+            </li>
+            <li class="nav-item px-2">
+                <a href="javascript:void(0)" [class.active]="active_tab=='product'" (click)="switchTab('product')"
+                    class="nav-link"><i class="fas fa-box-open"></i> Sản phẩm</a>
+            </li>
+
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-3" routerLink="/profile/{{user.id}}">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-user"></i> {{user.displayName}}
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                    <a class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item" (click)="signOut()">
+                <a class="nav-link">
+                    <i class="fas fa-user-times"></i> Đăng xuất
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+
+
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='db'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h1 *ngIf="active_tab=='db'" class="text-tron">
+                    <i class="fas fa-home"></i> Dashboard
+                </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<header id="main-header" class="py-2 bg-danger text-white" *ngIf="active_tab=='order'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h1 *ngIf="active_tab=='order'" class="text-tron">
+                    <i class="fas fa-shopping-cart"></i> Quản lý Đơn hàng
+                </h1>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='product'">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h1 *ngIf="active_tab=='product'" class="text-tron">
+                    <i class="fas fa-box-open"></i> Quản lý Sản phẩm
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- ACTIONS -->
+<section id="actions" class="py-4 mb-4 bg-light" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <a class="btn btn-success btn-block" (click)="switchTab('db')">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a class="btn btn-danger btn-block" (click)="switchTab('order')">
+                    <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a class="btn btn-warning btn-block" (click)="switchTab('product')">
+                    <i class="fas fa-box-open"></i> Sản phẩm
+                </a>
+            </div>
+          
+        </div>
+        <hr>
+    </div>
+</section>
+
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
+</div>
+
+<div class="col" *ngIf="active_tab=='product'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword"
+                    [ngbTypeahead]="searchProduct" [resultTemplate]="rt"
+                    (selectItem)="selectedItemProduct($event,edit_product)">
+                <button type="submit" class="searchButton">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;">
+    <div>
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img">
+        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
+    </div>
+
+</ng-template>
+
+<!-- POSTS -->
+<section id="posts" *ngIf="!isLoading">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col" *ngIf="active_tab=='order'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-shopping-cart"></i> Đơn hàng</h4>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-info " (click)="getOrder()">
+                                <i class="fas fa-sync-alt"></i> Tải lại
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Trạng thái: </label>
+                                <select class="form-select" [(ngModel)]="status" (change)=" onPageSizeStatusChage()">
+                                    <option value="99" selected="true">Tất cả</option>
+                                    <option value="0">Chưa duyệt</option>
+                                    <option value="1">Đã duyệt</option>
+                                    <option value="2">Đang giao</option>
+                                    <option value="3">Hoàn thành</option>
+                                    <option value="4">Hủy</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sắp xếp theo: </label>
+                                <select class="form-select" [(ngModel)]="orderOrder"
+                                    (change)=" onPageSizeStatusChage()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Price">Tổng giá </option>
+                                    <option value="OrderDate">Ngày đặt</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirOrder"
+                                    (change)=" onPageSizeStatusChage()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hiển thị: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeOrder"
+                                    (change)=" onPageSizeStatusChage()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped  ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Thông tin liên lạc</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày giao</th>
+                                    <th>Số SP</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of orderList,index as i">
+
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.id}}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                        <p class="text-tron text-monospace">{{o.address}}</p>
+                                        <p class="text-tron text-monospace">{{o.email}}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace" *ngIf="shippingInfos[i]!=null">
+                                            <span
+                                                *ngIf="shippingInfos[i].deliveryDate">{{shippingInfos[i].deliveryDate}}</span>
+                                            <span *ngIf="!shippingInfos[i].deliveryDate">---</span>
+                                        </p>
+                                        <p class="text-tron text-monospace" *ngIf="!shippingInfos[i]">---</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
+                                                style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                    <td *ngIf="o.status==0">
+                                        <span class="badge bg-info text-dark">Chưa duyệt</span>
+                                    </td>
+                                    <td *ngIf="o.status==1">
+                                        <span class="badge bg-success">Đã duyệt</span>
+                                    </td>
+                                    <td *ngIf="o.status==2">
+                                        <span class="badge bg-warning text-dark">Đang giao</span>
+                                    </td>
+                                    <td *ngIf="o.status==3">
+                                        <span class="badge bg-danger">Hoàn thành</span>
+                                    </td>
+                                    <td *ngIf="o.status==4">
+                                        <span class="badge bg-secondary">Hủy</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning  btn-sm admin-button mr-2"
+                                            (click)="openOrderInfoModal(order_info,o)">
+                                            <i class="fas fa-box-open"></i></button>
+                                        <button class="btn btn-info  btn-sm admin-button mr-2"
+                                            (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm admin-button"
+                                            (click)="openDeleteOrderInfoModal(order_delete,o)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
+                                        [collectionSize]="collectionSizeOrder" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getOrder()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col" *ngIf="active_tab=='product'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-box-open"></i> Sản phẩm</h4>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-info" (click)="openAddProductModal(add_product)">
+                                <i class="fas fa-plus"></i> Thêm sản phẩm
+                            </button>
+                            <button class="btn btn-info " (click)="getProduct()">
+                                <i class="fas fa-sync-alt"></i> Tải lại
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Danh mục: </label>
+                                <select class="form-select" [(ngModel)]="category"
+                                    (change)=" onPageSizeCategoryChange()">
+                                    <option value="all" selected="true">Tất cả</option>
+                                    <option value="Fruit">Trái cây</option>
+                                    <option value="Vegetable">Rau củ</option>
+                                    <option value="Confectionery">Bánh kẹo</option>
+                                    <option value="Snack">Snack</option>
+                                    <option value="AnimalProduct">Thịt tươi sống</option>
+                                    <option value="CannedFood">Đồ hộp</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sắp xếp theo: </label>
+                                <select class="form-select" [(ngModel)]="orderProduct"
+                                    (change)=" onPageSizeCategoryChange()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Price">Giá</option>
+                                    <option value="Name">Tên</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirProduct"
+                                    (change)="onPageSizeCategoryChange()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Page Size: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeProduct"
+                                    (change)=" onPageSizeCategoryChange()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  ">
+                            <thead class="thead-dark">
+                                <tr>
+
+                                    <th>Thông tin</th>
+                                    <th>Mô tả</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Danh mục</th>
+                                    <th>Chỉnh sửa</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of productList,index as i">
+
+                                    <td>
+                                        <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                                        <p class="text-tron text-monospace">{{o.name}}</p>
+                                    </td>
+                                    <td>{{o.description}}</td>
+                                    <td>{{o.price| currency:'VND':''}} <span
+                                            style="text-decoration: underline;">đ</span></td>
+                                    <td>{{o.unitInStock}}</td>
+                                    <td>
+                                        <p class="text-tron text-success">{{o.category}}</p>
+                                    </td>
+                                    <td>{{o.lastUpdate}}</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm admin-button mr-2"
+                                            (click)="openEditProductModal(edit_product,o)">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm admin-button "
+                                            (click)="openDeleteProductModal(deleteProductModal,o.id)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberProduct" [pageSize]="pageSizeProduct"
+                                        [collectionSize]="collectionSizeProduct" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getProduct()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" id='side-info' *ngIf="active_tab=='db'">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card text-center bg-primary text-white mb-3">
+                            <div class="card-body">
+                                <h3>Đơn hàng chưa duyệt</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-pencil-alt"></i> {{dashboardInfo.totalOrder}}
+                                </h4>
+                                <a (click)="switchTab('order')" class="btn btn-outline-light btn-sm">Xem</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3>Sản phẩm</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-folder"></i>{{dashboardInfo.totalProduct}}
+                                </h4>
+                                <a (click)="switchTab('product')" class="btn btn-outline-light btn-sm">Xem</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #add_product let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf2">
+            <div class="form-group">
+                <label for="name">Tên SP</label>
+                <p class="text-center" *ngIf="rf2.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
+                </p>
+                <div class="input-group">
+                    <input id="name" class="form-control" placeholder="name..." name="name" formControlName="name">
+                </div>
+                <label for="price">Giá</label>
+                <p class="text-center" *ngIf="rf2.controls.price?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
+                </p>
+                <p class="text-center" *ngIf="rf2.controls['price'].hasError('pattern')&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
+                </p>
+                <div class="input-group">
+                    <input id="price" class="form-control" placeholder="price..." name="price" type="number"
+                        formControlName="price">
+                </div>
+                <label for="des">Mổ tả</label>
+                <p class="text-center" *ngIf="rf2.controls.des?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Mô tả SP
+                <div class="input-group">
+                    <textarea id="des" class="form-control" placeholder="description..." name="des"
+                        style="height: 80px;" formControlName="des" multiple></textarea>
+                </div>
+                <label for="uis">Số lượng</label>
+                <p class="text-center" *ngIf="rf2.controls.uis?.errors?.required&&showFormError"><i
+                        class="fas fa-exclamation-triangle"></i>Product unit not
+                    valid!</p>
+                <div class="input-group">
+                    <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
+                        formControlName="uis" type="number">
+                </div>
+                <label for="cate">Danh mục</label>
+                <div class="input-group">
+                    <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
+                        <option value="Fruit" selected>Trái cây</option>
+                        <option value="Vegetable">Rau củ</option>
+                        <option value="Confectionery">Bánh kẹo</option>
+                        <option value="Snack">Snack</option>
+                        <option value="AnimalProduct">Thịt tươi sống</option>
+                        <option value="CannedFood">Đồ hợp</option>
+                    </select>
+                </div>
+                <label for="img">Ảnh SP</label>
+                <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
+                <div class="input-group">
+                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                        (change)="selectFileProduct($event)">
+                </div>
+                <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{proImgUrl}}">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isCreatingProduct">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="addProduct()">Thêm</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isCreatingProduct">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+<ng-template #edit_product let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa SP</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf3">
+            <div class="form-group">
+                <label for="name">Tên SP</label>
+                <p class="text-center" *ngIf="rf3.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
+                </p>
+                <div class="input-group">
+                    <input id="name" class="form-control" placeholder="name..." name="name" formControlName="name">
+                </div>
+                <label for="price">Giá</label>
+                <p class="text-center" *ngIf="rf3.controls.price?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
+                </p>
+                <p class="text-center" *ngIf="rf3.controls['price'].hasError('pattern')&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Giá không hợp lệ!
+                </p>
+                <div class="input-group">
+                    <input id="price" class="form-control" placeholder="price..." name="price" type="number"
+                        formControlName="price">
+                </div>
+                <label for="des">Mô tả</label>
+                <p class="text-center" *ngIf="rf3.controls.des?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Mô tả SP
+                <div class="input-group">
+                    <textarea id="des" class="form-control" placeholder="description..." name="des"
+                        style="height: 80px;" formControlName="des" multiple></textarea>
+                </div>
+                <label for="uis">Số lượng</label>
+                <p class="text-center" *ngIf="rf3.controls.uis?.errors?.required&&showFormError"><i
+                        class="fas fa-exclamation-triangle"></i>Product unit not
+                    valid!</p>
+                <div class="input-group">
+                    <input id="uis" class="form-control" placeholder="unit in stock..." name="unit"
+                        formControlName="uis" type="number">
+                </div>
+                <label for="cate">Danh mục</label>
+                <div class="input-group">
+                    <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
+                        <option value="Fruit" selected>Trái cây</option>
+                        <option value="Vegetable">Rau củ</option>
+                        <option value="Confectionery">Bánh kẹo</option>
+                        <option value="Snack">Snack</option>
+                        <option value="AnimalProduct">Thịt tươi sống</option>
+                        <option value="CannedFood">Đồ hợp</option>
+                    </select>
+                </div>
+                <label for="img">Ảnh SP</label>
+                <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
+                <div class="input-group">
+                    <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                        (change)="selectFileProduct($event)">
+                </div>
+                <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{proImgUrl}}">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingProduct">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="tryEditProduct()">Edit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingProduct">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #deleteProductModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa sản phẩm </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa sản phẩm này?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingProduct">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteProduct()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingProduct">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #order_info let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin đơn hàng</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="loading-full" *ngIf="isGettingOrderDetail">
+            <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+        <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
+            <p>Tổng SP : {{selectedOrder.totalItem}}</p>
+            <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span
+                    style="text-decoration: underline;">đ</span></p>
+            <p *ngIf="selectedShippingInfo">Shipper : {{selectedShippingInfo.shipper.displayName}}</p>
+            <p *ngIf="selectedShippingInfo">Ngày giao : {{selectedShippingInfo.deliveryDate}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="bdwT-0">SP</th>
+                        <th class="bdwT-0">Tên</th>
+                        <th class="bdwT-0">Giá</th>
+                        <th class="bdwT-0">Số lượng</th>
+                        <th class="bdwT-0">Giá lẻ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let od of selectedOrder.orderDetails">
+                        <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
+                        <td>{{ od.product.name }}</td>
+                        <td>${{ od.product.price | currency:'VND':''}} <span
+                                style="text-decoration: underline;">đ</span></td>
+                        <td>{{ od.quantity }}</td>
+                        <td>${{ (od.product.price*od.quantity)| currency:'VND':''}} <span
+                                style="text-decoration: underline;">đ</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Ghi chú : {{selectedOrder.note}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #edit_order let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Duyệt đơn hàng</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf4">
+            <div class="form-group">
+                <label for="status">Trạng thái</label>
+                <div class="input-group">
+                    <select id="status" class="form-control" placeholder="100" name="status" formControlName="status">
+                        <option value="0">Chưa duyệt</option>
+                        <option value="1">Đã duyệt</option>
+                    </select>
+                </div>
+                <label for="des">Ghi chú</label>
+
+                <div class="input-group">
+                    <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editOrder()">Duyệt</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #order_delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa đơn hàng?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên quan đến đơn hàng sẽ
+            bị xóa!</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteOrder()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>

@@ -25,7 +25,6 @@ export class AdminComponent implements OnInit {
   isCollapsed: boolean = true
 
   isLogin: boolean = false
-
   user!: User
 
   active_tab = "db"
@@ -288,7 +287,9 @@ export class AdminComponent implements OnInit {
     this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
     this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
 
-    this.getLocalStorage()
+    this.authService.getLocalStorage()
+    this.user=this.authService.user
+    this.isLogin=this.authService.isLogin
     if (!this.isLogin) {
       this.router.navigateByUrl("/error")
     }
@@ -326,14 +327,10 @@ export class AdminComponent implements OnInit {
   }
 
   signOut() {
-    this.isLogin = false
-    localStorage.removeItem("isLogin")
-    localStorage.removeItem("user-id")
-    localStorage.removeItem("user-email")
-    localStorage.removeItem("login-timeOut")
-    localStorage.removeItem("user-disName")
-    localStorage.removeItem("user-imgUrl")
-    localStorage.removeItem("user-role")
+
+    this.authService.signOut()
+    this.isLogin = this.authService.isLogin
+    this.user=this.authService.user
     this.router.navigateByUrl('/home')
   }
   getDBInfo() {
@@ -406,39 +403,6 @@ export class AdminComponent implements OnInit {
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
-  }
-  getLocalStorage() {
-    if (localStorage.getItem("isLogin")) {
-
-      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
-      let timeNow = new Date()
-
-      if (timeOut.getTime() < timeNow.getTime()) {
-        //console.log("time out remove key")
-        localStorage.removeItem("isLogin")
-        localStorage.removeItem("user-id")
-        localStorage.removeItem("user-email")
-        localStorage.removeItem("login-timeOut")
-        localStorage.removeItem("user-disName")
-        localStorage.removeItem("user-imgUrl")
-        localStorage.removeItem("user-role")
-        localStorage.removeItem("user-info")
-      }
-      else {
-        this.isLogin = Boolean(localStorage.getItem('isLogin'))
-        this.user = new User
-        this.user.id = localStorage.getItem('user-id')!
-        this.user.email = localStorage.getItem("user-email")!
-        this.user.displayName = localStorage.getItem("user-disName")!
-        this.user.imgUrl = localStorage.getItem("user-imgUrl")!
-        this.user.roles = []
-        this.user.roles.push(localStorage.getItem("user-role")!)
-        //console.log("still login")
-      }
-    }
-    else {
-      // console.log("no login acc")
-    }
   }
   randomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -514,6 +478,7 @@ export class AdminComponent implements OnInit {
     switch (s) {
       case "db":
         this.isLoading=false
+        this.getDBInfo()
         break
       case "order":
         this.getOrder()

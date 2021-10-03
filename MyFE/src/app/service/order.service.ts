@@ -123,7 +123,7 @@ export class OrderService {
   }
 
   getVNPayURL(totalPrice:number):Observable<any>{
-    return this.http.get(`${this.apiUrl}order/getVNPayUrl?totalPrice=${totalPrice}`)
+    return this.http.get(`${this.apiUrl}order/getVNPayUrl2?totalPrice=${totalPrice}`)
   }
 
 }

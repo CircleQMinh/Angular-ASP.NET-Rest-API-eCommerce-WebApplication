@@ -14,7 +14,57 @@ export class AuthenticationService {
 
   userInfo!:User
 
-  constructor(private http: HttpClient, private route: Router) { }
+  isLogin: boolean = false
+  user!: User
+
+  constructor(private http: HttpClient, private router: Router) { }
+
+  getLocalStorage() {
+    if (localStorage.getItem("isLogin")) {
+
+      let timeOut = new Date(localStorage.getItem("login-timeOut")!)
+      let timeNow = new Date()
+
+      if (timeOut.getTime() < timeNow.getTime()) {
+        //console.log("time out remove key")
+        localStorage.removeItem("isLogin")
+        localStorage.removeItem("user-id")
+        localStorage.removeItem("user-email")
+        localStorage.removeItem("login-timeOut")
+        localStorage.removeItem("user-disName")
+        localStorage.removeItem("user-imgUrl")
+        localStorage.removeItem("user-role")
+        localStorage.removeItem("user-info")
+      }
+      else {
+        this.isLogin = Boolean(localStorage.getItem('isLogin'))
+        this.user = new User
+        this.user.id = localStorage.getItem('user-id')!
+        this.user.email = localStorage.getItem("user-email")!
+        this.user.displayName = localStorage.getItem("user-disName")!
+        this.user.imgUrl = localStorage.getItem("user-imgUrl")!
+        this.user.roles = []
+        this.user.roles.push(localStorage.getItem("user-role")!)
+        //console.log("still login")
+      }
+    }
+    else {
+      // console.log("no login acc")
+    }
+  }
+
+  signOut() {
+    this.isLogin = false
+    this.user=null!
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("user-id")
+    localStorage.removeItem("user-email")
+    localStorage.removeItem("login-timeOut")
+    localStorage.removeItem("user-disName")
+    localStorage.removeItem("user-imgUrl")
+    localStorage.removeItem("user-role")
+    localStorage.removeItem("user-info")
+  }
 
   signUp(email: string, password: string, userName: string, phoneNumber: string): Observable<any> {
     return this.http.post(`${this.apiUrl}account/register`, {

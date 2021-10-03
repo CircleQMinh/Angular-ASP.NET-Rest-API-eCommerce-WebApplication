@@ -458,11 +458,11 @@ namespace MyAPI.Controllers
                 string accessKey = "Vxo6vQMlwjbrGq3c";
                 string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
                 string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
-                //string redirectUrl = "http://localhost:4200/#/thankyou";
-                //string notifyUrl = "http://localhost:4200/#/thankyou";
+                string redirectUrl = "http://localhost:4200/#/thankyou";
+                string notifyUrl = "http://localhost:4200/#/thankyou";
 
-                string redirectUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
-                string notifyUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string redirectUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string notifyUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
 
                 //string requestType = "captureWallet";
 
@@ -506,11 +506,14 @@ namespace MyAPI.Controllers
             try
             {
                 string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
+                //string returnUrl = "http://circle-shop-18110320.000webhostapp.com/#/thankyou";
 
-                //string returnUrl = "http://localhost:4200/#/thankyou";
-                string tmnCode = "V0A4GQCF";
-                string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
+                string returnUrl = "http://localhost:4200/#/thankyou";
+                //string tmnCode = "V0A4GQCF";
+                //string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
+
+                string tmnCode = "K3IS060E";
+                string hashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";
 
                 string price = (totalPrice * 100).ToString();
                 string orderInfo = "Thanh toan don hang cho CircleShop";
@@ -519,7 +522,7 @@ namespace MyAPI.Controllers
 
                 PayLib pay = new PayLib();
 
-                pay.AddRequestData("vnp_Version", "2.0.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
+                pay.AddRequestData("vnp_Version", "2.0.1"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
                 pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
                 pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
                 pay.AddRequestData("vnp_Amount",price); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
@@ -535,6 +538,70 @@ namespace MyAPI.Controllers
 
                 string paymentUrl = pay.CreateRequestUrl(url, hashSecret);
 
+
+                return Ok(new { paymentUrl });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
+        [HttpGet("getVNPayUrl2", Name = "getVNPayUrl2")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetVNPayUrl2(int totalPrice)
+        {
+            try
+            {
+                //Get Config Info
+                string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
+                string vnp_TmnCode = "K3IS060E"; //Ma website
+                string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
+
+       
+                //Get payment input
+                VNPayOrderInfo order = new VNPayOrderInfo();
+                //Save order to db
+                order.OrderId = DateTime.Now.Ticks; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
+                order.Amount = totalPrice; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+                order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"
+                order.OrderDesc = "Thanh toan don hang cho CircleShop";
+                order.CreatedDate = DateTime.Now;
+                string locale = "vn";
+                //Build URL for VNPAY
+                VnPayLibrary vnpay = new VnPayLibrary();
+
+                vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+                vnpay.AddRequestData("vnp_Command", "pay");
+                vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+                vnpay.AddRequestData("vnp_Amount", (order.Amount * 100).ToString()); //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+                vnpay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
+                vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+                vnpay.AddRequestData("vnp_CurrCode", "VND");
+                vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
+                if (!string.IsNullOrEmpty(locale))
+                {
+                    vnpay.AddRequestData("vnp_Locale", locale);
+                }
+                else
+                {
+                    vnpay.AddRequestData("vnp_Locale", "vn");
+                }
+                vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + order.OrderId);
+                vnpay.AddRequestData("vnp_OrderType", "Other"); //default value: other
+                vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+                vnpay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
+
+                //Add Params of 2.1.0 Version
+                vnpay.AddRequestData("vnp_ExpireDate", "20221003135123");
+   
+
+                string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
 
                 return Ok(new { paymentUrl });
 
