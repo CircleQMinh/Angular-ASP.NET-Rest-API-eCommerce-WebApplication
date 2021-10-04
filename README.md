@@ -34,3 +34,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 29-09-2021 : hoàn thành thống kê.<br>
 02-10-2021 : update chức năng tìm kiếm.<br>
 03-10-2021 : update vnpay , thêm trang nhân viên và vài sửa đổi nhỏ.<br>
+04-10-2021 : update gui, auto-reload và trang thông tin.<br>
