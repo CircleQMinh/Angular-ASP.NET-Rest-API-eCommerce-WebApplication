@@ -56,37 +56,72 @@ export class ProfileOrderInfoComponent implements OnInit {
     }
     else {
       this.userInfo = JSON.parse(localStorage.getItem("user-info")!)
-      console.log(this.userInfo)
+      //console.log(this.userInfo)
       this.userInfo.orders.forEach(element => {
         if(this.orderID==element.id){
           this.currentOrder=element
         }
       });
       this.isLoading=true
-      this.orderService.getOrderDetails(this.currentOrder.id).subscribe(
+      this.getDetail()
+      setInterval(()=>{
+        this.getUserInfo()
+
+        this.getDetail()
+      },5000)
+    }
+  }
+  getUserInfo() {
+    this.authService.getUserInfo(this.userID).subscribe(
+      data => {
+        //console.log(data)
+        
+        this.userInfo = data.user
+        this.userInfo.roles = data.roles
+        //console.log(this.userInfo)
+        // this.getOrderDetails()
+        // this.getPagedOrder()
+        // this.getPagedFavProduct()
+        // //console.log(this.userInfo)
+        this.userInfo.orders.forEach(element => {
+          if(this.orderID==element.id){
+            this.currentOrder=element
+          }
+        });
+        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
+        this.isLoading = false
+      },
+      error => {
+        console.log(error)
+        this.router.navigateByUrl("/error")
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+  getDetail(){
+    this.orderService.getOrderDetails(this.currentOrder.id).subscribe(
+      data => {
+        //console.log(data)
+        this.currentOrderDetails = data.orderDetails
+        //console.log(this.userInfo)
+        this.isLoading=false
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+    if (this.currentOrder.status == 2 || this.currentOrder.status == 3) {
+      this.orderService.getShippingInfo(this.currentOrder.id).subscribe(
         data => {
-          //console.log(data)
-          this.currentOrderDetails = data.orderDetails
-          //console.log(this.userInfo)
-          this.isLoading=false
+          this.currentOrderShippingInfo = data.result
+          //console.log(this.currentOrderShippingInfo)
         },
         error => {
           console.log(error)
           this.toast.error(" An error has occurred ! Try again !")
         }
       )
-      if (this.currentOrder.status == 2 || this.currentOrder.status == 3) {
-        this.orderService.getShippingInfo(this.currentOrder.id).subscribe(
-          data => {
-            this.currentOrderShippingInfo = data.result
-            //console.log(this.currentOrderShippingInfo)
-          },
-          error => {
-            console.log(error)
-            this.toast.error(" An error has occurred ! Try again !")
-          }
-        )
-      }
     }
   }
   

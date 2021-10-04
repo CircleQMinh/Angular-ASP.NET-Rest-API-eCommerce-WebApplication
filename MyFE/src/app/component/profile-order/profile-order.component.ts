@@ -52,9 +52,37 @@ export class ProfileOrderComponent implements OnInit {
       this.userInfo=JSON.parse(localStorage.getItem("user-info")!)
       this.userInfo.orders.reverse()
       this.getPagedOrder()
+      setInterval(()=>{
+        this.getUserInfo()
+      
+        this.getPagedOrder()
+        //console.log("beep")
+      },5000)
     }
   }
-
+  getUserInfo() {
+    this.authService.getUserInfo(this.userID).subscribe(
+      data => {
+        //console.log(data)
+        
+        this.userInfo = data.user
+        this.userInfo.roles = data.roles
+        //console.log(this.userInfo)
+        // this.getOrderDetails()
+        // this.getPagedOrder()
+        // this.getPagedFavProduct()
+        // //console.log(this.userInfo)
+        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
+        this.userInfo.orders.reverse()
+        //this.isLoading = false
+      },
+      error => {
+        console.log(error)
+        this.router.navigateByUrl("/error")
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
   getPagedOrder() {
     this.pagedOrder = []
     for (let i = 0; i < this.pageSizeOrder; i++) {

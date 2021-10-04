@@ -40,6 +40,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.getCartInfo()
     this.getLocalStorageLoginInfo()
+  
     if (this.totalItem == 0) {
       this.router.navigateByUrl("/cart")
     }
@@ -63,7 +64,7 @@ export class CheckoutComponent implements OnInit {
     this.rf1.controls["district"].setValue(this.District[0])
     this.rf1.controls["ward"].setValue(this.Ward[0])
     this.rf1.controls["billOption"].setValue("cash")
-
+    this.reFillFormInfo()
     window.scrollTo(0, 0)
   }
   getCartInfo() {
@@ -109,20 +110,11 @@ export class CheckoutComponent implements OnInit {
 
   submitInfo() {
     this.showFormError = true
-    // console.log("Valid : "+this.rf1.valid)
-    // console.log(this.rf1.controls["email"].value)
-    // console.log(this.rf1.controls["contactname"].value)
-    // console.log(this.rf1.controls["phone"].value)
-    // console.log(this.rf1.controls["district"].value)
-    // console.log(this.rf1.controls["ward"].value)
-    // console.log(this.rf1.controls["street"].value)
-    // console.log(this.rf1.controls["address"].value)
-    // console.log(this.rf1.controls["billOption"].value)
 
     if (this.rf1.valid) {
+      this.saveFormForReUse()
       let address = this.rf1.controls["address"].value + " " + this.rf1.controls["street"].value + " " +
         this.rf1.controls["ward"].value + " " + this.rf1.controls["district"].value + " TP.HCM"
-      //console.log(address)
       let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
       if (this.rf1.controls["billOption"].value == "momo") {
         this.saveOrderToLocal(address, today)
@@ -142,13 +134,9 @@ export class CheckoutComponent implements OnInit {
       else if (this.rf1.controls["billOption"].value == "vnpay") {
 
         this.saveOrderToLocal(address, today)
-
-
         this.orderService.getVNPayURL(this.totalPrice ).subscribe(
           data => {
             window.location.href = data.paymentUrl
-
-
           },
           error => {
             console.log(error)
@@ -217,7 +205,7 @@ export class CheckoutComponent implements OnInit {
   }
   saveOrderDetail(data: number) {
     let orderID = data
-    console.log(orderID)
+    //console.log(orderID)
     for (let i = 0; i < this.cartItems.length; i++) {
       this.orderService.saveOrderDetail(orderID, this.cartItems[i].id, this.cartItemsQuantity[i]).subscribe(
         data => {
@@ -233,6 +221,26 @@ export class CheckoutComponent implements OnInit {
         }
       )
       //console.log(this.cartItems[i].id, this.cartItemsQuantity[i])
+    }
+  }
+
+  saveFormForReUse(){
+    //console.log(this.rf1.value)
+    localStorage.setItem("submitedForm",JSON.stringify(this.rf1.value))
+  }
+  reFillFormInfo(){
+    if(localStorage.getItem("submitedForm")){
+      let form:any = JSON.parse(localStorage.getItem("submitedForm")!)
+      this.rf1.controls["email"].setValue(form["email"])
+      this.rf1.controls["contactname"].setValue(form["contactname"])
+      this.rf1.controls["phone"].setValue(form["phone"])
+      this.rf1.controls["district"].setValue(form["district"])
+      this.rf1.controls["ward"].setValue(form["ward"])
+      this.rf1.controls["street"].setValue(form["street"])
+      this.rf1.controls["address"].setValue(form["address"])
+      this.rf1.controls["billOption"].setValue(form["billOption"])
+      this.rf1.controls["note"].setValue(form["note"])
+      this.toast.info("Tự động điền form cho bạn!")
     }
   }
 

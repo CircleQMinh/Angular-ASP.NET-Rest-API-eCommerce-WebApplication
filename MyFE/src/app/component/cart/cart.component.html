@@ -1,4 +1,14 @@
-<div class="float-btn-cart-container">
+<a class="float-btn-cart" routerLink="/cart" (mouseover)="showInfo=true" (mouseleave)="showInfo=false">
+  <i class="fas fa-shopping-cart float-btn-icon"></i>
+</a>
+<a class="float-btn-cart-number animate__animated animate__slideInRight animate__faster " *ngIf="showInfo">
+  <p class="text-monospace">{{totalItem}}</p>
+</a>
+<a class="float-btn-cart-price animate__animated animate__slideInRight animate__faster" *ngIf="showInfo">
+  <p class="text-monospace"><span>{{(totalPrice) | number:'1.0':'en-US' }}</span> VND</p>
+</a>
+
+<!-- <div class="float-btn-cart-container">
 
 
   <a class="float-btn-cart" routerLink="/cart">
@@ -11,4 +21,4 @@
     <p class="text-monospace"><span>{{(totalPrice) | number:'1.0':'en-US' }}</span> VND</p>
   </a>
 
-</div>
+</div> -->

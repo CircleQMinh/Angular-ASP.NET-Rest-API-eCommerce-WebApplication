@@ -60,12 +60,16 @@ export class ProductInfoComponent implements OnInit {
   ngOnInit(): void {
     window.scrollTo(0, 0)
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
     this.route.paramMap.subscribe(
       params => {
-        this.updateInfo()
+        this.isLoading = true
         window.scrollTo(0, 0)
+        this.updateInfo()
+        setInterval(()=>{
+          this.refreshInfo()
+        },5000)
       }
     )
 
@@ -102,19 +106,51 @@ export class ProductInfoComponent implements OnInit {
     }
   }
 
-
-  updateInfo() {
+  refreshInfo() {
     this.id = this.route.snapshot.paramMap.get("id")!
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
-    this.isLoading = true
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
+
     this.proService.getProductInfo(this.id).subscribe(
       data => {
         // console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
-        this.displayCategory=this.getDisplayCategory(this.product.category)
+        this.displayCategory = this.getDisplayCategory(this.product.category)
+
+        this.getProductRating()
+        this.product.reviews.sort((a, b) => {
+          var c: any = new Date(a.date);
+          var d: any = new Date(b.date);
+          return d - c
+        })
+        this.getPagedReviews()
+        this.checkIfReviewed()
+
+        //console.log(this.alreadyReview)
+
+        this.isLoading = false
+      },
+      error => {
+        this.toast.error("Kết nối với API không được!")
+        console.log(error)
+      }
+    )
+  }
+
+  updateInfo() {
+    this.id = this.route.snapshot.paramMap.get("id")!
+    this.authService.getLocalStorage()
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
+
+    this.proService.getProductInfo(this.id).subscribe(
+      data => {
+        // console.log(data)
+        this.product = data.result
+        this.product.reviews = data.reviews
+        this.displayCategory = this.getDisplayCategory(this.product.category)
 
         // console.log(this.product)
         this.getRandomProduct()
@@ -158,6 +194,11 @@ export class ProductInfoComponent implements OnInit {
   }
 
   getProductRating() {
+    this.onestar=0
+    this.twostar=0
+    this.threestar=0
+    this.fourstar=0
+    this.fivestar=0
     this.product.reviews.forEach(element => {
       switch (element.star) {
         case 1:
@@ -228,10 +269,10 @@ export class ProductInfoComponent implements OnInit {
     if (localStorage.getItem("isLogin")) {
       this.authService.addToFav(localStorage.getItem('user-id')!, pro.id).subscribe(
         data => {
-          if(data.success){
+          if (data.success) {
             this.toast.success("Sản phẩm đã thêm vào yêu thích")
           }
-          else{
+          else {
             this.toast.info("Sản phẩm đã nằm trong yêu thích")
           }
         },
