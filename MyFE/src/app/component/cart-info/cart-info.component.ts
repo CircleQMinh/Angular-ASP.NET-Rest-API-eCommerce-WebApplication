@@ -56,14 +56,21 @@ export class CartInfoComponent implements OnInit {
     this.cartItems=this.cartService.cartItems
     this.cartItemsQuantity=this.cartService.cartItemsQuantity
   }
+  getCartInfoWithoutDelete(){
+    this.cartService.getLocalStorage()
+    this.totalItem=this.cartService.totalItem
+    this.totalPrice=this.cartService.totalPrice
+    //this.cartItems=this.cartService.cartItems
+    this.cartItemsQuantity=this.cartService.cartItemsQuantity
+  }
 
   addOneToCart(pro:Product){
     this.cartService.incrementQuantity(pro)
-    this.getCartInfo()
+    this.getCartInfoWithoutDelete()
   }
   removeOneFromCart(pro:Product){
     this.cartService.decrementQuantity(pro)
-    this.getCartInfo()
+    this.getCartInfoWithoutDelete()
   }
   removeFromCart(pro:Product){
     this.cartService.removeItem(pro)

@@ -64,6 +64,7 @@ export class AuthenticationService {
     localStorage.removeItem("user-imgUrl")
     localStorage.removeItem("user-role")
     localStorage.removeItem("user-info")
+    localStorage.removeItem("submitedForm")
   }
 
   signUp(email: string, password: string, userName: string, phoneNumber: string): Observable<any> {

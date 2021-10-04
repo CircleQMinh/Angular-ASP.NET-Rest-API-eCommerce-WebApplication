@@ -34,24 +34,6 @@ export class ProfileComponent implements OnInit {
   newName!: string
   newPhone!: string
 
-  viewOrderDetails: boolean = false
-  currentOrder!: Order
-  currentOrderDetails: OrderDetail[] = []
-  currentOrderShippingInfo:any
-
-
-  pageSizeOrder=5
-  pageNumberOrder=1
-  pagedOrder:Order[]=[]
-
-  pageSizeOrderDetail=5
-  pageNumberOrderDetails=1
-  pagedOrderDetails:OrderDetail[]=[]
-
-  pageSizeFav=4
-  pageNumberFav=1
-  pagedFavProduct:Product[]=[]
-
 
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,private cartService:CartService) { }
@@ -71,11 +53,12 @@ export class ProfileComponent implements OnInit {
       this.router.navigateByUrl("/error")
     }
     window.scrollTo(0, 0)
-    this.getUserInfo()
-
+    this.isLoading = true
+    setInterval(()=>{
+      this.getUserInfo()
+    },5000)
   }
   getUserInfo() {
-    this.isLoading = true
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
         //console.log(data)
@@ -83,35 +66,21 @@ export class ProfileComponent implements OnInit {
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
-        this.getOrderDetails()
-        this.getPagedOrder()
-        this.getPagedFavProduct()
-        //console.log(this.userInfo)
+        // this.getOrderDetails()
+        // this.getPagedOrder()
+        // this.getPagedFavProduct()
+        // //console.log(this.userInfo)
         localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
       },
       error => {
         console.log(error)
+        this.router.navigateByUrl("/error")
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }
-  getOrderDetails() {
-    this.userInfo.orders.forEach(element => {
-      this.orderService.getOrderDetails(element.id).subscribe(
-        data => {
-          //console.log(data)
-          element.orderDetails = data.orderDetails
-          //console.log(this.userInfo)
-        },
-        error => {
-          console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
-        }
-      )
-    });
 
-  }
   signOut() {
     let a = this.router.url
     this.authService.signOut()
@@ -186,104 +155,9 @@ export class ProfileComponent implements OnInit {
       }
     )
   }
-  switchTab(tab: any) {
-    window.scrollTo(0, 0)
-    this.selectedTab = tab
-  }
-
-  viewDetail(o: Order, od: OrderDetail[]) {
-
-    this.currentOrder = o
-    this.currentOrderDetails = od
-    this.currentOrderShippingInfo=null!
-    if(this.currentOrder.status==2||this.currentOrder.status==3){
-      this.isLoading=true
-      this.orderService.getShippingInfo(this.currentOrder.id).subscribe(
-        data=>{
-          this.currentOrderShippingInfo=data.result
-          console.log(this.currentOrderShippingInfo)
-          this.isLoading=false
-        },
-        error=>{
-          this.isLoading=false
-          console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
-        }
-      )
-
-    }
-    this.viewOrderDetails = true
-  
-  }
-
-  getPagedOrder() {
-    this.pagedOrder = []
-    for (let i = 0; i < this.pageSizeOrder; i++) {
-      if(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)]){
-        this.pagedOrder.push(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)])
-      }
-
-    }
-  }
-  getPagedOrderDetails() {
-    this.pagedOrderDetails = []
-    for (let i = 0; i < this.pageSizeOrderDetail; i++) {
-      if(this.currentOrderDetails[i + this.pageSizeOrderDetail * (this.pageNumberOrderDetails - 1)]){
-        this.pagedOrderDetails.push(this.currentOrderDetails[i + this.pageSizeOrderDetail * (this.pageNumberOrderDetails - 1)])
-      }
-    }
-  }
-
-  getPagedFavProduct() {
-    this.pagedFavProduct = []
-    for (let i = 0; i < this.pageSizeFav; i++) {
-      if(this.userInfo.favoriteProducts[i + this.pageSizeFav * (this.pageNumberFav - 1)]){
-        this.pagedFavProduct.push(this.userInfo.favoriteProducts[i + this.pageSizeFav * (this.pageNumberFav - 1)])
-      }
-
-    }
-  }
 
   randomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  addToFav(pro:Product){
-    this.toast.info("This product is already on your favorite list")
-
-  }
-  removeFromFav(pro:Product){
-    this.authService.removeFromFav(this.userInfo.id,pro.id).subscribe(
-      data=>{
-        if(data.success){
-          this.toast.success("Product remove from favorite list successfully")
-          //console.log(this.userInfo.favoriteProducts)
-          this.removeFromLocal(pro.id)
-          //console.log(this.userInfo.favoriteProducts)
-        }
-        else{
-          this.toast.info("This product is not on your favorite list")
-        }
-      },
-      error=>{
-        console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
-  }
-  removeFromLocal(id:number){
-
-
-    for(let i=0;i<this.userInfo.favoriteProducts.length;i++){
-      if(this.userInfo.favoriteProducts[i].id==id){
-        this.userInfo.favoriteProducts.splice(i,1)
-        break
-      }
-    }
-    this.getPagedFavProduct()
-  }
-  addToCart(pro:Product){
-    this.cartService.addToCart(pro)
-    this.toast.success("Product added to cart!")
-  }
 }

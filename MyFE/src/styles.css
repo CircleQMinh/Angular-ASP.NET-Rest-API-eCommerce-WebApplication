@@ -52,7 +52,7 @@ body{
 .HF-section-heading{font-size:2em;}
 .HF-grid-item-heading{font-size:1.5em;line-height:1.25em;margin:-.25em 0;letter-spacing:.025em;}
 .HF-featured-grid-item{min-height:370px;}
-.HF-featured-grid-item-description{font-size:1em;}
+.HF-featured-grid-item-description{font-size:0.8em;}
 .HF-featured-grid-item-link{font-size:1.5em;letter-spacing:1px;display:inline-block;line-height:1;}
 }
 @media only screen and (max-width:479px){
@@ -69,7 +69,7 @@ body{
 .HF-section-heading{font-size:2em;}
 .HF-grid-item-heading{font-size:1.3em;line-height:1.25em;margin:-.25em 0;letter-spacing:.025em;}
 .HF-featured-grid-item{min-height:350px;}
-.HF-featured-grid-item-description{font-size:1em;}
+.HF-featured-grid-item-description{font-size:0.7em;}
 .HF-featured-grid-item-link{font-size:1.5em;letter-spacing:1px;display:inline-block;line-height:1;}
 }
 img{max-width:100%;height:auto;}
@@ -532,8 +532,8 @@ a:hover{color:#51aa1b;}
 
 }
 .rss-feed a img{
-    width: 250px!important;
-    height: 150px!important;
+    width: 80px!important;
+    height: 80px!important;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-right: 20px;
@@ -549,32 +549,38 @@ a:hover{color:#51aa1b;}
     display: inline;
 }
 .rss-feed-inner{
-    border: 2px solid black;
+    /* border: 2px solid black; */
     padding: 10px;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     background-color: white;
-    min-height: 340px;
+    min-height: 275px;
+    min-width: 100%;
 }
-.rss-feed-inner:hover{
-    background-color: #add5d9;
-}
-.rss-feed-inner:hover .feed-info{
-    background-color: #badbd3;
-}
+
 .feed-title{
     height:47px;
-    font-size: 20px;
+    font-size: 17px;
 }
 .feed-time{
     height: 24px;
 }
 .feed-info{
-    min-height: 207px;
+    min-height: 110px;
     background-color: whitesmoke;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     padding: 5px;
-    border: 1px solid;font-weight: 600;
+    font-weight: 450;
 }
+.feed-info div{
+    display: none;
+}
+.feed-info p{
+    max-width: 60%;
+}
+
 
 #chuyen-muc{
     border: solid 1px green;
@@ -840,21 +846,23 @@ width: 100%;
     color:#FFF;
     border-radius:50px;
     text-align:center;
-    z-index: 999;
+    z-index: 99;
     margin-bottom: 7%;
 }
 
 .float-btn-cart{
-    position:fixed;
-    width:60px;
-    height:60px;
-    bottom:10px;
-    left:10px;
-    background-color:#d32323;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    /* bottom: 10px; */
+    /* left: 10px; */
+    background-color: #69c41a;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
     z-index: 999;
+    top: 68px;
+    right: 10px;
 }  
 .float-btn-cart-container{
     position:fixed;
@@ -866,9 +874,14 @@ width: 100%;
 .cat-item {
    padding: 6px;
 }
-.cat-active{
-    background-color: rgb(255, 0, 0);
-    border-radius: 8px;
+.cat-item a i{
+    display: none;
+ }
+.cat-active a{
+    color: #ff0800!important;
+}
+.cat-active a i{
+    display: inline-block;
 }
 .float-btn-cart-container:hover .float-btn-cart-number  {
     display: block;
@@ -877,43 +890,46 @@ width: 100%;
     display: block;
 }
 .float-btn-cart-number{
-    display: none;
     position: fixed;
     width: 35px;
     height: 30px;
-    bottom: 60px;
-    left: 10px;
-    background-color: #23d381;
+    /* bottom: 60px; */
+    /* left: 10px; */
+    background-color: #d32323;
     color: #FFF;
     border-radius: 50px;
     text-align: center;
     z-index: 998;
+    right: 60px;
+    top: 72px;
 }  
 .float-btn-cart-price{
-    display: none;
     position: fixed;
     width: 130px;
     height: 30px;
-    bottom: 60px;
-    left: 43px;
+    /* bottom: 60px; */
+    /* left: 43px; */
     background-color: #b3d323;
     color: #FFF;
     border-radius: 50px;
     text-align: center;
     z-index: 998;
+    right: 60px;
+    top: 100px;
 }  
 
 .float-btn-chat{
-    position:fixed;
-    width:60px;
-    height:60px;
-    bottom:70px;
-    right:10px;
-    background-color:#2369d3;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 10px;
+    /* right: 10px; */
+    background-color: #2369d3;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
     z-index: 999;
+    left: 10px;
 }  
 .dflex-jus{
     display: flex;
@@ -987,9 +1003,9 @@ ngb-typeahead-window.dropdown-menu {
     position: fixed;
     width: 50%;
     height: 70%;
-    bottom: 120px;
+    bottom: 80px;
     padding: 2%;
-    right: 30px;
+    /* right: 30px; */
     background-color: white;
     color: #FFF;
     border-radius: 50px;
@@ -997,6 +1013,7 @@ ngb-typeahead-window.dropdown-menu {
     z-index: 999;
     border: solid 2px black;
     color: #000;
+    left: 20px;
 }
 .chat-scroll{
     padding: 4px;
@@ -1072,7 +1089,7 @@ ngb-typeahead-window.dropdown-menu {
         width: 500px;
     }
     .chat-enter{
-        height: 15%;
+        height: 13%;
     }
     .chat-enter textarea{
         width: 70%;
@@ -1081,7 +1098,7 @@ ngb-typeahead-window.dropdown-menu {
         width:  295px;
     }
     .feed-title{
-        height:65px;
+        height:24px;
     }
     .product-img{
         height: 300px;
@@ -1095,7 +1112,7 @@ ngb-typeahead-window.dropdown-menu {
 }
 @media (max-width: 767.98px) { 
     .feed-title{
-        height:80px;
+        height:54px;
     }
     #slide-show{
         display: none;
@@ -1150,17 +1167,19 @@ ngb-typeahead-window.dropdown-menu {
     .float-btn-chat{
         width: 30px;
         height: 30px;
-        bottom: 40px;
+        bottom: 10px;
     }
     .float-btn-icon{
         margin-top: 8px;
     }
     .float-btn-cart-number{
-        bottom: 30px;
+        top: 75px;
+        height: 20px;
+        right: 40px;
     }
     .float-btn-cart-price{
-        bottom: 7px;
-        left: 40px;
+        right: 0px;
+        top: 95px;
     }
     .steps__title{
         font-size: 10px;
@@ -1220,7 +1239,7 @@ ngb-typeahead-window.dropdown-menu {
     .chat-box{
         width: 90%;
         right: 10px;
-        bottom: 70px;
+        bottom: 40px;
     }
     .chat-enter{
         height: 11%;
@@ -1228,7 +1247,12 @@ ngb-typeahead-window.dropdown-menu {
     .chat-enter textarea{
         width: 60%;
     }
+    .float-btn-cart{
+        width: 30px;
+        height: 30px;
+        top:115px
+    }
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;padding-top: 65px; }
