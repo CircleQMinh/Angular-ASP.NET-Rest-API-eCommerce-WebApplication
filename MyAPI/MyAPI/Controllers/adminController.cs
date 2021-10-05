@@ -778,6 +778,61 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
             }
         }
+
+
+        [HttpPost("createPromotion", Name = "createPromotion")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreatePromotion([FromBody] CreatePromotionDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreatePromotion)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var query = _mapper.Map<Promotion>(unitDTO);
+                await _unitOfWork.Promotions.Insert(query);
+                await _unitOfWork.Save();
+
+                return Accepted(new { query });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreatePromotion)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
+            }
+        }
+
+        [HttpPost("createPromotionInfo", Name = "createPromotionInfo")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreatePromotionInfo([FromBody] CreatePromotionInfoDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreatePromotionInfo)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var query = _mapper.Map<PromotionInfo>(unitDTO);
+                await _unitOfWork.PromotionInfos.Insert(query);
+                await _unitOfWork.Save();
+
+                return Accepted(new { query });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreatePromotionInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
     }
 
 }

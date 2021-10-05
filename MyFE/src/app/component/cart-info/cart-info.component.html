@@ -97,8 +97,37 @@
                                     <a href="#" class="font__size-16 line-height-1-375 brk-cart__title">{{o.name}}</a>
                                 </td>
                                 <td aria-label="Price">
-                                    <span
-                                        class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price |currency:'VND':''}} <span style="text-decoration: underline;">đ</span></span>
+                                    <div *ngIf="!o.promoInfo">
+                                        <span
+                                            class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price
+                                            |currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                                        </span>
+                                    </div>
+
+                                    <div *ngIf="o.promoInfo">
+                                        <span *ngIf="o.promoInfo.promotionPercent!='null'"
+                                            class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price-o.price*toNumber(o.promoInfo.promotionPercent)/100
+                                            |currency:'VND':''}} <span class="currency-dis">đ</span><span
+                                                class="badge bg-success" ngbTooltip="{{o.promoInfo.promotion.name}}&#013;
+                                            Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;
+                                            Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;
+                                            Giảm : {{o.promoInfo.promotionPercent}}%&#013;
+                                            Giá gốc : {{o.price| currency:'VND':''}} đ" placement="auto"
+                                                data-html="true">-{{o.promoInfo.promotionPercent}}%</span>
+                                        </span>
+
+                                        <span *ngIf="o.promoInfo.promotionAmount!='null'"
+                                            class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price-toNumber(o.promoInfo.promotionAmount)
+                                            |currency:'VND':''}} <span class="currency-dis">đ</span><span
+                                                class="badge bg-danger" ngbTooltip="{{o.promoInfo.promotion.name}}&#013;
+                                            Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;
+                                            Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;
+                                            Giảm : {{o.promoInfo.promotionAmount}}VND&#013;
+                                            Giá gốc : {{o.price| currency:'VND':''}} đ&#013;" placement="auto"
+                                                data-html="true">-{{o.promoInfo.promotionAmount| currency:'VND':''}}
+                                                <span class="currency-dis">đ</span></span>
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="d-flex justify-content-center">
 
@@ -112,8 +141,23 @@
 
                                 </td>
                                 <td aria-label="Total">
-                                    <span
-                                        class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(cartItemsQuantity[i]*o.price) |currency:'VND':''}} <span style="text-decoration: underline;">đ</span></span>
+                                    <div *ngIf="!o.promoInfo">
+                                        <span
+                                            class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(cartItemsQuantity[i]*o.price)
+                                            |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="o.promoInfo">
+                                        <span *ngIf="o.promoInfo.promotionPercent!='null'"
+                                            class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(cartItemsQuantity[i]*(o.price-o.price*toNumber(o.promoInfo.promotionPercent)/100))
+                                            |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                        </span>
+                                        <span *ngIf="o.promoInfo.promotionAmount!='null'"
+                                            class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(cartItemsQuantity[i]*(o.price-toNumber(o.promoInfo.promotionAmount)))
+                                            |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                        </span>
+                                    </div>
+
                                 </td>
                             </tr>
 
@@ -139,7 +183,8 @@
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
                             <div class="font__size-sm-14 font__size-13 line-height-1-5">Tổng tiền : </div>
-                            <div class="font__size-14 line-height-1-5 font__weight-bold">{{(totalPrice) |currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">{{(totalPrice)
+                                |currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
                             </div>
                         </div>
                         <div class="brk-cart__footer-total-item font__family-montserrat">
@@ -172,7 +217,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <label for="email">Email :</label>
-                   
+
                     <div class="input-group">
                         <input id="email" class="form-control" placeholder="Email..." name="email"
                             formControlName="email">
@@ -187,10 +232,10 @@
                     </div>
                     <label for="password" c>Password :</label>
                     <div class="input-group ">
-                        <input id="password" class="form-control" placeholder="Password..." name="password" type="password"
-                            formControlName="password">
+                        <input id="password" class="form-control" placeholder="Password..." name="password"
+                            type="password" formControlName="password">
                     </div>
-                    <div class="input-group"  *ngIf="rf1.controls.password?.errors?.required&&showFormError">
+                    <div class="input-group" *ngIf="rf1.controls.password?.errors?.required&&showFormError">
                         <p class="text-center d-block">
                             Password is required! <i class="fas fa-exclamation-triangle"></i></p>
                     </div>
@@ -199,13 +244,13 @@
         </form>
     </div>
     <div *ngIf="isLoadingLogin" class="div-center-content">
-        <div class="spinner-border text-primary" role="status" >
+        <div class="spinner-border text-primary" role="status">
 
         </div>
-        <p style="color: rgb(8, 8, 8);" > Please wait a sec ...</p>
+        <p style="color: rgb(8, 8, 8);"> Please wait a sec ...</p>
     </div>
     <div class="modal-footer">
-     
+
         <button *ngIf="!isLoadingLogin" type="button" class="btn btn-outline-dark" (click)="tryLogin()">Login</button>
     </div>
 </ng-template>

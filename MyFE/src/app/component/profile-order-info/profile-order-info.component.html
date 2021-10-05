@@ -353,10 +353,32 @@
                                             style="height: 40px;width: 40px;"></td>
                                     <td class="text-monospace">{{o.product.name}}</td>
                                     <td class="text-monospace">{{(o.quantity)}} </td>
-                                    <td class="text-monospace">{{(o.product.price)| currency:'VND':''}} <span
-                                            style="text-decoration: underline;">đ</span> </td>
+                                    <td class="text-monospace">
+
+                                        <div *ngIf="!o.promotionAmount&&!o.promotionPercent">
+                                            {{(o.product.price)| currency:'VND':''}} <span class="currency-dis">đ</span>
+                                        </div>
+
+                                        <div *ngIf="o.promotionAmount||o.promotionPercent">
+                                            <div *ngIf="o.promotionAmount">
+                                                {{(o.product.price)-toNumber(o.promotionAmount)| currency:'VND':''}}
+                                                <span class="currency-dis">đ</span><span class="badge bg-danger"
+                                                    ngbTooltip=" Giảm : {{o.promotionAmount}}VND&#013;
+                                                    Giá gốc : {{o.product.price| currency:'VND':''}} đ&#013;"
+                                                    placement="auto" data-html="true">-{{o.promotionAmount|
+                                                    currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                            </div>
+                                            <div *ngIf="o.promotionPercent">
+                                                {{(o.product.price)-(o.product.price*toNumber(o.promotionPercent)/100)|
+                                                currency:'VND':''}} <span class="currency-dis">đ</span><span
+                                                    class="badge bg-success" ngbTooltip="Giảm : {{o.promotionPercent}}%&#013;
+                                                Giá gốc : {{o.product.price| currency:'VND':''}} đ" placement="auto"
+                                                    data-html="true">-{{o.promotionPercent}}%</span>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td class="text-monospace">{{(o.quantity*o.product.price) | currency:'VND':''}}
-                                        <span style="text-decoration: underline;">đ</span>
+                                        <span class="currency-dis">đ</span>
                                     </td>
 
                                 </tr>

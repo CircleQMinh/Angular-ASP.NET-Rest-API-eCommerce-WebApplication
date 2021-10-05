@@ -68,10 +68,17 @@ namespace MyAPI.Controllers
                 var query = await _unitOfWork.Products.GetAll(expression, orderBy, null,pf);
                 var totalItem = await _unitOfWork.Products.GetCount(expression);
                 var results = _mapper.Map<IList<ProductDTO>>(query);
-         
 
+                var promoInfo = new List<PromotionInfoDTO>();
 
-                return Ok(new { results, totalItem });
+                foreach (var item in results)
+                {
+                    var pi =  await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+
+                return Ok(new { results, totalItem,promoInfo });
             }
             catch (Exception ex)
             {
@@ -98,8 +105,12 @@ namespace MyAPI.Controllers
                 var query2 = await _unitOfWork.Reviews.GetAll(q => q.ProductId == id,null, new List<string> { "User" });
                 //sử dụng mapper
                 var reviews = _mapper.Map<IList<ReviewDTO>>(query2);
+
+                var query3 = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id, new List<string> { "Promotion" });
+
+                var promoInfo = _mapper.Map<PromotionInfoDTO>(query3);
                 //trả lời request
-                return Ok(new { result,reviews });
+                return Ok(new { result,reviews,promoInfo });
             }
             catch (Exception ex)
             {

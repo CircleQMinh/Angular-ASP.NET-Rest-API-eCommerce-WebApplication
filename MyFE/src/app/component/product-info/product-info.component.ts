@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Product } from 'src/app/class/product';
+import { PromotionInfo } from 'src/app/class/promotion-info';
 import { Review } from 'src/app/class/review';
 import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -53,6 +54,8 @@ export class ProductInfoComponent implements OnInit {
   ratingFilter = 0
 
   displayCategory = ""
+
+  promoInfo!:PromotionInfo
 
   constructor(private router: Router, private route: ActivatedRoute, private proService: ProductService, private toast: HotToastService
     , private cartService: CartService, private authService: AuthenticationService) { }
@@ -118,7 +121,7 @@ export class ProductInfoComponent implements OnInit {
         this.product = data.result
         this.product.reviews = data.reviews
         this.displayCategory = this.getDisplayCategory(this.product.category)
-
+        this.promoInfo=data.promoInfo
         this.getProductRating()
         this.product.reviews.sort((a, b) => {
           var c: any = new Date(a.date);
@@ -147,11 +150,11 @@ export class ProductInfoComponent implements OnInit {
 
     this.proService.getProductInfo(this.id).subscribe(
       data => {
-        // console.log(data)
+        console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
         this.displayCategory = this.getDisplayCategory(this.product.category)
-
+        this.promoInfo=data.promoInfo
         // console.log(this.product)
         this.getRandomProduct()
         this.getProductRating()
@@ -356,5 +359,9 @@ export class ProductInfoComponent implements OnInit {
       this.sortChange()
     }
     this.checkIfReviewed()
+  }
+  
+  toNumber(string:string):number{
+    return Number(string)
   }
 }

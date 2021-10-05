@@ -1,13 +1,13 @@
 <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
     <div class="wrap">
         <div class="search">
-           <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" 
-           [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)" >
-           <button type="submit" class="searchButton" (click)="newSearch()">
-             <i class="fa fa-search"></i>
-          </button>
+            <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword"
+                [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
+            <button type="submit" class="searchButton" (click)="newSearch()">
+                <i class="fa fa-search"></i>
+            </button>
         </div>
-     </div>
+    </div>
 </div>
 
 
@@ -18,19 +18,24 @@
             <div class="section-title">
                 <h2 class="text-tron">Sản Phẩm của Shop</h2>
             </div>
-            <div class="featured__controls" >
+            <div class="featured__controls">
                 <ul>
-                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">Toàn bộ</a></li>
-                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Trái cây</a></li>
+                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron">Toàn
+                            bộ</a></li>
+                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron">Trái
+                            cây</a></li>
                     <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
                         <a class="text-tron">Rau củ</a>
                     </li>
                     <li [class.active]="category=='Confectionery'" (click)="switchCategory('Confectionery')">
                         <a class="text-tron">Bánh kẹo</a>
                     </li>
-                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a class="text-tron">Snack</a></li>
-                    <li [class.active]="category=='AnimalProduct'" (click)="switchCategory('AnimalProduct')"><a class="text-tron">Thịt tươi sống</a></li>
-                    <li [class.active]="category=='CannedFood'" (click)="switchCategory('CannedFood')"><a class="text-tron">Đồ hộp</a></li>
+                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a
+                            class="text-tron">Snack</a></li>
+                    <li [class.active]="category=='AnimalProduct'" (click)="switchCategory('AnimalProduct')"><a
+                            class="text-tron">Thịt tươi sống</a></li>
+                    <li [class.active]="category=='CannedFood'" (click)="switchCategory('CannedFood')"><a
+                            class="text-tron">Đồ hộp</a></li>
                 </ul>
             </div>
         </div>
@@ -46,26 +51,27 @@
         </div>
     </div>
 </div> -->
-<div *ngIf="isLoading" class="d-flex justify-content-center " style="height: 1000px;" > 
+<div *ngIf="isLoading" class="d-flex justify-content-center " style="height: 1000px;">
     <div class="spinner-border text-warning" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 <!-- 2308 -->
 
-<section *ngIf="!isLoading"  >
-    <div class="container-fluid dflex-jus" >
+<section *ngIf="!isLoading">
+    <div class="container-fluid dflex-jus">
         <a class="float-btn-nav" (click)="  prevPropage()">
-         
+
             <i class="fas fa-arrow-left float-btn-icon"></i>
         </a>
-        <div class="row justify-content-center  animate__animated animate__fadeIn"  style="width: 80%;">
-      
-            <div *ngFor="let pro of content  " class="  gradient-border " style=" margin: 20px;margin-bottom: 100px;">
+        <div class="row justify-content-center  animate__animated animate__fadeIn" style="width: 80%;">
+
+            <div *ngFor="let pro of content,index as i  " class="  gradient-border "
+                style=" margin: 20px;margin-bottom: 100px;">
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
-                        ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
-                        container="body">
+                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn"
+                        [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}" ngbTooltip="{{pro.description}}"
+                        [openDelay]="100" [closeDelay]="100" placement="auto" container="body">
                         <ul class="featured__item__pic__hover">
                             <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
@@ -76,12 +82,37 @@
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a >{{pro.name}}</a></h6>
-                        <h5>{{pro.price |   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </h5>
+                        <h6><a>{{pro.name}}</a></h6>
+                        <div *ngIf="!promoInfo[i]">
+                            <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                            </h5>
+                        </div>
+
+                        <div *ngIf="promoInfo[i]">
+                            <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
+                                {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 | currency:'VND':''}}
+                                <span class="currency-dis">đ</span> <span class="badge bg-success" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo[i].promotionPercent}}%&#013;
+                                                Giá gốc : {{pro.price| currency:'VND':''}} đ" placement="auto"
+                                    data-html="true">-{{promoInfo[i].promotionPercent}}%</span>
+                            </h5>
+                            <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
+                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}} 
+                                <span class="currency-dis">đ</span> <span class="badge bg-danger" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo[i].promotionAmount}}VND&#013;
+                                                Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;" placement="auto"
+                                    data-html="true">-{{promoInfo[i].promotionAmount| currency:'VND':''}} <span
+                                        class="currency-dis">đ</span></span> 
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>
-           
+
         </div>
         <a class="float-btn-nav" (click)="nextProPage()">
 
@@ -90,7 +121,7 @@
     </div>
 </section>
 
-<div class="container d-flex justify-content-center " >
+<div class="container d-flex justify-content-center ">
     <div class="row">
         <div class="col">
             <div id="ng-pagi">
@@ -104,9 +135,9 @@
 </div>
 
 
-<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;"  >
-    <div >
-        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img" >
+<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;">
+    <div>
+        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img">
         <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
     </div>
 

@@ -9,4 +9,6 @@ export class OrderDetail {
     quantity!:number
     order!:Order
     orderId!:number
+    promotionAmount!:string
+    promotionPercent!:string
 }

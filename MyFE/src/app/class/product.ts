@@ -1,3 +1,4 @@
+import { PromotionInfo } from "./promotion-info";
 import { Review } from "./review";
 import { User } from "./user";
 
@@ -13,6 +14,7 @@ export class Product {
     lastUpdate!:string;
     favoritedUsers!:User[]
     reviews!:Review[]
+    promoInfo!:PromotionInfo
 
 
 	constructor(id:number,name:string,price:number,des:string,unit:number,cate:string,img:string,last:string) {

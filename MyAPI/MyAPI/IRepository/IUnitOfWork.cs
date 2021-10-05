@@ -16,6 +16,8 @@ namespace MyAPI.IRepository
         IGenericRepository<Review> Reviews { get; }
 
         IGenericRepository<EmployeeInfo> EmployeeInfos { get; }
+        IGenericRepository<Promotion> Promotions { get; }
+        IGenericRepository<PromotionInfo> PromotionInfos { get; }
         Task Save();
     }
 }

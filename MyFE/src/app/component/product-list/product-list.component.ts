@@ -7,6 +7,7 @@ import { ProductService } from 'src/app/service/product.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import { PromotionInfo } from 'src/app/class/promotion-info';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -24,10 +25,12 @@ export class ProductListComponent implements OnInit {
   searchMode: boolean = false;
   searchCount: number = 0
 
+  promoInfo: PromotionInfo[] = []
+
   isLoading: boolean = false
   @ViewChild('top', { static: true }) contentPage!: ElementRef;
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
-    private router: Router,private authService:AuthenticationService) { }
+    private router: Router, private authService: AuthenticationService) { }
 
 
   keyword: any;
@@ -53,6 +56,11 @@ export class ProductListComponent implements OnInit {
         // console.log(data)
         this.content = data.results
         this.collectionSize = data.totalItem
+        this.promoInfo = data.promoInfo
+        // console.log(this.promoInfo)
+        for (let i = 0; i < this.promoInfo.length; i++) {
+          this.content[i].promoInfo = this.promoInfo[i]
+        }
         this.isLoading = false
       },
       error => {
@@ -69,7 +77,12 @@ export class ProductListComponent implements OnInit {
         //console.log(data)
         this.products = data.results
         this.collectionSize = data.totalItem
-        localStorage.setItem("products",JSON.stringify(this.products))
+        this.promoInfo = data.promoInfo
+        for (let i = 0; i < this.promoInfo.length; i++) {
+          this.products[i].promoInfo = this.promoInfo[i]
+        }
+        // console.log(this.promoInfo)
+        localStorage.setItem("products", JSON.stringify(this.products))
         this.isLoading = false
       },
       error => {
@@ -83,29 +96,29 @@ export class ProductListComponent implements OnInit {
   getSearchResult(keyword: string) {
 
   }
-  newSearch(){
+  newSearch() {
 
-    this.router.navigateByUrl('/', {skipLocationChange: true})
-    .then(() => this.router.navigate([`/search`],{ queryParams: { keyword: this.keyword } }));
+    this.router.navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword } }));
   }
   addToFav(pro: Product) {
-    if(localStorage.getItem("isLogin")){
-      this.authService.addToFav(localStorage.getItem('user-id')!,pro.id).subscribe(
-        data=>{
-          if(data.success){
+    if (localStorage.getItem("isLogin")) {
+      this.authService.addToFav(localStorage.getItem('user-id')!, pro.id).subscribe(
+        data => {
+          if (data.success) {
             this.toast.success("Sản phẩm đã thêm vào yêu thích")
           }
-          else{
+          else {
             this.toast.info("Sản phẩm đã nằm trong yêu thích")
           }
         },
-        error=>{
+        error => {
           console.log(error)
           this.toast.error(" An error has occurred ! Try again !")
         }
       )
     }
-    else{
+    else {
       this.toast.info("Đăng nhập để thêm sản phẩm vào yêu thích")
     }
 
@@ -141,5 +154,9 @@ export class ProductListComponent implements OnInit {
   selectedItem(item: any) {
     this.router.navigateByUrl(`/product/${item.item.id}`)
 
+  }
+
+  toNumber(string: string): number {
+    return Number(string)
   }
 }
