@@ -4,6 +4,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Product } from 'src/app/class/product';
+import { PromotionInfo } from 'src/app/class/promotion-info';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
@@ -28,6 +29,10 @@ export class ProductCategoryComponent implements OnInit {
 
   priceRange:any = "0,999999"
   stringCate:string = "all"
+
+  promoInfo:PromotionInfo[]=[]
+
+  
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
     private router: Router,private authService:AuthenticationService ) { }
 
@@ -76,6 +81,7 @@ export class ProductCategoryComponent implements OnInit {
         // console.log(data)
         this.content = data.results
         this.collectionSize = data.totalItem
+        this.promoInfo=data.promoInfo
         this.isLoading = false
       },
       error => {
@@ -167,5 +173,9 @@ export class ProductCategoryComponent implements OnInit {
   selectedItem(item: any) {
     this.router.navigateByUrl(`/product/${item.item.id}`)
 
+  }
+  
+  toNumber(string:string):number{
+    return Number(string)
   }
 }

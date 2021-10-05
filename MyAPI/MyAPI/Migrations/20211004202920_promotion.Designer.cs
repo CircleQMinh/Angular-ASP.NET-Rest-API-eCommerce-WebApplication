@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211004202920_promotion")]
+    partial class promotion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,29 +65,29 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "afe111ef-cc52-45ad-9acd-51da1d8f9147",
-                            ConcurrencyStamp = "ab3f0c93-90db-48bf-8096-174721970ee3",
+                            Id = "db5372d3-8b26-45bf-b62c-cfb86698e921",
+                            ConcurrencyStamp = "7f83934b-550d-4383-bc00-296d25d2a20f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5450b06a-f7ec-40ae-8a7e-50e81590f950",
-                            ConcurrencyStamp = "601a0b53-3817-47a0-81d7-1db76876d734",
+                            Id = "36a77da3-4168-4f65-83d9-2d1587d82444",
+                            ConcurrencyStamp = "f18d1a7d-7f1c-4dfa-87e2-bc7a0eea71e5",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "8f168bd1-0f02-40ec-8dc2-675d33674528",
-                            ConcurrencyStamp = "9d325b5a-b975-442c-856b-b69f69f0d31f",
+                            Id = "389dfa14-1969-4118-bb1b-1981dc39e412",
+                            ConcurrencyStamp = "26f5fc4a-a916-4f7e-b724-99a0c5c3020a",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "a6895037-9e2f-4810-9d07-474d230c2fa1",
-                            ConcurrencyStamp = "492c4dc9-cf95-47cf-ab78-6b51552e7b5a",
+                            Id = "3f882e8f-623f-48ad-930b-516b3eba97d5",
+                            ConcurrencyStamp = "f5cf3f22-5d7c-4689-b3c2-6c53e92726f7",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -404,70 +406,12 @@ namespace MyAPI.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<int>("UnitInStock")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("MyAPI.Data.Promotion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EndDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StartDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Promotions");
-                });
-
-            modelBuilder.Entity("MyAPI.Data.PromotionInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PromotionAmount")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PromotionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PromotionPercent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PromotionId");
-
-                    b.ToTable("PromotionInfos");
                 });
 
             modelBuilder.Entity("MyAPI.Data.Review", b =>
@@ -627,25 +571,6 @@ namespace MyAPI.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MyAPI.Data.PromotionInfo", b =>
-                {
-                    b.HasOne("MyAPI.Data.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyAPI.Data.Promotion", "Promotion")
-                        .WithMany()
-                        .HasForeignKey("PromotionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Promotion");
                 });
 
             modelBuilder.Entity("MyAPI.Data.Review", b =>

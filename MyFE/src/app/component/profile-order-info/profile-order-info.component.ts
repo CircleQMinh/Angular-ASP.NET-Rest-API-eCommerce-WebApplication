@@ -101,8 +101,9 @@ export class ProfileOrderInfoComponent implements OnInit {
   getDetail(){
     this.orderService.getOrderDetails(this.currentOrder.id).subscribe(
       data => {
-        //console.log(data)
+       // console.log(data)
         this.currentOrderDetails = data.orderDetails
+        //console.log(this.currentOrderDetails)
         //console.log(this.userInfo)
         this.isLoading=false
       },
@@ -145,5 +146,8 @@ export class ProfileOrderInfoComponent implements OnInit {
     this.user=this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
+  }
+  toNumber(string: string): number {
+    return Number(string)
   }
 }

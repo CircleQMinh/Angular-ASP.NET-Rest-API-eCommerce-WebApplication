@@ -125,4 +125,7 @@ export class CartInfoComponent implements OnInit {
       this.isLoadingLogin=false
     }
   }
+  toNumber(string: string): number {
+    return Number(string)
+  }
 }

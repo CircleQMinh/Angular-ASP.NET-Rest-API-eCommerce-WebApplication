@@ -23,6 +23,8 @@ namespace MyAPI.Data
 
         public DbSet<Review> Reviews { get; set; }
         public DbSet<EmployeeInfo> EmployeeInfos { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<PromotionInfo> PromotionInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

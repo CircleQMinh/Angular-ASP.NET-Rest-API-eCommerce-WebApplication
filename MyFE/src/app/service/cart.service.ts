@@ -47,7 +47,17 @@ export class CartService {
     let qua=0;
     for(let i = 0; i < this.cartItems.length; i++){
       let a:Product = this.cartItems[i];
-      sum+=a.price!*this.cartItemsQuantity[i];
+      if(a.promoInfo){
+        if(a.promoInfo.promotionAmount!='null'){
+          sum+=(a.price-Number(a.promoInfo.promotionAmount))!*this.cartItemsQuantity[i];
+        }
+        else if(a.promoInfo.promotionPercent!='null'){
+          sum+=(a.price-a.price*Number(a.promoInfo.promotionPercent)/100)!*this.cartItemsQuantity[i];
+        }
+      }
+      else{
+        sum+=a.price!*this.cartItemsQuantity[i];
+      }
       qua+=this.cartItemsQuantity[i];
     }
     this.totalItem=qua

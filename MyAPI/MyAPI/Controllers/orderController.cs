@@ -186,6 +186,21 @@ namespace MyAPI.Controllers
             try
             {
                 var query = _mapper.Map<OrderDetail>(unitDTO);
+
+                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == query.ProductId, new List<string> { "Promotion" });
+                if (promoInfo!=null)
+                {
+                    if (promoInfo.PromotionAmount != "null")
+                    {
+                        query.PromotionAmount = promoInfo.PromotionAmount;
+                    }
+                    if (promoInfo.PromotionPercent!= "null")
+                    {
+                        query.PromotionPercent = promoInfo.PromotionPercent;
+                    }
+                }
+
+
                 await _unitOfWork.OrderDetails.Insert(query);
                 await _unitOfWork.Save();
 
@@ -213,6 +228,7 @@ namespace MyAPI.Controllers
                 Expression<Func<OrderDetail, bool>> expression = q=>q.OrderId==id;
                 var query = await _unitOfWork.OrderDetails.GetAll(expression,null,new List<string> {"Product"});
                 var results = _mapper.Map<IList<FullOrderDetailDTO>>(query);
+
                 var success = true;
 
                 return Accepted(new { success,orderDetails=results });

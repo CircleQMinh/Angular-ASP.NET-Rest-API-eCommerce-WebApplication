@@ -38,11 +38,36 @@
                 <strong>Giá :
 
                 </strong>
-                <span class="pro-price">
-                    {{product.price|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> 
-                </span>
+                <div *ngIf="!promoInfo">
+                    <span class="pro-price">
+                        {{product.price|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                    </span>
+                </div>
+                <div *ngIf="promoInfo">
+                    <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
+                        {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                        <span class="badge bg-success" ngbTooltip="{{promoInfo.promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo.promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo.promotionPercent}}%&#013;
+                                                Giá gốc : {{product.price| currency:'VND':''}} đ" placement="auto"
+                                    data-html="true">-{{promoInfo.promotionPercent}}%</span>
+                    </span>
+
+                    <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
+                        {{product.price-toNumber(promoInfo.promotionAmount)|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                        <span class="badge bg-danger" ngbTooltip="{{promoInfo.promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo.promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo.promotionAmount}}VND&#013;
+                                                Giá gốc : {{product.price| currency:'VND':''}} đ&#013;" placement="auto"
+                                    data-html="true">-{{promoInfo.promotionAmount| currency:'VND':''}} <span
+                                        class="currency-dis">đ</span></span>
+                    </span>
+                </div>
+           
             </div>
-            <p>
+            <p class="mt-3">
                 <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
                         class="fa fa-shopping-cart"></i> Thêm vào giỏ
                 </button>

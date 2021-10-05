@@ -1072,6 +1072,13 @@ ngb-typeahead-window.dropdown-menu {
     border-right: solid 1px darkblue;
 }
 
+.currency-dis{
+    text-decoration: underline;
+    margin-right: 5px;
+}
+.tooltip-inner {
+    white-space: pre-wrap;
+}
 @media (max-width: 1399.98px) { 
     .float-btn-nav{
         display: none;

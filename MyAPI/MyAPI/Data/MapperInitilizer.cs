@@ -39,6 +39,10 @@ namespace MyAPI.Data
 
             CreateMap<EmployeeInfo, EmployeeDTO>().ReverseMap();
 
+            CreateMap<Promotion, CreatePromotionDTO>().ReverseMap();
+
+            CreateMap<PromotionInfo, CreatePromotionInfoDTO>().ReverseMap();
+            CreateMap<PromotionInfo, PromotionInfoDTO>().ReverseMap();
         }
     }
 }

@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 
 namespace MyAPI.Data
 {
-    public class OrderDetail
+    public class PromotionInfo
     {
         public int Id { get; set; }
-
-        [ForeignKey(nameof(Order))]
-        public int OrderId { get; set; }
-        public Order Order { get; set; }
 
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
         public Product Product { get; set; }
-        public int Quantity { get; set; }
 
+        [ForeignKey(nameof(Promotion))]
+        public int PromotionId { get; set; }
+        public Promotion Promotion { get; set; }
         public string PromotionPercent { get; set; }
         public string PromotionAmount { get; set; }
     }

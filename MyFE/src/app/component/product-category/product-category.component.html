@@ -267,7 +267,7 @@
         </a>
         <div class="row justify-content-center animate__animated animate__fadeIn" style="width: 80%;">
 
-            <div *ngFor="let pro of content  " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
+            <div *ngFor="let pro of content ,index as i " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg animate__animated animate__zoomIn" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
@@ -284,8 +284,32 @@
                     </div>
                     <div class="featured__item__text">
                         <h6><a href="#">{{pro.name}}</a></h6>
-                        <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
-                        </h5>
+                        <div *ngIf="!promoInfo[i]">
+                            <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                            </h5>
+                        </div>
+
+                        <div *ngIf="promoInfo[i]">
+                            <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
+                                {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 | currency:'VND':''}}
+                                <span class="currency-dis">đ</span> <span class="badge bg-success" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo[i].promotionPercent}}%&#013;
+                                                Giá gốc : {{pro.price| currency:'VND':''}} đ" placement="auto"
+                                    data-html="true">-{{promoInfo[i].promotionPercent}}%</span>
+                            </h5>
+                            <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
+                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}} 
+                                <span class="currency-dis">đ</span> <span class="badge bg-danger" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                Giảm : {{promoInfo[i].promotionAmount}}%&#013;
+                                                Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;" placement="auto"
+                                    data-html="true">-{{promoInfo[i].promotionAmount| currency:'VND':''}} <span
+                                        class="currency-dis">đ</span></span> 
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>

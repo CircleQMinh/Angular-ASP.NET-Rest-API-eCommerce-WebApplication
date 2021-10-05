@@ -30,6 +30,8 @@ namespace MyAPI.DTOs
         public int OrderId { get; set; }
         public Order Order { get; set; }
         public CreateProductDTO Product { get; set; }
+        public string PromotionPercent { get; set; }
+        public string PromotionAmount { get; set; }
 
     }
 
