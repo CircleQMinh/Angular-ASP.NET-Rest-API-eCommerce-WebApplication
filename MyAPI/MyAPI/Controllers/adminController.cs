@@ -780,6 +780,94 @@ namespace MyAPI.Controllers
         }
 
 
+        [HttpGet("promotion", Name = "getPromotions")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPromotions(int status, string order, int pageNumber, int pageSize, string orderDir)
+        {
+            Func<IQueryable<Promotion>, IOrderedQueryable<Promotion>> orderBy = null;
+            Expression<Func<Promotion, bool>> expression = null;
+            try
+            {
+                if (status!=99)
+                {
+                    expression = q => q.Status == status;
+                }
+
+                IList<PromotionDTO> result;
+                var orderedList = new List<PromotionDTO>();
+                var pagedList = new List<PromotionDTO>();
+
+                switch (order)
+                {
+                    case "Id":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
+                        break;
+                    case "Name":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Name);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Name);
+                        }
+                        break;
+                    case "StartDate":
+                        var query = await _unitOfWork.Promotions.GetAll(expression, orderBy, null);
+                        result = _mapper.Map<IList<PromotionDTO>>(query);
+                        orderedList = result.OrderBy(x => DateTime.Parse(x.StartDate)).ToList();
+                        if (orderDir == "Desc")
+                        {
+                            orderedList.Reverse();
+                        }
+                        for (int i = 0; i < pageSize; i++)
+                        {
+                            if ((i + pageSize * (pageNumber - 1)) < orderedList.Count)
+                            {
+                                pagedList.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                            }
+                        }
+                        return Accepted(new { pagedList });
+                    case "EndDate":
+                        var query2 = await _unitOfWork.Promotions.GetAll(expression, orderBy, null);
+                        result = _mapper.Map<IList<PromotionDTO>>(query2);
+                        orderedList = result.OrderBy(x => DateTime.Parse(x.EndDate)).ToList();
+                        if (orderDir == "Desc")
+                        {
+                            orderedList.Reverse();
+                        }
+                        for (int i = 0; i < pageSize; i++)
+                        {
+                            if ((i + pageSize * (pageNumber - 1)) < orderedList.Count)
+                            {
+                                pagedList.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                            }
+                        }
+                        return Accepted(new { result=pagedList, count = orderedList.Count });
+                }
+
+                var query3 = await _unitOfWork.Promotions.GetAll(expression, orderBy, null, new PaginationFilter(pageNumber, pageSize));
+                result = _mapper.Map<IList<PromotionDTO>>(query3);
+                var count = await _unitOfWork.Promotions.GetCount(expression);
+
+                return Accepted(new { result,count });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPromotions)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
         [HttpPost("createPromotion", Name = "createPromotion")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -807,6 +895,65 @@ namespace MyAPI.Controllers
             }
         }
 
+
+        [HttpPut("editPromotion/{id:int}", Name = "editPromotion")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditPromotion(int id,[FromBody] CreatePromotionDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditPromotion)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var promo = await _unitOfWork.Promotions.Get(q => q.Id == id);
+                if (promo == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(EditPromotion)}");
+                    return BadRequest("Submitted data is invalid");
+                }
+                _mapper.Map(unitDTO, promo);
+                _unitOfWork.Promotions.Update(promo);
+                await _unitOfWork.Save();
+                return Accepted(new { success=true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreatePromotion)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpDelete("deletePromotion", Name = "deletePromotion")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeletePromotion(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(DeletePromotion)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _unitOfWork.Promotions.Delete(id);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success=true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeletePromotion)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
         [HttpPost("createPromotionInfo", Name = "createPromotionInfo")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -830,6 +977,69 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreatePromotionInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPut("editPromotionInfo/{id:int}", Name = "editPromotionInfo")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditPromotionInfo(int id,[FromBody] CreatePromotionInfoDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditPromotionInfo)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.Id == id);
+
+                if (promoInfo == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(EditPromotionInfo)}");
+                    return BadRequest("Submitted data is invalid");
+                }
+
+                _mapper.Map(unitDTO, promoInfo);
+                _unitOfWork.PromotionInfos.Update(promoInfo);
+                await _unitOfWork.Save();
+
+
+                return Accepted(new { success=true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditPromotionInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpDelete("deletePromotionInfo", Name = "deletePromotionInfo")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeletePromotionInfo(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(DeletePromotionInfo)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id);
+                await _unitOfWork.PromotionInfos.Delete(promoInfo.Id);
+                await _unitOfWork.Save();
+                return Accepted(new {success=true  });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeletePromotionInfo)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }

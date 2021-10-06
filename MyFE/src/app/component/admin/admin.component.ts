@@ -9,6 +9,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Employee } from 'src/app/class/employee';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
+import { Promotion } from 'src/app/class/promotion';
 import { User } from 'src/app/class/user';
 import { AdminService } from 'src/app/service/admin.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -170,6 +171,20 @@ export class AdminComponent implements OnInit {
   DBtopSaleProductCount = 1
 
 
+  promoList: Promotion[] = []
+  pageNumberPromo = 1
+  pageSizePromo = 5
+  orderPromo= "Id"
+  statusPromo = 99
+  collectionSizePromo = 0
+  orderDirPromo: any = "Asc"
+
+  isCreatingPromo = false
+  isEditingPromo = false
+  isDeletingPromo = false
+  editingPromo!: Promotion
+  deletingPromo!: Promotion
+
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
     private modalService: NgbModal) { }
@@ -181,6 +196,21 @@ export class AdminComponent implements OnInit {
         : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
   ngOnInit(): void {
+    this.addRForm();
+
+    this.authService.getLocalStorage()
+    this.user=this.authService.user
+    this.isLogin=this.authService.isLogin
+    if (!this.isLogin) {
+      this.router.navigateByUrl("/error")
+    }
+    else {
+      this.getAdminInfo()
+
+    }
+
+  }
+  addRForm() {
     this.rf1 = new FormGroup({
       email: new FormControl('',
         [Validators.required, Validators.email]),
@@ -193,7 +223,7 @@ export class AdminComponent implements OnInit {
       role: new FormControl('',
         [Validators.required])
     });
-    this.rf1.controls["role"].setValue("User")
+    this.rf1.controls["role"].setValue("User");
     this.rf2 = new FormGroup({
       name: new FormControl('',
         [Validators.required]),
@@ -246,8 +276,8 @@ export class AdminComponent implements OnInit {
       cmnd: new FormControl('',
         [Validators.pattern('^[0-9]{12}$'), Validators.required]),
     });
-    this.rf5.controls["role"].setValue("Employee")
-    this.rf5.controls["sex"].setValue("M")
+    this.rf5.controls["role"].setValue("Employee");
+    this.rf5.controls["sex"].setValue("M");
     this.rf6 = new FormGroup({
       username: new FormControl('',
         [Validators.required, Validators.minLength(3)]),
@@ -266,7 +296,6 @@ export class AdminComponent implements OnInit {
       cmnd: new FormControl('',
         [Validators.pattern('^[0-9]{12}$'), Validators.required]),
     });
-
     this.rf7 = new FormGroup({
       from: new FormControl('',
         [Validators.required]),
@@ -279,26 +308,15 @@ export class AdminComponent implements OnInit {
       to: new FormControl('',
         [Validators.required])
     });
-    let to = new Date
-    let from = new Date
-    from.setDate(from.getDate() - 7)
-    this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
-    this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
-    this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'))
-    this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'))
-
-    this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
-    if (!this.isLogin) {
-      this.router.navigateByUrl("/error")
-    }
-    else {
-      this.getAdminInfo()
-
-    }
-
+    let to = new Date;
+    let from = new Date;
+    from.setDate(from.getDate() - 7);
+    this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'));
+    this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'));
+    this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
   }
+
   selectedItemProduct(item: any, modal: any) {
     this.showFormError = false
     this.editingProduct = item.item
@@ -502,6 +520,10 @@ export class AdminComponent implements OnInit {
         this.getProductChart()
         this.getCateChart()
         this.getTopSaleProduct()
+        this.isLoading=false
+        break
+      case "pm":
+        this.getPromotion()
         this.isLoading=false
         break
     }
@@ -910,6 +932,7 @@ export class AdminComponent implements OnInit {
   openAddEmployeeModal(modal: any) {
     this.showFormError = false
     this.urlIMG = this.defaultImgUrl
+    this.rf5.reset()
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   openEditEmployeeModal(modal: any, e: Employee) {
@@ -993,7 +1016,9 @@ export class AdminComponent implements OnInit {
       data => {
         //console.log(data)
         this.toast.success("Thêm nhân viên thành công!")
+        this.getEmployee()
         this.isCreatingEmployee = false
+  
         this.modalService.dismissAll()
       },
       error => {
@@ -1043,7 +1068,9 @@ export class AdminComponent implements OnInit {
       data => {
         console.log(data)
         this.toast.success("Chỉnh sửa nhân viên thành công!")
+        this.getEmployee()
         this.isEditingEmployee = false
+
         this.modalService.dismissAll()
       },
       error => {
@@ -1057,15 +1084,17 @@ export class AdminComponent implements OnInit {
 
     //console.log(this.selectedUserId)
     this.isDeletingEmployee = true
-    this.adminService.deleteUser(this.deletingEmployee.id).subscribe(
+    this.adminService.deleteEmployee(this.deletingEmployee.id).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
+        this.getEmployee()
         this.isDeletingEmployee = false
         this.toast.success("Xóa nhân viên thành công")!
         this.modalService.dismissAll()
       },
       error => {
         this.toast.error(" An error has occurred ! Try again !")
+        console.log(error)
         this.isDeletingEmployee = false
       }
     )
@@ -1201,4 +1230,54 @@ export class AdminComponent implements OnInit {
     // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
+  getPromotion(){
+    this.adminService.getPromotion(this.statusPromo,this.orderPromo,this.pageNumberPromo,this.pageSizePromo
+    ,this.orderDirPromo).subscribe(
+      data=>{
+        console.log(data)
+        this.promoList=data.result
+        this.collectionSizePromo=data.count
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+  }
+
+  openCreatePromoModal(modal:any){
+    this.showFormError = false
+    this.urlIMG = this.defaultImgUrl
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  openEditPromoModal(modal:any,promo:Promotion){
+    this.showFormError = false
+    this.urlIMG = promo.imgUrl
+    this.editingPromo=promo
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  openDeletePromoModal(modal:any,promo:Promotion){
+    this.showFormError = false
+    this.deletingPromo=promo
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+
+  addPromo(){
+
+  }
+  createPromo(){
+
+  }
+  editPromo(){
+
+  }
+  updatePromo(){
+
+  }
+  deletePromo(){
+
+  }
 }

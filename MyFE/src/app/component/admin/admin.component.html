@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-0 fixed-top" *ngIf="!isLoading">
 
     <a class="navbar-brand" routerLink="/home">
@@ -34,27 +33,31 @@
                 <a href="javascript:void(0)" [class.active]="active_tab=='tk'" (click)="switchTab('tk')"
                     class="nav-link"><i class="fas fa-chart-line"></i> Thống kê</a>
             </li>
+            <li class="nav-item px-2">
+                <a href="javascript:void(0)" [class.active]="active_tab=='pm'" (click)="switchTab('pm')"
+                    class="nav-link"><i class="fas fa-comment-dollar"></i> Khuyến mãi</a>
+            </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown mr-3" routerLink="/profile/{{user.id}}">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-user"></i> Xin chào {{user.displayName}}
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item">
-                        <i class="fas fa-user-circle"></i> Profile
-                    </a>
-                    <a class="dropdown-item">
-                        <i class="fas fa-cog"></i> Settings
-                    </a>
+            <li class="nav-item dropdown mr-3">
+                <div class="btn-group ">
+                    <div class="btn-group mr-3" ngbDropdown role="group">
+                        <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" ngbDropdownToggle>
+                            <i class="far fa-user"></i>
+                            {{user.displayName}}</a>
+                        <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1">
+                            <a ngbDropdownItem routerLink="/profile/{{user.id}}"><i class="fas fa-clipboard-list"></i>
+                                Tài khoản</a>
+                            <hr>
+                            <a ngbDropdownItem (click)="signOut()"><i class="fas fa-sign-out-alt"></i>
+                                Đăng xuất</a>
+
+                        </div>
+                    </div>
                 </div>
             </li>
-            <li class="nav-item" (click)="signOut()">
-                <a class="nav-link">
-                    <i class="fas fa-user-times"></i> Đăng xuất
-                </a>
-            </li>
+
         </ul>
     </div>
 
@@ -62,7 +65,7 @@
 
 
 
-<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='db'">
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='db'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -75,7 +78,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-danger text-white" *ngIf="active_tab=='order'">
+<header id="main-header" class="py-2 bg-danger text-white" *ngIf="active_tab=='order'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -89,7 +92,7 @@
 </header>
 
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='product'">
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='product'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -101,7 +104,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-info text-white" *ngIf="active_tab=='user'">
+<header id="main-header" class="py-2 bg-info text-white" *ngIf="active_tab=='user'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -113,7 +116,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-danger text-dark" *ngIf="active_tab=='employee'">
+<header id="main-header" class="py-2 bg-danger text-dark" *ngIf="active_tab=='employee'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -125,7 +128,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='tk'">
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='tk'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -137,6 +140,17 @@
     </div>
 </header>
 
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='pm'&&!isLoading" style="margin-top: -15px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h1 class="text-tron">
+                    <i class="fas fa-comment-dollar"></i> Khuyến mãi
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
 <!-- ACTIONS -->
 <section id="actions" class="py-4 mb-4 bg-light" *ngIf="!isLoading">
     <div class="container">
@@ -169,6 +183,11 @@
             <div class="col-md-3 mb-3">
                 <a class="btn btn-warning btn-block" (click)="switchTab('tk')">
                     <i class="fas fa-chart-line"></i> Thống kê
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a class="btn btn-info btn-block" (click)="switchTab('pm')">
+                    <i class="fas fa-comment-dollar"></i> Khuyến mãi
                 </a>
             </div>
         </div>
@@ -803,7 +822,8 @@
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
                                 <label>Hiển thị: </label>
-                                <select class="form-select" [(ngModel)]="numberOfTopProduct" (change)="getTopSaleProduct()">
+                                <select class="form-select" [(ngModel)]="numberOfTopProduct"
+                                    (change)="getTopSaleProduct()">
                                     <option value="10" selected="true">Top 10</option>
                                     <option value="20">Top 20</option>
                                     <option value="30">Top 30</option>
@@ -815,9 +835,9 @@
                     </div>
 
                     <div class="div-center-content mt-5" *ngIf="!isLoading">
-                        <p *ngFor="let o of topSaleProduct"> 
+                        <p *ngFor="let o of topSaleProduct">
                             {{o["name"]}} - Số lượng bán : {{o["count"]}}
-                            <ngb-progressbar  type="success" [value]="(o['count']/topSaleProductCount)*100">
+                            <ngb-progressbar type="success" [value]="(o['count']/topSaleProductCount)*100">
                             </ngb-progressbar>
                         </p>
 
@@ -825,7 +845,125 @@
                 </div>
             </div>
 
+            <!-- ------------------------------------------------------------------------------------------ -->
+            <div class="col" *ngIf="active_tab=='pm'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="fas fa-comment-dollar"></i> Danh sách khuyến mãi</h4>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-info " (click)="openCreatePromoModal(newPromo)">
+                                <i class="fas fa-plus"></i> Thêm khuyến mãi
+                            </button>
+                            <button class="btn btn-info " (click)="getPromotion()">
+                                <i class="fas fa-sync-alt"></i> Tải lại
+                            </button>
+                        </div>
 
+                        <hr>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Trạng thái: </label>
+                                <select class="form-select" [(ngModel)]="statusPromo"
+                                    (change)=" getPromotion()">
+                                    <option value="99" selected="true">Tất cả</option>
+                                    <option value="0">Chưa diễn ra</option>
+                                    <option value="1">Đang diễn ra</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sắp xếp theo: </label>
+                                <select class="form-select" [(ngModel)]="orderPromo" (change)=" getPromotion()">
+                                    <option value="Id" selected="true">Id</option>
+                                    <option value="Name">Tên</option>
+                                    <option value="StartDate">Ngày bắt đầu</option>
+                                    <option value="EndDate">Ngày kết thúc</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirPromo" (change)="  getPromotion()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hiển thị: </label>
+                                <select class="form-select" [(ngModel)]="pageSizePromo" (change)=" getPromotion()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Thông tin</th>
+                                    <th>Mô tả</th>
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th>
+                                    <th>Đang diễn ra</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of promoList,index as i">
+
+                                    <td>
+                                        <img src="{{o.imgUrl}}" style="width: 240px;height: 120px;">
+                                        <p class="text-tron text-monospace">{{o.name}}</p>
+                                    </td>
+                                    <td style="word-break: break-all;">{{o.description}}</td>
+                                    <td>{{o.startDate}}</td>
+                                    <td>{{o.endDate}}</td>
+                                    <td *ngIf="o.status==0">
+                                        <p class="text-tron text-success"><i class="fas fa-times"></i></p>
+                                    </td>
+                                    <td *ngIf="o.status==1">
+                                        <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning  btn-sm admin-button mr-2"
+                                        >
+                                        <i class="fas fa-box-open"></i></button>
+                                        <button class="btn btn-info btn-sm admin-button mr-2"
+                                        (click)="openEditPromoModal(edit_promo,o)"    >
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm admin-button "
+                                        (click)="openDeletePromoModal(delete_promo,o)" >
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberUser" [pageSize]="pageSizeUser"
+                                        [collectionSize]="userList.length" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getPagedUserList()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="col" id='side-info' *ngIf="active_tab=='db'">
                 <div class="row">
@@ -872,14 +1010,14 @@
                         </div>
                         <div class="card-body border-tron">
                             <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
-                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
-                                    [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Doanh thu'" [timeline]=true
-                                    [results]="dbSaleChartData" (select)="onSelect($event)" (activate)="onActivate($event)"
-                                    (deactivate)="onDeactivate($event)">
+                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true
+                                    [xAxis]=true [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Doanh thu'"
+                                    [timeline]=true [results]="dbSaleChartData" (select)="onSelect($event)"
+                                    (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
                                 </ngx-charts-line-chart>
                             </div>
                         </div>
-                 
+
                     </div>
                 </div>
                 <div class="row">
@@ -887,13 +1025,13 @@
                         <div class="card-header">
                             <h4><i class="fas fa-certificate"></i> Thống kế sản phẩm bán theo danh mục</h4>
                             <hr>
-    
+
                         </div>
                         <div class="card-body border-tron">
                             <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
-                                <ngx-charts-bar-vertical [results]="DBcategoryChart" [gradient]=true [xAxis]=true [yAxis]=true
-                                    [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxisLabel]="'Danh mục'"
-                                    [yAxisLabel]="'Số lượng bán'" (select)="onSelect($event)">
+                                <ngx-charts-bar-vertical [results]="DBcategoryChart" [gradient]=true [xAxis]=true
+                                    [yAxis]=true [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true
+                                    [xAxisLabel]="'Danh mục'" [yAxisLabel]="'Số lượng bán'" (select)="onSelect($event)">
                                 </ngx-charts-bar-vertical>
                             </div>
                         </div>
@@ -902,21 +1040,21 @@
                         <div class="card-header">
                             <h4><i class="fas fa-box-open"></i> Thống kế sản phẩm bán nhiều nhất</h4>
                             <hr>
-    
+
                         </div>
                         <div class="card-body border-tron">
                             <div class="div-center-content" *ngIf="!isLoading">
-                                <p *ngFor="let o of DBtopSaleProduct"> 
+                                <p *ngFor="let o of DBtopSaleProduct">
                                     {{o["name"]}} - Số lượng bán : {{o["count"]}}
-                                    <ngb-progressbar  type="success" [value]="(o['count']/DBtopSaleProductCount)*100">
+                                    <ngb-progressbar type="success" [value]="(o['count']/DBtopSaleProductCount)*100">
                                     </ngb-progressbar>
                                 </p>
-        
+
                             </div>
                         </div>
-                
+
                     </div>
-                </div>          
+                </div>
                 <div class="row">
                     <div class="card ">
                         <div class="card-header">
@@ -924,10 +1062,10 @@
                         </div>
                         <div class="card-body border-tron">
                             <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
-                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true [xAxis]=true
-                                    [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Số đơn hàng'" [timeline]=true
-                                    [results]="dbOrderChart" (select)="onSelect($event)" (activate)="onActivate($event)"
-                                    (deactivate)="onDeactivate($event)">
+                                <ngx-charts-line-chart [legend]=true [showXAxisLabel]=true [showYAxisLabel]=true
+                                    [xAxis]=true [yAxis]=true [xAxisLabel]="'Ngày'" [yAxisLabel]="'Số đơn hàng'"
+                                    [timeline]=true [results]="dbOrderChart" (select)="onSelect($event)"
+                                    (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
                                 </ngx-charts-line-chart>
                             </div>
                         </div>
@@ -1803,5 +1941,127 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #newPromo let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm khuyến mãi</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf1">
+            <label for="email">Tên khuyến mãi</label>
+            <div class="input-group">
+                <input id="email" class="form-control" placeholder="Email..." name="email" formControlName="email">
+
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf1.controls.email?.errors?.required&&showFormError">
+                Email chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert" *ngIf="rf1.controls.email?.errors?.email&&showFormError">
+                Email chưa hợp lệ!
+            </div>
+
+           
+            <label for="img">Ảnh quảng cáo</label>
+            <div class="input-group">
+                <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                    (change)="selectFile($event)">
+            </div>
+            <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isCreatingPromo">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="createPromo()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isCreatingPromo">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #edit_promo let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa khuyến mãi </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf6">
+            <label for="des">Tên khuyến mãi</label>
+            <div class="input-group">
+                <input id="des" class="form-control" placeholder="Username..." name="name" formControlName="username">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls.username?.errors?.required&&showFormError">
+                Tên chưa điền!
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf6.controls['username'].hasError('minlength')&&showFormError">
+                Tên ít nhất 3 kí tự!
+            </div>
+          
+            <label for="img">Ảnh quảng cáo</label>
+            <div class="input-group">
+                <input type="file" id="img" class="form-control" placeholder="imgUrl" name="dp"
+                    (change)="selectFile($event)">
+            </div>
+            <img style="width: 100px;height: 100px;margin-top: 10px;" src="{{urlIMG}}">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingPromo">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editPromo()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingPromo">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #delete_promo let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa khuyến mãi này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa khuyến mãi này?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingPromo">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deletePromo()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingPromo">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chơ 1 xíu...</p>
+        </div>
     </div>
 </ng-template>
