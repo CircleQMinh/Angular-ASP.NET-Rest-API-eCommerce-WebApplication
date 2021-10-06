@@ -65,7 +65,8 @@ export class AdminService {
     })
   }
 
-  editProduct(id:number,name: string, price: number, des: string, uis: number, cate: string, imgurl: string, date: string):Observable<any> {
+  editProduct(id:number,name: string, price: number, des: string,
+    uis: number, cate: string, imgurl: string, date: string):Observable<any> {
     return this.http.put(`${this.apiUrl}product/${id}`, {
       name: name,
       price: price,
@@ -133,6 +134,10 @@ export class AdminService {
     })
   }
 
+  deleteEmployee(id:any):Observable<any>{
+    return this.http.delete(`${this.apiUrl}admin/deleteEmployee?id=${id}`)
+  }
+
   getSalesChart(from:string,to:string):Observable<any>{
     return this.http.get(`${this.apiUrl}admin/getSalesChart?from=${from}&to=${to}`)
   }
@@ -144,4 +149,14 @@ export class AdminService {
   getTopProductChart(top:any):Observable<any>{
     return this.http.get(`${this.apiUrl}admin/getTopProductChart?top=${top}`)
   }
+
+  getPromotion(status: number, order: string, pageNumber: number, pageSize: number, orderDir: string):Observable<any>{
+    return this.http.get(`${this.apiUrl}admin/promotion?status=${status}&order=${order}&pageNumber=${pageNumber}
+    &pageSize=${pageSize}&orderDir=${orderDir}`)
+  }
+
+  deletePromotion(id:any):Observable<any>{
+    return this.http.delete(`${this.apiUrl}admin/deleteEmployee?id=${id}`)
+  }
+
 }
