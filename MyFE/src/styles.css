@@ -1152,6 +1152,9 @@ ngb-typeahead-window.dropdown-menu {
         display: flex;
         justify-content: space-evenly;
     }
+    #promo-pic{
+        display: none;
+    }
 }
 @media (max-width: 575.98px) { 
     .HF-grid-item-heading{

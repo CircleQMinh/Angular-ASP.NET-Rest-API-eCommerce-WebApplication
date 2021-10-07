@@ -48,7 +48,9 @@ export class SearchComponent implements OnInit {
     }
     else{
       this.priceRange="0,999999"
-      this.stringCate=""
+      this.stringCate="all"
+      this.keyword=""
+      this.findProduct()
     }
     //console.log(this.keyword)
  
