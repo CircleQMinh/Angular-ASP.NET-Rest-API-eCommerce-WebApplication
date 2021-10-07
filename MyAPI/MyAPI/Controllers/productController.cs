@@ -73,7 +73,7 @@ namespace MyAPI.Controllers
 
                 foreach (var item in results)
                 {
-                    var pi =  await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id, new List<string> { "Promotion" });
+                    var pi =  await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id&&q.Promotion.Status==1, new List<string> { "Promotion" });
                     var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
                     promoInfo.Add(pi_map);
                 }

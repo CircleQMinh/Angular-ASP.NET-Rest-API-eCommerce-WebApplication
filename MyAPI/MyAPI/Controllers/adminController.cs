@@ -836,7 +836,7 @@ namespace MyAPI.Controllers
                                 pagedList.Add(orderedList[i + pageSize * (pageNumber - 1)]);
                             }
                         }
-                        return Accepted(new { pagedList });
+                        return Accepted(new { result=pagedList, count = orderedList.Count });
                     case "EndDate":
                         var query2 = await _unitOfWork.Promotions.GetAll(expression, orderBy, null);
                         result = _mapper.Map<IList<PromotionDTO>>(query2);
@@ -942,6 +942,8 @@ namespace MyAPI.Controllers
 
             try
             {
+
+
                 await _unitOfWork.Promotions.Delete(id);
                 await _unitOfWork.Save();
 
@@ -950,6 +952,28 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeletePromotion)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpGet("getPromotionInfo", Name = "getPromotionInfo")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPromotionInfo(int promoId)
+        {
+
+            try
+            {
+                var query = await _unitOfWork.PromotionInfos.GetAll(q => q.PromotionId == promoId,null, new List<string> {"Product","Promotion"});
+                var result = _mapper.Map<IList<PromotionInfoDTO>>(query);
+
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreatePromotion)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
@@ -968,11 +992,17 @@ namespace MyAPI.Controllers
 
             try
             {
+                var exist = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == unitDTO.ProductId);
+                if (exist!=null)
+                {
+                    return Accepted(new { success = false, error="Sản phẩm đã có khuyến mãi rồi" });
+                }
+
                 var query = _mapper.Map<PromotionInfo>(unitDTO);
                 await _unitOfWork.PromotionInfos.Insert(query);
                 await _unitOfWork.Save();
 
-                return Accepted(new { query });
+                return Accepted(new { success=true,query });
             }
             catch (Exception ex)
             {
@@ -1001,7 +1031,7 @@ namespace MyAPI.Controllers
                 if (promoInfo == null)
                 {
                     _logger.LogError($"Invalid UPDATE attempt in {nameof(EditPromotionInfo)}");
-                    return BadRequest("Submitted data is invalid");
+                    return Accepted(new { success = false,error="Không tìm thấy thông tin khuyến mãi" });
                 }
 
                 _mapper.Map(unitDTO, promoInfo);
@@ -1024,15 +1054,20 @@ namespace MyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePromotionInfo(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError($"Invalid POST attempt in {nameof(DeletePromotionInfo)}");
-                return BadRequest(ModelState);
-            }
 
             try
             {
-                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id);
+
+
+
+                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.Id == id);
+
+                if (promoInfo == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(EditPromotionInfo)}");
+                    return Accepted(new { success = false, error = "Không tìm thấy thông tin khuyến mãi" });
+                }
+
                 await _unitOfWork.PromotionInfos.Delete(promoInfo.Id);
                 await _unitOfWork.Save();
                 return Accepted(new {success=true  });

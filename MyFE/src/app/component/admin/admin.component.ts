@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { Employee } from 'src/app/class/employee';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { Promotion } from 'src/app/class/promotion';
+import { PromotionInfo } from 'src/app/class/promotion-info';
 import { User } from 'src/app/class/user';
 import { AdminService } from 'src/app/service/admin.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -174,7 +175,7 @@ export class AdminComponent implements OnInit {
   promoList: Promotion[] = []
   pageNumberPromo = 1
   pageSizePromo = 5
-  orderPromo= "Id"
+  orderPromo = "Id"
   statusPromo = 99
   collectionSizePromo = 0
   orderDirPromo: any = "Asc"
@@ -184,6 +185,22 @@ export class AdminComponent implements OnInit {
   isDeletingPromo = false
   editingPromo!: Promotion
   deletingPromo!: Promotion
+
+  rf9!: FormGroup
+  rf10!: FormGroup
+
+  isGettingPromoInfo = false
+  selectedPromotion!: Promotion
+  selectedPromotionInfo: PromotionInfo[] = []
+
+  isCreatingPromoInfo = false
+  isEditingPromoInfo = false
+  isDeletingPromoInfo = false
+  editingPromoInfo!: PromotionInfo
+  deletingPromoInfo!: PromotionInfo
+
+  rf11!: FormGroup
+  rf12!: FormGroup
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -199,8 +216,8 @@ export class AdminComponent implements OnInit {
     this.addRForm();
 
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
     if (!this.isLogin) {
       this.router.navigateByUrl("/error")
     }
@@ -308,6 +325,61 @@ export class AdminComponent implements OnInit {
       to: new FormControl('',
         [Validators.required])
     });
+
+    this.rf9 = new FormGroup({
+      name: new FormControl('',
+        [Validators.required]),
+      description: new FormControl('',
+        [Validators.required]),
+      startDate: new FormControl('',
+        [Validators.required])
+      ,
+      endDate: new FormControl('',
+        [Validators.required])
+    });
+
+
+    this.rf10 = new FormGroup({
+      name: new FormControl('',
+        [Validators.required]),
+      description: new FormControl('',
+        [Validators.required]),
+      startDate: new FormControl('',
+        [Validators.required])
+      ,
+      endDate: new FormControl('',
+        [Validators.required]),
+      status: new FormControl('',
+        [Validators.required]),
+    });
+
+
+    this.rf11 = new FormGroup({
+      idSP: new FormControl('',
+        [Validators.required]),
+      nameSP: new FormControl('',
+        [Validators.required]),
+      priceSP: new FormControl('',
+        [Validators.required]),
+      type: new FormControl('',
+        [Validators.required]),
+      number: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')])
+    });
+
+    this.rf12 = new FormGroup({
+      idSP: new FormControl('',
+        [Validators.required]),
+      nameSP: new FormControl('',
+        [Validators.required]),
+      priceSP: new FormControl('',
+        [Validators.required]),
+      type: new FormControl('',
+        [Validators.required]),
+      number: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')])
+    });
+
     let to = new Date;
     let from = new Date;
     from.setDate(from.getDate() - 7);
@@ -315,6 +387,10 @@ export class AdminComponent implements OnInit {
     this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
     this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'));
     this.rf8.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf9.controls["startDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf9.controls["endDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf10.controls["startDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf10.controls["endDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
   }
 
   selectedItemProduct(item: any, modal: any) {
@@ -333,9 +409,10 @@ export class AdminComponent implements OnInit {
       data => {
         //console.log(data)
         this.allProduct = data.results
-
+        this.isGettingPromoInfo = false
       },
       error => {
+        this.isGettingPromoInfo = false
         this.toast.error("Kết nối với API không được!")
         console.log(error)
       }
@@ -348,7 +425,7 @@ export class AdminComponent implements OnInit {
 
     this.authService.signOut()
     this.isLogin = this.authService.isLogin
-    this.user=this.authService.user
+    this.user = this.authService.user
     this.router.navigateByUrl('/home')
   }
   getDBInfo() {
@@ -492,27 +569,27 @@ export class AdminComponent implements OnInit {
   }
   switchTab(s: string) {
     this.active_tab = s
-    this.isLoading=true
+    this.isLoading = true
     switch (s) {
       case "db":
-        this.isLoading=false
+        this.isLoading = false
         this.getDBInfo()
         break
       case "order":
         this.getOrder()
-        this.isLoading=false
+        this.isLoading = false
         break
       case "product":
         this.getProduct()
-        this.isLoading=false
+        this.isLoading = false
         break
       case "user":
         this.getUser()
-        this.isLoading=false
+        this.isLoading = false
         break
       case "employee":
         this.getEmployee()
-        this.isLoading=false
+        this.isLoading = false
         break
       case "tk":
         this.getSaleChart()
@@ -520,11 +597,11 @@ export class AdminComponent implements OnInit {
         this.getProductChart()
         this.getCateChart()
         this.getTopSaleProduct()
-        this.isLoading=false
+        this.isLoading = false
         break
       case "pm":
         this.getPromotion()
-        this.isLoading=false
+        this.isLoading = false
         break
     }
   }
@@ -1018,7 +1095,7 @@ export class AdminComponent implements OnInit {
         this.toast.success("Thêm nhân viên thành công!")
         this.getEmployee()
         this.isCreatingEmployee = false
-  
+
         this.modalService.dismissAll()
       },
       error => {
@@ -1045,7 +1122,7 @@ export class AdminComponent implements OnInit {
       if (this.urlIMG != this.editingEmployee.imgUrl) {
         this.authService.upLoadIMG(this.urlIMG).subscribe(
           data => {
-            console.log(data)
+            // console.log(data)
             this.editingEmployee.imgUrl = data.secure_url
             this.updateEmployee()
           },
@@ -1066,7 +1143,7 @@ export class AdminComponent implements OnInit {
   updateEmployee() {
     this.adminService.editEmployee(this.editingEmployee, this.editingEmployee.id).subscribe(
       data => {
-        console.log(data)
+        // console.log(data)
         this.toast.success("Chỉnh sửa nhân viên thành công!")
         this.getEmployee()
         this.isEditingEmployee = false
@@ -1230,13 +1307,116 @@ export class AdminComponent implements OnInit {
     // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
-  getPromotion(){
-    this.adminService.getPromotion(this.statusPromo,this.orderPromo,this.pageNumberPromo,this.pageSizePromo
-    ,this.orderDirPromo).subscribe(
-      data=>{
-        console.log(data)
-        this.promoList=data.result
-        this.collectionSizePromo=data.count
+  getPromotion() {
+    this.adminService.getPromotion(this.statusPromo, this.orderPromo, this.pageNumberPromo, this.pageSizePromo
+      , this.orderDirPromo).subscribe(
+        data => {
+          // console.log(data)
+          this.promoList = data.result
+          this.collectionSizePromo = data.count
+        },
+        error => {
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+  }
+
+  openCreatePromoModal(modal: any) {
+    this.showFormError = false
+    this.rf9.reset()
+    let to = new Date;
+    let from = new Date;
+    from.setDate(from.getDate() - 7);
+    this.rf9.controls["startDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.rf9.controls["endDate"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
+    this.urlIMG = this.defaultImgUrl
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  openEditPromoModal(modal: any, promo: Promotion) {
+    this.showFormError = false
+    this.urlIMG = promo.imgUrl
+    this.editingPromo = promo
+    this.rf10.controls["name"].setValue(promo.name);
+    this.rf10.controls["description"].setValue(promo.description);
+    this.rf10.controls["startDate"].setValue(promo.startDate);
+    this.rf10.controls["endDate"].setValue(promo.endDate);
+    this.rf10.controls["status"].setValue(promo.status);
+    this.urlIMG = promo.imgUrl;
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  openDeletePromoModal(modal: any, promo: Promotion) {
+    this.showFormError = false
+    this.deletingPromo = promo
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  openPromoInfo(modal: any, promo: Promotion) {
+    this.selectedPromotion = promo
+    this.isGettingPromoInfo = true
+    this.getPromotionInfo(promo);
+    this.modalService.open(modal, { size: 'xl', ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  getPromotionInfo(promo: Promotion) {
+    this.adminService.getPromotionInfo(promo.id).subscribe(
+      data => {
+        //console.log(data)
+        this.selectedPromotionInfo = data.result;
+        this.isGettingPromoInfo = false;
+      },
+      error => {
+        this.isGettingPromoInfo = false;
+        console.log(error);
+        this.toast.error(" An error has occurred ! Try again !");
+      }
+    );
+  }
+
+  addPromo() {
+    this.showFormError = true
+    this.isCreatingPromo = true
+    if (this.rf9.valid) {
+      if (this.urlIMG != this.defaultProImgUrl) {
+        this.authService.upLoadIMG(this.proImgUrl).subscribe(
+          data => {
+            this.urlIMG = data.secure_url
+            this.createPromo()
+          },
+          error => {
+            this.isCreatingPromo = false
+            console.log(error)
+            this.toast.error(" An error has occurred ! Try again !")
+          }
+        )
+      }
+      else {
+        this.createPromo()
+      }
+    }
+    else {
+      this.isCreatingPromo = false
+      this.toast.error("Dữ liệu nhập chưa hợp lệ. Xin hãy thử lại!")
+    }
+
+  }
+  createPromo() {
+    let promo = new Promotion
+    promo.name = this.rf9.controls["name"].value
+    promo.description = this.rf9.controls["description"].value
+    promo.endDate = this.rf9.controls["endDate"].value
+    promo.imgUrl = this.urlIMG
+    promo.startDate = this.rf9.controls["startDate"].value
+    promo.status = 0
+    this.adminService.createPromotion(promo).subscribe(
+      data => {
+        this.toast.success("Thêm khuyến mãi thành công!")
+        this.getPromotion()
+        this.isCreatingPromo = false
+
+        this.modalService.dismissAll()
       },
       error => {
         console.log(error)
@@ -1244,40 +1424,269 @@ export class AdminComponent implements OnInit {
       }
     )
   }
+  editPromo() {
+    this.showFormError = true
+    if (this.rf10.valid) {
+      this.isEditingPromo = true
+      this.editingPromo.name = this.rf10.controls["name"].value
+      this.editingPromo.description = this.rf10.controls["description"].value
+      this.editingPromo.endDate = this.rf10.controls["endDate"].value
+      this.editingPromo.startDate = this.rf10.controls["startDate"].value
+      this.editingPromo.status = this.rf10.controls["status"].value
 
-  openCreatePromoModal(modal:any){
+      if (this.urlIMG != this.editingPromo.imgUrl) {
+        this.authService.upLoadIMG(this.urlIMG).subscribe(
+          data => {
+            // console.log(data)
+            this.editingPromo.imgUrl = data.secure_url
+            this.updatePromo()
+          },
+          error => {
+            this.toast.error("Up ảnh không được")
+            console.log(error)
+          }
+        )
+      }
+      else {
+        this.updatePromo()
+      }
+    }
+    else {
+      this.toast.error("Dữ liệu nhập chưa hợp lệ!")
+    }
+  }
+  updatePromo() {
+    this.adminService.editPromotion(this.editingPromo).subscribe(
+      data => {
+        //console.log(data)
+        this.toast.success("Chỉnh sửa khuyến mãi thành công!")
+        this.getPromotion()
+        this.isEditingPromo = false
+
+        this.modalService.dismissAll()
+      },
+      error => {
+        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        this.isEditingPromo = false
+        console.log(error)
+      }
+    )
+  }
+  deletePromo() {
+    this.isDeletingPromo = true
+    this.adminService.deletePromotion(this.deletingPromo.id).subscribe(
+      data => {
+        //console.log(data)
+        this.toast.success("Xóa khuyến mãi thành công!")
+        this.getPromotion()
+        this.isDeletingPromo = false
+
+        this.modalService.dismissAll()
+      },
+      error => {
+        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        this.isDeletingPromo = false
+        console.log(error)
+      }
+    )
+  }
+
+  openChooseProductPromoModal(modal: any, promo: Promotion) {
     this.showFormError = false
-    this.urlIMG = this.defaultImgUrl
+    this.selectedPromotion = promo
+    this.getSearchData()
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+  }
+  openAddPromoInfo(pro: Product, modal: any) {
+    this.rf11.controls["nameSP"].setValue(pro.name)
+    this.rf11.controls["idSP"].setValue(pro.id)
+    this.rf11.controls["priceSP"].setValue(pro.price)
+    this.rf11.controls["type"].setValue("0")
+    this.rf11.controls["number"].setValue("10")
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-
-  openEditPromoModal(modal:any,promo:Promotion){
-    this.showFormError = false
-    this.urlIMG = promo.imgUrl
-    this.editingPromo=promo
+  openEditPromoInfo(promo:PromotionInfo,pro: Product, modal: any) {
+    this.editingPromoInfo=promo
+    //console.log(this.editingPromoInfo)
+    this.rf12.controls["nameSP"].setValue(pro.name)
+    this.rf12.controls["idSP"].setValue(pro.id)
+    this.rf12.controls["priceSP"].setValue(pro.price)
+    if(promo.promotionAmount!='null'){
+      this.rf12.controls["type"].setValue("1")
+      this.rf12.controls["number"].setValue(promo.promotionAmount)
+    }
+    if(promo.promotionPercent!='null'){
+      this.rf12.controls["type"].setValue("0")
+      this.rf12.controls["number"].setValue(promo.promotionPercent)
+    }
+ 
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-
-  openDeletePromoModal(modal:any,promo:Promotion){
-    this.showFormError = false
-    this.deletingPromo=promo
+  openDeletePromoInfo(promo:PromotionInfo,pro: Product, modal: any) {
+    this.deletingPromoInfo=promo
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
+  selectedItemPromomo(item: any, modal: any) {
+    let pro:Product = item.item
+    this.rf11.controls["nameSP"].setValue(pro.name)
+    this.rf11.controls["idSP"].setValue(pro.id)
+    this.rf11.controls["priceSP"].setValue(pro.price)
+    this.rf11.controls["type"].setValue("0")
+    this.rf11.controls["number"].setValue("10")
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title',size: 'xl' })
+  }
+  addPromoInfo(modal: any) {
 
+    let valid = true
+    try{
+      let type = this.rf11.controls["type"].value
+      let price = this.rf11.controls["priceSP"].value
+      if (type == 0) {
+        if (this.rf11.controls["number"].value > 100 || this.rf11.controls["number"].value <= 0) {
+          valid=false
+        }
+      }
+  
+      if (type == 1) {
+        if (this.rf11.controls["number"].value > price||this.rf11.controls["number"].value<=0) {
+        
+          valid=false
+        }
+      }
+    }
+    catch(e){
+      valid=false
+    }
+ 
 
-  addPromo(){
+    if(valid){
+      this.isCreatingPromoInfo=true
+      let promoInfo = new PromotionInfo
+      promoInfo.productId=this.rf11.controls["idSP"].value
+      promoInfo.promotionId=this.selectedPromotion.id
+  
+      if(this.rf11.controls["type"].value==0){
+        promoInfo.promotionPercent=this.rf11.controls["number"].value
+        promoInfo.promotionAmount="null"
+      }
+      else{
+        promoInfo.promotionAmount=this.rf11.controls["number"].value
+        promoInfo.promotionPercent="null"
+      }
+      this.adminService.createPromotionInfo(promoInfo).subscribe(
+        data=>{
+          if(data.success){
+            this.toast.success("Thêm thông tin khuyến mãi thành công!")
+          }
+          else{
+            this.toast.error(data.error)
+          }
+
+          this.isCreatingPromoInfo=false
+          this.modalService.dismissAll()
+          this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+        },
+        error=>{
+          this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+          this.isCreatingPromoInfo=false
+          console.log(error)
+        }
+      )
+
+    }
+    else{
+      this.toast.error("Giá trị nhập không hợp lệ")
+    }
+
 
   }
-  createPromo(){
 
+  editPromoInfo(modal: any){
+ 
+    let valid = true
+    try{
+      let type = this.rf12.controls["type"].value
+      let price = this.rf12.controls["priceSP"].value
+      if (type == 0) {
+        if (this.rf12.controls["number"].value > 100 || this.rf12.controls["number"].value <= 0) {
+          valid=false
+        }
+      }
+  
+      if (type == 1) {
+        if (this.rf12.controls["number"].value > price||this.rf12.controls["number"].value<=0) {
+        
+          valid=false
+        }
+      }
+    }
+    catch(e){
+      valid=false
+    }
+ 
+
+    if(valid){
+      this.isEditingPromoInfo=true
+      let promoInfo = new PromotionInfo
+      promoInfo.productId=this.rf12.controls["idSP"].value
+      promoInfo.promotionId=this.selectedPromotion.id
+      promoInfo.id=this.editingPromoInfo.id
+
+      if(this.rf12.controls["type"].value==0){
+        promoInfo.promotionPercent=this.rf12.controls["number"].value
+        promoInfo.promotionAmount="null"
+      }
+      else{
+        promoInfo.promotionAmount=this.rf12.controls["number"].value
+        promoInfo.promotionPercent="null"
+      }
+      this.adminService.editPromotionInfo(promoInfo).subscribe(
+        data=>{
+          if(data.success){
+            this.getPromotionInfo(this.selectedPromotion)
+            this.toast.success("Chỉnh sửa thông tin khuyến mãi thành công!")
+          }
+          else{
+            this.toast.error(data.error)
+          }
+
+          this.isEditingPromoInfo=false
+          this.modalService.dismissAll()
+          this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+        },
+        error=>{
+          this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+          this.isEditingPromoInfo=false
+          console.log(error)
+        }
+      )
+    }
+    else{
+      this.toast.error("Giá trị nhập không hợp lệ")
+    }
   }
-  editPromo(){
 
-  }
-  updatePromo(){
+  deletePromoInfo(modal:any){
+    this.isDeletingPromoInfo=true
+    this.adminService.deletePromotionInfo(this.deletingPromoInfo.id).subscribe(
+      data=>{
+        if(data.success){
+          this.getPromotionInfo(this.selectedPromotion)
+          this.toast.success("Xóa thông tin khuyến mãi thành công!")
+        }
+        else{
+          this.toast.error(data.error)
+        }
 
-  }
-  deletePromo(){
-
+        this.isDeletingPromoInfo=false
+        this.modalService.dismissAll()
+        this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+      },
+      error=>{
+        this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
+        this.isDeletingPromoInfo=false
+        console.log(error)
+      }
+    )
   }
 }

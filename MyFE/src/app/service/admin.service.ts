@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Employee } from '../class/employee';
 import { Order } from '../class/order';
+import { Promotion } from '../class/promotion';
+import { PromotionInfo } from '../class/promotion-info';
 
 @Injectable({
   providedIn: 'root'
@@ -155,8 +157,53 @@ export class AdminService {
     &pageSize=${pageSize}&orderDir=${orderDir}`)
   }
 
-  deletePromotion(id:any):Observable<any>{
-    return this.http.delete(`${this.apiUrl}admin/deleteEmployee?id=${id}`)
+  createPromotion(promo:Promotion){
+    return this.http.post(`${this.apiUrl}admin/createPromotion`, {
+      name: promo.name,
+      description: promo.description,
+      imgUrl: promo.imgUrl,
+      startDate: promo.startDate,
+      endDate: promo.endDate,
+      status: 0
+    })
   }
 
+  editPromotion(promo:Promotion){
+    return this.http.put(`${this.apiUrl}admin/editPromotion/${promo.id}`, {
+      name: promo.name,
+      description: promo.description,
+      imgUrl: promo.imgUrl,
+      startDate: promo.startDate,
+      endDate: promo.endDate,
+      status: promo.status
+    })
+  }
+
+  deletePromotion(id:any):Observable<any>{
+    return this.http.delete(`${this.apiUrl}admin/deletePromotion?id=${id}`)
+  }
+
+  getPromotionInfo(id:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}admin/getPromotionInfo?promoId=${id}`)
+  }
+  createPromotionInfo(promoInfo:PromotionInfo):Observable<any>{
+    return this.http.post(`${this.apiUrl}admin/createPromotionInfo`, {
+      productId: promoInfo.productId,
+      promotionId: promoInfo.promotionId,
+      promotionPercent: promoInfo.promotionPercent,
+      promotionAmount: promoInfo.promotionAmount
+    })
+  }
+  editPromotionInfo(promoInfo:PromotionInfo):Observable<any>{
+    return this.http.put(`${this.apiUrl}admin/editPromotionInfo/${promoInfo.id}`, {
+      productId: promoInfo.productId,
+      promotionId: promoInfo.promotionId,
+      promotionPercent: promoInfo.promotionPercent,
+      promotionAmount: promoInfo.promotionAmount
+    })
+  }
+
+  deletePromotionInfo(id:any):Observable<any>{
+    return this.http.delete(`${this.apiUrl}admin/deletePromotionInfo?id=${id}`)
+  }
 }
