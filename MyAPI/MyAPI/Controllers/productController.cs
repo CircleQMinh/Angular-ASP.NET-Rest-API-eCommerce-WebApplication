@@ -236,19 +236,56 @@ namespace MyAPI.Controllers
             try
             {
                 string[] range = priceRange.Split(",");
-                string[] cate = category.Split(",");
-
-                var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(keyword),null,null);
-                var list = _mapper.Map<IList<ProductDTO>>(query);
-                var rs = new List<ProductDTO>();
-                foreach (var item in list)
+                string[] cate = category.Split(",");  
+                if (keyword == null || keyword.Trim()=="")
                 {
-                    if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price > Int32.Parse(range[0]) && item.Price < Int32.Parse(range[1]))
+                    var query = await _unitOfWork.Products.GetAll(null, null, null);
+                    var list = _mapper.Map<IList<ProductDTO>>(query);
+                    var rs = new List<ProductDTO>();
+                    foreach (var item in list)
                     {
-                        rs.Add(item);
+                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <=Int32.Parse(range[1]))
+                        {
+                            rs.Add(item);
+                        }
                     }
+
+                    var promoInfo = new List<PromotionInfoDTO>();
+
+                    foreach (var item in rs)
+                    {
+                        var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                        var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                        promoInfo.Add(pi_map);
+                    }
+
+
+                    return Ok(new { result = rs, total = rs.Count , promoInfo });
                 }
-                return Ok(new {result=rs,total=rs.Count  });
+                else
+                {
+                    var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(keyword.Trim()), null, null);
+
+                    var list = _mapper.Map<IList<ProductDTO>>(query);
+                    var rs = new List<ProductDTO>();
+                    foreach (var item in list)
+                    {
+                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <= Int32.Parse(range[1]))
+                        {
+                            rs.Add(item);
+                        }
+                    }
+                    var promoInfo = new List<PromotionInfoDTO>();
+
+                    foreach (var item in rs)
+                    {
+                        var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                        var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                        promoInfo.Add(pi_map);
+                    }
+                    return Ok(new { result = rs, total = rs.Count ,promoInfo});
+                }
+      
             }
 
 

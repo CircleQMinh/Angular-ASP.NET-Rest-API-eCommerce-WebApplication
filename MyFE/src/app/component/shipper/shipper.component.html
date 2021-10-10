@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top p-0">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-0">
 
     <a class="navbar-brand" routerLink="/home">
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
@@ -47,7 +47,7 @@
 
 
 <!-- HEADER -->
-<header id="main-header" class="py-2 bg-primary text-white" *ngIf="active_tab=='av'">
+<header id="main-header" class="py-2 bg-primary text-white" *ngIf="active_tab=='av'" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
@@ -60,7 +60,7 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='dv'">
+<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='dv'" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
@@ -74,7 +74,7 @@
 </header>
 
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='his'">
+<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='his'" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 " >
@@ -164,7 +164,7 @@
                             <th>Thông tin liên lạc</th>
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
-                            <th>Tổng Gái</th>
+                            <th>Tổng Giá</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -246,7 +246,7 @@
                             <th>Thông tin liên lạc</th>
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
-                            <th>Tổng Gái</th>
+                            <th>Tổng Giá</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>

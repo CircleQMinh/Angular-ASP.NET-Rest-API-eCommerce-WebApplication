@@ -22,7 +22,7 @@ export class NavComponent implements OnInit {
   user!: User
 
   products: Product[] = []
-  keyword: any;
+  keyword: any
   priceRange: any = "0,999999"
   stringCate: string = "all"
   constructor(private router: Router, private proService: ProductService, private toast: HotToastService, private authService: AuthenticationService) { }
@@ -40,7 +40,9 @@ export class NavComponent implements OnInit {
 
   }
   newSearch() {
-
+    if(this.keyword==null){
+      this.keyword=" "
+    }
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword, category: this.stringCate, priceRange: this.priceRange } }));
   }
