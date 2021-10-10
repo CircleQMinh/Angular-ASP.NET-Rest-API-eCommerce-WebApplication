@@ -18,7 +18,7 @@ export class ProductListComponent implements OnInit {
   products!: Product[];
   content!: Product[];
   pageNumber: number = 1;
-  pageSize: number = 8;
+  pageSize: number = 10;
   collectionSize: number = 0;
   category: string = "all"
   order: string = ""
@@ -46,8 +46,44 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.getProductAll()
     this.getProduct()
-
-
+    setInterval(()=>{
+     this.getUpdate()
+    },5000)
+  }
+  getUpdate(){
+  
+    this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
+      data => {
+ 
+        let updateList:Product[] = data.results
+        let updatePromo:PromotionInfo[] = data.promoInfo
+        for (let i = 0; i < updatePromo.length; i++) {
+          updateList[i].promoInfo = updatePromo[i]
+        }
+        // console.log(updateList)
+        // console.log(this.content)
+        if(!this.arraysEqual(this.content,updateList)){
+          this.content = data.results
+          this.collectionSize = data.totalItem
+          this.promoInfo = data.promoInfo
+          // console.log(this.promoInfo)
+         // console.log('Có update')
+        
+          for (let i = 0; i < this.promoInfo.length; i++) {
+            this.content[i].promoInfo = this.promoInfo[i]
+          }
+        }
+        else{
+          //console.log("Không có gì mới!")
+        }
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+  arraysEqual(a:Product[], b:Product[]) {
+    return JSON.stringify(a)==JSON.stringify(b);
   }
   getProduct() {
     this.isLoading = true

@@ -1,15 +1,11 @@
 <app-nav></app-nav>
-<div class="loading-full" *ngIf="isLoading">
-    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="text monospace">Xin chờ 1 xíu...</p>
-</div>
-<div class="container-fluid" *ngIf="!isLoading">
+
+<div class="container" >
     <div class="row">
         <div class="col">
-            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0">Tìm thấy {{products.length}} sản phẩm !</p>
-            <p class="lead text-monospace text-center mt-5" *ngIf="products.length==0">Nhập tên sản phẩm để tìm kiếm !</p>
+
+            <p class="lead text-monospace text-center mt-5">Nhập tên sản phẩm bạn cần tìm kiếm !
+            </p>
             <div class="div-center-content" style="margin-bottom: 15px;" id='searchBarProduct'>
                 <div class="wrap">
                     <div class="search">
@@ -21,16 +17,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-center">
+                <h4 class="tag-search-h4" *ngIf="allCate">
+                    <span class="badge rounded-pill bg-success mx-2">Danh mục : Toàn bộ</span>
+                </h4>
+                <ng-container *ngFor="let o of cate">
+                    <h4 class="tag-search-h4" *ngIf="o.checked==true">
+                        <span class="badge rounded-pill bg-success mx-2">*{{o.name}}*</span>
+                    </h4>
+                </ng-container>
+                <ng-container>
+
+                </ng-container>
+                <h4 class="tag-search-h4" *ngIf="priceRange!='0,999999'">
+                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : {{priceRange}}</span>
+                </h4>
+                <h4 class="tag-search-h4" *ngIf="priceRange=='0,999999'">
+                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : Toàn bộ</span>
+                </h4>
+                <h4 class="tag-search-h4" *ngIf="onPromoOnly">
+                    <span class="badge rounded-pill bg-warning text-dark mx-2">*Đang khuyến mãi*</span>
+                </h4>
+            </div>
+
             <hr>
             <div class="container-fluid ">
                 <div class="row">
-                    <div class="col-2 border-end border-secondary">
+                    <div class="col-3 border-end border-secondary" id="filter_search">
                         <h4>Theo danh mục</h4>
-                        <form>          
+                        <form>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="all" [(ngModel)]="allCate"
+                                    name="allCate" (change)="filterChange(true)">
+                                <label class="form-check-label">
+                                    Toàn bộ
+                                </label>
+                            </div>
                             <div class="form-check" *ngFor="let o of cate">
-                                <input class="form-check-input" type="checkbox" value="{{o.value}}" [(ngModel)]="o.checked" name="{{o.value}}" 
-                                (change)="filterChange()">
-                                <label class="form-check-label" >
+                                <input class="form-check-input" type="checkbox" value="{{o.value}}"
+                                    [(ngModel)]="o.checked" name="{{o.value}}" (change)="filterChange(false)">
+                                <label class="form-check-label">
                                     {{o.name}}
                                 </label>
                             </div>
@@ -40,45 +67,91 @@
                         <form>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,999999" name="pr1" (change)="filterChange()">
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,999999" name="pr1"
+                                    (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Toàn bộ
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,20000" name="pr2" (change)="filterChange()">
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,20000" name="pr2"
+                                    (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
-                                    Dưới 20.000 
+                                    Dưới 20.000
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="20000,40000" name="pr3" (change)="filterChange()">
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="20000,40000" name="pr3"
+                                    (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Từ 20.000 dến 40.000
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="40000,120000" name="pr4" (change)="filterChange()">
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="40000,120000" name="pr4"
+                                    (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Từ 40.000 dến 120.000
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="120000,999999" name="pr5" (change)="filterChange()">
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="120000,999999" name="pr5"
+                                    (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Trên 120.000
                                 </label>
                             </div>
                         </form>
+                        <hr>
+                        <h4>Khoảng giá</h4>
+                        <form>
+                            <div class="form-check ">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Từ</span>
+                                    <input type="number" class="form-control" placeholder="từ" name="minPrice"
+                                        [(ngModel)]="priceMin">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Đến</span>
+                                    <input type="number" class="form-control" placeholder="đến" name="maxPrice"
+                                        [(ngModel)]="priceMax">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-success" (click)="applyPriceRange()">Áp dụng</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        <h4>Khuyến mãi</h4>
+                        <form>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="checkbox" value="onPromo" name="PromoOnly"
+                                    [(ngModel)]="onPromoOnly" (change)="scrollToTop()">
+                                <label class="form-check-label">
+                                    Đang được khuyến mãi
+                                </label>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-10">
-                        <div class="row">
-                            <div *ngFor="let pro of products  " class="gradient-border"
-                                style=" margin: 20px;margin-bottom: 100px;">
+                    <div class="col col-md-9">
+                        <div class="loading-full" *ngIf="isLoading">
+                            <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text monospace">Xin chờ 1 xíu...</p>
+                        </div>
+                        <div class="row justify-content-center" *ngIf="!onPromoOnly&&!isLoading">
+                            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0">Tìm thấy
+                                {{totalProduct()}} sản
+                                phẩm !</p>
+                            <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
+                                phẩm !</p>
+                            <div *ngFor="let pro of products ,index as i " class="gradient-border"
+                                style=" margin: 10px;margin-bottom: 110px;">
                                 <div class="featured__item">
                                     <div class="featured__item__pic set-bg"
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
@@ -98,16 +171,112 @@
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a>{{pro.name}}</a></h6>
-                                        <h5>{{pro.price | currency:'VND':''}} <span
-                                                style="text-decoration: underline;">đ</span>
-                                        </h5>
+                                        <h6><a href="#">{{pro.name}}</a></h6>
+                                        <div *ngIf="!promoInfo[i]">
+                                            <h5>{{pro.price | currency:'VND':''}} <span
+                                                    style="text-decoration: underline;">đ</span>
+                                            </h5>
+                                        </div>
+
+                                        <div *ngIf="promoInfo[i]">
+                                            <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
+                                                {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 |
+                                                currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-success"
+                                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                                Giảm : {{promoInfo[i].promotionPercent}}%&#013;
+                                                                Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    data-html="true">-{{promoInfo[i].promotionPercent}}%</span>
+                                            </h5>
+                                            <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
+                                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-danger"
+                                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                                Giảm : {{promoInfo[i].promotionAmount}} đ&#013;
+                                                                Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                    placement="auto" data-html="true">-{{promoInfo[i].promotionAmount|
+                                                    currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                            </h5>
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
 
+                        <div class="row justify-content-center" *ngIf="onPromoOnly&&!isLoading">
+                            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0">Tìm thấy
+                                {{totalProduct()}} sản
+                                phẩm !</p>
+                            <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
+                                phẩm !</p>
+                            <ng-container *ngFor="let pro of products ,index as i ">
+                                <div class="gradient-border" style=" margin: 10px;margin-bottom: 110px;"
+                                    *ngIf="promoInfo[i]">
+                                    <div class="featured__item">
+                                        <div class="featured__item__pic set-bg"
+                                            [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                                            ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
+                                            placement="auto" container="body">
+                                            <ul class="featured__item__pic__hover">
+                                                <li ngbTooltip="Thêm vào yêu thích" container="body"><a
+                                                        (click)="addToFav(pro)"><i class="fa fa-heart"></i></a></li>
+                                                <li ngbTooltip="Xem thông tin" container="body"
+                                                    routerLink="/product/{{pro.id}}">
+                                                    <a><i class="fas fa-info"></i></a>
+                                                </li>
+                                                <li ngbTooltip="Thêm vào giỏ hàng" container="body"
+                                                    (click)="addToCart(pro)">
+                                                    <a><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="featured__item__text">
+                                            <h6><a href="#">{{pro.name}}</a></h6>
+                                            <div *ngIf="!promoInfo[i]">
+                                                <h5>{{pro.price | currency:'VND':''}} <span
+                                                        style="text-decoration: underline;">đ</span>
+                                                </h5>
+                                            </div>
+
+                                            <div>
+                                                <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
+                                                    {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 |
+                                                    currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span> <span class="badge bg-success"
+                                                        ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                                Giảm : {{promoInfo[i].promotionPercent}}%&#013;
+                                                                Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                        placement="auto"
+                                                        data-html="true">-{{promoInfo[i].promotionPercent}}%</span>
+                                                </h5>
+                                                <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
+                                                    {{pro.price-toNumber(promoInfo[i].promotionAmount) |
+                                                    currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span> <span class="badge bg-danger"
+                                                        ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
+                                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
+                                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
+                                                                Giảm : {{promoInfo[i].promotionAmount}} đ&#013;
+                                                                Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                        placement="auto"
+                                                        data-html="true">-{{promoInfo[i].promotionAmount|
+                                                        currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
             </div>

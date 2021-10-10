@@ -18,7 +18,7 @@ export class ProductCategoryComponent implements OnInit {
   products!: Product[];
   content!: Product[];
   pageNumber: number = 1;
-  pageSize: number = 8;
+  pageSize: number = 10;
   collectionSize: number = 0;
   order: string = ""
   searchMode: boolean = false;
