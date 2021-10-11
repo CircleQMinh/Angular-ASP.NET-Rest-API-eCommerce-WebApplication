@@ -39,3 +39,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 06-10-2021 : thêm khuyến mãi.<br>
 07-10-2021 : hoàn thành khuyến mãi.<br>
 10-10-2021 : update chức năng tìm kiếm.<br>
+11-10-2021 : thêm chức năng chọn sản phẩm hiển thị và xuất file excel cho admin.<br>
