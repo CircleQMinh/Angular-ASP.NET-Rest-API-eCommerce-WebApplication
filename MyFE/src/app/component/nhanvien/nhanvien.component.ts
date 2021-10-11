@@ -331,7 +331,7 @@ export class NhanvienComponent implements OnInit {
   createProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.createProduct(this.rf2.controls['name'].value, this.rf2.controls['price'].value, this.rf2.controls['des'].value,
-      this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today).subscribe(
+      this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today,"0").subscribe(
         data => {
           this.toast.success("Thêm thành công!")
           this.isCreatingProduct = false
@@ -375,7 +375,7 @@ export class NhanvienComponent implements OnInit {
   editProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
-      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
+      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today,String(this.editingProduct.status)).subscribe(
         data => {
           this.toast.success("Chỉnh sửa thành công!")
           this.isEditingProduct = false

@@ -11,4 +11,5 @@ export class User {
     roles!:string[];
     orders!:Order[];
     emailConfirmed!:boolean
+    orderCount!:number
 }

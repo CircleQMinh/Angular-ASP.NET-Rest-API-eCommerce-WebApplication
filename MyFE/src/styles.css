@@ -740,6 +740,9 @@ a:hover{color:#51aa1b;}
     font-size: 18px;
     font-weight: 300;
 }
+.d-no{
+    display: none;
+}
 
 .gradient-border {
 --borderWidth: 3px;

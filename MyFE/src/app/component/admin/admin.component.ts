@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,7 @@ import { AdminService } from 'src/app/service/admin.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { OrderService } from 'src/app/service/order.service';
 import { ProductService } from 'src/app/service/product.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-admin',
@@ -202,6 +203,20 @@ export class AdminComponent implements OnInit {
   rf11!: FormGroup
   rf12!: FormGroup
 
+  @ViewChild('TABLE', { static: false })
+  TABLE!: ElementRef;  
+
+  @ViewChild('TABLE_User', { static: false })
+  TABLE_User!: ElementRef;  
+
+  ExportTOExcel(name:string) {  
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);  
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();  
+    XLSX.utils.book_append_sheet(wb, ws, name);  
+    XLSX.writeFile(wb, name+'.xlsx');  
+  }  
+
+
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
     private modalService: NgbModal) { }
@@ -251,6 +266,8 @@ export class AdminComponent implements OnInit {
       uis: new FormControl('',
         [Validators.required, Validators.pattern('^[0-9]*$')]),
       category: new FormControl('',
+        [Validators.required]),
+      status: new FormControl('',
         [Validators.required])
     });
     this.rf3 = new FormGroup({
@@ -263,6 +280,8 @@ export class AdminComponent implements OnInit {
       uis: new FormControl('',
         [Validators.required, Validators.pattern('^[0-9]*$')]),
       category: new FormControl('',
+        [Validators.required]),
+      status: new FormControl('',
         [Validators.required])
     });
     this.rf4 = new FormGroup({
@@ -520,6 +539,24 @@ export class AdminComponent implements OnInit {
       }
     )
   }
+  getDisplayCategory(cate: string): string {
+    switch (cate) {
+      case "Fruit":
+        return "Trái cây"
+      case "Vegetable":
+        return "Rau củ"
+      case "Snack":
+        return "Snack"
+      case "Confectionery":
+        return "Bánh kẹo"
+      case "CannedFood":
+        return "Đồ hộp"
+      case "AnimalProduct":
+        return "Thịt tươi sống"
+      default:
+        return ""
+    }
+  }
   onPageSizeStatusChage() {
 
     this.pageNumberOrder = 1
@@ -534,6 +571,7 @@ export class AdminComponent implements OnInit {
         this.userList = data.result
         this.userList.forEach((element, index: number) => {
           element.roles = data.roles[index]
+          element.orderCount = data.orderCount[index]
         });
         this.getPagedUserList()
         //console.log(this.userList)
@@ -747,6 +785,7 @@ export class AdminComponent implements OnInit {
     this.proImgUrl = this.defaultProImgUrl
     this.rf2.reset()
     this.rf2.controls["category"].setValue("Fruit")
+    this.rf2.controls["status"].setValue("1")
     this.modalService.open(add_product, { ariaLabelledBy: 'modal-basic-title' })
   }
   openEditProductModal(newPro: any, p: Product) {
@@ -757,6 +796,7 @@ export class AdminComponent implements OnInit {
     this.rf3.controls["des"].setValue(this.editingProduct.description)
     this.rf3.controls["uis"].setValue(this.editingProduct.unitInStock)
     this.rf3.controls["category"].setValue(this.editingProduct.category)
+    this.rf3.controls["status"].setValue(this.editingProduct.status)
     this.proImgUrl = this.editingProduct.imgUrl
     this.modalService.open(newPro, { ariaLabelledBy: 'modal-basic-title' })
   }
@@ -799,7 +839,7 @@ export class AdminComponent implements OnInit {
   createProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.createProduct(this.rf2.controls['name'].value, this.rf2.controls['price'].value, this.rf2.controls['des'].value,
-      this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today).subscribe(
+      this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today, this.rf2.controls["status"].value).subscribe(
         data => {
           this.toast.success("Thêm thành công!")
           this.isCreatingProduct = false
@@ -843,7 +883,7 @@ export class AdminComponent implements OnInit {
   editProduct() {
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
-      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today).subscribe(
+      this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today, this.rf3.controls["status"].value).subscribe(
         data => {
           this.toast.success("Chỉnh sửa thành công!")
           this.isEditingProduct = false
@@ -1505,186 +1545,186 @@ export class AdminComponent implements OnInit {
     this.rf11.controls["number"].setValue("10")
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-  openEditPromoInfo(promo:PromotionInfo,pro: Product, modal: any) {
-    this.editingPromoInfo=promo
+  openEditPromoInfo(promo: PromotionInfo, pro: Product, modal: any) {
+    this.editingPromoInfo = promo
     //console.log(this.editingPromoInfo)
     this.rf12.controls["nameSP"].setValue(pro.name)
     this.rf12.controls["idSP"].setValue(pro.id)
     this.rf12.controls["priceSP"].setValue(pro.price)
-    if(promo.promotionAmount!='null'){
+    if (promo.promotionAmount != 'null') {
       this.rf12.controls["type"].setValue("1")
       this.rf12.controls["number"].setValue(promo.promotionAmount)
     }
-    if(promo.promotionPercent!='null'){
+    if (promo.promotionPercent != 'null') {
       this.rf12.controls["type"].setValue("0")
       this.rf12.controls["number"].setValue(promo.promotionPercent)
     }
- 
+
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
-  openDeletePromoInfo(promo:PromotionInfo,pro: Product, modal: any) {
-    this.deletingPromoInfo=promo
+  openDeletePromoInfo(promo: PromotionInfo, pro: Product, modal: any) {
+    this.deletingPromoInfo = promo
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   selectedItemPromomo(item: any, modal: any) {
-    let pro:Product = item.item
+    let pro: Product = item.item
     this.rf11.controls["nameSP"].setValue(pro.name)
     this.rf11.controls["idSP"].setValue(pro.id)
     this.rf11.controls["priceSP"].setValue(pro.price)
     this.rf11.controls["type"].setValue("0")
     this.rf11.controls["number"].setValue("10")
-    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title',size: 'xl' })
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
   }
   addPromoInfo(modal: any) {
 
     let valid = true
-    try{
+    try {
       let type = this.rf11.controls["type"].value
       let price = this.rf11.controls["priceSP"].value
       if (type == 0) {
         if (this.rf11.controls["number"].value > 100 || this.rf11.controls["number"].value <= 0) {
-          valid=false
+          valid = false
         }
       }
-  
-      if (type == 1) {
-        if (this.rf11.controls["number"].value > price||this.rf11.controls["number"].value<=0) {
-        
-          valid=false
-        }
-      }
-    }
-    catch(e){
-      valid=false
-    }
- 
 
-    if(valid){
-      this.isCreatingPromoInfo=true
-      let promoInfo = new PromotionInfo
-      promoInfo.productId=this.rf11.controls["idSP"].value
-      promoInfo.promotionId=this.selectedPromotion.id
-  
-      if(this.rf11.controls["type"].value==0){
-        promoInfo.promotionPercent=this.rf11.controls["number"].value
-        promoInfo.promotionAmount="null"
+      if (type == 1) {
+        if (this.rf11.controls["number"].value > price || this.rf11.controls["number"].value <= 0) {
+
+          valid = false
+        }
       }
-      else{
-        promoInfo.promotionAmount=this.rf11.controls["number"].value
-        promoInfo.promotionPercent="null"
+    }
+    catch (e) {
+      valid = false
+    }
+
+
+    if (valid) {
+      this.isCreatingPromoInfo = true
+      let promoInfo = new PromotionInfo
+      promoInfo.productId = this.rf11.controls["idSP"].value
+      promoInfo.promotionId = this.selectedPromotion.id
+
+      if (this.rf11.controls["type"].value == 0) {
+        promoInfo.promotionPercent = this.rf11.controls["number"].value
+        promoInfo.promotionAmount = "null"
+      }
+      else {
+        promoInfo.promotionAmount = this.rf11.controls["number"].value
+        promoInfo.promotionPercent = "null"
       }
       this.adminService.createPromotionInfo(promoInfo).subscribe(
-        data=>{
-          if(data.success){
+        data => {
+          if (data.success) {
             this.toast.success("Thêm thông tin khuyến mãi thành công!")
           }
-          else{
+          else {
             this.toast.error(data.error)
           }
 
-          this.isCreatingPromoInfo=false
+          this.isCreatingPromoInfo = false
           this.modalService.dismissAll()
           this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
         },
-        error=>{
+        error => {
           this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
-          this.isCreatingPromoInfo=false
+          this.isCreatingPromoInfo = false
           console.log(error)
         }
       )
 
     }
-    else{
+    else {
       this.toast.error("Giá trị nhập không hợp lệ")
     }
 
 
   }
 
-  editPromoInfo(modal: any){
- 
+  editPromoInfo(modal: any) {
+
     let valid = true
-    try{
+    try {
       let type = this.rf12.controls["type"].value
       let price = this.rf12.controls["priceSP"].value
       if (type == 0) {
         if (this.rf12.controls["number"].value > 100 || this.rf12.controls["number"].value <= 0) {
-          valid=false
+          valid = false
         }
       }
-  
+
       if (type == 1) {
-        if (this.rf12.controls["number"].value > price||this.rf12.controls["number"].value<=0) {
-        
-          valid=false
+        if (this.rf12.controls["number"].value > price || this.rf12.controls["number"].value <= 0) {
+
+          valid = false
         }
       }
     }
-    catch(e){
-      valid=false
+    catch (e) {
+      valid = false
     }
- 
 
-    if(valid){
-      this.isEditingPromoInfo=true
+
+    if (valid) {
+      this.isEditingPromoInfo = true
       let promoInfo = new PromotionInfo
-      promoInfo.productId=this.rf12.controls["idSP"].value
-      promoInfo.promotionId=this.selectedPromotion.id
-      promoInfo.id=this.editingPromoInfo.id
+      promoInfo.productId = this.rf12.controls["idSP"].value
+      promoInfo.promotionId = this.selectedPromotion.id
+      promoInfo.id = this.editingPromoInfo.id
 
-      if(this.rf12.controls["type"].value==0){
-        promoInfo.promotionPercent=this.rf12.controls["number"].value
-        promoInfo.promotionAmount="null"
+      if (this.rf12.controls["type"].value == 0) {
+        promoInfo.promotionPercent = this.rf12.controls["number"].value
+        promoInfo.promotionAmount = "null"
       }
-      else{
-        promoInfo.promotionAmount=this.rf12.controls["number"].value
-        promoInfo.promotionPercent="null"
+      else {
+        promoInfo.promotionAmount = this.rf12.controls["number"].value
+        promoInfo.promotionPercent = "null"
       }
       this.adminService.editPromotionInfo(promoInfo).subscribe(
-        data=>{
-          if(data.success){
+        data => {
+          if (data.success) {
             this.getPromotionInfo(this.selectedPromotion)
             this.toast.success("Chỉnh sửa thông tin khuyến mãi thành công!")
           }
-          else{
+          else {
             this.toast.error(data.error)
           }
 
-          this.isEditingPromoInfo=false
+          this.isEditingPromoInfo = false
           this.modalService.dismissAll()
           this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
         },
-        error=>{
+        error => {
           this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
-          this.isEditingPromoInfo=false
+          this.isEditingPromoInfo = false
           console.log(error)
         }
       )
     }
-    else{
+    else {
       this.toast.error("Giá trị nhập không hợp lệ")
     }
   }
 
-  deletePromoInfo(modal:any){
-    this.isDeletingPromoInfo=true
+  deletePromoInfo(modal: any) {
+    this.isDeletingPromoInfo = true
     this.adminService.deletePromotionInfo(this.deletingPromoInfo.id).subscribe(
-      data=>{
-        if(data.success){
+      data => {
+        if (data.success) {
           this.getPromotionInfo(this.selectedPromotion)
           this.toast.success("Xóa thông tin khuyến mãi thành công!")
         }
-        else{
+        else {
           this.toast.error(data.error)
         }
 
-        this.isDeletingPromoInfo=false
+        this.isDeletingPromoInfo = false
         this.modalService.dismissAll()
         this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
       },
-      error=>{
+      error => {
         this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
-        this.isDeletingPromoInfo=false
+        this.isDeletingPromoInfo = false
         console.log(error)
       }
     )
