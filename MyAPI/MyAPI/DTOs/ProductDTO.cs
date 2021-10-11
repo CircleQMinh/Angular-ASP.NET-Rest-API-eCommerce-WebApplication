@@ -23,7 +23,8 @@ namespace MyAPI.DTOs
         public string ImgUrl { get; set; }
         [Required]
         public string LastUpdate { get; set; }
-
+        [Required]
+        public int Status { get; set; }
     }
 
     public class ProductDTO : CreateProductDTO

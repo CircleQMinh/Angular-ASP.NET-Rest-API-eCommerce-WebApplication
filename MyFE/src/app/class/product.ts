@@ -15,6 +15,7 @@ export class Product {
     favoritedUsers!:User[]
     reviews!:Review[]
     promoInfo!:PromotionInfo
+    status!:number
 
 
 	constructor(id:number,name:string,price:number,des:string,unit:number,cate:string,img:string,last:string) {

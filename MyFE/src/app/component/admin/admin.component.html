@@ -241,6 +241,9 @@
                             <button class="btn btn-info " (click)="getUser()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
+                            <button class="btn btn-info " (click)="ExportTOExcel('User')">
+                                <i class="fas fa-download"></i> Tải file excel
+                            </button>
                         </div>
 
                         <hr>
@@ -277,7 +280,7 @@
                         </div>
                         <hr>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" #TABLE>
                         <table class="table  ">
                             <thead class="thead-dark">
                                 <tr>
@@ -285,6 +288,7 @@
                                     <th>Email</th>
                                     <th>SDT</th>
                                     <th>Đã xác thực</th>
+                                    <th>Số đơn hàng</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -299,10 +303,16 @@
                                     <td>{{o.phoneNumber}}</td>
                                     <td *ngIf="o.emailConfirmed">
                                         <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                                        <p class="d-no">1</p>
                                     </td>
                                     <td *ngIf="!o.emailConfirmed">
                                         <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                                        <p class="d-no">0</p>
                                     </td>
+                                    <td>
+                                        {{o.orderCount}}
+                                    </td>
+
                                     <td>
                                         <button class="btn btn-info btn-sm admin-button mr-2"
                                             (click)="openEditUserModal(changeProfile,o)">
@@ -346,6 +356,9 @@
                             </button>
                             <button class="btn btn-info " (click)="getEmployee()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
+                            </button>
+                            <button class="btn btn-info " (click)="ExportTOExcel('NhanVien')">
+                                <i class="fas fa-download"></i> Tải file excel
                             </button>
                         </div>
 
@@ -391,12 +404,14 @@
                         </div>
                         <hr>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" #TABLE>
                         <table class="table ">
                             <thead class="thead-dark">
                                 <tr>
 
                                     <th>Thông tin</th>
+                                    <th>Giới tính</th>
+                                    <th>CMND</th>
                                     <th>Email</th>
                                     <th>SDT</th>
                                     <th>Địa chỉ</th>
@@ -411,9 +426,15 @@
                                     <td>
                                         <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                                         <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
-                                        <p class="text-tron text-monospace" *ngIf="o.Sex=='M'">Giới tính : Nam</p>
-                                        <p class="text-tron text-monospace" *ngIf="o.Sex=='F'">Giới tính : Nữ</p>
-                                        <p class="text-tron text-monospace">CMND : {{o.CMND}}</p>
+                               
+                                       
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace" *ngIf="o.Sex=='M'">Nam</p>
+                                        <p class="text-tron text-monospace" *ngIf="o.Sex=='F'">Nữ</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-tron text-monospace">{{o.CMND}}</p>
                                     </td>
                                     <td style="word-break: break-all;">{{o.email}}</td>
                                     <td>{{o.phoneNumber}}</td>
@@ -623,6 +644,9 @@
                             <button class="btn btn-info " (click)="getProduct()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
+                            <button class="btn btn-info " (click)="ExportTOExcel('SanPham')">
+                                <i class="fas fa-download"></i> Tải file excel
+                            </button>
                         </div>
                         <hr>
                         <div class="d-flex flex-wrap justify-content-around ">
@@ -645,6 +669,7 @@
                                     (change)=" onPageSizeCategoryChange()">
                                     <option value="Id" selected="true">Id</option>
                                     <option value="Price">Giá</option>
+                                    <option value="Status">Hiển thị</option>
                                     <option value="Name">Tên</option>
                                 </select>
                             </div>
@@ -669,12 +694,13 @@
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="50">50</option>
+                                    <option value="9999">Toàn bộ</option>
                                 </select>
                             </div>
                         </div>
                         <hr>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" #TABLE_Product>
                         <table class="table  ">
                             <thead class="thead-dark">
                                 <tr>
@@ -685,6 +711,7 @@
                                     <th>Số lượng</th>
                                     <th>Danh mục</th>
                                     <th>Chỉnh sửa</th>
+                                    <th>Hiển thị</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -700,9 +727,17 @@
                                             style="text-decoration: underline;">đ</span></td>
                                     <td>{{o.unitInStock}}</td>
                                     <td>
-                                        <p class="text-tron text-success">{{o.category}}</p>
+                                        <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
                                     </td>
-                                    <td>{{o.lastUpdate}}</td>
+                                    <td>{{o.lastUpdate|date:'medium'}}</td>
+                                    <td *ngIf="o.status==1">
+                                        <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                                        <p class="d-no">1</p>
+                                    </td>
+                                    <td *ngIf="o.status==0">
+                                        <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                                        <p class="d-no">0</p>
+                                    </td>
                                     <td>
                                         <button class="btn btn-info btn-sm admin-button mr-2"
                                             (click)="openEditProductModal(edit_product,o)">
@@ -1319,7 +1354,7 @@
                     <input id="price" class="form-control" placeholder="price..." name="price" type="number"
                         formControlName="price">
                 </div>
-                <label for="des">Mổ tả</label>
+                <label for="des">Mô tả</label>
                 <p class="text-center" *ngIf="rf2.controls.des?.errors?.required&&showFormError">
                     <i class="fas fa-exclamation-triangle"></i>Mô tả SP
                 <div class="input-group">
@@ -1345,6 +1380,15 @@
                         <option value="CannedFood">Đồ hợp</option>
                     </select>
                 </div>
+
+                <label for="cate">Hiển thị</label>
+                <div class="input-group">
+                    <select id="cate" class="form-select" placeholder="100" name="caste" formControlName="status">
+                        <option value="1" selected>Hiển thị</option>
+                        <option value="0">Không hiển thị</option>
+                    </select>
+                </div>
+
                 <label for="img">Ảnh SP</label>
                 <p class="text-center" *ngIf="msg"><i class="fas fa-exclamation-triangle"></i>{{msg}}</p>
                 <div class="input-group">
@@ -1426,7 +1470,14 @@
                         <option value="Confectionery">Bánh kẹo</option>
                         <option value="Snack">Snack</option>
                         <option value="AnimalProduct">Thịt tươi sống</option>
-                        <option value="CannedFood">Đồ hợp</option>
+                        <option value="CannedFood">Đồ hộp</option>
+                    </select>
+                </div>
+                <label for="cate">Hiển thị</label>
+                <div class="input-group">
+                    <select id="cate" class="form-select" placeholder="100" name="catse" formControlName="status">
+                        <option value="1" selected>Hiển thị</option>
+                        <option value="0">Không hiển thị</option>
                     </select>
                 </div>
                 <label for="img">Ảnh SP</label>

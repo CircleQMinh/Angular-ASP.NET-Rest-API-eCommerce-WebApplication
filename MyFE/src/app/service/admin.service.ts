@@ -55,7 +55,7 @@ export class AdminService {
     return this.http.delete(`${this.apiUrl}admin/deleteUser?id=${id}`)
   }
 
-  createProduct(name: string, price: number, des: string, uis: number, cate: string, imgurl: string, date: string):Observable<any> {
+  createProduct(name: string, price: number, des: string, uis: number, cate: string, imgurl: string, date: string,status:string):Observable<any> {
     return this.http.post(`${this.apiUrl}product`, {
       name: name,
       price: price,
@@ -63,12 +63,13 @@ export class AdminService {
       unitInStock: uis,
       category: cate,
       imgUrl: imgurl,
-      lastUpdate: date
+      lastUpdate: date,
+      status:status
     })
   }
 
   editProduct(id:number,name: string, price: number, des: string,
-    uis: number, cate: string, imgurl: string, date: string):Observable<any> {
+    uis: number, cate: string, imgurl: string, date: string,status:string):Observable<any> {
     return this.http.put(`${this.apiUrl}product/${id}`, {
       name: name,
       price: price,
@@ -76,7 +77,8 @@ export class AdminService {
       unitInStock: uis,
       category: cate,
       imgUrl: imgurl,
-      lastUpdate: date
+      lastUpdate: date,
+      status:status
     })
   }
   deleteProduct(id:number):Observable<any>{

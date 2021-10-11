@@ -225,9 +225,7 @@ export class ProductInfoComponent implements OnInit {
   }
 
   checkIfReviewed() {
-
     if (this.isLogin) {
-
       this.product.reviews.forEach(element => {
         if (element.user.id == this.user.id) {
           this.alreadyReview = true
@@ -241,8 +239,6 @@ export class ProductInfoComponent implements OnInit {
         }
       });
     }
-
-
   }
 
   goToProductPage(id: number) {

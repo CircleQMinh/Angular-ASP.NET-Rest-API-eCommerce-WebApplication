@@ -116,7 +116,15 @@ namespace MyAPI.Controllers
                         }
                     }
                     var count = result.Count;
-                    return Ok(new {result,count,roles });
+
+                    var orderCount = new List<int>();
+                    foreach (var item in result)
+                    {
+                        var c = await _unitOfWork.Orders.GetCount(q => q.UserID == item.Id);
+                        orderCount.Add(c);
+                    }
+
+                    return Ok(new {result,count,roles,orderCount });
                 }
                 else
                 {
@@ -277,6 +285,16 @@ namespace MyAPI.Controllers
                         else
                         {
                             orderBy = a => a.OrderBy(x => x.Id);
+                        }
+                        break;
+                    case "Status":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Status);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Status);
                         }
                         break;
                 }

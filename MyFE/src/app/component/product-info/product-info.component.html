@@ -84,9 +84,10 @@
     <div class="slick-list">
         <div class="slick-track product-similar">
 
-            <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
-                *ngFor="let o of randomProducts" (click)="goToProductPage(o.id)">
-                <div>
+            <ng-container *ngFor="let o of randomProducts">
+                <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
+                 (click)="goToProductPage(o.id)" *ngif="o.id!=product.id">
+                <div >
                     <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
                             style="width: 100%; height: 100%;">
                             <div class="Item__ProductImgWrapper-sc-m1oy8w-6 dgEsBx">
@@ -104,6 +105,8 @@
                         </a></div>
                 </div>
             </div>
+            </ng-container>
+     
         </div>
     </div>
     <div class="div-center-content mt-5">

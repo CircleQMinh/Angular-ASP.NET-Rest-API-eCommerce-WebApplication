@@ -59,10 +59,17 @@ namespace MyAPI.Controllers
                     case "Name":
                         orderBy = a => a.OrderBy(x => x.Name);
                         break;
+                    case "Status":
+                        orderBy = a => a.OrderBy(x => x.Status);
+                        break;
                 }
                 if (category!="all")
                 {
-                    expression = q => q.Category == category;
+                    expression = q => q.Category == category&&q.Status==1;
+                }
+                else
+                {
+                    expression = q => q.Status == 1;
                 }
                 PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
                 var query = await _unitOfWork.Products.GetAll(expression, orderBy, null,pf);
