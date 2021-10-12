@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit {
   shippingInfos: any[] = []
   pageNumberOrder = 1
   pageSizeOrder = 5
-  orderOrder = "Id"
+  orderOrder = "OrderDate"
   status = 0
   collectionSizeOrder = 0
 
@@ -62,6 +62,8 @@ export class AdminComponent implements OnInit {
     totalUser: 0
   }
 
+  numberOfNewOrder = 0
+  showNewOrderNotify = false
 
   urlIMG: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
   defaultImgUrl: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
@@ -98,7 +100,7 @@ export class AdminComponent implements OnInit {
   isEditingOrder: boolean = false
   isDeletingOrder: boolean = false
 
-  orderDirOrder: any = "Asc"
+  orderDirOrder: any = "Desc"
   orderDirUser: any = "Asc"
   orderDirProduct: any = "Asc"
   orderDirEmployee: any = "Asc"
@@ -203,18 +205,35 @@ export class AdminComponent implements OnInit {
   rf11!: FormGroup
   rf12!: FormGroup
 
+  isGettingSearchResult=false
+  searchBy_Order = "Id"
+  searchKey_Order!: string
+  searchResult_Order: Order[] = []
+  allOrder:Order[]=[]
+  allShippingInfo:any[]=[]
+  
+  searchBy_User = "Id"
+  searchKey_User!: string
+  searchResult_User: User[] = []
+  allUser:User[]=[]
+
+  searchBy_Employee = "Id"
+  searchKey_Employee!: string
+  searchResult_Employee: Employee[] = []
+  allEmployee:Employee[]=[]
+
   @ViewChild('TABLE', { static: false })
-  TABLE!: ElementRef;  
+  TABLE!: ElementRef;
 
   @ViewChild('TABLE_User', { static: false })
-  TABLE_User!: ElementRef;  
+  TABLE_User!: ElementRef;
 
-  ExportTOExcel(name:string) {  
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);  
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();  
-    XLSX.utils.book_append_sheet(wb, ws, name);  
-    XLSX.writeFile(wb, name+'.xlsx');  
-  }  
+  ExportTOExcel(name: string) {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, name);
+    XLSX.writeFile(wb, name + '.xlsx');
+  }
 
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
@@ -428,15 +447,62 @@ export class AdminComponent implements OnInit {
       data => {
         //console.log(data)
         this.allProduct = data.results
-        this.isGettingPromoInfo = false
+
       },
       error => {
-        this.isGettingPromoInfo = false
+
         this.toast.error("Kết nối với API không được!")
         console.log(error)
       }
     )
+    this.adminService.getOrders(99,"OrderDate",1,99,"Desc").subscribe(
+      data=>{
+        //console.log(data)
+        this.allOrder=data.result
+        this.allShippingInfo = data.shippingInfos
+      },
+      error => {
 
+        this.toast.error("Kết nối với API không được!")
+        console.log(error)
+      }
+    )
+    this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
+      data => {
+        //console.log(data)
+        this.allUser = data.result
+        this.allUser.forEach((element, index: number) => {
+          element.roles = data.roles[index]
+          element.orderCount = data.orderCount[index]
+        });
+        //console.log(this.allUser)
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
+    this.adminService.getEmployees(this.orderEmployee, "all", this.orderDirEmployee).subscribe(
+      data => {
+        for (let i = 0; i < data.count; i++) {
+          let e = new Employee
+          e = data.result[i]
+          e.roles = data.roles[i]
+          e.Address = data.employeeInfo[i].address
+          e.CMND = data.employeeInfo[i].cmnd
+          e.Salary = data.employeeInfo[i].salary
+          e.Sex = data.employeeInfo[i].sex
+          e.StartDate = data.employeeInfo[i].startDate
+          e.Status = data.employeeInfo[i].status
+          this.allEmployee.push(e)
+
+        }
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
 
   }
 
@@ -459,6 +525,25 @@ export class AdminComponent implements OnInit {
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
+
+    setInterval(() => {
+      this.adminService.getDashboardInfo().subscribe(
+        data => {
+          if (data.totalOrder != this.dashboardInfo.totalOrder) {
+            this.showNewOrderNotify = true
+            this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
+            this.dashboardInfo != null
+          }
+          this.dashboardInfo = data
+
+        },
+        error => {
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+    }, 3000)
+
     let from = this.rf7.controls["from"].value
     let to = this.rf7.controls["to"].value
     this.dbSaleChartData[0]["series"] = []
@@ -483,6 +568,7 @@ export class AdminComponent implements OnInit {
     this.adminService.getTopProductChart(5).subscribe(
       data => {
         this.DBtopSaleProductCount = data.maxCount
+        this.DBtopSaleProduct = []
         data.result.forEach((element: any) => {
           this.DBtopSaleProduct.push({ name: element.product.name, count: element.quantity })
 
@@ -511,6 +597,10 @@ export class AdminComponent implements OnInit {
         }
         this.getSearchData()
         this.getDBInfo()
+
+        setInterval(() => {
+          this.autoReload()
+        }, 3000)
       },
       error => {
         console.log(error)
@@ -604,6 +694,42 @@ export class AdminComponent implements OnInit {
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
+  }
+  autoReload() {
+    switch (this.active_tab) {
+      case "db":
+        this.isLoading = false
+        this.getDBInfo()
+        break
+      case "order":
+        this.getOrder()
+        this.isLoading = false
+        break
+      case "product":
+        this.getProduct()
+        this.isLoading = false
+        break
+      case "user":
+        this.getUser()
+        this.isLoading = false
+        break
+      case "employee":
+        this.getEmployee()
+        this.isLoading = false
+        break
+      case "tk":
+        this.getSaleChart()
+        this.getOrderChart()
+        this.getProductChart()
+        this.getCateChart()
+        this.getTopSaleProduct()
+        this.isLoading = false
+        break
+      case "pm":
+        this.getPromotion()
+        this.isLoading = false
+        break
+    }
   }
   switchTab(s: string) {
     this.active_tab = s
@@ -1306,34 +1432,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-  // prepareSaleChartData(data:any[]):any[]{
-  //   var result:any[]=[]
-  //   for(let i=0;i<data.length;i++){
-  //     var exist=false
-  //     for(let j=0;j<result.length;j++){
-  //       if(data[i].name==result[j].name){
-  //         exist=true
-  //       }
-  //     }
-  //     if(exist){
-  //       for(let j=0;j<result.length;j++){
-  //         if(data[i].name==result[j].name){
-
-  //           result[j].value+=data[i].value
-  //           break
-  //         }
-  //       }
-  //     }
-  //     else{
-  //       result.push( { name: data[i].name, value: Number(data[i].value) })
-  //     }
-  //   }
-  //   return result
-  // }
-
-
-
-  // -------------Example-------------------------------------------------
 
   onSelect(data: any): void {
     //console.log('Item clicked', JSON.parse(JSON.stringify(data)));
@@ -1640,7 +1738,6 @@ export class AdminComponent implements OnInit {
 
 
   }
-
   editPromoInfo(modal: any) {
 
     let valid = true
@@ -1705,7 +1802,6 @@ export class AdminComponent implements OnInit {
       this.toast.error("Giá trị nhập không hợp lệ")
     }
   }
-
   deletePromoInfo(modal: any) {
     this.isDeletingPromoInfo = true
     this.adminService.deletePromotionInfo(this.deletingPromoInfo.id).subscribe(
@@ -1728,5 +1824,141 @@ export class AdminComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+
+  getSearchResultOrder(modal:any) {
+    this.searchResult_Order=[]
+    switch (this.searchBy_Order) {
+      case "Id":
+        try{
+          this.searchResult_Order = this.allOrder.filter(t=>String(t.id).includes(this.searchKey_Order))
+   
+        }
+        catch(e){
+          this.toast.error("Id không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Email":
+        try{
+          this.searchResult_Order = this.allOrder.filter(t=>String(t.email).includes(this.searchKey_Order))
+
+        }
+        catch(e){
+          this.toast.error("Email không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Name":
+        try{
+          this.searchResult_Order = this.allOrder.filter(t=>String(t.contactName).includes(this.searchKey_Order))
+      
+        }
+        catch(e){
+          this.toast.error("Tên không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "TotalPrice":
+        try{
+          let a = Number(this.searchKey_Order)
+          this.searchResult_Order = this.allOrder.filter(t=>t.totalPrice==a)
+        }
+        catch(e){
+          this.toast.error("Tổng tiền không hợp lệ!")
+          console.log(e)
+        }
+        break
+    }
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+  }
+
+  getSearchResultUser(modal:any) {
+    this.searchResult_User=[]
+    switch (this.searchBy_User) {
+      case "Id":
+        try{
+          this.searchResult_User = this.allUser.filter(t=>String(t.id).includes(this.searchKey_User))
+        }
+        catch(e){
+          this.toast.error("Id không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Email":
+        try{
+          this.searchResult_User = this.allUser.filter(t=>String(t.email).includes(this.searchKey_User))
+        }
+        catch(e){
+          this.toast.error("Email không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Phone":
+        try{
+          this.searchResult_User = this.allUser.filter(t=>String(t.phoneNumber).includes(this.searchKey_User))
+        }
+        catch(e){
+          this.toast.error("SDT không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Name":
+        try{
+          this.searchResult_User = this.allUser.filter(t=>String(t.displayName).includes(this.searchKey_User))
+        }
+        catch(e){
+          this.toast.error("Tên không hợp lệ!")
+          console.log(e)
+        }
+        break
+    }
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+  }
+
+  getSearchResultEmployee(modal:any) {
+    this.searchResult_Employee=[]
+    switch (this.searchBy_Employee) {
+      case "Id":
+        try{
+          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.id).includes(this.searchKey_Employee))
+        }
+        catch(e){
+          this.toast.error("Id không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Email":
+        try{
+          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.email).includes(this.searchKey_Employee))
+        }
+        catch(e){
+          this.toast.error("Email không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Phone":
+        try{
+          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.phoneNumber).includes(this.searchKey_Employee))
+        }
+        catch(e){
+          this.toast.error("SDT không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Name":
+        try{
+          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.displayName).includes(this.searchKey_Employee))
+        }
+        catch(e){
+          this.toast.error("Tên không hợp lệ!")
+          console.log(e)
+        }
+        break
+    }
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
   }
 }

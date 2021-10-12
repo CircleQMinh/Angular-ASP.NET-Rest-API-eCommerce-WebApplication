@@ -223,6 +223,96 @@
     </div>
 </div>
 
+<div class="col" *ngIf="active_tab=='order'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm đơn hàng nào?"
+                    [(ngModel)]="searchKey_Order"  (keyup.enter)="getSearchResultOrder(order_search)">
+                <button type="submit" class="searchButton" (click)="getSearchResultOrder(order_search)">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tìm kiếm bằng : </label>
+            <select class="form-select" [(ngModel)]="searchBy_Order">
+                <option value="Id" selected="true">Id</option>
+                <option value="Email">Email</option>
+                <option value="Name">Tên</option>
+                <option value="TotalPrice">Tổng giá</option>
+            </select>
+        </div>
+        <div *ngIf="isGettingSearchResult">
+            <p>Đang tải kết quả tìm kiếm</p>
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="col" *ngIf="active_tab=='user'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm người dùng nào?"
+                    [(ngModel)]="searchKey_User" (keyup.enter)="getSearchResultUser(user_search)">
+                <button type="submit" class="searchButton" (click)="getSearchResultUser(user_search)">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tìm kiếm bằng : </label>
+            <select class="form-select" [(ngModel)]="searchBy_User">
+                <option value="Id" selected="true">Id</option>
+                <option value="Email">Email</option>
+                <option value="Name">Tên</option>
+                <option value="Phone">SDT</option>
+            </select>
+        </div>
+        <div *ngIf="isGettingSearchResult">
+            <p>Đang tải kết quả tìm kiếm</p>
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="col" *ngIf="active_tab=='employee'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm nhân viên nào?"
+                    [(ngModel)]="searchKey_Employee" (keyup.enter)="getSearchResultEmployee(employee_search)">
+                <button type="submit" class="searchButton" (click)="getSearchResultEmployee(employee_search)">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tìm kiếm bằng : </label>
+            <select class="form-select" [(ngModel)]="searchBy_Employee">
+                <option value="Id" selected="true">Id</option>
+                <option value="Email">Email</option>
+                <option value="Name">Tên</option>
+                <option value="Phone">SDT</option>
+            </select>
+        </div>
+        <div *ngIf="isGettingSearchResult">
+            <p>Đang tải kết quả tìm kiếm</p>
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <!-- POSTS -->
 <section id="posts" *ngIf="!isLoading">
     <div class="container-fluid">
@@ -426,8 +516,8 @@
                                     <td>
                                         <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                                         <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
-                               
-                                       
+
+
                                     </td>
                                     <td>
                                         <p class="text-tron text-monospace" *ngIf="o.Sex=='M'">Nam</p>
@@ -1143,17 +1233,6 @@
 </footer>
 
 
-
-
-
-
-
-
-
-
-
-
-
 <ng-template #changeProfile let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa tài khoản</h4>
@@ -1325,7 +1404,6 @@
 </ng-template>
 
 
-
 <ng-template #add_product let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Thêm sản phẩm</h4>
@@ -1414,10 +1492,6 @@
         </div>
     </div>
 </ng-template>
-
-
-
-
 
 <ng-template #edit_product let-modal>
     <div class="modal-header">
@@ -1665,7 +1739,6 @@
 </ng-template>
 
 
-
 <ng-template #newEmployee let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Thêm nhân viên </h4>
@@ -1811,7 +1884,6 @@
         </div>
     </div>
 </ng-template>
-
 
 
 <ng-template #edit_Employee let-modal>
@@ -2215,11 +2287,11 @@
                         <td>
 
                             <button class="btn btn-info  btn-sm admin-button mr-2"
-                            (click)="openEditPromoInfo(o,o.product,edit_promoInfo)">
+                                (click)="openEditPromoInfo(o,o.product,edit_promoInfo)">
                                 <i class="far fa-edit"></i>
                             </button>
                             <button class="btn btn-danger btn-sm admin-button mr-2"
-                            (click)="openDeletePromoInfo(o,o.product,delete_promoInfo)">
+                                (click)="openDeletePromoInfo(o,o.product,delete_promoInfo)">
                                 <i class="fas fa-trash"></i>
                             </button>
 
@@ -2279,7 +2351,7 @@
                         <td>{{ o.price }}</td>
                         <td>
                             <button class="btn btn-info  btn-sm admin-button mr-2"
-                            (click)="openAddPromoInfo(o,add_promoInfo)">
+                                (click)="openAddPromoInfo(o,add_promoInfo)">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </td>
@@ -2308,17 +2380,20 @@
 
             <label for="email">Id</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="1" formControlName="idSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="1" formControlName="idSP"
+                    [attr.disabled]='true'>
             </div>
 
             <label for="email">Tên sản phẩm</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="7" formControlName="nameSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="7" formControlName="nameSP"
+                    [attr.disabled]='true'>
 
             </div>
             <label for="email">Giá gốc</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="9" formControlName="priceSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="9" formControlName="priceSP"
+                    [attr.disabled]='true'>
 
             </div>
             <label for="email">Loại hình khuyến mãi</label>
@@ -2333,14 +2408,14 @@
             <div class="input-group">
                 <input id="ed" class="form-control" name="4" formControlName="number" type="number">
             </div>
-     
+
         </form>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isCreatingPromoInfo">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-               (click)="addPromoInfo(pick_pro_promo)">Lưu</button>
+                (click)="addPromoInfo(pick_pro_promo)">Lưu</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isCreatingPromoInfo">
@@ -2365,17 +2440,20 @@
 
             <label for="email">Id</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="1" formControlName="idSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="1" formControlName="idSP"
+                    [attr.disabled]='true'>
             </div>
 
             <label for="email">Tên sản phẩm</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="7" formControlName="nameSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="7" formControlName="nameSP"
+                    [attr.disabled]='true'>
 
             </div>
             <label for="email">Giá gốc</label>
             <div class="input-group">
-                <input id="name" class="form-control" placeholder="..." name="9" formControlName="priceSP" [attr.disabled]='true'>
+                <input id="name" class="form-control" placeholder="..." name="9" formControlName="priceSP"
+                    [attr.disabled]='true'>
 
             </div>
             <label for="email">Loại hình khuyến mãi</label>
@@ -2390,14 +2468,14 @@
             <div class="input-group">
                 <input id="ed" class="form-control" name="4" formControlName="number" type="number">
             </div>
-     
+
         </form>
     </div>
     <div class="modal-footer">
         <div *ngIf="!isEditingPromoInfo">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-               (click)="editPromoInfo(promo_info)">Lưu</button>
+                (click)="editPromoInfo(promo_info)">Lưu</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isEditingPromoInfo">
@@ -2433,5 +2511,253 @@
             </div>
             <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
+    </div>
+</ng-template>
+
+
+<div class="position-fixed bottom-0 end-0 p-3 admin-notify" style="z-index: 11" *ngIf="showNewOrderNotify">
+    <div id="liveToast" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <rect width="100%" height="100%" fill="#007aff"></rect>
+            </svg>
+
+            <strong class="me-auto">Thông báo </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                (click)="showNewOrderNotify=false"></button>
+        </div>
+        <div class="toast-body">
+            Có đơn hàng mới cần duyệt!
+            <button class="btn btn-sm btn-primary" (click)="showNewOrderNotify=false;switchTab('order')">Xem</button>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #order_search let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin tìm kiếm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p *ngIf="searchResult_Order.length==0">Không tìm thấy đơn hàng!</p>
+        <div class="table-responsive p-20" *ngIf="searchResult_Order.length!=0">
+            <p>Tổng số kết quả : {{searchResult_Order.length}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Thông tin liên lạc</th>
+                        <th>Ngày đặt</th>
+                        <th>Số SP</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of searchResult_Order,index as i">
+
+                        <td>
+                            <p class="text-tron text-monospace">{{o.id}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.contactName}}</p>
+                            <p class="text-tron text-monospace">{{o.address}}</p>
+                            <p class="text-tron text-monospace">{{o.email}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                        </td>
+
+                        <td>
+                            <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
+                                    style="text-decoration: underline;">đ</span></p>
+                        </td>
+                        <td *ngIf="o.status==0">
+                            <span class="badge bg-info text-dark">Chưa duyệt</span>
+                        </td>
+                        <td *ngIf="o.status==1">
+                            <span class="badge bg-success">Đã duyệt</span>
+                        </td>
+                        <td *ngIf="o.status==2">
+                            <span class="badge bg-warning text-dark">Đang giao</span>
+                        </td>
+                        <td *ngIf="o.status==3">
+                            <span class="badge bg-danger">Hoàn thành</span>
+                        </td>
+                        <td *ngIf="o.status==4">
+                            <span class="badge bg-secondary">Hủy</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning  btn-sm admin-button mr-2"
+                                (click)="openOrderInfoModal(order_info,o)">
+                                <i class="fas fa-box-open"></i></button>
+                            <button class="btn btn-info  btn-sm admin-button mr-2"
+                                (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button"
+                                (click)="openDeleteOrderInfoModal(order_delete,o)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+<ng-template #user_search let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin tìm kiếm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p *ngIf="searchResult_User.length==0">Không tìm thấy người dùng!</p>
+        <div class="table-responsive p-20" *ngIf="searchResult_User.length!=0">
+            <p>Tổng số kết quả : {{searchResult_User.length}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Thông tin</th>
+                        <th>Email</th>
+                        <th>SDT</th>
+                        <th>Đã xác thực</th>
+                        <th>Số đơn hàng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+          
+                    <tr *ngFor="let o of searchResult_User,index as i">
+
+                        <td>
+                            <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                            <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+                        </td>
+                        <td style="word-break: break-all;">{{o.email}}</td>
+                        <td>{{o.phoneNumber}}</td>
+                        <td *ngIf="o.emailConfirmed">
+                            <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                            <p class="d-no">1</p>
+                        </td>
+                        <td *ngIf="!o.emailConfirmed">
+                            <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                            <p class="d-no">0</p>
+                        </td>
+                        <td>
+                            {{o.orderCount}}
+                        </td>
+
+                        <td>
+                            <button class="btn btn-info btn-sm admin-button mr-2"
+                                (click)="openEditUserModal(changeProfile,o)">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button "
+                                (click)="openDeleteUserModal(deleteUser,o.id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #employee_search let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin tìm kiếm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p *ngIf="searchResult_Employee.length==0">Không tìm thấy nhân viên!</p>
+        <div class="table-responsive p-20" *ngIf="searchResult_Employee.length!=0">
+            <p>Tổng số kết quả : {{searchResult_Employee.length}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Thông tin</th>
+                        <th>Giới tính</th>
+                        <th>CMND</th>
+                        <th>Email</th>
+                        <th>SDT</th>
+                        <th>Địa chỉ</th>
+                        <th>Lương</th>
+                        <th>Ngày bắt đầu</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of searchResult_Employee,index as i">
+
+                        <td>
+                            <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                            <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+
+
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace" *ngIf="o.Sex=='M'">Nam</p>
+                            <p class="text-tron text-monospace" *ngIf="o.Sex=='F'">Nữ</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.CMND}}</p>
+                        </td>
+                        <td style="word-break: break-all;">{{o.email}}</td>
+                        <td>{{o.phoneNumber}}</td>
+                        <td>{{o.Address}}</td>
+                        <td>{{o.Salary}}</td>
+                        <td>{{o.StartDate}}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm admin-button mr-2"
+                                (click)="openEditEmployeeModal(edit_Employee,o)">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-info btn-sm admin-button mr-2"
+                                *ngIf="o.roles[0]=='Shipper'"
+                                (click)="openShipperHistoryModal(shipper_history,o.id)">
+                                <i class="fas fa-history"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button "
+                                (click)="openDeleteEmployeeModal(delete_Employee,o)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
     </div>
 </ng-template>
