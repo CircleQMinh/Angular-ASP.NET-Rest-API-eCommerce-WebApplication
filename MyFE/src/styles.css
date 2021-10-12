@@ -744,6 +744,8 @@ a:hover{color:#51aa1b;}
     display: none;
 }
 
+
+
 .gradient-border {
 --borderWidth: 3px;
 background: white;
@@ -1252,6 +1254,14 @@ ngb-typeahead-window.dropdown-menu {
     .sh-table table thead tr td p{
         font-size: 10px;
     }
+    .admin-notify{
+        width: 285px;
+
+    }
+     #liveToast{
+        width: 250px;
+
+    }
 }
 
 @media (max-width: 300px) { 
@@ -1271,6 +1281,7 @@ ngb-typeahead-window.dropdown-menu {
         height: 30px;
         top:115px
     }
+
 }
 
 html, body { height: 100%; }
