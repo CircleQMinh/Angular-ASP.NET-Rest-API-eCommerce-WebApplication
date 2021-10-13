@@ -27,9 +27,9 @@ export class LoginComponent implements OnInit {
 
     this.rf1 = new FormGroup({
       email: new FormControl('',
-        [Validators.required, Validators.email]),
+        [Validators.required]),
       password: new FormControl('',
-        [Validators.required, Validators.minLength(8)]),
+        [Validators.required]),
     });
     this.authService.getLocalStorage()
     this.user=this.authService.user
@@ -63,8 +63,7 @@ export class LoginComponent implements OnInit {
           this.isLoading=false
         },
         error => {
-          console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.toast.error(error.error.msg)
           this.isLoading=false
           this.login_error=true
         }

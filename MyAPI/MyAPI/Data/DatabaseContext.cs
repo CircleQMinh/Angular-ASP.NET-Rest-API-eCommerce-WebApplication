@@ -31,6 +31,7 @@ namespace MyAPI.Data
             // builder.ApplyConfiguration(new ProductConfig());
             builder.ApplyConfiguration(new RoleConfig());
 
+
         }
     }
 }

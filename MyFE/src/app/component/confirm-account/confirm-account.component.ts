@@ -25,14 +25,14 @@ export class ConfirmAccountComponent implements OnInit {
 
           this.isLoading=false
           // console.log(data)
-          this.toast.success("Successfully confirmed your email !")
-          this.toast.info("Redirect to login page!")
+          this.toast.success("Xác thực tài khoản thành công!")
+          this.toast.info("Điều hướng về trang đăng nhập!")
           this.router.navigateByUrl("/login");
           
         },
         error=>{
-          this.toast.error("An error has occurred!")
-          this.toast.info("Redirect to home page!")
+          this.toast.error("Xác thực không thành công!")
+          this.toast.info("Điều hướng về trang chủ!")
           this.router.navigateByUrl("/home");
         }
       )
