@@ -30,18 +30,18 @@ export class ForgotPasswordComponent implements OnInit {
         data => {
           // console.log(data)
           this.isLoading=false
-          this.toast.success("Check your email to complete the password-reset process!")
+          this.toast.success("Đã gủi mail xác nhận tới email của bạn! Hãy kiểm tra email để khôi phục tài khoản của bạn.")
           this.signOut()
           this.email_send = true
         },
         error => {
-          this.toast.error(" An error has occurred ! Try again !")
+          this.toast.error(error.error.msg)
           this.isLoading=false
         }
       )
     }
     else {
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Thông tin nhập không hợp lệ!. Hãy chỉnh sửa và gửi lại.")
     }
   }
   signOut() {

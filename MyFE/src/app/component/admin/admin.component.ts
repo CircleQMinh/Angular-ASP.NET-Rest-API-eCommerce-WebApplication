@@ -529,7 +529,7 @@ export class AdminComponent implements OnInit {
     setInterval(() => {
       this.adminService.getDashboardInfo().subscribe(
         data => {
-          if (data.totalOrder != this.dashboardInfo.totalOrder) {
+          if (data.totalOrder > this.dashboardInfo.totalOrder) {
             this.showNewOrderNotify = true
             this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
             this.dashboardInfo != null

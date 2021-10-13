@@ -86,7 +86,7 @@
 
             <ng-container *ngFor="let o of randomProducts">
                 <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
-                 (click)="goToProductPage(o.id)" *ngif="o.id!=product.id">
+                 (click)="goToProductPage(o.id)" *ngIf="o.id!=product.id">
                 <div >
                     <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
                             style="width: 100%; height: 100%;">

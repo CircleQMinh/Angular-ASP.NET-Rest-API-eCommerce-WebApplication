@@ -51,8 +51,8 @@ namespace MyAPI.Controllers
 
             if (existingUser != null)
             {
-                var error = "Submitted data is invalid";
-                return BadRequest(new { error });
+                var error = "Email đã được sử dụng!";
+                return BadRequest(new { msg=error });
             }
             if (!ModelState.IsValid)
             {
@@ -119,10 +119,15 @@ namespace MyAPI.Controllers
         public async Task<IActionResult> ForgotPassword(string email)
         {
             APIUser user = await _userManager.FindByEmailAsync(email);
-            if (user == null|!(await _userManager.IsEmailConfirmedAsync(user)))
+            if (user == null)
             {
-                var error = "Submitted values is invalid";
-                return BadRequest(new { error });
+                var error = "Không tìm thấy tài khoản với email!";
+                return BadRequest(new { msg = error });
+            }
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                var error = "Tài khoản chưa xác thực!";
+                return BadRequest(new { msg = error });
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -170,9 +175,15 @@ namespace MyAPI.Controllers
             {
                 if (!await _authManager.ValidateUser(userDTO))
                 {
-                    return Unauthorized();
+                    var error = "Thông tin đăng nhập không chính xác! Xin hãy thử lại.";
+                    return BadRequest(new { msg = error });
                 }
                 APIUser u = await _userManager.FindByEmailAsync(userDTO.Email);
+                if (!u.EmailConfirmed)
+                {
+                    var error = "Bạn chưa xác thục tài khoản!";
+                    return BadRequest(new { msg = error });
+                }
                 var roles = await _userManager.GetRolesAsync(u);
                 var results = _mapper.Map<UserInfoDTO>(u);
                 return Accepted(new { Token = await _authManager.CreateToken(), user=results,roles });

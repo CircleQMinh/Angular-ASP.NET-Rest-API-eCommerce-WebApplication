@@ -42,8 +42,8 @@ export class ResetPasswordComponent implements OnInit {
       this.authService.comfirmPassword(this.email,this.token,this.rf1.controls['password'].value).subscribe(
         data=>{
           console.log(data)
-          this.toast.success("Password reset compelte!")
-          this.toast.info("Redirect to login page!")
+          this.toast.success("Đổi mật khẩu thành công!")
+          this.toast.info("Điều hướng về trang đăng nhập!")
           this.router.navigateByUrl("/login");
         },
         error=>{
@@ -54,7 +54,7 @@ export class ResetPasswordComponent implements OnInit {
       )
     }
     else {
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Thông tin nhập không hợp lệ!. Hãy chỉnh sửa và gửi lại.")
     }
   }
 }

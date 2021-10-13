@@ -150,7 +150,7 @@ export class ProductInfoComponent implements OnInit {
 
     this.proService.getProductInfo(this.id).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
         this.displayCategory = this.getDisplayCategory(this.product.category)

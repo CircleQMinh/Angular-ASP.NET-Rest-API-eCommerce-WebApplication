@@ -1,12 +1,12 @@
 <app-nav></app-nav>
 
 
-<div class="container form-reg" style="margin-top: 100px;">
+<!-- <div class="container form-reg" style="margin-top: 100px;">
     <div class="div-center-content" style="margin-bottom: 20px;">
 
         <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png" style="width: 50%;">
         <strong style="display: block;font-size: 20px;" class="text-monospace">Đăng nhập</strong>
-        <!-- //  <span ><i class="fas fa-exclamation-triangle"></i> This website is NOT SECURE. Do not use any vital information that may contain information about you. Use a fake one if you wish to test this website.</span><br> -->
+      
         <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="isLogin">Bạn đã đăng nhập với tài khoản
             '{{user.displayName}}' sử dụng email : {{user.email}}</p>
         <p style="display: block;font-size: 20px;    word-break: break-word;" *ngIf="login_error">Sai mật khẩu hoặc sai
@@ -62,7 +62,7 @@
             <div class="form-group row" *ngIf="!isLoading">
                 <div class="col " style="display: flex;
                 justify-content: center;">
-                    <!-- <a routerLink="/register">Sign Up</a><br> -->
+  
                     <button class="btn btn-primary" type="submit">Đăng nhập</button>
 
                 </div>
@@ -71,8 +71,7 @@
     </form>
 
 
-    <!-- <pre>{{rf1.value|json}}</pre>
-    <pre>{{rf1.valid|json}}</pre> -->
+
 </div>
 <div class="div-center-content">
     <div class="row justify-content-md-center">
@@ -87,8 +86,77 @@
             </div>
         </div>
     </div>
+</div> -->
+
+<div class="container-fluid h-100 form-all-con">
+    <div class="d-flex justify-content-center h-100 animate__animated animate__rotateIn">
+        <div class="user_card">
+            <div class="d-flex justify-content-center mb-3">
+                <div class="brand_logo_container ">
+                    <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
+                        class="brand_logo" alt="Logo">
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center form_container flex-column align-items-center">
+                <strong style="display: block;font-size: 25px;margin-top: 50px;" class="text-monospace">Đăng
+                    nhập</strong>
+
+                <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="isLogin">Bạn đã đăng nhập
+                    với tài khoản
+                    <a routerLink="/profile/{{user.id}}" style="color: blue;">'{{user.displayName}}'</a> sử dụng email :
+                </p>
+                <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="isLogin">
+                    <span class="text-center">{{user.email}}</span>
+                </p>
+                <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="login_error">Sai mật khẩu
+                    hoặc sai
+                    email!</p>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+
+                <form novalidate (ngSubmit)="trySignIn()" [formGroup]="rf1" *ngIf="!isLogin">
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-envelope-open-text"></i></span>
+                        </div>
+                        <input type="text" name="" class="form-control input_user" value="" placeholder="Email"
+                            formControlName="email">
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" name="" class="form-control input_pass" value="" placeholder="Password"
+                            formControlName="password">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container" *ngIf="!isLoading">
+                        <button type="submit" name="button" class="btn login_btn"><i class="fas fa-sign-in-alt"></i>
+                            Login</button>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container" *ngIf="isLoading">
+                        <div class="col " style="display: flex;
+                justify-content: center;">
+                            <div class="spinner-border text-primary" role="status">
+
+                            </div>
+
+                            <p style="color: rgb(0, 0, 0);"> Đang tải ...</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex justify-content-center links">
+                    Chưa có tài khoản? <a routerLink="/register" class="ml-2">Đăng Ký</a>
+                </div>
+                <div class="d-flex justify-content-center links">
+                    <a routerLink="/password-recover">Quên mật khẩu?</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 <app-footer></app-footer>

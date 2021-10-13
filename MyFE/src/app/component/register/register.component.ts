@@ -54,19 +54,20 @@ export class RegisterComponent implements OnInit {
     console.log("submit")
 
     if (this.rf1.valid) {
-      console.log(this.rf1.controls['email'].value)
-      console.log(this.rf1.controls['password'].value)
-      console.log(this.rf1.controls['username'].value)
-      console.log(this.rf1.controls['phone'].value)
+      // console.log(this.rf1.controls['email'].value)
+      // console.log(this.rf1.controls['password'].value)
+      // console.log(this.rf1.controls['username'].value)
+      // console.log(this.rf1.controls['phone'].value)
       this.authService.signUp(this.rf1.controls['email'].value,this.rf1.controls['password'].value,
       this.rf1.controls['username'].value,this.rf1.controls['phone'].value).subscribe(
         data=>{
           this.isRegistered=true
-          this.toast.success("Check your email to complete the sign-up process!")
+          this.toast.success("Kiểm tra email của bạn để xác thực tài khoản!")
           this.isLoading=false
         },
         error=>{
-          this.toast.error(" An error has occurred ! Try again !")
+
+          this.toast.error(error.error.msg)
           this.unknown_error=true
           this.isLoading=false
         }
@@ -74,7 +75,7 @@ export class RegisterComponent implements OnInit {
      
     }
     else{
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Thông tin nhập không hợp lệ!. Hãy chỉnh sửa và gửi lại.")
       this.isLoading=false
     }
   }

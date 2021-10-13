@@ -363,7 +363,7 @@ namespace MyAPI.Controllers
 
                     var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null);
                     var result = _mapper.Map<IList<OrderDTO>>(query);
-                    var orderedList = result.OrderBy(x => DateTime.Parse(x.OrderDate)).ToList();
+                    var orderedList = result.OrderBy(x => DateTime.ParseExact(x.OrderDate,"dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
                     List<OrderDTO> list = new List<OrderDTO>();
                     if (orderDir == "Desc")
                     {
@@ -473,6 +473,17 @@ namespace MyAPI.Controllers
 
             try
             {
+                var reviewList = await _unitOfWork.Reviews.GetAll(q => q.UserID == id,null,null);
+                foreach (var item in reviewList)
+                {
+                    await _unitOfWork.Reviews.Delete(item.Id);
+                }
+                var orderList = await _unitOfWork.Orders.GetAll(q => q.UserID == id, null, null);
+                foreach (var item in orderList)
+                {
+                    await _unitOfWork.Orders.Delete(item.Id);
+                }
+                await _unitOfWork.Save();
                 await _userManager.DeleteAsync(existingUser);
 
                 var success = true;
