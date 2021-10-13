@@ -41,3 +41,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 10-10-2021 : update chức năng tìm kiếm.<br>
 11-10-2021 : thêm chức năng chọn sản phẩm hiển thị và xuất file excel cho admin.<br>
 12-10-2021 : thêm tìm kiếm cho admin.<br>
+13-10-2021 : update giao diện và xác thực.<br>
