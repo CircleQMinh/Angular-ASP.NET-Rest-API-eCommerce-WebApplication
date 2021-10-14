@@ -718,11 +718,6 @@ export class AdminComponent implements OnInit {
         this.isLoading = false
         break
       case "tk":
-        this.getSaleChart()
-        this.getOrderChart()
-        this.getProductChart()
-        this.getCateChart()
-        this.getTopSaleProduct()
         this.isLoading = false
         break
       case "pm":

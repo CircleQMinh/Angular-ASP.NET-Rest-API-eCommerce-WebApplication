@@ -13,8 +13,9 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class ThankyouComponent implements OnInit {
 
-  isLoading=true
-  payment_status=""
+  isLoading=false
+  payment_status="OK"
+
   vnp_ResponseCode=""
   momo_ResponCode=""
   user_Order!:Order
@@ -37,9 +38,9 @@ export class ThankyouComponent implements OnInit {
       this.momo_ResponCode=this.route.snapshot.queryParamMap.get("errorCode")!
       this.xuLyMomo()
     }
-    else{
-      this.router.navigateByUrl("/error")
-    }
+    // else{
+    //   this.router.navigateByUrl("/error")
+    // }
 
   }
   getCartInfo() {

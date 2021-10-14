@@ -13,59 +13,66 @@
 
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="pro-img-details d-flex justify-content-center p-3" style="border: solid;"> <img
-                    src="{{product.imgUrl}}" alt="" class="product-img animate__animated animate__zoomIn"></div>
+    <div class="row justify-content-center border border-3 border-primary rounded">
+        <div class="col-md-5 ">
+            <div class="d-flex justify-content-center p-3 
+            flex-column align-item-center " 
+            >
+                <lib-ngx-image-zoom [thumbImage]=product.imgUrl [fullImage]=product.imgUrl [enableLens]=true
+                    [lensWidth]=250 [lensHeight]=250 [magnification]=1.05></lib-ngx-image-zoom>
+              <p class="text-center"><i class="fas fa-search"></i> Rê/Nhấp chuột vào ảnh để phóng to</p>
+            </div>
         </div>
         <div class="col-md-6">
             <h4 class="pro-d-title mt-3"> <a href="#" class="mt-2 text-monospace text-lg lead"> {{product.name}} </a>
             </h4>
-            <p class="lead">{{product.description}}</p>
+            <strong>Mô tả sản phẩm :</strong> <br>
+            <p class="lead pro-des p-3" > 
+                <a >{{product.description}}</a></p>
             <div class="product_meta">
                 <span class="posted_in">
-                    <strong>Danh mục :</strong>
-                    <a rel="tag"> {{ getDisplayCategory(product.category)}}</a>
+                    <strong class="mr-2">Danh mục : </strong>
+                    <a rel="tag"> <span >{{ getDisplayCategory(product.category)}}</span> </a>
 
                 </span>
                 <span class="posted_in">
-                    <strong>Yêu thích :</strong>
+                    <strong class="mr-2">Yêu thích : </strong>
                     <a rel="tag"> {{ product.favoritedUsers.length}} <i class="fas fa-users"></i></a>
 
                 </span>
             </div>
-            <div class="m-bot15">
-                <strong>Giá :
-
-                </strong>
+            <div class="m-bot15 d-flex">
+                <strong class="mr-2">Giá : </strong>
                 <div *ngIf="!promoInfo">
                     <span class="pro-price">
-                        {{product.price|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                        {{product.price| currency:'VND':''}} <span class="currency-dis">đ</span>
                     </span>
                 </div>
                 <div *ngIf="promoInfo">
                     <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
-                        {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                        {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100| currency:'VND':''}}
+                        <span class="currency-dis">đ</span>
                         <span class="badge bg-success" ngbTooltip="{{promoInfo.promotion.name}}&#013;
                                                 Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
                                                 Kết thúc : {{promoInfo.promotion.endDate}}&#013;
                                                 Giảm : {{promoInfo.promotionPercent}}%&#013;
                                                 Giá gốc : {{product.price| currency:'VND':''}} đ" placement="auto"
-                                    data-html="true">-{{promoInfo.promotionPercent}}%</span>
+                            data-html="true">-{{promoInfo.promotionPercent}}%</span>
                     </span>
 
                     <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
-                        {{product.price-toNumber(promoInfo.promotionAmount)|   currency:'VND':''}} <span class="currency-dis">đ</span> 
+                        {{product.price-toNumber(promoInfo.promotionAmount)| currency:'VND':''}} <span
+                            class="currency-dis">đ</span>
                         <span class="badge bg-danger" ngbTooltip="{{promoInfo.promotion.name}}&#013;
                                                 Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
                                                 Kết thúc : {{promoInfo.promotion.endDate}}&#013;
                                                 Giảm : {{promoInfo.promotionAmount}}VND&#013;
-                                                Giá gốc : {{product.price| currency:'VND':''}} đ&#013;" placement="auto"
-                                    data-html="true">-{{promoInfo.promotionAmount| currency:'VND':''}} <span
-                                        class="currency-dis">đ</span></span>
+                                                Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
+                            placement="auto" data-html="true">-{{promoInfo.promotionAmount| currency:'VND':''}} <span
+                                class="currency-dis">đ</span></span>
                     </span>
                 </div>
-           
+
             </div>
             <p class="mt-3">
                 <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
@@ -85,30 +92,33 @@
         <div class="slick-track product-similar">
 
             <ng-container *ngFor="let o of randomProducts">
-                <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1" aria-hidden="false" style="outline: none; width: 207px;"
-                 (click)="goToProductPage(o.id)" *ngIf="o.id!=product.id">
-                <div >
-                    <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
-                            style="width: 100%; height: 100%;">
-                            <div class="Item__ProductImgWrapper-sc-m1oy8w-6 dgEsBx">
-                                <div class="Item__ThumbnailWrapper-sc-m1oy8w-7 jTPYDY">
-                                    <picture class="webpimg-container">
+                <div class="slick-slide slick-active animate__animated animate__slideInLeft" tabindex="-1"
+                    aria-hidden="false" style="outline: none; width: 207px;" (click)="goToProductPage(o.id)"
+                    *ngIf="o.id!=product.id">
+                    <div>
+                        <div rel="" class="Item__Wrapper-sc-m1oy8w-0 jayrsL" style="padding: 12px;"><a
+                                style="width: 100%; height: 100%;">
+                                <div class="Item__ProductImgWrapper-sc-m1oy8w-6 dgEsBx">
+                                    <div class="Item__ThumbnailWrapper-sc-m1oy8w-7 jTPYDY">
+                                        <picture class="webpimg-container">
 
-                                        <img alt="{{o.imgUrl}}" src="{{o.imgUrl}}"
-                                            class="WebpImg__StyledImg-sc-h3ozu8-0 fWjUGo">
-                                    </picture>
+                                            <img alt="{{o.imgUrl}}" src="{{o.imgUrl}}"
+                                                class="WebpImg__StyledImg-sc-h3ozu8-0 fWjUGo">
+                                        </picture>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="title" style="max-height: 40px; height: auto;">{{o.name}}</div>
+                                <div class="title" style="max-height: 40px; height: auto;">{{o.name}}</div>
 
-                            <p class="price">{{o.price|   currency:'VND':''}} <span style="text-decoration: underline;">đ</span> </p>
-                        </a></div>
+                                <p class="price">{{o.price| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                            </a></div>
+                    </div>
                 </div>
-            </div>
             </ng-container>
-     
+
         </div>
     </div>
+    <hr>
     <div class="div-center-content mt-5">
         <h2 class="pdp-mod-section-title outer-title text-tron">Đánh giá &amp; Nhận xét của '{{product.name}}'</h2>
         <p class="text-monospace text-tron"><i class="far fa-star"></i><b>Đánh giá({{(avgRating).toFixed(2)}}) </b></p>
@@ -145,7 +155,7 @@
     </div>
 
     <!-- --------------------------------------------------------- -->
-
+    <hr>
     <div class="d-flex justify-content-center mt-5">
         <header class="head-comment fmsidWidgetCommentListHead mr-3"><i class="far fa-comments"></i> <b>
                 Nhận xét</b><span class="fmsidWidgetCommentListHeadText"></span> (<span
@@ -167,11 +177,10 @@
             </select>
         </div> -->
     </div>
+    <hr>
     <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="product.reviews.length!=0">
         <div *ngFor="let r of pagedReview " class="shopee-product-rating">
             <div>
-
-
                 <a class="shopee-product-rating__avatar">
                     <div class="shopee-avatar">
                         <img src="{{r.user.imgUrl}}" style="width: 40px;height: 40px;border-radius: 50%;">

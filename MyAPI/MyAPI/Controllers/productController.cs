@@ -303,6 +303,43 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet("getRandomProduct")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetRandomProduct(int id,string category,int number)
+        {
+            Expression<Func<Product, bool>> expression = null;
 
+            try
+            {
+                if (category!="all")
+                {
+                    expression = q => q.Category == category&&q.Id!=id;
+                }
+                else
+                {
+                    expression = q => q.Id != id;
+                }
+                var query = await _unitOfWork.Products.GetAll(expression, null, null);
+                var list = _mapper.Map<IList<ProductDTO>>(query);
+                var random = list.OrderBy(x => Guid.NewGuid()).ToList();
+                var result = new List<ProductDTO>();
+                if (number>list.Count)
+                {
+                    number = list.Count;
+                }
+                for (int i=0;i<number;i++)
+                {
+                    result.Add(random[i]);
+                }
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetRandomProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
     }
 }

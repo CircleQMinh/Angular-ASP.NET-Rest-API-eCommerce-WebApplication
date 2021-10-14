@@ -31,11 +31,12 @@ export class ShipperComponent implements OnInit {
 
   pageNumberOrder = 1
   pageSizeOrder = 5
-  orderOrder = "Id"
-  orderDirOrder: any = "Asc"
+  orderOrder = "OrderDate"
+  orderDirOrder: any = "Desc"
   collectionSizeOrder = 0
 
   orderList: Order[] = []
+  shippingInfoList:any[]=[]
   selectedOrder!: Order
 
   rf1!: FormGroup;
@@ -93,6 +94,7 @@ export class ShipperComponent implements OnInit {
         }
         //console.log(this.user)
         this.getAvailableOrder()
+        this.autoUpdate()
         this.isLoading = false
       },
       error => {
@@ -100,6 +102,21 @@ export class ShipperComponent implements OnInit {
         this.toast.error(" An error has occurred ! Try again !")
       }
     )
+  }
+  autoUpdate(){
+    setInterval(()=>{
+      if (this.active_tab == "av") {
+        this.getAvailableOrder()
+      }
+      if (this.active_tab == "dv") {
+        this.getAcceptedOrder()
+      }
+  
+      if (this.active_tab == "his") {
+        this.getOrderHistory()
+      }
+    },4000)
+
   }
   signOut() {
     this.isLogin = false
@@ -109,7 +126,6 @@ export class ShipperComponent implements OnInit {
     this.router.navigateByUrl('/home')
   }
   getAvailableOrder() {
-    this.isLoading = true
     this.orderService.getAvailableOrder(1, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder, this.orderDirOrder).subscribe(
       data => {
         this.orderList = data.result
@@ -137,7 +153,7 @@ export class ShipperComponent implements OnInit {
           this.orderList.push(data.sil[i].order)
         }
 
-
+        this.isLoading=false
       },
       error => {
         console.log(error)
@@ -146,12 +162,17 @@ export class ShipperComponent implements OnInit {
     )
   }
   getOrderHistory() {
-    this.orderService.getFinishedOrder(this.user.id).subscribe(
+
+    this.orderService.getShipperOrderHistory(this.user.id).subscribe(
       data => {
+        //console.log(data)
         this.orderList = []
+        this.shippingInfoList = []
+        this.shippingInfoList=data.sil
         for (let i = 0; i < data.sil.length; i++) {
           this.orderList.push(data.sil[i].order)
         }
+        this.isLoading=false
       },
       error => {
         console.log(error)

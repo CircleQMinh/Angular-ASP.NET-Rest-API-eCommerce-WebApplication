@@ -12,7 +12,8 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class TestComponent implements OnInit {
 
-
+  myThumbnail="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg";
+  myFullresImage="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg";
 
   constructor(private http: HttpClient,private authService:AuthenticationService,private orderService:OrderService,
     private toast:HotToastService,private router:Router) { }

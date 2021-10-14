@@ -38,6 +38,7 @@ import { NewsComponent } from './component/news/news.component';
 import { ContactComponent } from './component/contact/contact.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 @NgModule({
   declarations: [
     AppComponent,
@@ -80,7 +81,8 @@ import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
     FormsModule, ReactiveFormsModule,
     HotToastModule.forRoot(),
     CollapseModule.forRoot(),
-    NgxChartsModule
+    NgxChartsModule,
+    NgxImageZoomModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
