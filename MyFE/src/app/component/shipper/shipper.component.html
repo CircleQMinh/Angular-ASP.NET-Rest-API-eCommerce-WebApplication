@@ -125,7 +125,7 @@
     <div class="form-group">
         <label>Sắp xếp theo: </label>
         <select class="form-select" [(ngModel)]="orderOrder" (change)="onAvailableOrderFilterChange()">
-            <option value="Id" selected="true">Id</option>
+            <option value="Id" >Id</option>
             <option value="Price">Tổng giá</option>
             <option value="OrderDate">Ngày đặt</option>
         </select>
@@ -315,52 +315,49 @@
                             <th>Id</th>
                             <th>Thông tin liên lạc</th>
                             <th>Ngày đặt</th>
+                            <th>Ngày giao</th>
                             <th>Tổng SP</th>
-                            <th>Tổng Gái</th>
+                            <th>Tổng Giá</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let o of orderList,index as i">
+                        <ng-container *ngFor="let o of orderList,index as i">
+                            <tr *ngIf="o.status==4||o.status==3">
 
-                            <td>
-                                <p class="text-tron text-monospace">{{o.id}}</p>
-                            </td>
-                            <td>
-                                <p class="text-tron text-monospace">{{o.contactName}}</p>
-                                <p class="text-tron text-monospace">{{o.address}}</p>
-                                <p class="text-tron text-monospace">{{o.email}}</p>
-                            </td>
-                            <td>
-                                <p class="text-tron text-monospace">{{o.orderDate}}</p>
-                            </td>
-                            <td>
-                                <p class="text-tron text-monospace">{{o.totalItem}}</p>
-                            </td>
-                            <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
-                            </td>
-                            <td *ngIf="o.status==0">
-                                <span class="badge bg-info text-dark">Chưa duyệt</span>
-                            </td>
-                            <td *ngIf="o.status==1">
-                                <span class="badge bg-success">Đã duyệt</span>
-                            </td>
-                            <td *ngIf="o.status==2">
-                                <span class="badge bg-warning text-dark">Đang giao</span>
-                            </td>
-                            <td *ngIf="o.status==3">
-                                <span class="badge bg-danger">Hoàn thành</span>
-                            </td>
-                            <td *ngIf="o.status==4">
-                                <span class="badge bg-secondary">Hủy</span>
-                            </td>
-                            <td>
-                                <button class="btn btn-warning  btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
-                                    <i class="fas fa-box-open"></i></button>
-                            </td>
-                        </tr>
+                                <td>
+                                    <p class="text-tron text-monospace">{{o.id}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-tron text-monospace">{{o.contactName}}</p>
+                                    <p class="text-tron text-monospace">{{o.address}}</p>
+                                    <p class="text-tron text-monospace">{{o.email}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-tron text-monospace">{{shippingInfoList[i].deliveryDate}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                                <td *ngIf="o.status==3">
+                                    <span class="badge bg-danger">Hoàn thành</span>
+                                </td>
+                                <td *ngIf="o.status==4">
+                                    <span class="badge bg-secondary">Hủy</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning  btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
+                                        <i class="fas fa-box-open"></i></button>
+                                </td>
+                            </tr>
+                        </ng-container>
                     </tbody>
                 </table>
             </div>

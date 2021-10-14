@@ -75,10 +75,6 @@ export class ProductInfoComponent implements OnInit {
         },5000)
       }
     )
-
-
-
-
   }
 
   sortChange() {
@@ -248,18 +244,14 @@ export class ProductInfoComponent implements OnInit {
   getRandomProduct() {
 
     this.randomProducts = []
-    for (let i = 0; i < 5; i++) {
-      let id = this.randomInteger(1, 100)
-      this.proService.getProductInfo(String(id)).subscribe(
-        data => {
-          this.randomProducts.push(data.result)
-        },
-        error => {
-          i--
-          console.log(error)
-        }
-      )
-    }
+    this.proService.getRandomProduct(this.product.id,this.product.category,5).subscribe(
+      data=>{
+        this.randomProducts=data.result
+      },
+      error=>{
+
+      }
+    )
   }
   randomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;

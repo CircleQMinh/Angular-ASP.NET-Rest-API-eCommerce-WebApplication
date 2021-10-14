@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
-  hostUrl:string="http://circle-shop-18110320.000webhostapp.com/#/"
+  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
+  // hostUrl:string="http://circle-shop-18110320.000webhostapp.com/#/"
 
-  // hostUrl:string="http://localhost:4200/#/"
-  // apiUrl: string = "https://localhost:44324/api/";
+  hostUrl:string="http://localhost:4200/#/"
+  apiUrl: string = "https://localhost:44324/api/";
 
   momoUrl: string = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
 
@@ -91,9 +91,6 @@ export class OrderService {
     })
   }
 
-  getFinishedOrder(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}order/shipperOrderHistory?shipperId=${id}`)
-  }
   getShipperOrderHistory(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}order/shipperOrderHistory?shipperId=${id}`)
   }
