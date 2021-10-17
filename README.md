@@ -43,3 +43,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 12-10-2021 : thêm tìm kiếm cho admin.<br>
 13-10-2021 : update giao diện và xác thực.<br>
 14-10-2021 : ngx-img-zoom và sửa shipper page.<br>
+17-10-2021 : thêm hiển thị thông tin khuyến mãi.<br>
