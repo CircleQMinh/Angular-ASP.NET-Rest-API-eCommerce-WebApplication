@@ -71,7 +71,7 @@
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg animate__animated animate__zoomIn"
                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}" ngbTooltip="{{pro.description}}"
-                        [openDelay]="100" [closeDelay]="100" placement="auto" container="body">
+                        [openDelay]="100" [closeDelay]="100" placement="auto" container="body" tooltipClass="tooltip-inner">
                         <ul class="featured__item__pic__hover">
                             <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
@@ -91,22 +91,22 @@
                         <div *ngIf="promoInfo[i]">
                             <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
                                 {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 | currency:'VND':''}}
-                                <span class="currency-dis">đ</span> <span class="badge bg-success" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
-                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
-                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
-                                                Giảm : {{promoInfo[i].promotionPercent}}%&#013;
-                                                Giá gốc : {{pro.price| currency:'VND':''}} đ" placement="auto"
-                                    data-html="true">-{{promoInfo[i].promotionPercent}}%</span>
+                                <span class="currency-dis">đ</span>
+                                <span class="badge bg-success"
+                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                    placement="auto" tooltipClass="tooltip-inner">-{{promoInfo[i].promotionPercent}}%
+                                </span>
                             </h5>
                             <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
-                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}} 
-                                <span class="currency-dis">đ</span> <span class="badge bg-danger" ngbTooltip="{{promoInfo[i].promotion.name}}&#013;
-                                                Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;
-                                                Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;
-                                                Giảm : {{promoInfo[i].promotionAmount}}VND&#013;
-                                                Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;" placement="auto"
-                                    data-html="true">-{{promoInfo[i].promotionAmount| currency:'VND':''}} <span
-                                        class="currency-dis">đ</span></span> 
+                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}}
+                                <span class="currency-dis">đ</span>
+                                <span class="badge bg-danger"
+                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionAmount}} VND&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                    placement="auto" data-html="true"
+                                    tooltipClass="tooltip-inner">-{{promoInfo[i].promotionAmount|
+                                    currency:'VND':''}}
+                                    <span class="currency-dis">đ</span>
+                                </span>
                             </h5>
                         </div>
                     </div>

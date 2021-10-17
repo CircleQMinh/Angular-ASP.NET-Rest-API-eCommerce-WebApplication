@@ -106,7 +106,7 @@ export class AdminComponent implements OnInit {
   orderDirEmployee: any = "Asc"
 
   keyword: any;
-  allProduct: Product[] = []
+
 
   employeeList: Employee[] = []
   pagedEmployeeList: Employee[] = []
@@ -212,15 +212,21 @@ export class AdminComponent implements OnInit {
   allOrder:Order[]=[]
   allShippingInfo:any[]=[]
   
-  searchBy_User = "Id"
+  searchBy_User = "Name"
   searchKey_User!: string
   searchResult_User: User[] = []
   allUser:User[]=[]
 
-  searchBy_Employee = "Id"
+  searchBy_Employee = "Name"
   searchKey_Employee!: string
   searchResult_Employee: Employee[] = []
   allEmployee:Employee[]=[]
+
+  searchBy_Product = "Name"
+  searchKey_Product!: string
+  searchResult_Product: Product[] = []
+  allProduct:Product[]=[]
+
 
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
@@ -443,67 +449,69 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   getSearchData() {
-    this.productService.getProduct("all", "", 1, 999).subscribe(
-      data => {
-        //console.log(data)
-        this.allProduct = data.results
 
-      },
-      error => {
-
-        this.toast.error("Kết nối với API không được!")
-        console.log(error)
-      }
-    )
-    this.adminService.getOrders(99,"OrderDate",1,99,"Desc").subscribe(
-      data=>{
-        //console.log(data)
-        this.allOrder=data.result
-        this.allShippingInfo = data.shippingInfos
-      },
-      error => {
-
-        this.toast.error("Kết nối với API không được!")
-        console.log(error)
-      }
-    )
-    this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
-      data => {
-        //console.log(data)
-        this.allUser = data.result
-        this.allUser.forEach((element, index: number) => {
-          element.roles = data.roles[index]
-          element.orderCount = data.orderCount[index]
-        });
-        //console.log(this.allUser)
-      },
-      error => {
-        console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
-    this.adminService.getEmployees(this.orderEmployee, "all", this.orderDirEmployee).subscribe(
-      data => {
-        for (let i = 0; i < data.count; i++) {
-          let e = new Employee
-          e = data.result[i]
-          e.roles = data.roles[i]
-          e.Address = data.employeeInfo[i].address
-          e.CMND = data.employeeInfo[i].cmnd
-          e.Salary = data.employeeInfo[i].salary
-          e.Sex = data.employeeInfo[i].sex
-          e.StartDate = data.employeeInfo[i].startDate
-          e.Status = data.employeeInfo[i].status
-          this.allEmployee.push(e)
-
+    setInterval(()=>{
+      this.adminService.getProducts("all","Id" , 1, 999,"Asc").subscribe(
+        data => {
+          //console.log(data)
+          this.allProduct = data.result
+  
+        },
+        error => {
+  
+          this.toast.error("Kết nối với API không được!")
+          console.log(error)
         }
-      },
-      error => {
-        console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
-      }
-    )
-
+      )
+      this.adminService.getOrders(99,"OrderDate",1,99,"Desc").subscribe(
+        data=>{
+          //console.log(data)
+          this.allOrder=data.result
+          this.allShippingInfo = data.shippingInfos
+        },
+        error => {
+  
+          this.toast.error("Kết nối với API không được!")
+          console.log(error)
+        }
+      )
+      this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
+        data => {
+          //console.log(data)
+          this.allUser = data.result
+          this.allUser.forEach((element, index: number) => {
+            element.roles = data.roles[index]
+            element.orderCount = data.orderCount[index]
+          });
+          //console.log(this.allUser)
+        },
+        error => {
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+      this.adminService.getEmployees(this.orderEmployee, "all", this.orderDirEmployee).subscribe(
+        data => {
+          for (let i = 0; i < data.count; i++) {
+            let e = new Employee
+            e = data.result[i]
+            e.roles = data.roles[i]
+            e.Address = data.employeeInfo[i].address
+            e.CMND = data.employeeInfo[i].cmnd
+            e.Salary = data.employeeInfo[i].salary
+            e.Sex = data.employeeInfo[i].sex
+            e.StartDate = data.employeeInfo[i].startDate
+            e.Status = data.employeeInfo[i].status
+            this.allEmployee.push(e)
+  
+          }
+        },
+        error => {
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+    },3000)
   }
 
   signOut() {
@@ -526,6 +534,7 @@ export class AdminComponent implements OnInit {
       }
     )
 
+    //check new order
     setInterval(() => {
       this.adminService.getDashboardInfo().subscribe(
         data => {
@@ -543,6 +552,8 @@ export class AdminComponent implements OnInit {
         }
       )
     }, 3000)
+    //lấy thông tin tìm kiếm mới
+
 
     let from = this.rf7.controls["from"].value
     let to = this.rf7.controls["to"].value
@@ -958,7 +969,7 @@ export class AdminComponent implements OnInit {
 
   }
   createProduct() {
-    let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
+    let today = formatDate(Date.now(), 'dd-MM-yyyy HH:mm:ss', 'en');
     this.adminService.createProduct(this.rf2.controls['name'].value, this.rf2.controls['price'].value, this.rf2.controls['des'].value,
       this.rf2.controls['uis'].value, this.rf2.controls['category'].value, this.proImgUrl, today, this.rf2.controls["status"].value).subscribe(
         data => {
@@ -1002,7 +1013,7 @@ export class AdminComponent implements OnInit {
 
   }
   editProduct() {
-    let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
+    let today = formatDate(Date.now(), 'dd-MM-yyyy HH:mm:ss', 'en');
     this.adminService.editProduct(this.editingProduct.id, this.rf3.controls['name'].value, this.rf3.controls['price'].value, this.rf3.controls['des'].value,
       this.rf3.controls['uis'].value, this.rf3.controls['category'].value, this.proImgUrl, today, this.rf3.controls["status"].value).subscribe(
         data => {
@@ -1946,6 +1957,40 @@ export class AdminComponent implements OnInit {
       case "Name":
         try{
           this.searchResult_Employee = this.allEmployee.filter(t=>String(t.displayName).includes(this.searchKey_Employee))
+        }
+        catch(e){
+          this.toast.error("Tên không hợp lệ!")
+          console.log(e)
+        }
+        break
+    }
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+  }
+  getSearchResultProduct(modal:any) {
+    this.searchResult_Product=[]
+    switch (this.searchBy_Product) {
+      case "Id":
+        try{
+          this.searchResult_Product = this.allProduct.filter(t=>String(t.id).includes(this.searchKey_Product))
+        }
+        catch(e){
+          this.toast.error("Id không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Price":
+        try{
+          this.searchResult_Product = this.allProduct.filter(t=>String(t.price).includes(this.searchKey_Product))
+        }
+        catch(e){
+          this.toast.error("Giá không hợp lệ!")
+          console.log(e)
+        }
+        break
+      case "Name":
+        try{
+          this.searchResult_Product = this.allProduct.filter(t=>String(t.name).toLowerCase().includes(this.searchKey_Product.toLowerCase()))
         }
         catch(e){
           this.toast.error("Tên không hợp lệ!")

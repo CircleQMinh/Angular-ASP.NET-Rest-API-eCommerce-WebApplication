@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { Promotion } from 'src/app/class/promotion';
+import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +20,67 @@ export class HomeComponent implements OnInit {
   pauseOnHover = true;
   pauseOnFocus = true;
 
-  constructor() { }
+  isLoading=true
+  promotions:Promotion[]=[]
+  indexPromo:number=-1
+  currentPromo!:Promotion
+  isHover=false
+
+  constructor(private proService:ProductService) { }
 
   ngOnInit(): void {
+    this.getPromotion()
   }
+
+
+  getPromotion(){
+    this.proService.getPromotion().subscribe(
+      data=>{
+        this.promotions=data.result
+        this.isLoading=false
+        this.getNextPromo()
+        //console.log(this.promotion)
+      },
+      error=>{
+        console.log(error)
+      }
+    )
+
+    setInterval(()=>{
+      this.proService.getPromotion().subscribe(
+        data=>{
+          if(!this.isHover){
+          this.promotions=data.result
+          this.getNextPromo()
+          }
+          //console.log(this.promotion)
+        },
+        error=>{
+          console.log(error)
+        }
+      )
+    },6000)
+  }
+  getNextPromo(){
+    //console.log(this.isHover)
+    if(!this.isHover){
+      this.currentPromo = null!
+      if(this.indexPromo+1>=this.promotions.length){
+        this.indexPromo=0;
+        this.currentPromo=this.promotions[this.indexPromo]
+      }
+      else{
+        this.indexPromo+=1
+        this.currentPromo=this.promotions[this.indexPromo]
+      }
+    }
+
+  }
+
+  switchPromo(i:number){
+    this.currentPromo=this.promotions[i];this.indexPromo=i
+  }
+
   togglePaused() {
     if (this.paused) {
       this.carousel.cycle();

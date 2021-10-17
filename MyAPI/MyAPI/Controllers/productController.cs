@@ -341,5 +341,28 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+        [HttpGet("getPromotion")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPromotionOnGoing()
+        {
+
+
+            try
+            {
+                var query = await _unitOfWork.Promotions.GetAll(q=>q.Status==1, null, null);
+                var result = _mapper.Map<IList<PromotionDTO>>(query);
+
+
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPromotionOnGoing)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
     }
 }

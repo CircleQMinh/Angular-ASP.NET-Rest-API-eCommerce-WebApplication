@@ -208,7 +208,7 @@
     </div>
     <p class="text monospace">Xin chờ 1 xíu...</p>
 </div>
-<div class="col" *ngIf="active_tab=='product'">
+<!-- <div class="col" *ngIf="active_tab=='product'">
     <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
         <div class="wrap">
             <div class="search">
@@ -221,14 +221,41 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+<div class="col" *ngIf="active_tab=='product'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?"
+                    [(ngModel)]="searchKey_Product" (keyup.enter)="getSearchResultProduct(product_search)">
+                <button type="submit" class="searchButton" (click)="getSearchResultProduct(product_search)">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tìm kiếm bằng : </label>
+            <select class="form-select" [(ngModel)]="searchBy_Product">
+                <option value="Id" selected="true">Id</option>
+                <option value="Price">Giá</option>
+                <option value="Name">Tên</option>
+            </select>
+        </div>
+        <div *ngIf="isGettingSearchResult">
+            <p>Đang tải kết quả tìm kiếm</p>
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
 
+    </div>
+</div>
 <div class="col" *ngIf="active_tab=='order'">
     <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
         <div class="wrap">
             <div class="search">
                 <input type="text" class="searchTerm" placeholder="Bạn đang tìm đơn hàng nào?"
-                    [(ngModel)]="searchKey_Order"  (keyup.enter)="getSearchResultOrder(order_search)">
+                    [(ngModel)]="searchKey_Order" (keyup.enter)="getSearchResultOrder(order_search)">
                 <button type="submit" class="searchButton" (click)="getSearchResultOrder(order_search)">
                     <i class="fa fa-search"></i>
                 </button>
@@ -314,7 +341,7 @@
 </div>
 
 <!-- POSTS -->
-<section id="posts" *ngIf="!isLoading">
+<section id="posts" *ngIf="!isLoading" class="mb-3">
     <div class="container-fluid">
 
         <div class="row">
@@ -819,7 +846,7 @@
                                     <td>
                                         <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
                                     </td>
-                                    <td>{{o.lastUpdate|date:'medium'}}</td>
+                                    <td>{{o.lastUpdate}}</td>
                                     <td *ngIf="o.status==1">
                                         <p class="text-tron text-success"><i class="fas fa-check"></i></p>
                                         <p class="d-no">1</p>
@@ -1041,7 +1068,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Thông tin</th>
-                                    <th>Mô tả</th>
+                                    <th style="min-width: 200px;">Mô tả</th>
                                     <th>Ngày bắt đầu</th>
                                     <th>Ngày kết thúc</th>
                                     <th>Đang diễn ra</th>
@@ -1054,7 +1081,7 @@
 
                                     <td>
                                         <img src="{{o.imgUrl}}" style="width: 240px;height: 120px;" id="promo-pic">
-                                        <p class="text-tron text-monospace">{{o.name}}</p>
+                                        <p class=" text-monospace">{{o.name}}</p>
                                     </td>
                                     <td>{{o.description}}</td>
                                     <td>{{o.startDate | date:"dd-MM-yyyy"}}</td>
@@ -1218,20 +1245,54 @@
 </section>
 
 <!-- FOOTER -->
-<footer id="main-footer" class="bg-dark text-white mt-5 p-5">
+<footer class="site-footer">
     <div class="container">
         <div class="row">
-            <div class="col">
-                <p class="lead text-center">
-                    Copyright &copy;
-                    <span id="year"></span>
-                    Blogen
+            <div class="col-sm-12 col-md-6">
+                <h6>Về chúng tôi</h6>
+                <p class="text-justify">Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau sạch, củ quả, trái
+                    cây, thực phẩm tươi sống</p>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <h6>Dịch vụ</h6>
+                <ul class="footer-links">
+                    <li><a>Tìm sản phẩm</a></li>
+                    <li><a>Mua sắm trực tuyến</a></li>
+                    <li><a>Giao hàng miễn phí</a></li>
+                </ul>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <h6>Quick Links</h6>
+                <ul class="footer-links">
+                    <li><a href="https://myanimelist.net/" target='_blank'>MyAnimeList.net </a></li>
+                    <li><a href="https://jikan.moe/" target='_blank'>Jikan API</a></li>
+                    <li><a href="https://github.com/CircleQMinh" target='_blank'>My Github Page</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <p class="copyright-text">Copyright &copy; 2021 All Rights Reserved by
+                    <a href="#">Circle</a>.
                 </p>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <ul class="social-icons">
+                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                    <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
             </div>
         </div>
     </div>
 </footer>
-
 
 <ng-template #changeProfile let-modal>
     <div class="modal-header">
@@ -1644,10 +1705,10 @@
                     <tr *ngFor="let od of selectedOrder.orderDetails">
                         <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
                         <td>{{ od.product.name }}</td>
-                        <td>${{ od.product.price | currency:'VND':''}} <span
-                                style="text-decoration: underline;">đ</span></td>
+                        <td>{{ od.product.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
+                        </td>
                         <td>{{ od.quantity }}</td>
-                        <td>${{ (od.product.price*od.quantity)| currency:'VND':''}} <span
+                        <td>{{ (od.product.price*od.quantity)| currency:'VND':''}} <span
                                 style="text-decoration: underline;">đ</span></td>
                     </tr>
                 </tbody>
@@ -2273,17 +2334,13 @@
                         <td><img style="height: 40px;width: 40px;" src="{{ o.product.imgUrl }}"></td>
                         <td>{{ o.product.name }}</td>
                         <td>{{ o.product.price }}</td>
-                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger" ngbTooltip="{{o.promotion.name}}&#013;
-                        Bắt đầu : {{o.promotion.startDate}}&#013;
-                        Kết thúc : {{o.promotion.endDate}}&#013;
-                        Giảm : {{o.promotionAmount}}VND&#013;
-                        " placement="auto" data-html="true">-{{o.promotionAmount| currency:'VND':''}}
+                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND
+                        " placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
+                                currency:'VND':''}}
                                 <span class="currency-dis">đ</span></span></td>
-                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success" ngbTooltip="{{o.promotion.name}}&#013;
-                        Bắt đầu : {{o.promotion.startDate}}&#013;
-                        Kết thúc : {{o.promotion.endDate}}&#013;
-                        Giảm : {{o.promotionPercent}}%&#013;
-                        " placement="auto" data-html="true">-{{o.promotionPercent}}%</span></td>
+                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%
+                        " placement="auto" data-html="true"
+                                tooltipClass="tooltip-inner">-{{o.promotionPercent}}%</span></td>
                         <td>
 
                             <button class="btn btn-info  btn-sm admin-button mr-2"
@@ -2645,7 +2702,7 @@
                     </tr>
                 </thead>
                 <tbody>
-          
+
                     <tr *ngFor="let o of searchResult_User,index as i">
 
                         <td>
@@ -2740,8 +2797,7 @@
                                 (click)="openEditEmployeeModal(edit_Employee,o)">
                                 <i class="far fa-edit"></i>
                             </button>
-                            <button class="btn btn-info btn-sm admin-button mr-2"
-                                *ngIf="o.roles[0]=='Shipper'"
+                            <button class="btn btn-info btn-sm admin-button mr-2" *ngIf="o.roles[0]=='Shipper'"
                                 (click)="openShipperHistoryModal(shipper_history,o.id)">
                                 <i class="fas fa-history"></i>
                             </button>
@@ -2751,7 +2807,78 @@
                             </button>
                         </td>
                     </tr>
-                   
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #product_search let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin tìm kiếm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p *ngIf="searchResult_Product.length==0">Không tìm thấy sản phẩm!</p>
+        <div class="table-responsive p-20" *ngIf="searchResult_Product.length!=0">
+            <p>Tổng số kết quả : {{searchResult_Product.length}}</p>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Thông tin</th>
+                        <th>Mô tả</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Danh mục</th>
+                        <th>Chỉnh sửa</th>
+                        <th>Hiển thị</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of searchResult_Product,index as i">
+                        <td>{{o.id}}</td>
+                        <td>
+                            <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                            <p class="text-tron text-monospace">{{o.name}}</p>
+                        </td>
+                        <td>{{o.description}}</td>
+                        <td>{{o.price| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
+                        <td>{{o.unitInStock}}</td>
+                        <td>
+                            <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
+                        </td>
+                        <td>{{o.lastUpdate|date:'medium'}}</td>
+                        <td *ngIf="o.status==1">
+                            <p class="text-tron text-success"><i class="fas fa-check"></i></p>
+                            <p class="d-no">1</p>
+                        </td>
+                        <td *ngIf="o.status==0">
+                            <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
+                            <p class="d-no">0</p>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm admin-button mr-2"
+                                (click)="openEditProductModal(edit_product,o)">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button "
+                                (click)="openDeleteProductModal(deleteProductModal,o.id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
