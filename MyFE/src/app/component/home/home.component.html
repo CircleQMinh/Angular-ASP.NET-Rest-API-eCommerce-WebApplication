@@ -123,7 +123,7 @@ align-content: stretch;
 align-items: stretch;" id="home-category">
     <div class="HF-data-container-panel HF-featured-grid-header">
         <div class="HF-featured-grid-header-container">
-            <h2 class="HF-data-container-section-item HF-section-heading HF-graphen-style">Nổi bật</h2>
+            <h2 class="text-monospace text-tron">Nổi bật</h2>
         </div>
     </div>
 
@@ -225,8 +225,71 @@ align-items: stretch;" id="home-category">
 
         </div>
     </div>
+
+</div>
+
+<div class="container mb-5 p-1 " *ngIf="promotions.length>0&&!isLoading">
     <div class="row" style="margin-top: 3%;margin:0 auto;
     width: 100%;display: block;">
+        <div class="col-lg-12">
+            <div class="section-title">
+                <h2 class="text-monospace text-tron" style="text-align: center;">Chương trình khuyến mãi đang diễn ra!
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center ">
+        <ng-container *ngFor="let o of promotions,index as i">
+            <div class="row d-flex justify-content-center border border-success rounded-3 p-3 
+            animate__animated animate__bounceIn " style="min-height: 400px;border-width: 3px!important;"
+                *ngIf="i==indexPromo" (mouseenter)="isHover=true" (mouseleave)="isHover=false">
+                <div class="col-md-6 d-flex justify-content-center p-2 ">
+                    <img class="promo-home-pic img-fluid border rounded-3" src="{{currentPromo.imgUrl}}">
+
+                </div>
+                <div class="col-md-6  p-2">
+                    <h3 class="text-tron">{{currentPromo.name}}</h3>
+                    <p class="text-tron pro-des p-3">{{currentPromo.description}}</p>
+                    <div class="d-flex">
+                        <div class=" align-self-start mr-2">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class=" align-self-end text-tron">
+                            Ngày bắt đầu : {{currentPromo.startDate}}
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="align-self-start mr-2">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class=" align-self-end text-tron">
+                            Ngày kết thúc : {{currentPromo.endDate}}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                       <button class="btn btn-success">Xem ngay <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+
+        <div class="row justify-content-center my-4">
+            <div class="col d-flex justify-content-center">
+                <ng-container *ngFor="let o of [].constructor(promotions.length),index as i">
+
+                    <i class="fas fa-square fa-lg animate__animated animate__bounce animate__infinite mx-2"
+                        *ngIf="i==indexPromo"></i>
+                    <i class="far fa-square fa-lg mx-2" *ngIf="i!=indexPromo" (click)="switchPromo(i)" ></i>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mb-5">
+    <div class="row" style="margin-top: 3%;margin:0 auto;
+width: 100%;display: block;">
         <div class="col-lg-12">
             <div class="section-title">
                 <h2 class="text-tron" style="text-align: center;">Tìm kiếm sản phẩm yêu thích của bạn!</h2>
@@ -234,17 +297,14 @@ align-items: stretch;" id="home-category">
         </div>
     </div>
 </div>
-
-
-
-
 <app-product-list></app-product-list>
 
 
 <section id="share-section" class="bg-light text-muted py-5 mt-5">
     <div class="container shop-info">
+
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 ad-pic">
                 <img src="https://img.freepik.com/free-photo/product-package-boxes-shopping-bag-cart-with-laptop-online-shopping-delivery-concept_38716-138.jpg?size=626&ext=jpg"
                     alt="" class="img-fluid mb-3 rounded-circle">
                 <img src="https://elite-symbol.com/wp-content/uploads/2017/08/businessman.png" alt=""

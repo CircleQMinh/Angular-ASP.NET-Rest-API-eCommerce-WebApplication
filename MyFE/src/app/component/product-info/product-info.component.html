@@ -8,31 +8,32 @@
 <div class="container" *ngIf="!isLoading">
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
-        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">Sản phẩm</a></li>
-        <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">{{displayCategory}}</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/products">Sản phẩm</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link"
+                routerLink="/{{product.category|lowercase}}">{{displayCategory}}</a></li>
 
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
     <div class="row justify-content-center border border-3 border-primary rounded">
         <div class="col-md-5 ">
             <div class="d-flex justify-content-center p-3 
-            flex-column align-item-center " 
-            >
+            flex-column align-item-center ">
                 <lib-ngx-image-zoom [thumbImage]=product.imgUrl [fullImage]=product.imgUrl [enableLens]=true
-                    [lensWidth]=250 [lensHeight]=250 [magnification]=1.05></lib-ngx-image-zoom>
-              <p class="text-center"><i class="fas fa-search"></i> Rê/Nhấp chuột vào ảnh để phóng to</p>
+                    [lensWidth]=250 [lensHeight]=250 [magnification]=1.05 [enableScrollZoom]=true></lib-ngx-image-zoom>
+                <p class="text-center"><i class="fas fa-search"></i> Rê/Nhấp chuột vào ảnh để phóng to</p>
             </div>
         </div>
         <div class="col-md-6">
             <h4 class="pro-d-title mt-3"> <a href="#" class="mt-2 text-monospace text-lg lead"> {{product.name}} </a>
             </h4>
             <strong>Mô tả sản phẩm :</strong> <br>
-            <p class="lead pro-des p-3" > 
-                <a >{{product.description}}</a></p>
+            <p class="lead pro-des p-3">
+                <a>{{product.description}}</a>
+            </p>
             <div class="product_meta">
                 <span class="posted_in">
                     <strong class="mr-2">Danh mục : </strong>
-                    <a rel="tag"> <span >{{ getDisplayCategory(product.category)}}</span> </a>
+                    <a rel="tag"> <span>{{ getDisplayCategory(product.category)}}</span> </a>
 
                 </span>
                 <span class="posted_in">
@@ -52,24 +53,19 @@
                     <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
                         {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100| currency:'VND':''}}
                         <span class="currency-dis">đ</span>
-                        <span class="badge bg-success" ngbTooltip="{{promoInfo.promotion.name}}&#013;
-                                                Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
-                                                Kết thúc : {{promoInfo.promotion.endDate}}&#013;
-                                                Giảm : {{promoInfo.promotionPercent}}%&#013;
-                                                Giá gốc : {{product.price| currency:'VND':''}} đ" placement="auto"
-                            data-html="true">-{{promoInfo.promotionPercent}}%</span>
+                        <span class="badge bg-success"
+                            ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionPercent}}%&#013;Giá gốc : {{product.price| currency:'VND':''}} đ"
+                            placement="auto" data-html="true"
+                            tooltipClass="tooltip-inner">-{{promoInfo.promotionPercent}}%</span>
                     </span>
 
                     <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
                         {{product.price-toNumber(promoInfo.promotionAmount)| currency:'VND':''}} <span
                             class="currency-dis">đ</span>
-                        <span class="badge bg-danger" ngbTooltip="{{promoInfo.promotion.name}}&#013;
-                                                Bắt đầu : {{promoInfo.promotion.startDate}}&#013;
-                                                Kết thúc : {{promoInfo.promotion.endDate}}&#013;
-                                                Giảm : {{promoInfo.promotionAmount}}VND&#013;
-                                                Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
-                            placement="auto" data-html="true">-{{promoInfo.promotionAmount| currency:'VND':''}} <span
-                                class="currency-dis">đ</span></span>
+                        <span class="badge bg-danger"
+                            ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionAmount}}VND&#013;Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
+                            placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{promoInfo.promotionAmount|
+                            currency:'VND':''}} <span class="currency-dis">đ</span></span>
                     </span>
                 </div>
 

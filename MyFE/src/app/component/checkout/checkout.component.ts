@@ -115,7 +115,7 @@ export class CheckoutComponent implements OnInit {
       this.saveFormForReUse()
       let address = this.rf1.controls["address"].value + " " + this.rf1.controls["street"].value + " " +
         this.rf1.controls["ward"].value + " " + this.rf1.controls["district"].value + " TP.HCM"
-      let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
+      let today = formatDate(Date.now(), 'dd-MM-yyyy HH:mm:ss', 'en');
       if (this.rf1.controls["billOption"].value == "momo") {
         this.saveOrderToLocal(address, today)
         let momo_id = formatDate(Date.now(), 'ddMMyyyyhhmmss', 'en');

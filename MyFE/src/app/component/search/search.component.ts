@@ -82,7 +82,7 @@ export class SearchComponent implements OnInit {
     //console.log(this.keyword)
     setInterval(()=>{
       this.findProduct()
-    },500)
+    },5000)
     window.scrollTo(0, 0)
   }
   findProduct() {
@@ -146,7 +146,7 @@ export class SearchComponent implements OnInit {
 
     let url = this.router.createUrlTree([], { relativeTo: this.route, queryParams: 
     { keyword: this.keyword,category: this.stringCate,priceRange:this.priceRange } }).toString();
-    console.log(url)
+    //console.log(url)
     this.location.go(url)
     this.findProduct()
     // this.router.navigateByUrl('/', { skipLocationChange: true })
@@ -168,7 +168,8 @@ export class SearchComponent implements OnInit {
             relativeTo: this.route, queryParams:
               { keyword: this.keyword, category: this.stringCate, priceRange: newRange }
           }).toString();
-          console.log(url)
+          //console.log(url)
+          this.priceRange=newRange
           this.location.go(url)
           this.findProduct()
         }

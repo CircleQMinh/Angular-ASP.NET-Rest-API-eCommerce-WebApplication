@@ -28,4 +28,8 @@ export class ProductService {
   getRandomProduct(id:number,category:string,number:number):Observable<any>{
     return this.http.get(`${this.apiUrl}product/getRandomProduct?id=${id}&category=${category}&number=${number}`);
   }
+
+  getPromotion():Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getPromotion`)
+  }
 }

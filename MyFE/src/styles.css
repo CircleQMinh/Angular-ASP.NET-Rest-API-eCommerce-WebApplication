@@ -51,9 +51,17 @@ body{
 .HF-data-container-section-item{padding:0 12px 12px 12px;}
 .HF-section-heading{font-size:2em;}
 .HF-grid-item-heading{font-size:1.5em;line-height:1.25em;margin:-.25em 0;letter-spacing:.025em;}
-.HF-featured-grid-item{min-height:370px;}
+.HF-featured-grid-item{min-height:395px;}
 .HF-featured-grid-item-description{font-size:0.8em;}
 .HF-featured-grid-item-link{font-size:1.5em;letter-spacing:1px;display:inline-block;line-height:1;}
+}
+@media only screen and (max-width:500px){
+
+    .HF-featured-grid-item{min-height:235px;max-height: 290px;}
+
+}
+.promo_ad{
+    min-height: 400px;border-width: 4px!important;
 }
 @media only screen and (max-width:479px){
 .HF-btn{font-size:.7em;display: flex;
@@ -68,9 +76,14 @@ body{
 .HF-data-container-section-item{padding:0 12px 12px 12px;}
 .HF-section-heading{font-size:2em;}
 .HF-grid-item-heading{font-size:1.3em;line-height:1.25em;margin:-.25em 0;letter-spacing:.025em;}
-.HF-featured-grid-item{min-height:265px;}
+
 .HF-featured-grid-item-description{font-size:0.7em;}
 .HF-featured-grid-item-link{font-size:1.5em;letter-spacing:1px;display:inline-block;line-height:1;}
+}
+@media only screen and (max-width:300px){
+
+    .HF-featured-grid-item{min-height:205px;max-height: 205px;}
+
 }
 img{max-width:100%;height:auto;}
 img{-ms-interpolation-mode:bicubic;}
@@ -866,6 +879,22 @@ font-size: 20px;
 .wrap{
 width: 100%;
 }
+
+.tooltip-inner {
+    max-width: 340px;
+    min-width: 200px;
+    text-align: left;
+    /* background-color: #fff; */
+    color: white;
+    border-radius: 30px;
+    box-shadow: 0 0 3px #00000040;
+    word-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border: solid 1px skyblue;
+    padding: 10px;
+}
+
 .pro-info{
     border: 3px solid #544bc8;
     border-radius: 2%;
@@ -1040,10 +1069,13 @@ ngb-typeahead-window.dropdown-menu {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 400px;
+    height: 600px;
     flex-direction: column;
 }
-
+.promo-home-pic{
+    min-width: 90%;
+    min-height: auto;
+}
 .product-img{
     height: 400px;
     background-size: contain;
@@ -1198,6 +1230,9 @@ ngb-typeahead-window.dropdown-menu {
     }
 }
 @media (max-width: 767.98px) { 
+    .ad-pic{
+        display: none;
+    }
     .feed-title{
         height:54px;
     }
