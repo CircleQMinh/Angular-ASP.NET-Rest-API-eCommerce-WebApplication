@@ -1,0 +1,183 @@
+<app-nav></app-nav>
+
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
+</div>
+<div class="container" *ngIf="!isLoading">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/products">Khuyến mãi</a></li>
+        <!-- <li class="breadcrumb-item"><a class="breadcrumb-link"
+                routerLink="/{{product.category|lowercase}}">{{displayCategory}}</a></li> -->
+
+        <!-- <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li> -->
+    </ol>
+</div>
+
+<div class="container" *ngIf="!isLoading">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="article-main">
+                <h1 class="article-title h2">{{promotion.name}}</h1>
+                <div class="card-subtitle text-gray my-3">
+                    <i class="fas fa-calendar-check"></i>
+                    Ngày bắt đầu : {{promotion.startDate|date:'dd-MM-yyyy'}}
+                    <i class="fas fa-ban"></i>
+                    Ngày kết thúc : {{promotion.endDate|date:'dd-MM-yyyy'}}
+                </div>
+                <blockquote>
+                    <p>{{promotion.description}}</p>
+                </blockquote>
+
+                <p><img src="{{promotion.imgUrl}}" alt="Mua-rau-cu-qua-voi-gia-1k-web"></p>
+                <p>Từ ngày <span style="color: #ff0000;"><strong>
+                            {{promotion.startDate|date:'dd-MM-yyyy'}}</strong></span> đến ngày <strong><span
+                            style="color: #ff0000;"> {{promotion.endDate|date:'dd-MM-yyyy'}}</span></strong>, tại
+                    Circle's Shop
+                    sẽ diễn ra chương trình khuyến mãi “<strong><span style="color: #99cc00;">
+                            {{promotion.name}}</span></strong>" với các sản phẩm sau:</p>
+                <div class="table-responsive">
+                    <table class="table ">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-monospace" style="width: 10%">#</th>
+                                <th class="text-monospace" style="width: 10%">Sản phẩm</th>
+                                <th class="text-monospace" style="width: 30%">Tên</th>
+                                <th class="text-monospace" style="width: 20%">Giá gốc</th>
+                                <th class="text-monospace" style="width: 30%">Giá khuyến mãi</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let o of promotionInfos,index as i">
+                                <td class="text-monospace">{{i+1}}</td>
+                                <td class="text-monospace"><img src="{{o.product.imgUrl}}"
+                                        style="height: 40px;width: 40px;"></td>
+                                <td class="text-monospace"><a href="/#/product/{{o.id}}" target="_blank">{{o.product.name}}</a></td>
+                                <td class="text-monospace"> {{(o.product.price)| currency:'VND':''}} <span
+                                        class="currency-dis">đ</span></td>
+                                <td class="text-monospace">
+                                    <div *ngIf="!o.promotionAmount&&!o.promotionPercent">
+                                        {{(o.product.price)| currency:'VND':''}} <span class="currency-dis">đ</span>
+                                    </div>
+
+                                    <div *ngIf="o.promotionAmount||o.promotionPercent">
+                                        <div *ngIf="o.promotionAmount!='null'">
+                                            {{(o.product.price)-toNumber(o.promotionAmount)| currency:'VND':''}}
+                                            <span class="currency-dis">đ</span><span class="badge bg-danger"
+                                                ngbTooltip="Giảm : {{o.promotionAmount}} VND&#013;Giá gốc : {{o.product.price| currency:'VND':''}} đ"
+                                                placement="auto" data-html="true">-{{o.promotionAmount|
+                                                currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                        </div>
+                                        <div *ngIf="o.promotionPercent!='null'">
+                                            {{(o.product.price)-(o.product.price*toNumber(o.promotionPercent)/100)|
+                                            currency:'VND':''}} <span class="currency-dis">đ</span><span
+                                                class="badge bg-success"
+                                                ngbTooltip="Giảm : {{o.promotionPercent}}%&#013;Giá gốc : {{o.product.price| currency:'VND':''}} đ"
+                                                placement="auto" data-html="true">-{{o.promotionPercent}}%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- <tr class="table-primary">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+                <p>Áp dụng cho khách hàng có hóa đơn từ <span style="color: #ff0000;">100.000đ trở lên (Trong đó có rau,
+                        củ, quả)</span></p>
+                <p>Các khách hàng thân thương hãy nhanh chóng đặt hàng đến Circle's Shop mua ngay những sản phẩm trên
+                    với giá <span style="color: #ff0000;"><strong>khuyến mãi !!</strong></span></p>
+            </div>
+
+        </div>
+        <div class="col-4">
+            <div id="right-sidebar-inner" class="clr">
+
+                <div id="nav_menu-2" class="sidebar-box widget_nav_menu clr">
+                    <h4 class="widget-title">Danh mục sản phẩm</h4>
+                    <div class="menu-danh-muc-san-pham-container ml-3">
+                        <ul id="menu-danh-muc-san-pham" class="menu">
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/fruit" target="_blank"><i class="fas fa-apple-alt"></i> Trái cây</a></li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/vegetable" target="_blank"><i class="fas fa-carrot"></i> Rau củ</a></li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/confectionery" target="_blank"><i class="fas fa-candy-cane"></i> Bánh kẹo</a></li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/snack" target="_blank"><i class="fas fa-cookie-bite"></i> Snack</a></li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/cannedfood" target="_blank"><i class="fas fa-spray-can"></i> Đồ hộp</a></li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
+                                    href="/#/animalproduct" target="_blank"><i class="fas fa-drumstick-bite"></i> Thịt tươi sống</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div id="woocommerce_top_rated_products-2"
+                    class="sidebar-box woocommerce widget_top_rated_products clr">
+                    <h4 class="widget-title">Sản phẩm đánh giá cao</h4>
+                    <ul class="product_list_widget">
+                        <li *ngFor="let o of topProduct">
+                            <a href="/#/product/{{o.product.id}}">
+                                <img width="218" height="350" src="{{o.product.imgUrl}}"
+                                    class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""> <span
+                                    class="product-title">{{o.product.name}}</span>
+                            </a>
+                            <span class="woocommerce-Price-amount amount">{{(o.product.price)| currency:'VND':''}} <span
+                                    class="currency-dis">đ</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-center mt-3">
+        <p class="lead text-underline"><b>Các chương trình khuyến mãi khác</b></p>
+        <p class="text-muted" *ngIf="relatedPromo.length==0">Không có chường trình khuyến mãi nào!</p>
+        <div class="row large-columns-3 medium-columns-3 small-columns-1 row-small">
+            <!-- -------------------- -->
+            <div class="col post-item">
+                <div class="col-inner" *ngFor="let o of relatedPromo"> <a href="/#/khuyenmai/{{o.id}}" target="_blank"
+                        class="plain">
+                        <div class="box box-text-bottom box-blog-post has-hover">
+                            <div class="box-image">
+                                <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="400"
+                                        height="225" src="{{o.imgUrl}}"
+                                        class="attachment-medium size-medium wp-post-image lazy-load-active" alt=""
+                                        loading="lazy" sizes="(max-width: 400px) 100vw, 400px">
+                                </div>
+                            </div>
+                            <div class="box-text text-left">
+                                <div class="box-text-inner blog-post-inner">
+                                    <h5 class="post-title is-large ">{{o.name}}</h5>
+                                    <div class="is-divider"></div>
+                                    <p class="from_the_blog_excerpt "> <i class="fas fa-calendar-check"></i>
+                                        Ngày bắt đầu : {{o.startDate|date:'dd-MM-yyyy'}}<br>
+                                        <i class="fas fa-ban"></i>
+                                        Ngày kết thúc : {{o.endDate|date:'dd-MM-yyyy'}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<app-footer></app-footer>

@@ -68,21 +68,21 @@
 
             <div *ngFor="let pro of content,index as i  " class="  gradient-border "
                 style=" margin: 20px;margin-bottom: 100px;">
-                <div class="featured__item">
-                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn"
+                <div class="featured__item" (click)="openProductUrlInNewWindow(pro.id)">
+                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn "
                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}" ngbTooltip="{{pro.description}}"
                         [openDelay]="100" [closeDelay]="100" placement="auto" container="body" tooltipClass="tooltip-inner">
                         <ul class="featured__item__pic__hover">
                             <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
                                         class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="Xem thông tin" container="body" routerLink="/product/{{pro.id}}"><a><i
+                            <li ngbTooltip="Xem thông tin" container="body" (click)="openProductUrlInNewWindow(pro.id)"><a><i
                                         class="fas fa-info"></i></a></li>
                             <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro)"><a><i
                                         class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a>{{pro.name}}</a></h6>
+                        <h6><a hrer="#"  (click)="openProductUrlInNewWindow(pro.id)">{{pro.name}}</a></h6>
                         <div *ngIf="!promoInfo[i]">
                             <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
                             </h5>

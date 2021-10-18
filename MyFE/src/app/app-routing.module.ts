@@ -18,6 +18,7 @@ import { ProfileFavoriteComponent } from './component/profile-favorite/profile-f
 import { ProfileOrderInfoComponent } from './component/profile-order-info/profile-order-info.component';
 import { ProfileOrderComponent } from './component/profile-order/profile-order.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { PromoInfoComponent } from './component/promo-info/promo-info.component';
 import { RegisterComponent } from './component/register/register.component';
 import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 import { SearchComponent } from './component/search/search.component';
@@ -57,6 +58,7 @@ const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'quanly', component: NhanvienComponent },
+  { path: 'khuyenmai/:id', component: PromoInfoComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}
 ];

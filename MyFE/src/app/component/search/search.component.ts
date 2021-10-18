@@ -182,7 +182,10 @@ export class SearchComponent implements OnInit {
       this.toast.error("Khoảng giá không hợp lệ")
     }
   }
-
+  openProductUrlInNewWindow(id:any) {
+    
+    window.open(`/#/product/${id}`, '_blank');
+  }
   addToFav(pro: Product) {
     if (localStorage.getItem("isLogin")) {
       this.authService.addToFav(localStorage.getItem('user-id')!, pro.id).subscribe(

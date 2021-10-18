@@ -28,8 +28,19 @@ export class ProductService {
   getRandomProduct(id:number,category:string,number:number):Observable<any>{
     return this.http.get(`${this.apiUrl}product/getRandomProduct?id=${id}&category=${category}&number=${number}`);
   }
+  getTopProduct(top:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getTopProduct?top=${top}`)
+  }
 
   getPromotion():Observable<any>{
     return this.http.get(`${this.apiUrl}product/getPromotion`)
   }
+  getPromotionInfo(id:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getPromotionInfo/${id}`)
+  }
+
+  getRelatedPromotion(id:any,number:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getRelatedPromotionInfo/${id}?number=${number}`)
+  }
+
 }

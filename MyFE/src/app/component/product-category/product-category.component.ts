@@ -107,7 +107,10 @@ export class ProductCategoryComponent implements OnInit {
       }
     )
   }
-
+  openProductUrlInNewWindow(id:any) {
+    
+    window.open(`/#/product/${id}`, '_blank');
+  }
   getSearchResult(keyword: string) {
 
   }

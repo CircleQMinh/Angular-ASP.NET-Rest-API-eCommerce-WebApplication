@@ -744,6 +744,7 @@ namespace MyAPI.Controllers
             {
                 List<string> cate = new List<string> { "Fruit", "Vegetable", "Confectionery", "Snack", "AnimalProduct", "CannedFood" };
                 List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
+
                 var pro = await _unitOfWork.OrderDetails.GetAll(q => q.Order.Status == 3, null, new List<string> { "Product"});
                 var pro_map = _mapper.Map<IList<TKOrderDetailDTO>>(pro);
 

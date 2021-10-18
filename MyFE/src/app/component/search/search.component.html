@@ -156,7 +156,7 @@
                                 phẩm !</p>
                             <div *ngFor="let pro of products ,index as i " class="gradient-border"
                                 style=" margin: 10px;margin-bottom: 110px;">
-                                <div class="featured__item">
+                                <div class="featured__item" (click)="openProductUrlInNewWindow(pro.id)">
                                     <div class="featured__item__pic set-bg"
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
@@ -165,7 +165,7 @@
                                             <li ngbTooltip="Thêm vào yêu thích" container="body"><a
                                                     (click)="addToFav(pro)"><i class="fa fa-heart"></i></a></li>
                                             <li ngbTooltip="Xem thông tin" container="body"
-                                                routerLink="/product/{{pro.id}}">
+                                            (click)="openProductUrlInNewWindow(pro.id)">
                                                 <a><i class="fas fa-info"></i></a>
                                             </li>
                                             <li ngbTooltip="Thêm vào giỏ hàng" container="body"
@@ -175,7 +175,7 @@
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a href="#">{{pro.name}}</a></h6>
+                                        <h6><a (click)="openProductUrlInNewWindow(pro.id)" href="#">{{pro.name}}</a></h6>
                                         <div *ngIf="!promoInfo[i]">
                                             <h5>{{pro.price | currency:'VND':''}} <span
                                                     style="text-decoration: underline;">đ</span>
