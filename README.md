@@ -45,3 +45,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 14-10-2021 : ngx-img-zoom và sửa shipper page.<br>
 17-10-2021 : thêm hiển thị thông tin khuyến mãi.<br>
 18-10-2021 : thêm trang thông tin khuyến mãi.<br>
+19-10-2021 : sửa nhiều thứ.<br>
