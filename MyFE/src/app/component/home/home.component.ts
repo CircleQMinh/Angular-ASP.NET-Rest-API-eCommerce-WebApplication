@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { Promotion } from 'src/app/class/promotion';
 import { ProductService } from 'src/app/service/product.service';
@@ -26,13 +27,16 @@ export class HomeComponent implements OnInit {
   currentPromo!:Promotion
   isHover=false
 
-  constructor(private proService:ProductService) { }
+  constructor(private proService:ProductService,private router:Router) { }
 
   ngOnInit(): void {
     this.getPromotion()
   }
 
-
+  openPromoUrlInNewWindow(id:any) {
+    
+    window.open(`/#/khuyenmai/${id}`, '_blank');
+  }
   getPromotion(){
     this.proService.getPromotion().subscribe(
       data=>{

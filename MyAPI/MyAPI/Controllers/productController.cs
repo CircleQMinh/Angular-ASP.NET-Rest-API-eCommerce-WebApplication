@@ -333,6 +333,7 @@ namespace MyAPI.Controllers
                 {
                     result.Add(random[i]);
                 }
+
                 return Accepted(new { result });
             }
             catch (Exception ex)
@@ -341,6 +342,62 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+        [HttpGet("getTopProduct")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetTopProduct(int top)
+        {
+
+
+            try
+            {
+                var pro = await _unitOfWork.OrderDetails.GetAll(q => q.Order.Status == 3, null, new List<string> { "Product" });
+                var pro_map = _mapper.Map<IList<TKOrderDetailDTO>>(pro);
+
+                var result = new List<TKOrderDetailDTO>();
+                foreach (var item in pro_map)
+                {
+                    var exist = false;
+
+                    for (int i = 0; i < result.Count; i++)
+                    {
+                        if (result[i].ProductId == item.ProductId)
+                        {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (exist)
+                    {
+                        for (int j = 0; j < result.Count; j++)
+                        {
+                            if (result[j].ProductId == item.ProductId)
+                            {
+                                result[j].Quantity += item.Quantity;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+
+
+
+                }
+                result.Sort((a, b) => b.Quantity - a.Quantity);
+                var maxCount = result.Max(q => q.Quantity);
+                return Accepted(new { result = result.Take(top),max=maxCount });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetTopProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
 
         [HttpGet("getPromotion")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -364,5 +421,67 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+        [HttpGet("getPromotionInfo/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPromotionInfo(int id)
+        {
+
+
+            try
+            {
+                var query = await _unitOfWork.Promotions.Get(q => q.Id == id, null);
+                if (query==null)
+                {
+                    var msg = "Không tìm thấy thông tin";
+                    return BadRequest(msg);
+                }
+                var result = _mapper.Map<PromotionDTO>(query);
+
+                var query2 = await _unitOfWork.PromotionInfos.GetAll(q => q.PromotionId == id, null, new List<string> { "Product" });
+                var promoInfo = _mapper.Map<IList<PromotionInfoDTO>>(query2);
+
+
+                return Accepted(new { result,promoInfo });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPromotionInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
+        [HttpGet("getRelatedPromotionInfo/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetRelatedPromotionInfo(int id,int number)
+        {
+            try
+            {
+                var query = await _unitOfWork.Promotions.GetAll(q => q.Id != id && q.Status == 1,null, null);
+                var list = _mapper.Map<IList<PromotionDTO>>(query);
+                var random = list.OrderBy(x => Guid.NewGuid()).ToList();
+                var result = new List<PromotionDTO>();
+                if (number > list.Count)
+                {
+                    number = list.Count;
+                }
+                for (int i=0;i<number;i++)
+                {
+                    result.Add(list[i]);
+                }
+                return Accepted(new { result });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPromotionInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
     }
 }

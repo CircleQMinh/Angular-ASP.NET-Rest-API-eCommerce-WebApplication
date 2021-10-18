@@ -50,6 +50,10 @@ export class ProductListComponent implements OnInit {
      this.getUpdate()
     },5000)
   }
+  openProductUrlInNewWindow(id:any) {
+    
+    window.open(`/#/product/${id}`, '_blank');
+  }
   getUpdate(){
   
     this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(

@@ -39,6 +39,7 @@ import { ContactComponent } from './component/contact/contact.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { PromoInfoComponent } from './component/promo-info/promo-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +71,8 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
     SearchComponent,
     NewsComponent,
     ContactComponent,
-    NhanvienComponent
+    NhanvienComponent,
+    PromoInfoComponent
   ],
   imports: [
     BrowserModule,
