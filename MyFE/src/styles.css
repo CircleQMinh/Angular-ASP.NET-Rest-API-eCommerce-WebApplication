@@ -917,7 +917,7 @@ width: 100%;
     margin-top: 20px;
     padding: 10px;
     border-radius: 20px;
-    background-color: #007bff5c;
+    background-color: #ffe700c7;
 }
 .float-btn{
     position:fixed;
@@ -1027,6 +1027,18 @@ width: 100%;
     z-index: 999;
     left: 10px;
 }  
+.connect_nofity{
+    position: fixed;
+    bottom: 10px;
+    border-radius: 50px;
+    z-index: 999;
+    left: 38%;
+}
+.connect_nofity .toast{
+    background-color: #072225;
+    opacity: 0.8;
+    color: white;
+}
 .dflex-jus{
     display: flex;
     justify-content: center;
@@ -1282,6 +1294,9 @@ img{transition:opacity 1s;opacity:1;}
         height: 350px;
         width: 350px;        
     }
+    .connect_nofity{
+        left: 37%;
+    }
 }
 @media (max-width: 1199.98px) { 
     .review-box{
@@ -1303,6 +1318,7 @@ img{transition:opacity 1s;opacity:1;}
         height: 300px;
         width: 300px;        
     }
+    
 }
 @media (max-width: 991.98px) { 
     .chat-enter{
@@ -1312,8 +1328,14 @@ img{transition:opacity 1s;opacity:1;}
         width: 250px !important;
         height: 250px !important;
     }
+    .connect_nofity{
+        left: 33%;
+    }
 }
 @media (max-width: 767.98px) { 
+    .connect_nofity{
+        left: 25%;
+    }
     .ad-pic{
         display: none;
     }
@@ -1356,6 +1378,9 @@ img{transition:opacity 1s;opacity:1;}
     }
 }
 @media (max-width: 575.98px) { 
+    .connect_nofity{
+        left: 20%;
+    }
     #right-sidebar-inner{
         display: none;
     }
@@ -1463,6 +1488,9 @@ img{transition:opacity 1s;opacity:1;}
 }
 
 @media (max-width: 300px) { 
+    .connect_nofity{
+        left: 2%;
+    }
     .chat-box{
         width: 90%;
         right: 10px;

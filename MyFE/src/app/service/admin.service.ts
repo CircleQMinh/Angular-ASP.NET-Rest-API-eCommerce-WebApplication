@@ -166,7 +166,8 @@ export class AdminService {
       imgUrl: promo.imgUrl,
       startDate: promo.startDate,
       endDate: promo.endDate,
-      status: 0
+      status: 0,
+      visible:0
     })
   }
 
@@ -177,7 +178,8 @@ export class AdminService {
       imgUrl: promo.imgUrl,
       startDate: promo.startDate,
       endDate: promo.endDate,
-      status: promo.status
+      status: promo.status,
+      visible:promo.visible
     })
   }
 

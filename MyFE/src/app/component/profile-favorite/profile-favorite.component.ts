@@ -24,7 +24,9 @@ export class ProfileFavoriteComponent implements OnInit {
   pageSizeFav = 4
   pageNumberFav = 1
   pagedFavProduct: Product[] = []
+  isDisconnect = false
 
+  autoInterval: any
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal, private cartService: CartService) { }
 
@@ -33,8 +35,8 @@ export class ProfileFavoriteComponent implements OnInit {
 
     window.scrollTo(0, 0)
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
     if (!this.isLogin) {
       this.router.navigateByUrl("/login")
       this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
@@ -43,39 +45,48 @@ export class ProfileFavoriteComponent implements OnInit {
       this.router.navigateByUrl("/error")
     }
 
-    if(!localStorage.getItem("user-info")){
+    if (!localStorage.getItem("user-info")) {
       this.router.navigateByUrl(`/profile/${this.userID}`)
     }
-    else{
-      this.userInfo=JSON.parse(localStorage.getItem("user-info")!)
+    else {
+      this.userInfo = JSON.parse(localStorage.getItem("user-info")!)
       this.getPagedFavProduct()
 
-      setInterval(()=>{
+      this.autoInterval = setInterval(() => {
         this.getUserInfo()
         this.getPagedFavProduct()
         //console.log("beep")
-      },5000)
+      }, 5000)
     }
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+
+    }
+
   }
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
         //console.log(data)
-        
+
         this.userInfo = data.user
         this.userInfo.roles = data.roles
+        this.isDisconnect = false
         //console.log(this.userInfo)
         // this.getOrderDetails()
         // this.getPagedOrder()
         // this.getPagedFavProduct()
         // //console.log(this.userInfo)
-        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
+        localStorage.setItem("user-info", JSON.stringify(this.userInfo))
         //this.isLoading = false
       },
       error => {
         console.log(error)
-        this.router.navigateByUrl("/error")
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
@@ -126,7 +137,7 @@ export class ProfileFavoriteComponent implements OnInit {
     let a = this.router.url
     this.authService.signOut()
     this.isLogin = this.authService.isLogin
-    this.user=this.authService.user
+    this.user = this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
   }

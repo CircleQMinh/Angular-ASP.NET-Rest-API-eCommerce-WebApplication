@@ -156,7 +156,7 @@
                                 phẩm !</p>
                             <div *ngFor="let pro of products ,index as i " class="gradient-border"
                                 style=" margin: 10px;margin-bottom: 110px;">
-                                <div class="featured__item" (click)="openProductUrlInNewWindow(pro.id)">
+                                <div class="featured__item" >
                                     <div class="featured__item__pic set-bg"
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
@@ -275,6 +275,22 @@
     </div>
 </div>
 
+<div class=" p-3 connect_nofity "  *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
+    </div>
+</div>
 
 
 

@@ -268,7 +268,7 @@
         <div class="row justify-content-center animate__animated animate__fadeIn" style="width: 80%;">
 
             <div *ngFor="let pro of content ,index as i " class="gradient-border" style=" margin: 20px;margin-bottom: 100px;">
-                <div class="featured__item" (click)="openProductUrlInNewWindow(pro.id)">
+                <div class="featured__item" >
                     <div class="featured__item__pic set-bg animate__animated animate__zoomIn" [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
                         container="body" tooltipClass="tooltip-inner">
@@ -325,6 +325,22 @@
             </div>
 
         </div>
+    </div>
+</div>
+<div class=" p-3 connect_nofity "  *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
     </div>
 </div>
 

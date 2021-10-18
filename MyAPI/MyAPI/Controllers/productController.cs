@@ -409,7 +409,7 @@ namespace MyAPI.Controllers
 
             try
             {
-                var query = await _unitOfWork.Promotions.GetAll(q=>q.Status==1, null, null);
+                var query = await _unitOfWork.Promotions.GetAll(q=>q.Visible==1, null, null);
                 var result = _mapper.Map<IList<PromotionDTO>>(query);
 
 
