@@ -24,7 +24,9 @@ export class ProfileOrderComponent implements OnInit {
   pageSizeOrder=5
   pageNumberOrder=1
   pagedOrder:Order[]=[]
+  isDisconnect = false
 
+  autoInterval: any
   
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal, 
@@ -52,7 +54,7 @@ export class ProfileOrderComponent implements OnInit {
       this.userInfo=JSON.parse(localStorage.getItem("user-info")!)
       this.userInfo.orders.reverse()
       this.getPagedOrder()
-      setInterval(()=>{
+      this.autoInterval=setInterval(()=>{
         this.getUserInfo()
       
         this.getPagedOrder()
@@ -60,11 +62,20 @@ export class ProfileOrderComponent implements OnInit {
       },5000)
     }
   }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval admin!")
+    }
+
+  }
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
         //console.log(data)
-        
+        this.isDisconnect=false
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
@@ -78,8 +89,7 @@ export class ProfileOrderComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.router.navigateByUrl("/error")
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect=true
       }
     )
   }

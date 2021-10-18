@@ -30,7 +30,10 @@ export class ProfileOrderInfoComponent implements OnInit {
   currentOrderDetails: OrderDetail[] = []
   currentOrderShippingInfo: any
 
-  isLoading=false
+  isLoading = false
+  isDisconnect = false
+
+  autoInterval: any
 
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,
@@ -41,8 +44,8 @@ export class ProfileOrderInfoComponent implements OnInit {
     this.orderID = this.route.snapshot.paramMap.get("oid")
     window.scrollTo(0, 0)
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
     if (!this.isLogin) {
       this.router.navigateByUrl("/login")
       this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
@@ -58,24 +61,31 @@ export class ProfileOrderInfoComponent implements OnInit {
       this.userInfo = JSON.parse(localStorage.getItem("user-info")!)
       //console.log(this.userInfo)
       this.userInfo.orders.forEach(element => {
-        if(this.orderID==element.id){
-          this.currentOrder=element
+        if (this.orderID == element.id) {
+          this.currentOrder = element
         }
       });
-      this.isLoading=true
+      this.isLoading = true
       this.getDetail()
-      setInterval(()=>{
+      this.autoInterval = setInterval(() => {
         this.getUserInfo()
-
         this.getDetail()
-      },5000)
+      }, 5000)
+    }
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval admin!")
     }
   }
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
         //console.log(data)
-        
+        this.isDisconnect = false
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
@@ -84,57 +94,57 @@ export class ProfileOrderInfoComponent implements OnInit {
         // this.getPagedFavProduct()
         // //console.log(this.userInfo)
         this.userInfo.orders.forEach(element => {
-          if(this.orderID==element.id){
-            this.currentOrder=element
+          if (this.orderID == element.id) {
+            this.currentOrder = element
           }
         });
-        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
+        localStorage.setItem("user-info", JSON.stringify(this.userInfo))
         this.isLoading = false
       },
       error => {
         console.log(error)
-        this.router.navigateByUrl("/error")
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
-  getDetail(){
+  getDetail() {
     this.orderService.getOrderDetails(this.currentOrder.id).subscribe(
       data => {
-       // console.log(data)
+        this.isDisconnect = false
         this.currentOrderDetails = data.orderDetails
         //console.log(this.currentOrderDetails)
         //console.log(this.userInfo)
-        this.isLoading=false
+        this.isLoading = false
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
     if (this.currentOrder.status == 2 || this.currentOrder.status == 3) {
       this.orderService.getShippingInfo(this.currentOrder.id).subscribe(
         data => {
           this.currentOrderShippingInfo = data.result
+          this.isDisconnect = false
           //console.log(this.currentOrderShippingInfo)
         },
         error => {
           console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.isDisconnect = true
         }
       )
     }
   }
-  
-  getPaymentMethod(method:string):string{
-    if(method=="cash"){
+
+  getPaymentMethod(method: string): string {
+    if (method == "cash") {
 
       return "Tiền mặt"
     }
-    else if(method=="vnpay"){
+    else if (method == "vnpay") {
       return "VNPay"
     }
-    else if(method=="momo"){
+    else if (method == "momo") {
       return "Momo"
     }
     return "?"
@@ -143,7 +153,7 @@ export class ProfileOrderInfoComponent implements OnInit {
     let a = this.router.url
     this.authService.signOut()
     this.isLogin = this.authService.isLogin
-    this.user=this.authService.user
+    this.user = this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
   }

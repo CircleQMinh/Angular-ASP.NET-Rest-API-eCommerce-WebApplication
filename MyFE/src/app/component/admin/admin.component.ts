@@ -205,27 +205,27 @@ export class AdminComponent implements OnInit {
   rf11!: FormGroup
   rf12!: FormGroup
 
-  isGettingSearchResult=false
+  isGettingSearchResult = false
   searchBy_Order = "Id"
   searchKey_Order!: string
   searchResult_Order: Order[] = []
-  allOrder:Order[]=[]
-  allShippingInfo:any[]=[]
-  
+  allOrder: Order[] = []
+  allShippingInfo: any[] = []
+
   searchBy_User = "Name"
   searchKey_User!: string
   searchResult_User: User[] = []
-  allUser:User[]=[]
+  allUser: User[] = []
 
   searchBy_Employee = "Name"
   searchKey_Employee!: string
   searchResult_Employee: Employee[] = []
-  allEmployee:Employee[]=[]
+  allEmployee: Employee[] = []
 
   searchBy_Product = "Name"
   searchKey_Product!: string
   searchResult_Product: Product[] = []
-  allProduct:Product[]=[]
+  allProduct: Product[] = []
 
 
   @ViewChild('TABLE', { static: false })
@@ -241,6 +241,11 @@ export class AdminComponent implements OnInit {
     XLSX.writeFile(wb, name + '.xlsx');
   }
 
+  isDisconnect = false
+
+  autoInterval: any
+  newOrderInterval: any
+  searchDataInterval: any
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -266,6 +271,22 @@ export class AdminComponent implements OnInit {
 
     }
 
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval admin!")
+    }
+    if (this.newOrderInterval) {
+      clearInterval(this.newOrderInterval);
+      console.log("Xóa interval admin!")
+    }
+    if (this.searchDataInterval) {
+      clearInterval(this.searchDataInterval);
+      console.log("Xóa interval admin!")
+    }
   }
   addRForm() {
     this.rf1 = new FormGroup({
@@ -395,6 +416,8 @@ export class AdminComponent implements OnInit {
         [Validators.required]),
       status: new FormControl('',
         [Validators.required]),
+      visible: new FormControl('',
+        [Validators.required])
     });
 
 
@@ -450,34 +473,36 @@ export class AdminComponent implements OnInit {
   }
   getSearchData() {
 
-    setInterval(()=>{
-      this.adminService.getProducts("all","Id" , 1, 999,"Asc").subscribe(
+    this.searchDataInterval = setInterval(() => {
+      this.adminService.getProducts("all", "Id", 1, 999, "Asc").subscribe(
         data => {
           //console.log(data)
           this.allProduct = data.result
-  
+          this.isDisconnect = false
         },
         error => {
-  
-          this.toast.error("Kết nối với API không được!")
+
+          this.isDisconnect = true
           console.log(error)
         }
       )
-      this.adminService.getOrders(99,"OrderDate",1,99,"Desc").subscribe(
-        data=>{
+      this.adminService.getOrders(99, "OrderDate", 1, 99, "Desc").subscribe(
+        data => {
           //console.log(data)
-          this.allOrder=data.result
+          this.isDisconnect = false
+          this.allOrder = data.result
           this.allShippingInfo = data.shippingInfos
         },
         error => {
-  
-          this.toast.error("Kết nối với API không được!")
+
+          this.isDisconnect = true
           console.log(error)
         }
       )
       this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
         data => {
           //console.log(data)
+          this.isDisconnect = false
           this.allUser = data.result
           this.allUser.forEach((element, index: number) => {
             element.roles = data.roles[index]
@@ -487,11 +512,12 @@ export class AdminComponent implements OnInit {
         },
         error => {
           console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.isDisconnect = true
         }
       )
       this.adminService.getEmployees(this.orderEmployee, "all", this.orderDirEmployee).subscribe(
         data => {
+          this.isDisconnect = false
           for (let i = 0; i < data.count; i++) {
             let e = new Employee
             e = data.result[i]
@@ -503,15 +529,15 @@ export class AdminComponent implements OnInit {
             e.StartDate = data.employeeInfo[i].startDate
             e.Status = data.employeeInfo[i].status
             this.allEmployee.push(e)
-  
+
           }
         },
         error => {
           console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.isDisconnect = true
         }
       )
-    },3000)
+    }, 3000)
   }
 
   signOut() {
@@ -527,39 +553,21 @@ export class AdminComponent implements OnInit {
         this.dashboardInfo = data
         //console.log(this.dashboardInfo)
         this.isLoading = false
+        this.isDisconnect = false
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
-
-    //check new order
-    setInterval(() => {
-      this.adminService.getDashboardInfo().subscribe(
-        data => {
-          if (data.totalOrder > this.dashboardInfo.totalOrder) {
-            this.showNewOrderNotify = true
-            this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
-            this.dashboardInfo != null
-          }
-          this.dashboardInfo = data
-
-        },
-        error => {
-          console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
-        }
-      )
-    }, 3000)
-    //lấy thông tin tìm kiếm mới
-
 
     let from = this.rf7.controls["from"].value
     let to = this.rf7.controls["to"].value
     this.dbSaleChartData[0]["series"] = []
+    this.dbOrderChart[0]["series"] = []
     this.adminService.getSalesChart(from, to).subscribe(
       data => {
+        this.isDisconnect = false
         data.result.forEach((element: any) => {
           this.dbSaleChartData[0]["series"].push(
             { name: element.Date, value: Number(element.Total) }
@@ -573,13 +581,15 @@ export class AdminComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        this.isDisconnect = true
       }
     )
     this.adminService.getTopProductChart(5).subscribe(
       data => {
+        this.isDisconnect = false
         this.DBtopSaleProductCount = data.maxCount
         this.DBtopSaleProduct = []
+        this.DBcategoryChart = []
         data.result.forEach((element: any) => {
           this.DBtopSaleProduct.push({ name: element.product.name, count: element.quantity })
 
@@ -591,7 +601,7 @@ export class AdminComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        this.isDisconnect = true
       }
     )
   }
@@ -600,7 +610,6 @@ export class AdminComponent implements OnInit {
     this.authService.getUserInfo(this.user.id).subscribe(
       data => {
 
-
         this.user = data.user
         this.user.roles = data.roles
         if (this.user.roles[0] != "Administrator") {
@@ -608,8 +617,26 @@ export class AdminComponent implements OnInit {
         }
         this.getSearchData()
         this.getDBInfo()
+        //check new order
+        this.newOrderInterval = setInterval(() => {
+          this.adminService.getDashboardInfo().subscribe(
+            data => {
+              this.isDisconnect = false
+              if (data.totalOrder > this.dashboardInfo.totalOrder) {
+                this.showNewOrderNotify = true
+                this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
+                this.dashboardInfo != null
+              }
+              this.dashboardInfo = data
 
-        setInterval(() => {
+            },
+            error => {
+              console.log(error)
+              this.isDisconnect = true
+            }
+          )
+        }, 3000)
+        this.autoInterval = setInterval(() => {
           this.autoReload()
         }, 3000)
       },
@@ -632,11 +659,11 @@ export class AdminComponent implements OnInit {
         //console.log(data)
         this.productList = data.result
         this.collectionSizeProduct = data.count
-
+        this.isDisconnect = false
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
@@ -669,6 +696,7 @@ export class AdminComponent implements OnInit {
     this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
       data => {
         //console.log(data)
+        this.isDisconnect = false
         this.userList = data.result
         this.userList.forEach((element, index: number) => {
           element.roles = data.roles[index]
@@ -679,7 +707,7 @@ export class AdminComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
@@ -699,10 +727,11 @@ export class AdminComponent implements OnInit {
         this.orderList = data.result
         this.shippingInfos = data.shippingInfos
         this.collectionSizeOrder = data.count
+        this.isDisconnect = false
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
@@ -738,6 +767,7 @@ export class AdminComponent implements OnInit {
     }
   }
   switchTab(s: string) {
+    window.scrollTo(0, 0)
     this.active_tab = s
     this.isLoading = true
     switch (s) {
@@ -1147,6 +1177,7 @@ export class AdminComponent implements OnInit {
     this.adminService.getEmployees(this.orderEmployee, this.roleEmployee, this.orderDirEmployee).subscribe(
       data => {
         //console.log(data)
+        this.isDisconnect = false
         for (let i = 0; i < data.count; i++) {
           let e = new Employee
           e = data.result[i]
@@ -1165,7 +1196,7 @@ export class AdminComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect = true
       }
     )
   }
@@ -1456,12 +1487,13 @@ export class AdminComponent implements OnInit {
       , this.orderDirPromo).subscribe(
         data => {
           // console.log(data)
+          this.isDisconnect = false
           this.promoList = data.result
           this.collectionSizePromo = data.count
         },
         error => {
           console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+          this.isDisconnect = true
         }
       )
   }
@@ -1487,6 +1519,7 @@ export class AdminComponent implements OnInit {
     this.rf10.controls["startDate"].setValue(promo.startDate);
     this.rf10.controls["endDate"].setValue(promo.endDate);
     this.rf10.controls["status"].setValue(promo.status);
+    this.rf10.controls["visible"].setValue(promo.visible);
     this.urlIMG = promo.imgUrl;
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
@@ -1577,7 +1610,7 @@ export class AdminComponent implements OnInit {
       this.editingPromo.endDate = this.rf10.controls["endDate"].value
       this.editingPromo.startDate = this.rf10.controls["startDate"].value
       this.editingPromo.status = this.rf10.controls["status"].value
-
+      this.editingPromo.visible = this.rf10.controls["visible"].value
       if (this.urlIMG != this.editingPromo.imgUrl) {
         this.authService.upLoadIMG(this.urlIMG).subscribe(
           data => {
@@ -1727,8 +1760,9 @@ export class AdminComponent implements OnInit {
           }
 
           this.isCreatingPromoInfo = false
-          this.modalService.dismissAll()
-          this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+          // this.modalService.dismissAll()
+          // this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
         },
         error => {
           this.toast.error("Có lỗi xảy ra ! Xin hãy sửa lại!")
@@ -1832,45 +1866,45 @@ export class AdminComponent implements OnInit {
     )
   }
 
-  getSearchResultOrder(modal:any) {
-    this.searchResult_Order=[]
+  getSearchResultOrder(modal: any) {
+    this.searchResult_Order = []
     switch (this.searchBy_Order) {
       case "Id":
-        try{
-          this.searchResult_Order = this.allOrder.filter(t=>String(t.id).includes(this.searchKey_Order))
-   
+        try {
+          this.searchResult_Order = this.allOrder.filter(t => String(t.id).includes(this.searchKey_Order))
+
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Id không hợp lệ!")
           console.log(e)
         }
         break
       case "Email":
-        try{
-          this.searchResult_Order = this.allOrder.filter(t=>String(t.email).includes(this.searchKey_Order))
+        try {
+          this.searchResult_Order = this.allOrder.filter(t => String(t.email).includes(this.searchKey_Order))
 
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Email không hợp lệ!")
           console.log(e)
         }
         break
       case "Name":
-        try{
-          this.searchResult_Order = this.allOrder.filter(t=>String(t.contactName).includes(this.searchKey_Order))
-      
+        try {
+          this.searchResult_Order = this.allOrder.filter(t => String(t.contactName).includes(this.searchKey_Order))
+
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Tên không hợp lệ!")
           console.log(e)
         }
         break
       case "TotalPrice":
-        try{
+        try {
           let a = Number(this.searchKey_Order)
-          this.searchResult_Order = this.allOrder.filter(t=>t.totalPrice==a)
+          this.searchResult_Order = this.allOrder.filter(t => t.totalPrice == a)
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Tổng tiền không hợp lệ!")
           console.log(e)
         }
@@ -1880,41 +1914,41 @@ export class AdminComponent implements OnInit {
 
   }
 
-  getSearchResultUser(modal:any) {
-    this.searchResult_User=[]
+  getSearchResultUser(modal: any) {
+    this.searchResult_User = []
     switch (this.searchBy_User) {
       case "Id":
-        try{
-          this.searchResult_User = this.allUser.filter(t=>String(t.id).includes(this.searchKey_User))
+        try {
+          this.searchResult_User = this.allUser.filter(t => String(t.id).includes(this.searchKey_User))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Id không hợp lệ!")
           console.log(e)
         }
         break
       case "Email":
-        try{
-          this.searchResult_User = this.allUser.filter(t=>String(t.email).includes(this.searchKey_User))
+        try {
+          this.searchResult_User = this.allUser.filter(t => String(t.email).includes(this.searchKey_User))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Email không hợp lệ!")
           console.log(e)
         }
         break
       case "Phone":
-        try{
-          this.searchResult_User = this.allUser.filter(t=>String(t.phoneNumber).includes(this.searchKey_User))
+        try {
+          this.searchResult_User = this.allUser.filter(t => String(t.phoneNumber).includes(this.searchKey_User))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("SDT không hợp lệ!")
           console.log(e)
         }
         break
       case "Name":
-        try{
-          this.searchResult_User = this.allUser.filter(t=>String(t.displayName).includes(this.searchKey_User))
+        try {
+          this.searchResult_User = this.allUser.filter(t => String(t.displayName).includes(this.searchKey_User))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Tên không hợp lệ!")
           console.log(e)
         }
@@ -1924,41 +1958,41 @@ export class AdminComponent implements OnInit {
 
   }
 
-  getSearchResultEmployee(modal:any) {
-    this.searchResult_Employee=[]
+  getSearchResultEmployee(modal: any) {
+    this.searchResult_Employee = []
     switch (this.searchBy_Employee) {
       case "Id":
-        try{
-          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.id).includes(this.searchKey_Employee))
+        try {
+          this.searchResult_Employee = this.allEmployee.filter(t => String(t.id).includes(this.searchKey_Employee))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Id không hợp lệ!")
           console.log(e)
         }
         break
       case "Email":
-        try{
-          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.email).includes(this.searchKey_Employee))
+        try {
+          this.searchResult_Employee = this.allEmployee.filter(t => String(t.email).includes(this.searchKey_Employee))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Email không hợp lệ!")
           console.log(e)
         }
         break
       case "Phone":
-        try{
-          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.phoneNumber).includes(this.searchKey_Employee))
+        try {
+          this.searchResult_Employee = this.allEmployee.filter(t => String(t.phoneNumber).includes(this.searchKey_Employee))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("SDT không hợp lệ!")
           console.log(e)
         }
         break
       case "Name":
-        try{
-          this.searchResult_Employee = this.allEmployee.filter(t=>String(t.displayName).includes(this.searchKey_Employee))
+        try {
+          this.searchResult_Employee = this.allEmployee.filter(t => String(t.displayName).includes(this.searchKey_Employee))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Tên không hợp lệ!")
           console.log(e)
         }
@@ -1967,32 +2001,32 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
   }
-  getSearchResultProduct(modal:any) {
-    this.searchResult_Product=[]
+  getSearchResultProduct(modal: any) {
+    this.searchResult_Product = []
     switch (this.searchBy_Product) {
       case "Id":
-        try{
-          this.searchResult_Product = this.allProduct.filter(t=>String(t.id).includes(this.searchKey_Product))
+        try {
+          this.searchResult_Product = this.allProduct.filter(t => String(t.id).includes(this.searchKey_Product))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Id không hợp lệ!")
           console.log(e)
         }
         break
       case "Price":
-        try{
-          this.searchResult_Product = this.allProduct.filter(t=>String(t.price).includes(this.searchKey_Product))
+        try {
+          this.searchResult_Product = this.allProduct.filter(t => String(t.price).includes(this.searchKey_Product))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Giá không hợp lệ!")
           console.log(e)
         }
         break
       case "Name":
-        try{
-          this.searchResult_Product = this.allProduct.filter(t=>String(t.name).toLowerCase().includes(this.searchKey_Product.toLowerCase()))
+        try {
+          this.searchResult_Product = this.allProduct.filter(t => String(t.name).toLowerCase().includes(this.searchKey_Product.toLowerCase()))
         }
-        catch(e){
+        catch (e) {
           this.toast.error("Tên không hợp lệ!")
           console.log(e)
         }
@@ -2000,5 +2034,8 @@ export class AdminComponent implements OnInit {
     }
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
+  }
+  toNumber(string: string): number {
+    return Number(string)
   }
 }

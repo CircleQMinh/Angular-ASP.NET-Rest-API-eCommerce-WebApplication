@@ -1,5 +1,5 @@
 <app-nav></app-nav>
-<div class="container mt-3">
+<div class="container mt-3 ">
     <div class="main-body">
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
@@ -70,7 +70,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 animate__animated animate__fadeInRight">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="text-monospace">Đơn hàng của bạn</h4>
@@ -119,4 +119,20 @@
     </div>
 </div>
 
+<div class=" p-3 connect_nofity " *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
+    </div>
+</div>
 <app-footer></app-footer>

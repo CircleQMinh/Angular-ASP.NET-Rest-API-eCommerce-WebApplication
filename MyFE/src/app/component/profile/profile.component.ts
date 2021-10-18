@@ -34,6 +34,9 @@ export class ProfileComponent implements OnInit {
   newName!: string
   newPhone!: string
 
+  isDisconnect=false
+
+  autoInterval:any
 
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,private cartService:CartService) { }
@@ -54,9 +57,17 @@ export class ProfileComponent implements OnInit {
     }
     window.scrollTo(0, 0)
     this.isLoading = true
-    setInterval(()=>{
+    this.autoInterval=setInterval(()=>{
       this.getUserInfo()
     },5000)
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval profile!")
+    }
   }
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
@@ -72,11 +83,13 @@ export class ProfileComponent implements OnInit {
         // //console.log(this.userInfo)
         localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
+        this.isDisconnect=false
       },
       error => {
         console.log(error)
-        this.router.navigateByUrl("/error")
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect=true
+        //this.router.navigateByUrl("/error")
+        //this.toast.error(" An error has occurred ! Try again !")
       }
     )
   }

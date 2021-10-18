@@ -17,5 +17,7 @@ namespace MyAPI.Data
         public string EndDate { get; set; }
 
         public int Status { get; set; }
+
+        public int Visible { get; set; }
     }
 }

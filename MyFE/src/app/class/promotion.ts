@@ -6,4 +6,5 @@ export class Promotion {
     endDate!:string 
     status!:number 
     imgUrl!:string
+    visible!:number
 }

@@ -1,7 +1,7 @@
 <app-nav></app-nav>
 
 
-<div class="container mt-3" *ngIf="!isLoading">
+<div class="container my-3 " *ngIf="!isLoading">
     <div class="main-body">
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
@@ -73,7 +73,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 animate__animated animate__fadeInRight">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="text-monospace">Theo dõi đơn hàng của bạn</h4>
@@ -363,22 +363,35 @@
                                             <div *ngIf="o.promotionAmount">
                                                 {{(o.product.price)-toNumber(o.promotionAmount)| currency:'VND':''}}
                                                 <span class="currency-dis">đ</span><span class="badge bg-danger"
-                                                    ngbTooltip=" Giảm : {{o.promotionAmount}}VND&#013;
-                                                    Giá gốc : {{o.product.price| currency:'VND':''}} đ&#013;"
+                                                    ngbTooltip=" Giảm : {{o.promotionAmount}}VND&#013;Giá gốc : {{o.product.price| currency:'VND':''}} đ&#013;"
                                                     placement="auto" data-html="true">-{{o.promotionAmount|
                                                     currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                             </div>
                                             <div *ngIf="o.promotionPercent">
                                                 {{(o.product.price)-(o.product.price*toNumber(o.promotionPercent)/100)|
                                                 currency:'VND':''}} <span class="currency-dis">đ</span><span
-                                                    class="badge bg-success" ngbTooltip="Giảm : {{o.promotionPercent}}%&#013;
-                                                Giá gốc : {{o.product.price| currency:'VND':''}} đ" placement="auto"
+                                                    class="badge bg-success" ngbTooltip="Giảm : {{o.promotionPercent}}%&#013;Giá gốc : {{o.product.price| currency:'VND':''}} đ" placement="auto"
                                                     data-html="true">-{{o.promotionPercent}}%</span>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="text-monospace">{{(o.quantity*o.product.price) | currency:'VND':''}}
-                                        <span class="currency-dis">đ</span>
+                                    <td class="text-monospace">
+                                        <div *ngIf="!o.promotionAmount&&!o.promotionPercent">
+                                            <span
+                                                class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(o.quantity*o.product.price)
+                                                |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="o.promotionAmount||o.promotionPercent">
+                                            <span *ngIf="o.promotionPercent"
+                                                class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(o.quantity*(o.product.price-o.product.price*toNumber(o.promotionPercent)/100))
+                                                |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                            </span>
+                                            <span *ngIf="o.promotionAmount"
+                                                class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(o.quantity*(o.product.price-toNumber(o.promotionAmount)))
+                                                |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                            </span>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -418,5 +431,20 @@
     </div>
     <p class="text monospace">Xin hãy chờ một xíu...</p>
 </div>
+<div class=" p-3 connect_nofity " *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
 
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
+    </div>
+</div>
 <app-footer></app-footer>

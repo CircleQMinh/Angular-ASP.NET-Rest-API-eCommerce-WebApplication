@@ -27,6 +27,9 @@ export class ProductListComponent implements OnInit {
 
   promoInfo: PromotionInfo[] = []
 
+  isDisconnect=false
+  autoInterval:any
+  
   isLoading: boolean = false
   @ViewChild('top', { static: true }) contentPage!: ElementRef;
   constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
@@ -46,10 +49,19 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.getProductAll()
     this.getProduct()
-    setInterval(()=>{
+    this.autoInterval=setInterval(()=>{
      this.getUpdate()
     },5000)
   }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval product!")
+    }
+  }
+
   openProductUrlInNewWindow(id:any) {
     
     window.open(`/#/product/${id}`, '_blank');
@@ -58,7 +70,7 @@ export class ProductListComponent implements OnInit {
   
     this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
       data => {
- 
+        this.isDisconnect=false
         let updateList:Product[] = data.results
         let updatePromo:PromotionInfo[] = data.promoInfo
         for (let i = 0; i < updatePromo.length; i++) {
@@ -82,6 +94,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error => {
+        this.isDisconnect=true
         console.log(error)
       }
     )

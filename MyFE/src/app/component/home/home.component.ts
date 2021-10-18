@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Promotion } from 'src/app/class/promotion';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -27,10 +28,21 @@ export class HomeComponent implements OnInit {
   currentPromo!:Promotion
   isHover=false
 
-  constructor(private proService:ProductService,private router:Router) { }
+  isDisconnect=false
+  autoInterval:any
+
+  constructor(private proService:ProductService,private router:Router,private toast:HotToastService) { }
 
   ngOnInit(): void {
     this.getPromotion()
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval home!")
+    }
   }
 
   openPromoUrlInNewWindow(id:any) {
@@ -46,20 +58,24 @@ export class HomeComponent implements OnInit {
         //console.log(this.promotion)
       },
       error=>{
+        this.isDisconnect=true
+        console.log("Kết nối API không thành công")
         console.log(error)
       }
     )
 
-    setInterval(()=>{
+    this.autoInterval=setInterval(()=>{
       this.proService.getPromotion().subscribe(
         data=>{
           if(!this.isHover){
           this.promotions=data.result
           this.getNextPromo()
           }
+          this.isDisconnect=false
           //console.log(this.promotion)
         },
         error=>{
+          this.isDisconnect=true
           console.log(error)
         }
       )

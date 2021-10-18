@@ -38,6 +38,10 @@ export class SearchComponent implements OnInit {
   products: Product[] = []
   promoInfo:PromotionInfo[]=[]
 
+  isDisconnect=false
+  autoInterval:any
+  
+
   constructor(private router: Router, private route: ActivatedRoute, private productService: ProductService, private toast: HotToastService,
     private cartService: CartService, private authService: AuthenticationService,private location: Location) { }
 
@@ -80,15 +84,24 @@ export class SearchComponent implements OnInit {
       this.findProduct()
     }
     //console.log(this.keyword)
-    setInterval(()=>{
+    this.autoInterval=setInterval(()=>{
       this.findProduct()
     },5000)
     window.scrollTo(0, 0)
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval search!")
+    }
   }
   findProduct() {
 
     this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate).subscribe(
       data => {
+        this.isDisconnect=false
         this.products = data.result
         this.promoInfo=data.promoInfo
         //console.log(this.products)
@@ -96,7 +109,8 @@ export class SearchComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error("Kết nối API không được!")
+        this.isDisconnect=true
+        //this.toast.error("Kết nối API không được!")
         this.isLoading = false
       }
     )

@@ -1,5 +1,5 @@
 <app-nav></app-nav>
-<div class="container-fluid">
+<div class="container animate__animated animate__bounceInDown mt-2">
     <div class="row">
         <ol class="breadcrumb">
             <li routerLink="/home"><a class="breadcrumb-link">
@@ -11,7 +11,7 @@
         </ol>
     </div>
 </div>
-<div *ngIf="!isDone" class="mb-3">
+<div *ngIf="!isDone" class="mb-3 animate__animated animate__bounceInUp">
     <main class="main-container mt-100 mt-md-130">
         <div class="container">
             <div class="tabs-wrapper mb-130 brk-library-rendered" data-brk-library="component__steps">
@@ -19,7 +19,7 @@
                     <div class="steps__progress" style="width: 66.66%;background-color: royalblue;"></div>
                     <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
                         <li class="complete" style="background-color: greenyellow;">
-                            <a  class="">
+                            <a class="">
                                 <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
                                     <span class="before"></span>
                                     <span class="after"></span>
@@ -63,8 +63,8 @@
             </div>
         </div>
     </main>
-    <div class="container ">
-        <div class="row">
+    <div class="container p-3 d-flex justify-content-center mt-3" style="background-color: chocolate;border-radius: 20px;">
+        <div class="row w-75">
             <div class="col form-reg">
                 <div class="div-center-content" style="margin-bottom: 20px;">
 
@@ -78,14 +78,12 @@
                         <!-- <div class="col alert alert-danger" role="alert" *ngIf="unknown_error&&showFormError">
                         An error has occurred ! Try again !
                     </div> -->
-                        <div class="form-group row">
-                            <label for="example-text-input" class="col-2 col-form-label">
-                                Email:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="email" id="example-text-input"
-                                    formControlName="email">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope-open-text"></i></span>
                             </div>
+                            <input type="text" name="" class="form-control input_user" value="" placeholder="Email"
+                                formControlName="email">
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.email?.errors?.required&&showFormError">
@@ -95,27 +93,24 @@
                             *ngIf="rf1.controls.email?.errors?.email&&showFormError">
                             Email không hợp lệ!
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Tên liên lạc:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" id="example-url-fb"
-                                    formControlName="contactname">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-id-card-alt"></i></span>
                             </div>
+                            <input type="text" name="" class="form-control input_user" value=""
+                                placeholder="Tên liên lạc" formControlName="contactname">
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.contactname?.errors?.required&&showFormError">
                             Chưa điền tên liên lạc!
                         </div>
 
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                SDT:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="tel" id="example-url-fb-sdas" formControlName="phone">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
+                            <input type="tel" name="" class="form-control input_user" value="" placeholder="SDT"
+                                formControlName="phone">
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.phone?.errors?.required&&showFormError">
@@ -129,102 +124,102 @@
                             <strong style="display: block;font-size: 20px;" class="text-monospace">Địa chỉ</strong>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Số nhà:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" id="example-url-fb-sdas"
-                                    formControlName="address">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                             </div>
+                            <input type="text" name="" class="form-control input_user" value="" placeholder="Số nhà"
+                                formControlName="address">
                         </div>
+
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.address?.errors?.required&&showFormError">
                             Chưa nhập địa chỉ!
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Đường:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" id="example-url-fb-sdas"
-                                    formControlName="street">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                             </div>
+                            <input type="text" name="" class="form-control input_user" value="" placeholder="Đường"
+                                formControlName="street">
                         </div>
                         <div class="col alert alert-danger" role="alert"
                             *ngIf="rf1.controls.street?.errors?.required&&showFormError">
                             Nhập tên đường!
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Phường:
-                            </label>
-                            <div class="col-10">
-                                <select class="form-select" aria-label="Default select example" formControlName="ward">
-                                    <option *ngFor="let o of Ward" value="{{o}}">{{o}}</option>
 
-                                </select>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                             </div>
+                            <select class="form-select" aria-label="Default select example" formControlName="ward">
+                                <option *ngFor="let o of Ward" value="{{o}}">{{o}}</option>
+
+                            </select>
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Quận:
-                            </label>
-                            <div class="col-10">
-                                <select class="form-select" aria-label="Default select example"
-                                    formControlName="district">
-                                    <option *ngFor="let o of District" value="{{o}}" selected>{{o}}</option>
-                                </select>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                             </div>
+                            <select class="form-select" aria-label="Default select example" formControlName="district">
+                                <option *ngFor="let o of District" value="{{o}}" selected>{{o}}</option>
+                            </select>
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Tỉnh/Thành:
-                            </label>
-                            <div class="col-10">
-                                <select class="form-select" aria-label="Default select example"
-                                    >
-                                    <option  value="6" selected>TP.HCM</option>
-                                </select>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                             </div>
+
+                            <select class="form-select" aria-label="Default select example">
+                                <option value="6" selected>TP.HCM</option>
+                            </select>
+
                         </div>
+
                         <div class="div-center-content" style="margin-bottom: 20px;">
                             <strong style="display: block;font-size: 20px;" class="text-monospace">Thanh toán
-                                </strong>
+                            </strong>
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Phương thức thanh toán:
-                            </label>
-                            <div class="col-10">
-                                <select class="form-select" aria-label="Default select example"
-                                    formControlName="billOption">
-                                    <option selected value="cash">Tiền mặt</option>
-                                    <option selected value="momo">Momo</option>
-                                    <option selected value="vnpay">VNPay</option>
-                                </select>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope-open-text"></i></span>
                             </div>
+
+                            <select class="form-select" aria-label="Default select example"
+                                formControlName="billOption">
+                                <option selected value="cash">Tiền mặt</option>
+                                <option selected value="momo">Momo</option>
+                                <option selected value="vnpay">VNPay</option>
+                            </select>
+
                         </div>
+                        <!-- -->
                         <div class="div-center-content" style="margin-bottom: 20px;">
                             <strong style="display: block;font-size: 20px;" class="text-monospace">
                                 Ghi chú</strong>
                         </div>
-                        <div class="form-group row">
-                            <label for="example-url-fb" class="col-2 col-form-label">
-                                Ghi chú cho đơn hàng:
-                            </label>
-                            <div class="col-10">
-                                <input class="form-control" type="text" id="example-url-fb-sdas"
-                                    formControlName="note" placeholder="Ghi chú cho đơn hàng...">
+          
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-signature"></i> </span>
                             </div>
+
+                            <input class="form-control" type="text" id="example-url-fb-sdas" formControlName="note"
+                            placeholder="Ghi chú cho đơn hàng...">
+
                         </div>
+
                         <div class="form-group row ">
                             <div *ngIf="isLoading" class="div-center-content">
                                 <div class="spinner-border text-danger" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                                 <p>
-                                   Xin chờ 1 xíu... !
+                                    Xin chờ 1 xíu... !
                                 </p>
                             </div>
                         </div>
@@ -252,7 +247,7 @@
                     <div class="steps__progress" style="width: 99.99%;background-color: royalblue;"></div>
                     <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
                         <li class="complete" style="background-color: greenyellow;">
-                            <a  class="">
+                            <a class="">
                                 <span class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
                                     <span class="before"></span>
                                     <span class="after"></span>
@@ -303,8 +298,9 @@
 
                     <img src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png"
                         style="width: 50%;">
-                    <strong style="display: block;font-size: 20px;" class="text-monospace">Đơn hàng đã được ghi nhận. Cảm ơn bạn đã mua sắm với chúng tôi!</strong>
-                  
+                    <strong style="display: block;font-size: 20px;" class="text-monospace">Đơn hàng đã được ghi nhận.
+                        Cảm ơn bạn đã mua sắm với chúng tôi!</strong>
+
                 </div>
             </div>
         </div>

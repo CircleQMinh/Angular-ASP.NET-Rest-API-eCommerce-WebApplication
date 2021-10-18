@@ -18,5 +18,6 @@ namespace MyAPI.DTOs
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public int Status { get; set; }
+        public int Visible { get; set; }
     }
 }
