@@ -21,15 +21,27 @@ export class ProfileOrderComponent implements OnInit {
 
   userInfo!: User
 
-  pageSizeOrder=5
-  pageNumberOrder=1
-  pagedOrder:Order[]=[]
-  isDisconnect = false
+  allNoneFinishedOrder: Order[] = []
+  allFinishedOrder: Order[] = []
 
+  pageSizeOrder = 5
+
+  pageNumberOrder = 1
+  pagedOrder: Order[] = []
+
+  pageNumberOrderFinished = 1
+  pagedOrderFinished: Order[] = []
+
+
+
+
+  isDisconnect = false
   autoInterval: any
-  
+
+  currentTab: any = "all"
+
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
-    private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal, 
+    private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,
     private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -37,8 +49,8 @@ export class ProfileOrderComponent implements OnInit {
 
     window.scrollTo(0, 0)
     this.authService.getLocalStorage()
-    this.user=this.authService.user
-    this.isLogin=this.authService.isLogin
+    this.user = this.authService.user
+    this.isLogin = this.authService.isLogin
     if (!this.isLogin) {
       this.router.navigateByUrl("/login")
       this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
@@ -47,19 +59,19 @@ export class ProfileOrderComponent implements OnInit {
       this.router.navigateByUrl("/error")
     }
 
-    if(!localStorage.getItem("user-info")){
+    if (!localStorage.getItem("user-info")) {
       this.router.navigateByUrl(`/profile/${this.userID}`)
     }
-    else{
-      this.userInfo=JSON.parse(localStorage.getItem("user-info")!)
+    else {
+      this.userInfo = JSON.parse(localStorage.getItem("user-info")!)
       this.userInfo.orders.reverse()
       this.getPagedOrder()
-      this.autoInterval=setInterval(()=>{
+      this.autoInterval = setInterval(() => {
         this.getUserInfo()
-      
+
         this.getPagedOrder()
         //console.log("beep")
-      },5000)
+      }, 5000)
     }
   }
   ngOnDestroy(): void {
@@ -67,7 +79,7 @@ export class ProfileOrderComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval admin!")
+      // console.log("Xóa interval admin!")
     }
 
   }
@@ -75,7 +87,7 @@ export class ProfileOrderComponent implements OnInit {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
         //console.log(data)
-        this.isDisconnect=false
+        this.isDisconnect = false
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         //console.log(this.userInfo)
@@ -83,30 +95,47 @@ export class ProfileOrderComponent implements OnInit {
         // this.getPagedOrder()
         // this.getPagedFavProduct()
         // //console.log(this.userInfo)
-        localStorage.setItem("user-info",JSON.stringify(this.userInfo))
+        localStorage.setItem("user-info", JSON.stringify(this.userInfo))
         this.userInfo.orders.reverse()
         //this.isLoading = false
       },
       error => {
         console.log(error)
-        this.isDisconnect=true
+        this.isDisconnect = true
       }
     )
   }
   getPagedOrder() {
+    this.allFinishedOrder = this.userInfo.orders.filter(q => q.status == 3 || q.status == 4)
+    this.allNoneFinishedOrder = this.userInfo.orders.filter(q => q.status != 3 && q.status != 4).sort((a,b)=>a.status-b.status)
+
+    // console.log(this.allFinishedOrder)
+    // console.log(this.allNoneFinishedOrder)
+
+
+
     this.pagedOrder = []
     for (let i = 0; i < this.pageSizeOrder; i++) {
-      if(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)]){
-        this.pagedOrder.push(this.userInfo.orders[i + this.pageSizeOrder * (this.pageNumberOrder - 1)])
+      if (this.allNoneFinishedOrder[i + this.pageSizeOrder * (this.pageNumberOrder - 1)]) {
+        this.pagedOrder.push(this.allNoneFinishedOrder[i + this.pageSizeOrder * (this.pageNumberOrder - 1)])
       }
 
     }
+    this.pagedOrderFinished = []
+    for (let i = 0; i < this.pageSizeOrder; i++) {
+      if (this.allFinishedOrder[i + this.pageSizeOrder * (this.pageNumberOrderFinished - 1)]) {
+        this.pagedOrderFinished.push(this.allFinishedOrder[i + this.pageSizeOrder * (this.pageNumberOrderFinished - 1)])
+      }
+
+    }
+
+
   }
   signOut() {
     let a = this.router.url
     this.authService.signOut()
     this.isLogin = this.authService.isLogin
-    this.user=this.authService.user
+    this.user = this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
   }

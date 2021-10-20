@@ -1,0 +1,160 @@
+
+/*! CSS Used from: https://preview.colorlib.com/theme/ogani/css/A.bootstrap.min.css+font-awesome.min.css+elegant-icons.css+nice-select.css+jquery-ui.min.css+owl.carousel.min.css+slicknav.min.css+style.css,Mcc.4YNTZ7I7f2.css.pagespeed.cf.sbKPPdYIiz.css */
+
+@media print{
+*,::after,::before{text-shadow:none!important;box-shadow:none!important;}
+a:not(.btn){text-decoration:underline;}
+}
+.fa{display:inline-block;font:14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.fa-heart:before{content:"\f004";}
+.fa-retweet:before{content:"\f079";}
+.fa-shopping-cart:before{content:"\f07a";}
+h5,h6{margin:0;color:#111;font-weight:400;font-family:"Cairo",sans-serif;}
+h5{font-size:18px;}
+h6{font-size:16px;}
+a:hover,a:focus{text-decoration:none;outline:none;color:#fff;}
+ul{padding:0;margin:0;}
+.set-bg{background-repeat:no-repeat;background-size:contain;background-position:top center;}
+.featured__item{margin-bottom:50px;}
+.featured__item:hover .featured__item__pic .featured__item__pic__hover{bottom:20px;}
+.featured__item__pic{height:200px;position:relative;overflow:hidden;background-position:center center;}
+.featured__item__pic__hover{position:absolute;left:0;bottom:-50px;width:100%;text-align:center;-webkit-transition:all , .5s;-moz-transition:all , .5s;-ms-transition:all , .5s;-o-transition:all , .5s;transition:all , .5s;}
+.featured__item__pic__hover li{list-style:none;display:inline-block;margin-right:6px;}
+.featured__item__pic__hover li:last-child{margin-right:0;}
+.featured__item__pic__hover li:hover a{background:#7fad39;border-color:#7fad39;}
+.featured__item__pic__hover li:hover a i{color:#fff;transform:rotate(360deg);}
+.featured__item__pic__hover li a{font-size:16px;color:#1c1c1c;height:40px;width:40px;line-height:40px;text-align:center;border:1px solid #ebebeb;background:#fff;display:block;border-radius:50%;-webkit-transition:all , .5s;-moz-transition:all , .5s;-ms-transition:all , .5s;-o-transition:all , .5s;transition:all , .5s;}
+.featured__item__pic__hover li a i{position:relative;transform:rotate(0);-webkit-transition:all , .3s;-moz-transition:all , .3s;-ms-transition:all , .3s;-o-transition:all , .3s;transition:all , .3s;}
+.featured__item__text{text-align:center;padding-top:15px;}
+.featured__item__text h6{margin-bottom:10px;}
+.featured__item__text h6 a{color:#252525;}
+.featured__item__text h5{color:#252525;font-weight:700;}
+/*! CSS Used fontfaces */
+.featured__controls{text-align:center;margin-bottom:50px;}
+.featured__controls ul li{list-style:none;font-size:18px;color:#1c1c1c;display:inline-block;margin-right:25px;position:relative;cursor:pointer;}
+.featured__controls ul li.active:after{opacity:1;}
+.featured__controls ul li:after{position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:#7fad39;content:"";opacity:0;}
+.featured__controls ul li:last-child{margin-right:0;}
+@media only screen and (max-width:479px){
+.featured__controls ul li{margin-bottom:10px;}
+}
+.searchbar{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 1%;
+}
+
+form.searchbar input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  /* Style the submit button */
+  form.searchbar button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 24px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+  }
+  
+  form.searchbar button:hover {
+    background: #0b7dda;
+  }
+  
+  /* Clear floats */
+  form.searchbar::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+.pagination{
+    width: 100%;
+    margin-top: 1%;
+}
+
+/* Pagination links */
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+  }
+  
+  /* Style the active/current link */
+  .pagination a.active_page {
+    background-color: dodgerblue;
+    color: white;
+  }
+  
+  /* Add a grey background color on mouse-over */
+  .pagination a:hover:not(.active_page) {background-color: #ddd;}
+
+
+  /*! CSS Used from: https://preview.colorlib.com/theme/ogani/css/A.bootstrap.min.css+font-awesome.min.css+elegant-icons.css+nice-select.css+jquery-ui.min.css+owl.carousel.min.css+slicknav.min.css+style.css,Mcc.4YNTZ7I7f2.css.pagespeed.cf.sbKPPdYIiz.css */
+*,::after,::before{box-sizing:border-box;}
+h2{margin-top:0;margin-bottom:.5rem;}
+ul{margin-top:0;margin-bottom:1rem;}
+h2{margin-bottom:.5rem;font-weight:500;line-height:1.2;}
+h2{font-size:2rem;}
+.row{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-15px;margin-left:-15px;}
+.col-lg-12{position:relative;width:100%;padding-right:15px;padding-left:15px;}
+@media (min-width:992px){
+.col-lg-12{-ms-flex:0 0 100%;flex:0 0 100%;max-width:100%;}
+}
+@media print{
+*,::after,::before{text-shadow:none!important;box-shadow:none!important;}
+h2{orphans:3;widows:3;}
+h2{page-break-after:avoid;}
+}
+h2{margin:0;color:#111;font-weight:400;font-family:"Cairo",sans-serif;}
+h2{font-size:36px;}
+ul{padding:0;margin:0;}
+.section-title{margin-bottom:50px;text-align:center;}
+.section-title h2{color:#1c1c1c;font-weight:700;position:relative;}
+.section-title h2:after{position:absolute;left:0;bottom:-15px;right:0;height:4px;width:80px;background:#7fad39;content:"";margin:0 auto;}
+.featured__controls{text-align:center;margin-bottom:15px;}
+.featured__controls ul li{list-style:none;font-size:18px;color:#1c1c1c;display:inline-block;margin-right:25px;position:relative;cursor:pointer;}
+.featured__controls ul li.active:after{opacity:1;}
+.featured__controls ul li:after{position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:#7fad39;content:"";opacity:0;}
+.featured__controls ul li:last-child{margin-right:0;}
+@media only screen and (max-width:479px){
+.featured__controls ul li{margin-bottom:10px;}
+}
+
+
+.active_nav{
+  background-color: dodgerblue;
+    color: white;
+}
+
+
+
+
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+a:hover{
+  color: blue;
+}

@@ -318,6 +318,66 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row justify-content-center mt-3 mb-3" style=" margin-left: 10px;width: 95%;"
+                        *ngIf="currentOrder.status==4">
+                        <div class="col">
+                            <div class="tabs-wrapper mb-120 brk-library-rendered" data-brk-library="component__steps">
+                                <div class="steps__wrapper-main steps__wrapper-checkers">
+                                    <div class="steps__progress" style="width: 3.33%;background-color: royalblue;">
+                                    </div>
+                                    <ul class="steps__wrapper tabs rendered" data-tabgroup="tab-group-5">
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    1
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    2
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="complete" style="background-color: greenyellow;">
+                                            <a class="active">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                    3
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đang giao
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="" style="background-color: red;">
+                                            <a class="">
+                                                <span
+                                                    class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
+                                                    <span class="before"></span>
+                                                    <span class="after"></span>
+                                                   X
+                                                </span>
+                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-header" style="margin-top: 50px;">
                         <h4 class="text-monospace">Thông tin đơn hàng</h4>
                         <p class="text-monospace">Ngày đặt hàng - {{currentOrder.orderDate}}</p>

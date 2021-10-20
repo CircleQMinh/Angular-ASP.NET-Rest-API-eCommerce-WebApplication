@@ -389,7 +389,15 @@ namespace MyAPI.Controllers
                 }
                 result.Sort((a, b) => b.Quantity - a.Quantity);
                 var maxCount = result.Max(q => q.Quantity);
-                return Accepted(new { result = result.Take(top),max=maxCount });
+                var promoInfo = new List<PromotionInfoDTO>();
+                foreach (var item in result.Take(top))
+                {
+                    var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Product.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+
+                return Accepted(new { result = result.Take(top),max=maxCount,promoInfo });
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Observable } from 'rxjs';
 import { User } from '../class/user';
 
@@ -17,7 +18,7 @@ export class AuthenticationService {
   isLogin: boolean = false
   user!: User
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,private toast:HotToastService) { }
 
   getLocalStorage() {
     if (localStorage.getItem("isLogin")) {
@@ -65,6 +66,8 @@ export class AuthenticationService {
     localStorage.removeItem("user-role")
     localStorage.removeItem("user-info")
     //localStorage.removeItem("submitedForm")
+
+    this.toast.info("Đăng xuất thành công")
   }
 
   signUp(email: string, password: string, userName: string, phoneNumber: string): Observable<any> {
