@@ -65,8 +65,8 @@
 
 
 
-<header id="main-header" class="py-2 bg-success text-white" *ngIf="active_tab=='db'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-success text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='db'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -79,8 +79,8 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-danger text-white" *ngIf="active_tab=='order'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-danger text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='order'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -94,8 +94,8 @@
 </header>
 
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='product'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-warning text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='product'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -107,8 +107,8 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-info text-white" *ngIf="active_tab=='user'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-info text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='user'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -120,8 +120,8 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-danger text-dark" *ngIf="active_tab=='employee'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-danger text-dark animate__animated animate__slideInDown"
+    *ngIf="active_tab=='employee'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -133,8 +133,8 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='tk'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-warning text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='tk'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -146,8 +146,8 @@
     </div>
 </header>
 
-<header id="main-header" class="py-2 bg-warning text-white" *ngIf="active_tab=='pm'&&!isLoading"
-    style="margin-top: -15px;">
+<header id="main-header" class="py-2 bg-warning text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='pm'&&!isLoading" style="margin-top: -15px;">
     <div class="container">
         <div class="row">
             <div class="col-md-6 ">
@@ -992,14 +992,29 @@
                         </div>
 
                     </div>
+                    <div class="card-body border-tron w-75 align-self-center">
+                        <div class="d-flex justify-content-center flex-column" *ngIf="!isLoading">
 
-                    <div class="div-center-content mt-5" *ngIf="!isLoading">
-                        <p *ngFor="let o of topSaleProduct">
+                            <div class="d-flex justify-content-center" *ngFor="let o of topSaleProduct">
+                                <div class="col-2 d-flex justify-content-center">
+                                    <img src="{{o['imgUrl']}}" style="height: 80px;width: 80px;">
+                                </div>
+                           
+                                <div class="col-10">
+                                    {{o["name"]}}
+                                    <ngb-progressbar type="success" [value]="(o['count']/topSaleProductCount)*100">
+                                        {{o["count"]}}
+                                    </ngb-progressbar>
+                                </div>
+                            </div>
+
+                            <!-- <p *ngFor="let o of DBtopSaleProduct">
+                            <img src="{{o['imgUrl']}}" style="height: 40px;width: 40px;">
                             {{o["name"]}} - Số lượng bán : {{o["count"]}}
-                            <ngb-progressbar type="success" [value]="(o['count']/topSaleProductCount)*100">
+                            <ngb-progressbar type="success" [value]="(o['count']/DBtopSaleProductCount)*100">
                             </ngb-progressbar>
-                        </p>
-
+                        </p> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1074,7 +1089,6 @@
                                     <th>Đang diễn ra</th>
                                     <th>Hiển thị</th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1106,11 +1120,10 @@
                                         </button>
                                         <button class="btn btn-warning  btn-sm admin-button mr-2"
                                             (click)="openChooseProductPromoModal(pick_pro_promo,o)">
-                                            <i class="fas fa-comments-dollar"></i>
+                                            <i class="fas fa-plus-square"></i>
                                         </button>
 
-                                    </td>
-                                    <td>
+                               
                                         <button class="btn btn-info btn-sm admin-button mr-2"
                                             (click)="openEditPromoModal(edit_promo,o)">
                                             <i class="far fa-edit"></i>
@@ -1196,7 +1209,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-xl-6">
                         <div class="card-header">
                             <h4><i class="fas fa-certificate"></i> Thống kế sản phẩm bán theo danh mục</h4>
                             <hr>
@@ -1211,19 +1224,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-xl-6">
                         <div class="card-header">
                             <h4><i class="fas fa-box-open"></i> Thống kế sản phẩm bán nhiều nhất</h4>
                             <hr>
 
                         </div>
                         <div class="card-body border-tron">
-                            <div class="div-center-content" *ngIf="!isLoading">
-                                <p *ngFor="let o of DBtopSaleProduct">
+                            <div class="d-flex justify-content-center flex-column" *ngIf="!isLoading">
+
+                                <div class="d-flex justify-content-center" *ngFor="let o of DBtopSaleProduct"
+                                    style="min-width: 100%;">
+                                    <div class="col-2 d-flex justify-content-center">
+                                        <img src="{{o['imgUrl']}}" style="height: 80px;width: 80px;">
+                                    </div>
+                                    <div class="col-10">
+                                        {{o["name"]}}
+                                        <ngb-progressbar type="success"
+                                            [value]="(o['count']/DBtopSaleProductCount)*100">{{o["count"]}}
+                                        </ngb-progressbar>
+                                    </div>
+                                </div>
+
+                                <!-- <p *ngFor="let o of DBtopSaleProduct">
+                                    <img src="{{o['imgUrl']}}" style="height: 40px;width: 40px;">
                                     {{o["name"]}} - Số lượng bán : {{o["count"]}}
                                     <ngb-progressbar type="success" [value]="(o['count']/DBtopSaleProductCount)*100">
                                     </ngb-progressbar>
-                                </p>
+                                </p> -->
 
                             </div>
                         </div>
@@ -2385,12 +2413,10 @@
                         <td><img style="height: 40px;width: 40px;" src="{{ o.product.imgUrl }}"></td>
                         <td>{{ o.product.name }}</td>
                         <td>{{ o.product.price }}</td>
-                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND
-                        " placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
+                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND" placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
                                 currency:'VND':''}}
                                 <span class="currency-dis">đ</span></span></td>
-                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%
-                        " placement="auto" data-html="true"
+                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%" placement="auto" data-html="true"
                                 tooltipClass="tooltip-inner">-{{o.promotionPercent}}%</span></td>
                         <td>
 

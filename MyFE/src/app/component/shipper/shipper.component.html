@@ -400,9 +400,47 @@
                     <tr *ngFor="let od of selectedOrder.orderDetails">
                         <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
                         <td>{{ od.product.name }}</td>
-                        <td>${{ od.product.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
+                        <td>
+                            <div *ngIf="!od.promotionAmount&&!od.promotionPercent">
+                                {{(od.product.price)| currency:'VND':''}} <span class="currency-dis">đ</span>
+                            </div>
+
+                            <div *ngIf="od.promotionAmount||od.promotionPercent">
+                                <div *ngIf="od.promotionAmount">
+                                    {{(od.product.price)-toNumber(od.promotionAmount)| currency:'VND':''}}
+                                    <span class="currency-dis">đ</span><span class="badge bg-danger"
+                                        ngbTooltip=" Giảm : {{od.promotionAmount}}VND&#013;Giá gốc : {{od.product.price| currency:'VND':''}} đ"
+                                        placement="auto" data-html="true">-{{od.promotionAmount|
+                                        currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                </div>
+                                <div *ngIf="od.promotionPercent">
+                                    {{(od.product.price)-(od.product.price*toNumber(od.promotionPercent)/100)|
+                                    currency:'VND':''}} <span class="currency-dis">đ</span><span
+                                        class="badge bg-success"
+                                        ngbTooltip="Giảm : {{od.promotionPercent}}%&#013;Giá gốc : {{od.product.price| currency:'VND':''}} đ"
+                                        placement="auto" data-html="true">-{{od.promotionPercent}}%</span>
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ od.quantity }}</td>
-                        <td>${{ (od.product.price*od.quantity)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
+                        <td>
+                            <div *ngIf="!od.promotionAmount&&!od.promotionPercent">
+                                <span
+                                    class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(od.quantity*od.product.price)
+                                    |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                </span>
+                            </div>
+                            <div *ngIf="od.promotionAmount||od.promotionPercent">
+                                <span *ngIf="od.promotionPercent"
+                                    class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(od.quantity*(od.product.price-od.product.price*toNumber(od.promotionPercent)/100))
+                                    |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                </span>
+                                <span *ngIf="od.promotionAmount"
+                                    class="font__size-16 line-height-1-5 font__family-montserrat font__weight-bold">{{(od.quantity*(od.product.price-toNumber(od.promotionAmount)))
+                                    |currency:'VND':''}} <span class="currency-dis">đ</span>
+                                </span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -483,3 +521,20 @@
         </div>
     </div>
 </ng-template>
+
+<div class=" p-3 connect_nofity " *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
+    </div>
+</div>

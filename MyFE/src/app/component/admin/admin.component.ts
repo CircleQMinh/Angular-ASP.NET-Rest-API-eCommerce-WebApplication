@@ -258,6 +258,7 @@ export class AdminComponent implements OnInit {
         : this.allProduct.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
   ngOnInit(): void {
+    window.scrollTo(0,0)
     this.addRForm();
 
     this.authService.getLocalStorage()
@@ -277,15 +278,15 @@ export class AdminComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval admin!")
+     // console.log("Xóa interval admin!")
     }
     if (this.newOrderInterval) {
       clearInterval(this.newOrderInterval);
-      console.log("Xóa interval admin!")
+     // console.log("Xóa interval admin!")
     }
     if (this.searchDataInterval) {
       clearInterval(this.searchDataInterval);
-      console.log("Xóa interval admin!")
+     // console.log("Xóa interval admin!")
     }
   }
   addRForm() {
@@ -591,7 +592,7 @@ export class AdminComponent implements OnInit {
         this.DBtopSaleProduct = []
         this.DBcategoryChart = []
         data.result.forEach((element: any) => {
-          this.DBtopSaleProduct.push({ name: element.product.name, count: element.quantity })
+          this.DBtopSaleProduct.push({ name: element.product.name, count: element.quantity,imgUrl: element.product.imgUrl })
 
         });
         data.cateCount.forEach((element: any) => {
@@ -758,6 +759,7 @@ export class AdminComponent implements OnInit {
         this.isLoading = false
         break
       case "tk":
+        
         this.isLoading = false
         break
       case "pm":
@@ -1458,7 +1460,7 @@ export class AdminComponent implements OnInit {
       data => {
         this.topSaleProductCount = data.maxCount
         data.result.forEach((element: any) => {
-          this.topSaleProduct.push({ name: element.product.name, count: element.quantity })
+          this.topSaleProduct.push({ name: element.product.name, count: element.quantity,imgUrl:element.product.imgUrl })
 
         });
         //console.log(topSaleProductCount)

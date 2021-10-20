@@ -71,9 +71,16 @@
                 </div>
             </div>
             <div class="col-md-8 animate__animated animate__fadeInRight">
+                <div class="d-flex btn-group ">
+                    <button type="button" class="btn btn-primary" (click)="currentTab='all';pageNumberOrder=1"><i class="fas fa-list"></i> Đơn hàng hiện tại</button>
+                    <button type="button" class="btn btn-danger" (click)="currentTab='his';pageNumberOrder=1"><i class="fas fa-history"></i> Lịch sử giao hàng</button>
+                </div>
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="text-monospace">Đơn hàng của bạn</h4>
+                     
+                   
+                        <h4 class="text-monospace" *ngIf="currentTab=='all'">Đơn hàng của bạn</h4>
+                        <h4 class="text-monospace" *ngIf="currentTab=='his'">Lịch sử giao hàng</h4>
                     </div>
                     <table class="table ">
                         <thead class="thead-dark">
@@ -82,16 +89,63 @@
                                 <th class="text-monospace">Ngày đặt</th>
                                 <th class="text-monospace">Tổng sản phẩm</th>
                                 <th class="text-monospace">Tổng tiền</th>
+                                <th class="text-monospace">Trạng thái</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="currentTab=='all'" class="animate__animated animate__fadeInRight">
                             <tr *ngFor="let o of pagedOrder">
                                 <td class="text-monospace">{{o.id}}</td>
                                 <td class="text-monospace">{{o.orderDate}}</td>
                                 <td class="text-monospace">{{o.totalItem}}</td>
                                 <td class="text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
-                                        style="text-decoration: underline;">đ</span> </td>
+                                        style="text-decoration: underline;">đ</span> 
+                                </td>
+                                <td *ngIf="o.status==0">
+                                    <span class="badge bg-info text-dark">Chưa duyệt</span>
+                                </td>
+                                <td *ngIf="o.status==1">
+                                    <span class="badge bg-success">Đã duyệt</span>
+                                </td>
+                                <td *ngIf="o.status==2">
+                                    <span class="badge bg-warning text-dark">Đang giao</span>
+                                </td>
+                                <td *ngIf="o.status==3">
+                                    <span class="badge bg-danger">Hoàn thành</span>
+                                </td>
+                                <td *ngIf="o.status==4">
+                                    <span class="badge bg-secondary">Hủy</span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info" routerLink="/profile/{{userInfo.id}}/order/{{o.id}}">
+                                        <i class="fas fa-angle-double-right"></i> Details
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="currentTab=='his'" class="animate__animated animate__fadeInRight">
+                            <tr *ngFor="let o of pagedOrderFinished">
+                                <td class="text-monospace">{{o.id}}</td>
+                                <td class="text-monospace">{{o.orderDate}}</td>
+                                <td class="text-monospace">{{o.totalItem}}</td>
+                                <td class="text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> 
+                                </td>
+                                <td *ngIf="o.status==0">
+                                    <span class="badge bg-info text-dark">Chưa duyệt</span>
+                                </td>
+                                <td *ngIf="o.status==1">
+                                    <span class="badge bg-success">Đã duyệt</span>
+                                </td>
+                                <td *ngIf="o.status==2">
+                                    <span class="badge bg-warning text-dark">Đang giao</span>
+                                </td>
+                                <td *ngIf="o.status==3">
+                                    <span class="badge bg-danger">Hoàn thành</span>
+                                </td>
+                                <td *ngIf="o.status==4">
+                                    <span class="badge bg-secondary">Hủy</span>
+                                </td>
                                 <td>
                                     <a class="btn btn-info" routerLink="/profile/{{userInfo.id}}/order/{{o.id}}">
                                         <i class="fas fa-angle-double-right"></i> Details
@@ -101,12 +155,25 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="container d-flex justify-content-center ">
+                <div class="container d-flex justify-content-center " *ngIf="currentTab=='all'">
                     <div class="row">
                         <div class="col">
                             <div id="ng-pagi">
                                 <ngb-pagination [(page)]="pageNumberOrder" [pageSize]="pageSizeOrder"
-                                    [collectionSize]="userInfo.orders.length" [maxSize]="3" [boundaryLinks]=true
+                                    [collectionSize]="allNoneFinishedOrder.length" [maxSize]="3" [boundaryLinks]=true
+                                    (pageChange)="getPagedOrder()" size="sm">
+                                </ngb-pagination>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="container d-flex justify-content-center " *ngIf="currentTab=='his'">
+                    <div class="row">
+                        <div class="col">
+                            <div id="ng-pagi">
+                                <ngb-pagination [(page)]="pageNumberOrderFinished" [pageSize]="pageSizeOrder"
+                                    [collectionSize]="allFinishedOrder.length" [maxSize]="3" [boundaryLinks]=true
                                     (pageChange)="getPagedOrder()" size="sm">
                                 </ngb-pagination>
                             </div>

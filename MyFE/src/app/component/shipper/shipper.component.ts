@@ -41,6 +41,9 @@ export class ShipperComponent implements OnInit {
 
   rf1!: FormGroup;
 
+  isDisconnect = false
+  autoInterval: any
+
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -67,6 +70,15 @@ export class ShipperComponent implements OnInit {
       this.getUserInfo()
 
     }
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      //console.log("Xóa interval shipp!")
+    }
+
   }
   switchTab(s: string) {
     this.active_tab = s
@@ -104,7 +116,7 @@ export class ShipperComponent implements OnInit {
     )
   }
   autoUpdate(){
-    setInterval(()=>{
+    this.autoInterval=setInterval(()=>{
       if (this.active_tab == "av") {
         this.getAvailableOrder()
       }
@@ -130,11 +142,12 @@ export class ShipperComponent implements OnInit {
       data => {
         this.orderList = data.result
         this.collectionSizeOrder = data.count
+        this.isDisconnect=false
         this.isLoading = false
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect=true
       }
     )
   }
@@ -148,6 +161,7 @@ export class ShipperComponent implements OnInit {
         // console.log(data)
         // console.log(data.sil)
         // console.log(data.sil[0])
+        this.isDisconnect=false
         this.orderList = []
         for (let i = 0; i < data.sil.length; i++) {
           this.orderList.push(data.sil[i].order)
@@ -157,7 +171,7 @@ export class ShipperComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect=true
       }
     )
   }
@@ -166,6 +180,7 @@ export class ShipperComponent implements OnInit {
     this.orderService.getShipperOrderHistory(this.user.id).subscribe(
       data => {
         //console.log(data)
+        this.isDisconnect=false
         this.orderList = []
         this.shippingInfoList = []
         this.shippingInfoList=data.sil
@@ -176,7 +191,7 @@ export class ShipperComponent implements OnInit {
       },
       error => {
         console.log(error)
-        this.toast.error(" An error has occurred ! Try again !")
+        this.isDisconnect=true
       }
     )
   }
@@ -190,6 +205,7 @@ export class ShipperComponent implements OnInit {
         this.selectedOrder.orderDetails = data.orderDetails
 
         this.isGettingOrderDetail = false
+        //console.log(data)
       },
       error => {
         console.log(error)
@@ -242,5 +258,8 @@ export class ShipperComponent implements OnInit {
           this.toast.error(" An error has occurred ! Try again !")
         }
       )
+  }
+  toNumber(string: string): number {
+    return Number(string)
   }
 }

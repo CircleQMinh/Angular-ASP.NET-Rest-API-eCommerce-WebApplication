@@ -63,11 +63,12 @@ export class PromoInfoComponent implements OnInit {
       }
     )
   }
+
   getTopProduct(){
     this.proService.getTopProduct(10).subscribe(
       data=>{
         this.topProduct=data.result
-        console.log(this.topProduct)
+       // console.log(this.topProduct)
         this.maxTopProduct=data.max
       },
       error=>{

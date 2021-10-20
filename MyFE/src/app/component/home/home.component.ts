@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Product } from 'src/app/class/product';
 import { Promotion } from 'src/app/class/promotion';
+import { AuthenticationService } from 'src/app/service/authentication.service';
+import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -31,7 +34,11 @@ export class HomeComponent implements OnInit {
   isDisconnect=false
   autoInterval:any
 
-  constructor(private proService:ProductService,private router:Router,private toast:HotToastService) { }
+  topProduct:any[]=[]
+  maxTopProduct=0
+  promoInfoTop:any[]=[]
+  constructor(private proService:ProductService,private router:Router,private toast:HotToastService,private cartService: CartService,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.getPromotion()
@@ -63,7 +70,7 @@ export class HomeComponent implements OnInit {
         console.log(error)
       }
     )
-
+    this.getTopProduct()
     this.autoInterval=setInterval(()=>{
       this.proService.getPromotion().subscribe(
         data=>{
@@ -79,6 +86,8 @@ export class HomeComponent implements OnInit {
           console.log(error)
         }
       )
+
+      this.getTopProduct()
     },6000)
   }
   getNextPromo(){
@@ -100,7 +109,53 @@ export class HomeComponent implements OnInit {
   switchPromo(i:number){
     this.currentPromo=this.promotions[i];this.indexPromo=i
   }
+  getTopProduct(){
+    this.proService.getTopProduct(5).subscribe(
+      data=>{
+        this.topProduct=data.result
+       // console.log(this.topProduct)
+       this.promoInfoTop=data.promoInfo
+        this.maxTopProduct=data.max
+      },
+      error=>{
 
+      }
+
+    )
+  }
+  openProductUrlInNewWindow(id:any) {
+    
+    window.open(`/#/product/${id}`, '_blank');
+  }
+  toNumber(string: string): number {
+    return Number(string)
+  }
+  addToFav(pro: Product) {
+    if (localStorage.getItem("isLogin")) {
+      this.authService.addToFav(localStorage.getItem('user-id')!, pro.id).subscribe(
+        data => {
+          if (data.success) {
+            this.toast.success("Sản phẩm đã thêm vào yêu thích")
+          }
+          else {
+            this.toast.info("Sản phẩm đã nằm trong yêu thích")
+          }
+        },
+        error => {
+          console.log(error)
+          this.toast.error(" An error has occurred ! Try again !")
+        }
+      )
+    }
+    else {
+      this.toast.info("Đăng nhập để thêm sản phẩm vào yêu thích")
+    }
+
+  }
+  addToCart(pro: Product) {
+    this.cartService.addToCart(pro)
+    this.toast.success("Đã thêm sản phẩm vào giỏ!")
+  }
   togglePaused() {
     if (this.paused) {
       this.carousel.cycle();
