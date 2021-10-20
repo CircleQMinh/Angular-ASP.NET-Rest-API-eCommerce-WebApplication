@@ -46,3 +46,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 17-10-2021 : thêm hiển thị thông tin khuyến mãi.<br>
 18-10-2021 : thêm trang thông tin khuyến mãi.<br>
 19-10-2021 : sửa nhiều thứ.<br>
+20-10-2021 : cải thiện hiệu suất.<br>
