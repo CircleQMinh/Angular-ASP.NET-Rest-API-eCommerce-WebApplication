@@ -352,3 +352,11 @@ body{
     font-weight:600
   }
 }
+
+
+#fb-root{
+  display: none!important;
+}
+#fb-customer-chat{
+  display: none!important;
+}

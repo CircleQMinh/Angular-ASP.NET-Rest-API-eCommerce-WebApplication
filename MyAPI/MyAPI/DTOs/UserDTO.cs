@@ -56,6 +56,7 @@ namespace MyAPI.DTOs
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        public bool EmailConfirmed { get; set; }
         public virtual ICollection<OrderDTO> Orders { get; set; }
         public virtual ICollection<ProductDTO> FavoriteProducts { get; set; }
     }

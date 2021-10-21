@@ -97,21 +97,21 @@ namespace MyAPI.Controllers
                         break;
                 }
 
-                var query = await _unitOfWork.Users.GetAll(null,orderBy,null);
+                var query = await _unitOfWork.Users.GetAll(null,orderBy, new List<string> { "Orders", "FavoriteProducts" });
 
                
                 var roles = new List<IList<string>>();
             
                 if (role!="all")
                 {
-                    var result = new List<UserInfoDTO>();
+                    var result = new List<UserOrderInfoDTO>();
                     foreach (var item in query)
                     {
                         var r = await _userManager.GetRolesAsync(item);
                         if (r.Contains(role))
                         {
                             roles.Add(r);
-                            var u = _mapper.Map<UserInfoDTO>(item);
+                            var u = _mapper.Map<UserOrderInfoDTO>(item);
                             result.Add(u);
                         }
                     }

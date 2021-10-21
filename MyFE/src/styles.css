@@ -12,7 +12,7 @@ body{
 .HF-graphen-style{font-family:monospace;}
 .HF-btn{display:inline-block;font-family:Lunchbox-Regular,sans-serif;font-size:25px;line-height:1;text-transform:uppercase;color:#fff;}
 
-.HF-bg-offwhite{background-color:#f7f7f7;}
+.HF-bg-offwhite{background-color:#fff;}
 .HF-data-container-section{display:grid;padding:22px 48px;grid-row-gap:32px;}
 .HF-data-container-section-item{display:block;-ms-flex-preferred-size:100%;flex-basis:100%;padding:0 16px 10px 16px;}
 .HF-data-container-panel{display:grid;grid-column-gap:32px;grid-row-gap:32px;grid-template-columns:minmax(auto,1fr);-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;}
@@ -399,7 +399,7 @@ a{-ms-touch-action:manipulation;touch-action:manipulation;}
 .section-bg{overflow:hidden;}
 .section-bg,.section-content{width:100%;}
 .section-content{z-index:1;}
-.banner{position:relative;background-color:#446084;width:100%;min-height:30px;height: 50vh;}
+.banner{position:relative;background-color:#446084;width:100%;min-height:30px;height: 60vh;}
 .banner-bg{overflow:hidden;}
 .banner-layers{max-height:100%;height:100%;position:relative;}
 @media (max-width:549px){
@@ -609,7 +609,10 @@ a:hover{color:#51aa1b;}
     font-size: 16px;
     font-weight: 300;
 }
-
+.zalo-chat-widget{  
+    bottom: 90px!important;  
+    left: 20px!important;  
+} 
 .panel-title {
     color: #2A3542;
     font-size: 14px;

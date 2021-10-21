@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
 
-            <p class="lead text-monospace text-center mt-5">Nhập tên sản phẩm bạn cần tìm kiếm !
+            <p class="lead text-monospace text-center mt-5"><i class="fas fa-search"></i> Nhập tên sản phẩm bạn cần tìm kiếm !
             </p>
             <div class="div-center-content" style="margin-bottom: 15px;" id='searchBarProduct'>
                 <div class="wrap">
@@ -149,7 +149,7 @@
                             <p class="text monospace">Xin chờ 1 xíu...</p>
                         </div>
                         <div class="row justify-content-center" *ngIf="!onPromoOnly&&!isLoading">
-                            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0">Tìm thấy
+                            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0"><i class="fas fa-search"></i> Tìm thấy
                                 {{totalProduct()}} sản
                                 phẩm !</p>
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản

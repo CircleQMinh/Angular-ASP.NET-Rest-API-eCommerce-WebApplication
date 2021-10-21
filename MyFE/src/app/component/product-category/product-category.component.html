@@ -220,23 +220,23 @@
 <div class="container-fluid" #top>
     <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
         <div class="col">
-            <div class="section-title">
-                <h2 class="text-tron">Sản phẩm của chúng tôi</h2>
+            <div class="">
+                <h2 class="text-tron text-monospace" style="text-align: center;"><i class="fas fa-shopping-basket"></i> Sản phẩm của Shop </h2>
             </div>
-            <div class="featured__controls">
+            <div class="featured__controls mt-2">
                 <ul>
-                    <li [class.active]="category=='all'" routerLink="/products"><a class="text-tron">Toàn bộ</a>
+                    <li [class.active]="category=='all'" routerLink="/products"><a class="text-tron"><i class="fas fa-bars"></i> Toàn bộ</a>
                     </li>
-                    <li [class.active]="category=='Fruit'" routerLink="/fruit"><a class="text-tron">Trái cây</a></li>
+                    <li [class.active]="category=='Fruit'" routerLink="/fruit"><a class="text-tron"><i class="fas fa-apple-alt"></i> Trái cây</a></li>
                     <li [class.active]="category=='Vegetable'" routerLink="/vegetable">
-                        <a class="text-tron">Rau củ</a>
+                        <a class="text-tron"><i class="fas fa-carrot"></i>Rau củ</a>
                     </li>
                     <li [class.active]="category=='Confectionery'" routerLink="/confectionery">
-                        <a class="text-tron">Bánh kẹo</a>
+                        <a class="text-tron"><i class="fas fa-candy-cane"></i> Bánh kẹo</a>
                     </li>
-                    <li [class.active]="category=='Snack'" routerLink="/snack"><a class="text-tron">Snack</a></li>
-                    <li [class.active]="category=='AnimalProduct'" routerLink="/animalproduct"><a class="text-tron">Thịt tươi sống</a></li>
-                    <li [class.active]="category=='CannedFood'" routerLink="/cannedfood"><a class="text-tron">Đồ hộp</a></li>
+                    <li [class.active]="category=='Snack'" routerLink="/snack"><a class="text-tron"><i class="fas fa-cookie-bite"></i> Snack</a></li>
+                    <li [class.active]="category=='AnimalProduct'" routerLink="/animalproduct"><a class="text-tron"><i class="fas fa-drumstick-bite"></i>Thịt tươi sống</a></li>
+                    <li [class.active]="category=='CannedFood'" routerLink="/cannedfood"><a class="text-tron"><i class="fas fa-spray-can"></i> Đồ hộp</a></li>
                 </ul>
             </div>
         </div>

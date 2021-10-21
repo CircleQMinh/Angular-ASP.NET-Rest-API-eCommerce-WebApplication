@@ -82,6 +82,9 @@ export class AdminComponent implements OnInit {
   isDeletingUser: boolean = false
   selectedUserId = ""
 
+  selectedUser!:User
+  selectedUserOrderFilter:Order[]=[]
+
   defaultProImgUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
   proImgUrl: any = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"
   rf2!: FormGroup;
@@ -696,7 +699,7 @@ export class AdminComponent implements OnInit {
     this.pageNumberUser = 1
     this.adminService.getUsers(this.orderUser, "User", this.orderDirUser).subscribe(
       data => {
-        //console.log(data)
+       // console.log(data)
         this.isDisconnect = false
         this.userList = data.result
         this.userList.forEach((element, index: number) => {
@@ -824,6 +827,12 @@ export class AdminComponent implements OnInit {
   openDeleteUserModal(deleteUser: any, id: string) {
     this.selectedUserId = id
     this.modalService.open(deleteUser, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openUserOrderModal(user_order: any, user: User) {
+    this.selectedUser = user
+   // this.selectedUserOrderFilter=this.selectedUser.orders
+   // console.log(this.selectedUser)
+    this.modalService.open(user_order,  { size: 'xl', ariaLabelledBy: 'modal-basic-title' })
   }
   selectFile(event: any) { //Angular 11, for stricter type
     if (!event.target.files[0] || event.target.files[0].length == 0) {

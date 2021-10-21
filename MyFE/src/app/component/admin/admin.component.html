@@ -351,14 +351,15 @@
                     <div class="card-header">
                         <h4><i class="far fa-user-circle"></i> Danh sách người dùng</h4>
                         <hr>
-                        <div class="d-flex justify-content-between">
+
+                        <div class="btn-group">
                             <button class="btn btn-info " (click)="openAddUserModal(newUser)">
                                 <i class="fas fa-plus"></i> Thêm tài khoản
                             </button>
-                            <button class="btn btn-info " (click)="getUser()">
+                            <button class="btn btn-success" (click)="getUser()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
-                            <button class="btn btn-info " (click)="ExportTOExcel('User')">
+                            <button class="btn btn-warning " (click)="ExportTOExcel('User')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
                         </div>
@@ -427,18 +428,28 @@
                                         <p class="d-no">0</p>
                                     </td>
                                     <td>
-                                        {{o.orderCount}}
+                                    
+                                        <button type="button" class="btn btn-primary position-relative" (click)="openUserOrderModal(user_order,o)">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                {{o.orderCount}}
+                                              <span class="visually-hidden">unread messages</span>
+                                            </span>
+                                          </button>
                                     </td>
 
                                     <td>
-                                        <button class="btn btn-info btn-sm admin-button mr-2"
-                                            (click)="openEditUserModal(changeProfile,o)">
-                                            <i class="far fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm admin-button "
-                                            (click)="openDeleteUserModal(deleteUser,o.id)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <div class="btn-group">
+                                            <button class="btn btn-info  "
+                                                (click)="openEditUserModal(changeProfile,o)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger  "
+                                                (click)="openDeleteUserModal(deleteUser,o.id)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -467,14 +478,14 @@
                     <div class="card-header">
                         <h4><i class="fas fa-id-card-alt"></i> Nhân viên</h4>
                         <hr>
-                        <div class="d-flex justify-content-between">
+                        <div class="btn-group">
                             <button class="btn btn-info " (click)="openAddEmployeeModal(newEmployee)">
                                 <i class="fas fa-plus"></i> Thêm nhân viên
                             </button>
-                            <button class="btn btn-info " (click)="getEmployee()">
+                            <button class="btn btn-success " (click)="getEmployee()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
-                            <button class="btn btn-info " (click)="ExportTOExcel('NhanVien')">
+                            <button class="btn btn-warning " (click)="ExportTOExcel('NhanVien')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
                         </div>
@@ -559,19 +570,22 @@
                                     <td>{{o.Salary}}</td>
                                     <td>{{o.StartDate}}</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm admin-button mr-2"
+                                        <div class="btn-group">
+                                            <button class="btn btn-info "
                                             (click)="openEditEmployeeModal(edit_Employee,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-info btn-sm admin-button mr-2"
+                                        <button class="btn btn-warning "
                                             *ngIf="o.roles[0]=='Shipper'"
                                             (click)="openShipperHistoryModal(shipper_history,o.id)">
                                             <i class="fas fa-history"></i>
                                         </button>
-                                        <button class="btn btn-danger btn-sm admin-button "
+                                        <button class="btn btn-danger "
                                             (click)="openDeleteEmployeeModal(delete_Employee,o)">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        </div>
+                        
                                     </td>
                                 </tr>
                             </tbody>
@@ -713,17 +727,20 @@
                                         <span class="badge bg-secondary">Hủy</span>
                                     </td>
                                     <td>
-                                        <button class="btn btn-warning  btn-sm admin-button mr-2"
+                                        <div class="btn-group">
+                                            <button class="btn btn-warning  "
                                             (click)="openOrderInfoModal(order_info,o)">
                                             <i class="fas fa-box-open"></i></button>
-                                        <button class="btn btn-info  btn-sm admin-button mr-2"
+                                        <button class="btn btn-info  "
                                             (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger btn-sm admin-button"
+                                        <button class="btn btn-danger"
                                             (click)="openDeleteOrderInfoModal(order_delete,o)">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        </div>
+         
                                     </td>
                                 </tr>
                             </tbody>
@@ -754,14 +771,14 @@
                     <div class="card-header">
                         <h4><i class="fas fa-box-open"></i> Sản phẩm</h4>
                         <hr>
-                        <div class="d-flex justify-content-between">
+                        <div class="btn-group">
                             <button class="btn btn-info" (click)="openAddProductModal(add_product)">
                                 <i class="fas fa-plus"></i> Thêm sản phẩm
                             </button>
-                            <button class="btn btn-info " (click)="getProduct()">
+                            <button class="btn btn-success" (click)="getProduct()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
-                            <button class="btn btn-info " (click)="ExportTOExcel('SanPham')">
+                            <button class="btn btn-warning " (click)="ExportTOExcel('SanPham')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
                         </div>
@@ -823,6 +840,7 @@
                                 <tr>
 
                                     <th>Thông tin</th>
+                                    <th class="d-none">Hình ảnh</th>
                                     <th>Mô tả</th>
                                     <th>Giá</th>
                                     <th>Số lượng</th>
@@ -839,6 +857,7 @@
                                         <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                                         <p class="text-tron text-monospace">{{o.name}}</p>
                                     </td>
+                                    <td class="d-none">{{o.imgUrl}}</td>
                                     <td>{{o.description}}</td>
                                     <td>{{o.price| currency:'VND':''}} <span
                                             style="text-decoration: underline;">đ</span></td>
@@ -856,14 +875,17 @@
                                         <p class="d-no">0</p>
                                     </td>
                                     <td>
-                                        <button class="btn btn-info btn-sm admin-button mr-2"
+                                        <div class="btn-group">
+                                            <button class="btn btn-info "
                                             (click)="openEditProductModal(edit_product,o)">
                                             <i class="far fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger btn-sm admin-button "
+                                        <button class="btn btn-danger "
                                             (click)="openDeleteProductModal(deleteProductModal,o.id)">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        </div>
+                         
                                     </td>
                                 </tr>
                             </tbody>
@@ -999,7 +1021,7 @@
                                 <div class="col-2 d-flex justify-content-center">
                                     <img src="{{o['imgUrl']}}" style="height: 80px;width: 80px;">
                                 </div>
-                           
+
                                 <div class="col-10">
                                     {{o["name"]}}
                                     <ngb-progressbar type="success" [value]="(o['count']/topSaleProductCount)*100">
@@ -1123,7 +1145,7 @@
                                             <i class="fas fa-plus-square"></i>
                                         </button>
 
-                               
+
                                         <button class="btn btn-info btn-sm admin-button mr-2"
                                             (click)="openEditPromoModal(edit_promo,o)">
                                             <i class="far fa-edit"></i>
@@ -2413,10 +2435,14 @@
                         <td><img style="height: 40px;width: 40px;" src="{{ o.product.imgUrl }}"></td>
                         <td>{{ o.product.name }}</td>
                         <td>{{ o.product.price }}</td>
-                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND" placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
+                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger"
+                                ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND"
+                                placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
                                 currency:'VND':''}}
                                 <span class="currency-dis">đ</span></span></td>
-                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success" ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%" placement="auto" data-html="true"
+                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success"
+                                ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%"
+                                placement="auto" data-html="true"
                                 tooltipClass="tooltip-inner">-{{o.promotionPercent}}%</span></td>
                         <td>
 
@@ -2983,3 +3009,89 @@
 
     </div>
 </div>
+
+
+
+<ng-template #user_order let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Danh sách đơn hàng</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="selectedUser.orders.length==0">Không có đơn hàng nào!</p>
+        <div class="table-responsive p-20" *ngIf="selectedUser.orders.length!=0">
+            <p>Tổng số kết quả : {{selectedUser.orders.length}}</p>
+            <table class="table table-striped  ">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Thông tin liên lạc</th>
+                        <th>Ngày đặt</th>
+                        <th>Số SP</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of selectedUser.orders,index as i">
+
+                        <td>
+                            <p class="text-tron text-monospace">{{o.id}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.contactName}}</p>
+                            <p class="text-tron text-monospace">{{o.address}}</p>
+                            <p class="text-tron text-monospace">{{o.email}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.orderDate}}</p>
+                        </td>
+
+                        <td>
+                            <p class="text-tron text-monospace">{{o.totalItem}}</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
+                                    style="text-decoration: underline;">đ</span></p>
+                        </td>
+                        <td *ngIf="o.status==0">
+                            <span class="badge bg-info text-dark">Chưa duyệt</span>
+                        </td>
+                        <td *ngIf="o.status==1">
+                            <span class="badge bg-success">Đã duyệt</span>
+                        </td>
+                        <td *ngIf="o.status==2">
+                            <span class="badge bg-warning text-dark">Đang giao</span>
+                        </td>
+                        <td *ngIf="o.status==3">
+                            <span class="badge bg-danger">Hoàn thành</span>
+                        </td>
+                        <td *ngIf="o.status==4">
+                            <span class="badge bg-secondary">Hủy</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning  btn-sm admin-button mr-2"
+                                (click)="openOrderInfoModal(order_info,o)">
+                                <i class="fas fa-box-open"></i></button>
+                            <button class="btn btn-info  btn-sm admin-button mr-2"
+                                (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button"
+                                (click)="openDeleteOrderInfoModal(order_delete,o)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
