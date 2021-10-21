@@ -11,8 +11,8 @@ import { PromotionInfo } from '../class/promotion-info';
   providedIn: 'root'
 })
 export class AdminService {
-  // apiUrl:string="http://circleqm-001-site1.dtempurl.com/api/";
-  apiUrl: string = "https://localhost:44324/api/";
+  apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  // apiUrl: string = "https://localhost:44324/api/";
 
   apikey:string="3113feaeeb294cee92641b976ba196de"
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
@@ -32,7 +32,7 @@ export class AdminService {
   }
 
   getUsers(order: string, role: string,orderDir:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/users?order=${order}&role=${role}&orderDir=${orderDir}`);
+    return this.http.get(`${this.apiUrl}admin/users?role=${role}&order=${order}&orderDir=${orderDir}`);
   }
 
   getEmployees(order: string, role: string,orderDir:string): Observable<any> {

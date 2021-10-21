@@ -139,6 +139,5 @@ D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\stati
 D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\staticwebassets\MyAPI.StaticWebAssets.xml
 D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\scopedcss\bundle\MyAPI.styles.css
 D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.RazorTargetAssemblyInfo.cache
-D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.CopyComplete
 D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.genruntimeconfig.cache
-D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csprojAssemblyReference.cache
+D:\My Project\ASP.NET-Angular Web Application\MyAPI\MyAPI\obj\Debug\net5.0\MyAPI.csproj.AssemblyReference.cache
