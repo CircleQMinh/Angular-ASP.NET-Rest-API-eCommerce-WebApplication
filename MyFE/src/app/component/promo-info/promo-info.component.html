@@ -56,7 +56,8 @@
                                 <td class="text-monospace">{{i+1}}</td>
                                 <td class="text-monospace"><img src="{{o.product.imgUrl}}"
                                         style="height: 40px;width: 40px;"></td>
-                                <td class="text-monospace"><a href="/#/product/{{o.id}}" target="_blank">{{o.product.name}}</a></td>
+                                <td class="text-monospace"><a href="/#/product/{{o.id}}"
+                                        target="_blank">{{o.product.name}}</a></td>
                                 <td class="text-monospace"> {{(o.product.price)| currency:'VND':''}} <span
                                         class="currency-dis">đ</span></td>
                                 <td class="text-monospace">
@@ -110,13 +111,16 @@
                             <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
                                     href="/#/vegetable" target="_blank"><i class="fas fa-carrot"></i> Rau củ</a></li>
                             <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
-                                    href="/#/confectionery" target="_blank"><i class="fas fa-candy-cane"></i> Bánh kẹo</a></li>
+                                    href="/#/confectionery" target="_blank"><i class="fas fa-candy-cane"></i> Bánh
+                                    kẹo</a></li>
                             <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
                                     href="/#/snack" target="_blank"><i class="fas fa-cookie-bite"></i> Snack</a></li>
                             <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
-                                    href="/#/cannedfood" target="_blank"><i class="fas fa-spray-can"></i> Đồ hộp</a></li>
+                                    href="/#/cannedfood" target="_blank"><i class="fas fa-spray-can"></i> Đồ hộp</a>
+                            </li>
                             <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-209"><a
-                                    href="/#/animalproduct" target="_blank"><i class="fas fa-drumstick-bite"></i> Thịt tươi sống</a></li>
+                                    href="/#/animalproduct" target="_blank"><i class="fas fa-drumstick-bite"></i> Thịt
+                                    tươi sống</a></li>
 
                         </ul>
                     </div>
@@ -143,35 +147,32 @@
     <div class="row justify-content-center mt-3">
         <p class="lead text-underline"><b>Các chương trình khuyến mãi khác</b></p>
         <p class="text-muted" *ngIf="relatedPromo.length==0">Không có chường trình khuyến mãi nào!</p>
-        <div class="row large-columns-3 medium-columns-3 small-columns-1 row-small">
-            <!-- -------------------- -->
-            <div class="col post-item">
-                <div class="col-inner" *ngFor="let o of relatedPromo"> <a href="/#/khuyenmai/{{o.id}}" target="_blank"
-                        class="plain">
-                        <div class="box box-text-bottom box-blog-post has-hover">
-                            <div class="box-image">
-                                <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="400"
-                                        height="225" src="{{o.imgUrl}}"
-                                        class="attachment-medium size-medium wp-post-image lazy-load-active" alt=""
-                                        loading="lazy" sizes="(max-width: 400px) 100vw, 400px">
-                                </div>
-                            </div>
-                            <div class="box-text text-left">
-                                <div class="box-text-inner blog-post-inner">
-                                    <h5 class="post-title is-large ">{{o.name}}</h5>
-                                    <div class="is-divider"></div>
-                                    <p class="from_the_blog_excerpt "> <i class="fas fa-calendar-check"></i>
-                                        Ngày bắt đầu : {{o.startDate|date:'dd-MM-yyyy'}}<br>
-                                        <i class="fas fa-ban"></i>
-                                        Ngày kết thúc : {{o.endDate|date:'dd-MM-yyyy'}}
-                                    </p>
-                                </div>
+
+        <div class="row  post-item  ">
+            <div class="col-6" *ngFor="let o of relatedPromo"> <a href="/#/khuyenmai/{{o.id}}" target="_blank"
+                    class="plain">
+                    <div class="box box-text-bottom box-blog-post has-hover">
+                        <div class="box-image">
+                            <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="400" height="225"
+                                    src="{{o.imgUrl}}"
+                                    class="attachment-medium size-medium wp-post-image lazy-load-active" alt=""
+                                    loading="lazy" sizes="(max-width: 400px) 100vw, 400px">
                             </div>
                         </div>
-                    </a>
-                </div>
+                        <div class="box-text text-left">
+                            <div class="box-text-inner blog-post-inner">
+                                <h5 class="post-title is-large ">{{o.name}}</h5>
+                                <div class="is-divider"></div>
+                                <p class="from_the_blog_excerpt "> <i class="fas fa-calendar-check"></i>
+                                    Ngày bắt đầu : {{o.startDate|date:'dd-MM-yyyy'}}<br>
+                                    <i class="fas fa-ban"></i>
+                                    Ngày kết thúc : {{o.endDate|date:'dd-MM-yyyy'}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
-
         </div>
     </div>
 </div>

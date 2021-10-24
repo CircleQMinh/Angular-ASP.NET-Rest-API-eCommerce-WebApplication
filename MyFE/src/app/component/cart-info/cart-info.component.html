@@ -108,22 +108,15 @@
                                         <span *ngIf="o.promoInfo.promotionPercent!='null'"
                                             class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price-o.price*toNumber(o.promoInfo.promotionPercent)/100
                                             |currency:'VND':''}} <span class="currency-dis">đ</span><span
-                                                class="badge bg-success" ngbTooltip="{{o.promoInfo.promotion.name}}&#013;
-                                            Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;
-                                            Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;
-                                            Giảm : {{o.promoInfo.promotionPercent}}%&#013;
-                                            Giá gốc : {{o.price| currency:'VND':''}} đ" placement="auto"
+                                                class="badge bg-success" 
+                                                ngbTooltip="{{o.promoInfo.promotion.name}}&#013;Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;Giảm : {{o.promoInfo.promotionPercent}}%&#013;Giá gốc : {{o.price| currency:'VND':''}} đ" placement="auto"
                                                 data-html="true">-{{o.promoInfo.promotionPercent}}%</span>
                                         </span>
 
                                         <span *ngIf="o.promoInfo.promotionAmount!='null'"
                                             class="font__size-16 line__height-20 font__family-montserrat font__weight-bold">{{o.price-toNumber(o.promoInfo.promotionAmount)
                                             |currency:'VND':''}} <span class="currency-dis">đ</span><span
-                                                class="badge bg-danger" ngbTooltip="{{o.promoInfo.promotion.name}}&#013;
-                                            Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;
-                                            Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;
-                                            Giảm : {{o.promoInfo.promotionAmount}}VND&#013;
-                                            Giá gốc : {{o.price| currency:'VND':''}} đ&#013;" placement="auto"
+                                                class="badge bg-danger" ngbTooltip="{{o.promoInfo.promotion.name}}&#013;Bắt đầu : {{o.promoInfo.promotion.startDate}}&#013;Kết thúc : {{o.promoInfo.promotion.endDate}}&#013;Giảm : {{o.promoInfo.promotionAmount}}VND&#013;Giá gốc : {{o.price| currency:'VND':''}} đ&#013;" placement="auto"
                                                 data-html="true">-{{o.promoInfo.promotionAmount| currency:'VND':''}}
                                                 <span class="currency-dis">đ</span></span>
                                         </span>

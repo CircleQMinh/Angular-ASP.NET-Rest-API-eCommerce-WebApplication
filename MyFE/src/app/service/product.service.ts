@@ -31,6 +31,12 @@ export class ProductService {
   getTopProduct(top:any):Observable<any>{
     return this.http.get(`${this.apiUrl}product/getTopProduct?top=${top}`)
   }
+  getLatestProduct(top:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getLatestProduct?top=${top}`)
+  }
+  getMostFavProduct(top:any):Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getMostFavoriteProduct?top=${top}`)
+  }
 
   getPromotion():Observable<any>{
     return this.http.get(`${this.apiUrl}product/getPromotion`)

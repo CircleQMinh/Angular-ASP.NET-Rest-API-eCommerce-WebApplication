@@ -100,7 +100,7 @@
                 <i class="fas fa-shipping-fast fa-3x mb-2 animate__animated animate__wobble animate__infinite "></i>
                 <h3>Giao hàng nhanh</h3>
                 <p>Giao hàng nhanh và an toàn<br>
-                    Miễn phí giao với đơn hàng trên 200,000 VND</p>
+                    Miễn phí giao, nhanh chóng, tiện lợi</p>
             </div>
             <div class="col-md-4 mb-4 text-center ">
                 <i class="fas fa-phone-square fa-3x mb-2 animate__animated animate__wobble animate__infinite"></i>
@@ -253,42 +253,33 @@ align-items: stretch;" id="home-category">
     </div>
     <div class="row d-flex justify-content-center mt-3">
         <ng-container *ngFor="let o of promotions,index as i">
-            <div class="row d-flex justify-content-center border border-success rounded-3 p-3 
-            animate__animated animate__zoomInRight " style="min-height: 350px;border-width: 3px!important;"
-                *ngIf="i==indexPromo" (mouseenter)="isHover=true" (mouseleave)="isHover=false">
-                <div class="col-md-6 d-flex justify-content-center p-2 ">
-                    <!-- //<img class="promo-home-pic img-fluid border rounded-3 img-tron" src="{{currentPromo.imgUrl}}"> -->
-                    <div class="box-image">
+            <div class="container py-4 animate__animated animate__rotateIn" *ngIf="i==indexPromo"
+                (mouseenter)="isHover=true" (mouseleave)="isHover=false">
+                <article class="postcard dark blue">
+                    <a class="postcard__img_link" href="#">
+                        <img class="postcard__img" src="{{currentPromo.imgUrl}}" alt="Image Title">
+                    </a>
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue text-tron"><a href="#">{{currentPromo.name}}</a></h1>
+                        <div class="postcard__subtitle small">
+                            <time>
+                                <i class="fas fa-calendar-alt mr-2"></i> Ngày bắt đầu :
+                                {{currentPromo.startDate|date:'dd/MM/yyyy'}}
+                            </time>
+                            <br>
+                            <time>
+                                <i class="fas fa-ban mr-2"></i> Ngày kết thúc :
+                                {{currentPromo.endDate|date:'dd/MM/yyyy'}}
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        <div class="postcard__preview-txt text-tron">{{currentPromo.description}}</div>
 
-                        <img class=" img-fluid" style="object-fit: cover;" src="{{currentPromo.imgUrl}}">
-
-                    </div>
-                </div>
-                <div class="col-md-6  p-2">
-                    <h3 class="text-tron">{{currentPromo.name}}</h3>
-                    <p class="text-tron pro-des p-3">{{currentPromo.description}}</p>
-                    <div class="d-flex">
-                        <div class=" align-self-start mr-2">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class=" align-self-end text-tron">
-                            Ngày bắt đầu : {{currentPromo.startDate|date:'dd/MM/yyyy'}}
-                        </div>
-                    </div>
-
-                    <div class="d-flex">
-                        <div class="align-self-start mr-2">
-                            <i class="fas fa-ban"></i>
-                        </div>
-                        <div class=" align-self-end text-tron">
-                            Ngày kết thúc : {{currentPromo.endDate|date:'dd/MM/yyyy'}}
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button class="btn btn-success " (click)="openPromoUrlInNewWindow(currentPromo.id)">Xem ngay <i
+                        <button class="btn2  " (click)="openPromoUrlInNewWindow(currentPromo.id)">Xem ngay <i
                                 class="fas fa-arrow-right"></i></button>
+
                     </div>
-                </div>
+                </article>
             </div>
         </ng-container>
 
@@ -308,7 +299,60 @@ align-items: stretch;" id="home-category">
 <div class="container">
     <hr>
 </div>
+<div class="container">
+    <div class="row h4-box-service ApRow  has-bg bg-boxed"
+        data-src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h4_bg.png?v=1630897965"
+        style="background:url(https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h4_bg.png?v=1630897965) no-repeat top center;"
+        data-bg_data=" no-repeat top center">
+        <!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_3824253472922598" class="block ApImage">
 
+
+                <img src="https://previews.123rf.com/images/amin268/amin2681904/amin268190400791/122645063-cube-in-hands-thin-line-icon-arm-and-cube-hands-holding-block-sign-vector-graphics-a-linear-pattern-.jpg"
+                    class="" title="" alt="" style=" width:100%; 
+                height:auto">
+
+                <div class="image_description">
+                    <h3>Chọn sản phẩm</h3>
+                    <p>Chọn bất kỳ sản phẩm nào bạn muốn. Từ rau củ,trái cây sạch đến bánh kẹo và snack!</p>
+                </div>
+            </div>
+        </div><!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_5746829324446735" class="block ApImage">
+
+
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h4_sv2.jpg?v=1630897682" class=""
+                    title="" alt="" style=" width:100%; 
+                height:auto">
+
+                <div class="image_description">
+                    <h3>Giỏ hàng của bạn</h3>
+                    <p>Thêm bất kỳ sản phẩm bạn yêu thích vào giỏ hàng. Tận hưởng trải nghiệm mua sắm online!</p>
+                </div>
+            </div>
+        </div><!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_16618622643932778" class="block ApImage">
+
+
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h4_sv3.jpg?v=1630897682" class=""
+                    title="" alt="" style=" width:100%; 
+                height:auto">
+
+                <div class="image_description">
+                    <h3>Gửi đơn hàng. Được giao hàng. Tận hưởng.</h3>
+                    <p>Gửi đơn hàng và bạn sẽ không cần tốn công đi mua sắm. Giao hàng tận nơi và miễn phí cho toàn bộ
+                        TP.HCM!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container mb-5">
     <div class="row" style="margin-top: 3%;margin:0 auto;
 width: 100%;display: block;">
@@ -326,72 +370,283 @@ width: 100%;display: block;">
 <div class="container">
     <hr>
 </div>
+<div class="container py-4">
+    <div class="row h1-box-service home-2 ApRow  has-bg bg-boxed" style="background: #ffffff no-repeat center center;"
+        data-bg_data=" #ffffff no-repeat center center">
+        <!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_1876637435" class="block ApImage">
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h1_service_1.png?v=1604626519"
+                    class="" title="" alt="" style=" width:auto; height:auto">
 
-<div class="container-fluid">
-    <div class="container mb-5">
-        <div class="row" style="margin-top: 3%;margin:0 auto;
-    width: 100%;display: block;">
-            <div class="col-lg-12">
-                <div class="">
-                    <h3 class="text-tron text-monospace" style="text-align: center;"><i class="far fa-heart"></i> Các
-                        sản phẩm bán chạy nhất!</h3>
+                <div class="image_description">
+                    <h3>Sản phẩm chất lượng</h3>
+                    <p>Được chọn lọc kỹ lưỡng từ các thương nhân hàng đầu.</p>
+                </div>
+            </div>
+        </div><!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_3177626521" class="block ApImage">
+
+
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h1_service_2.png?v=1604626519"
+                    class="" title="" alt="" style=" width:auto; height:auto">
+
+                <div class="image_description">
+                    <h3>Chế biến hợp vệ sinh</h3>
+                    <p>Được thực hiện bằng sự kỳ công của hơn 300 nông trại trên khắp cả nước.</p>
+                </div>
+            </div>
+        </div><!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_1746341289" class="block ApImage">
+
+
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h1_service_3.png?v=1604626519"
+                    class="" title="" alt="" style=" width:auto; height:auto">
+
+                <div class="image_description">
+                    <h3>100% Tự nhiên</h3>
+                    <p>Sản phẩm từ thiên nhiên, trồng và nuôi dưỡng tại Việt Nam.</p>
+                </div>
+            </div>
+        </div><!-- @file modules\appagebuilder\views\templates\hook\ApColumn -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 col-sp-12  ApColumn ">
+            <!-- @file modules\appagebuilder\views\templates\hook\ApImage -->
+            <div id="image-form_2353415247" class="block ApImage">
+
+
+                <img src="https://cdn.shopify.com/s/files/1/0740/5717/files/freshio_h1_service_4.png?v=1604626519"
+                    class="" title="" alt="" style=" width:auto; height:auto">
+
+                <div class="image_description">
+                    <h3>Giao hàng</h3>
+                    <p>Miễn phí &amp; nhanh chóng</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid dflex-jus">
-        <div class="row justify-content-center  animate__animated animate__fadeIn" style="width: 80%;">
-            <div *ngFor="let pro of topProduct,index as i  " class="  gradient-border "
-                style=" margin: 20px;margin-bottom: 100px;">
-                <div class="featured__item">
-                    <div class="featured__item__pic set-bg   "
-                        [ngStyle]="{'background-image':'url(' + pro.product.imgUrl + ')'}"
-                        ngbTooltip="{{pro.product.description}}" [openDelay]="100" [closeDelay]="100" placement="auto"
-                        container="body">
-                        <ul class="featured__item__pic__hover">
-                            <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro.product)"><i
-                                        class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="Xem thông tin" container="body"
-                                (click)="openProductUrlInNewWindow(pro.product.id)"><a><i class="fas fa-info"></i></a>
-                            </li>
-                            <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro.product)"><a><i
-                                        class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="featured__item__text">
-                        <h6><a hrer="#" (click)="openProductUrlInNewWindow(pro.product.id)">{{pro.product.name}}</a>
-                        </h6>
-                        <div *ngIf="!promoInfoTop[i]">
-                            <h5>{{pro.product.price | currency:'VND':''}} <span
-                                    style="text-decoration: underline;">đ</span>
-                            </h5>
-                        </div>
-
-                        <div *ngIf="promoInfoTop[i]">
-                            <h5 *ngIf="promoInfoTop[i].promotionPercent!='null'">
-                                {{pro.product.price-pro.product.price*toNumber(promoInfoTop[i].promotionPercent)/100 |
-                                currency:'VND':''}}
-                                <span class="currency-dis">đ</span>
-                                <span class="badge bg-success"
-                                    ngbTooltip="{{promoInfoTop[i].promotion.name}}&#013;Bắt đầu : {{promoInfoTop[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoTop[i].promotion.endDate}}&#013;Giảm : {{promoInfoTop[i].promotionPercent}}%&#013;Giá gốc : {{pro.product.price| currency:'VND':''}} đ"
-                                    placement="auto" tooltipClass="tooltip-inner">-{{promoInfoTop[i].promotionPercent}}%
-                                </span>
-                            </h5>
-                            <h5 *ngIf="promoInfoTop[i].promotionAmount!='null'">
-                                {{pro.product.price-toNumber(promoInfoTop[i].promotionAmount) | currency:'VND':''}}
-                                <span class="currency-dis">đ</span>
-                                <span class="badge bg-danger"
-                                    ngbTooltip="{{promoInfoTop[i].promotion.name}}&#013;Bắt đầu : {{promoInfoTop[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoTop[i].promotion.endDate}}&#013;Giảm : {{promoInfoTop[i].promotionAmount}} VND&#013;Giá gốc : {{pro.product.price| currency:'VND':''}} đ"
-                                    placement="auto" data-html="true"
-                                    tooltipClass="tooltip-inner">-{{promoInfoTop[i].promotionAmount|
-                                    currency:'VND':''}}
-                                    <span class="currency-dis">đ</span>
-                                </span>
-                            </h5>
-                        </div>
-                    </div>
+</div>
+<div class="container" *ngIf="!isLoading">
+    <div class="row h5-box-product-2 style-banner ApRow  has-bg bg-boxed justify-content-center" style="background: no-repeat;">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-sp-12 ApColumn ">
+            <div class="block ApProductList">
+                <h4 class="title_block text-monospace  text-tron " style="color: chartreuse;">
+                    <i class="fas fa-dollar-sign"></i> Bán chạy nhất
+                </h4>
+                <ul class="product_list grid row product-list-3 flex-column">
+                    <li class="ajax_block_product product_block  col "
+                        *ngFor="let pro of topProduct,index as i">
+                        <article class="product-miniature js-product-miniature" >
+                            <div class="thumbnail-container">
+                                <div class="product-image">
+                                    <a class="thumbnail product-thumbnail">
+                                        <img class="img-fluid" src="{{pro.product.imgUrl}}" (click)="openProductUrlInNewWindow(pro.product.id)" alt="">
+                                        <span class="product-additional"></span>
+                                    </a>
+                                </div>
+                                <div class="product-meta">
+                                    <h3 class="h3 product-title" itemprop="name"><a (click)="openProductUrlInNewWindow(pro.product.id)" href="javascript:void(0)">{{pro.product.name}}</a></h3>
+                                    <div class="leo-list-product-reviews">
+                                        <div class="leo-list-product-reviews-wraper">
+                                            <div class="star_content clearfix text-muted small">
+                                                {{getDisplayCategory(pro.product.category)}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-and-shipping ">
+                                        <span class="sr-only">Giá</span>
+                                        <div *ngIf="!promoInfoTop[i]">
+                                            <span class="price">
+                                                <span >{{pro.product.price |currency:'VND':''}} 
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="promoInfoTop[i]">
+                                            <span class="price" *ngIf="promoInfoTop[i].promotionPercent!='null'">
+                                                <span > {{pro.product.price-pro.product.price*toNumber(promoInfoTop[i].promotionPercent)/100 |currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span>
+                                                </span>
+                                                <span class="badge bg-success ml-2"
+                                                    ngbTooltip="{{promoInfoTop[i].promotion.name}}&#013;Bắt đầu : {{promoInfoTop[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoTop[i].promotion.endDate}}&#013;Giảm : {{promoInfoTop[i].promotionPercent}}%&#013;Giá gốc : {{pro.product.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    >-{{promoInfoTop[i].promotionPercent}}%
+                                                </span>
+                                            </span>
+                                            <span class="price" *ngIf="promoInfoTop[i].promotionAmount!='null'">
+                                                <span >  {{pro.product.price-toNumber(promoInfoTop[i].promotionAmount) | currency:'VND':''}}
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                                <span class="badge bg-danger ml-2"
+                                                ngbTooltip="{{promoInfoTop[i].promotion.name}}&#013;Bắt đầu : {{promoInfoTop[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoTop[i].promotion.endDate}}&#013;Giảm : {{promoInfoTop[i].promotionAmount}} VND&#013;Giá gốc : {{pro.product.price| currency:'VND':''}} đ"
+                                                placement="auto" data-html="true"
+                                                >-{{promoInfoTop[i].promotionAmount|currency:'VND':''}}
+                                                <span class="currency-dis">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro.product)"><i class="fa fa-heart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro.product)"><i class="fa fa-shopping-cart"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                </ul>
+                <div class="box-show-more open">
+                    <a  href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more">
+                        <span>Show more</span></a>
                 </div>
             </div>
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-sp-12 ApColumn ">
+            <div class="block ApProductList">
+                <h4 class="title_block text-monospace  text-tron  " style="color: red;">
+                    <i class="fas fa-heart"></i> Được yêu thích nhất
+                </h4>
+                <ul class="product_list grid row product-list-3 flex-column">
+                    <li class="ajax_block_product product_block  col "
+                        *ngFor="let pro of mostFavProduct,index as i">
+                        <article class="product-miniature js-product-miniature" >
+                            <div class="thumbnail-container">
+                                <div class="product-image" >
+                                    <a class="thumbnail product-thumbnail">
+                                        <img class="img-fluid" src="{{pro.imgUrl}}" alt="" (click)="openProductUrlInNewWindow(pro.id)">
+                                        <span class="product-additional"></span>
+                                    </a>
+                                </div>
+                                <div class="product-meta">
+                                    <h3 class="h3 product-title" itemprop="name"><a (click)="openProductUrlInNewWindow(pro.id)" href="javascript:void(0)">{{pro.name}}</a></h3>
+                                    <div class="leo-list-product-reviews">
+                                        <div class="leo-list-product-reviews-wraper">
+                                            <div class="star_content clearfix text-muted small">
+                                                {{getDisplayCategory(pro.category)}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-and-shipping ">
+                                        <span class="sr-only">Giá</span>
+                                        <div *ngIf="!promoInfoMostFav[i]">
+                                            <span class="price">
+                                                <span >{{pro.price |currency:'VND':''}} 
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="promoInfoMostFav[i]">
+                                            <span class="price" *ngIf="promoInfoMostFav[i].promotionPercent!='null'">
+                                                <span > {{pro.price-pro.price*toNumber(promoInfoMostFav[i].promotionPercent)/100 |currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span>
+                                                </span>
+                                                <span class="badge bg-success ml-2"
+                                                    ngbTooltip="{{promoInfoMostFav[i].promotion.name}}&#013;Bắt đầu : {{promoInfoMostFav[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoMostFav[i].promotion.endDate}}&#013;Giảm : {{promoInfoMostFav[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    >-{{promoInfoMostFav[i].promotionPercent}}%
+                                                </span>
+                                            </span>
+                                            <span class="price" *ngIf="promoInfoMostFav[i].promotionAmount!='null'">
+                                                <span >  {{pro.price-toNumber(promoInfoMostFav[i].promotionAmount) | currency:'VND':''}}
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                                <span class="badge bg-danger ml-2"
+                                                ngbTooltip="{{promoInfoMostFav[i].promotion.name}}&#013;Bắt đầu : {{promoInfoMostFav[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoMostFav[i].promotion.endDate}}&#013;Giảm : {{promoInfoMostFav[i].promotionAmount}} VND&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                placement="auto" data-html="true"
+                                                >-{{promoInfoMostFav[i].promotionAmount|currency:'VND':''}}
+                                                <span class="currency-dis">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro)"><i class="fa fa-heart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)"><i class="fa fa-shopping-cart"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                </ul>
+                <div class="box-show-more open">
+                    <a  href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more" >
+                        <span>Show more</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-sp-12  ApColumn " id="latestPro">
+            <div class="block ApProductList">
+                <h4 class="title_block text-monospace text-tron " style="color: aqua;">
+                    <i class="fas fa-history"></i> Mới nhất
+                </h4>
+                <ul class="product_list grid row product-list-3">
+                    <li class="ajax_block_product product_block  col "
+                        *ngFor="let pro of latestProduct,index as i">
+                        <article class="product-miniature js-product-miniature" >
+                            <div class="thumbnail-container">
+                                <div class="product-image">
+                                    <a class="thumbnail product-thumbnail">
+                                        <img class="img-fluid" (click)="openProductUrlInNewWindow(pro.id)" src="{{pro.imgUrl}}" alt="">
+                                        <span class="product-additional"></span>
+                                    </a>
+                                </div>
+                                <div class="product-meta">
+                                    <h3 class="h3 product-title" itemprop="name"><a  (click)="openProductUrlInNewWindow(pro.id)" href="javascript:void(0)">{{pro.name}}</a></h3>
+                                    <div class="leo-list-product-reviews">
+                                        <div class="leo-list-product-reviews-wraper">
+                                            <div class="star_content clearfix text-muted small">
+                                                {{getDisplayCategory(pro.category)}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-and-shipping ">
+                                        <span class="sr-only">Giá</span>
+                                        <div *ngIf="!promoInfoLatest[i]">
+                                            <span class="price">
+                                                <span >{{pro.price |currency:'VND':''}} 
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="promoInfoLatest[i]">
+                                            <span class="price" *ngIf="promoInfoLatest[i].promotionPercent!='null'">
+                                                <span > {{pro.price-pro.price*toNumber(promoInfoLatest[i].promotionPercent)/100 |currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span>
+                                                </span>
+                                                <span class="badge bg-success ml-2"
+                                                    ngbTooltip="{{promoInfoLatest[i].promotion.name}}&#013;Bắt đầu : {{promoInfoLatest[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoLatest[i].promotion.endDate}}&#013;Giảm : {{promoInfoLatest[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    >-{{promoInfoLatest[i].promotionPercent}}%
+                                                </span>
+                                            </span>
+                                            <span class="price" *ngIf="promoInfoLatest[i].promotionAmount!='null'">
+                                                <span >  {{pro.price-toNumber(promoInfoLatest[i].promotionAmount) | currency:'VND':''}}
+                                                    <span style="text-decoration: underline;">đ</span>
+                                                </span>
+                                                <span class="badge bg-danger ml-2"
+                                                ngbTooltip="{{promoInfoLatest[i].promotion.name}}&#013;Bắt đầu : {{promoInfoLatest[i].promotion.startDate}}&#013;Kết thúc : {{promoInfoLatest[i].promotion.endDate}}&#013;Giảm : {{promoInfoLatest[i].promotionAmount}} VND&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                placement="auto" data-html="true"
+                                                >-{{promoInfoLatest[i].promotionAmount|currency:'VND':''}}
+                                                <span class="currency-dis">đ</span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro)"><i class="fa fa-heart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)"><i class="fa fa-shopping-cart"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                </ul>
+                <div class="box-show-more open">
+                    <a href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more" 
+                        >
+                        <span>Show more</span></a>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>
@@ -399,103 +654,7 @@ width: 100%;display: block;">
 <div class="container">
     <hr>
 </div>
-<!-- 
-<div class="row mh-blog-grid mh-col-no-divider mh-slider-custom-arrow large-columns-3 medium-columns-3 small-columns-1 row-small slider row-slider slider-nav-simple slider-nav-outside slider-nav-push is-draggable flickity-enabled slider-lazy-load-active"
-    data-flickity-options="{&quot;imagesLoaded&quot;: true, &quot;groupCells&quot;: &quot;100%&quot;, &quot;dragThreshold&quot; : 5, &quot;cellAlign&quot;: &quot;left&quot;,&quot;wrapAround&quot;: true,&quot;prevNextButtons&quot;: true,&quot;percentPosition&quot;: true,&quot;pageDots&quot;: false, &quot;rightToLeft&quot;: false, &quot;autoPlay&quot; : false}"
-    tabindex="0">
-    <div class="flickity-viewport" style="height: 376.487px; touch-action: pan-y;">
-        <div class="flickity-slider" style="left: 0px; transform: translateX(-266.66%);">
-            <div class="col post-item is-selected" style="position: absolute; left: 266.66%;">
-                <div class="col-inner"> <a
-                        href="https://cuahangtienloi24h.com/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet/"
-                        class="plain">
-                        <div class="box box-normal box-text-bottom box-blog-post has-hover">
-                            <div class="box-image">
-                                <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="1200"
-                                        height="676"
-                                        src="https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818.jpg"
-                                        data-src="https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818.jpg"
-                                        class="attachment-original size-original wp-post-image lazy-load-active"
-                                        alt="Cách làm tôm một nắng đơn giản ngọt dai để ăn Tết" loading="lazy"
-                                        srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818.jpg 1200w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-768x433.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-600x338.jpg 600w"
-                                        data-srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818.jpg 1200w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-768x433.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/10/cach-lam-tom-mot-nang-don-gian-ngot-dai-de-an-tet-1633707818-600x338.jpg 600w"
-                                        sizes="(max-width: 1200px) 100vw, 1200px"></div>
-                            </div>
-                            <div class="box-text text-left" style="padding:10px 10px 10px 10px;">
-                                <div class="box-text-inner blog-post-inner">
-                                    <h5 class="post-title is-large ">Cách làm tôm một nắng đơn giản ngọt dai để ăn Tết
-                                    </h5>
-                                    <div class="is-divider"></div>
-                                    <p class="from_the_blog_excerpt ">Tôm một nắng, món ăn cực kỳ phù hợp cho ngày lễ
-                                        Tết, với công...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col post-item is-selected" style="position: absolute; left: 300%;">
-                <div class="col-inner"> <a
-                        href="https://cuahangtienloi24h.com/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha/"
-                        class="plain">
-                        <div class="box box-normal box-text-bottom box-blog-post has-hover">
-                            <div class="box-image">
-                                <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="800"
-                                        height="450"
-                                        src="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756.jpg"
-                                        data-src="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756.jpg"
-                                        class="attachment-original size-original wp-post-image lazy-load-active"
-                                        alt="Cách làm khô cá đù thơm ngon, lạ vị dễ làm tại nhà" loading="lazy"
-                                        srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756.jpg 800w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-768x432.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-600x338.jpg 600w"
-                                        data-srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756.jpg 800w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-768x432.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-kho-ca-du-thom-ngon-la-vi-de-lam-tai-nha-1632655756-600x338.jpg 600w"
-                                        sizes="(max-width: 800px) 100vw, 800px"></div>
-                            </div>
-                            <div class="box-text text-left" style="padding:10px 10px 10px 10px;">
-                                <div class="box-text-inner blog-post-inner">
-                                    <h5 class="post-title is-large ">Cách làm khô cá đù thơm ngon, lạ vị dễ làm tại nhà
-                                    </h5>
-                                    <div class="is-divider"></div>
-                                    <p class="from_the_blog_excerpt ">Bạn đang tìm công thức làm những món khô cá thơm
-                                        ngon đơn giản, hãy...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col post-item is-selected" style="position: absolute; left: 333.33%;">
-                <div class="col-inner"> <a
-                        href="https://cuahangtienloi24h.com/cach-lam-ca-na-dap-muoi-ot-thom-ngon-hap-dan-cuc-don-gian/"
-                        class="plain">
-                        <div class="box box-normal box-text-bottom box-blog-post has-hover">
-                            <div class="box-image">
-                                <div class="image-zoom image-cover" style="padding-top:75%;"> <img width="1280"
-                                        height="720"
-                                        src="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820.jpg"
-                                        data-src="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820.jpg"
-                                        class="attachment-original size-original wp-post-image lazy-load-active"
-                                        alt="Cách làm cà na đập chua ngọt, thơm ngon hấp dẫn, cực đơn giản"
-                                        loading="lazy"
-                                        srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820.jpg 1280w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-768x432.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-600x338.jpg 600w"
-                                        data-srcset="https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820.jpg 1280w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-400x225.jpg 400w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-768x432.jpg 768w, https://cuahangtienloi24h.com/wp-content/uploads/2021/09/cach-lam-ca-na-dap-chua-ngot-thom-ngon-hap-dan-cuc-don-gian-1632654820-600x338.jpg 600w"
-                                        sizes="(max-width: 1280px) 100vw, 1280px"></div>
-                            </div>
-                            <div class="box-text text-left" style="padding:10px 10px 10px 10px;">
-                                <div class="box-text-inner blog-post-inner">
-                                    <h5 class="post-title is-large ">Cách làm cà na đập muối ớt, thơm ngon hấp dẫn, cực
-                                        đơn giản</h5>
-                                    <div class="is-divider"></div>
-                                    <p class="from_the_blog_excerpt ">Cà na đập muối ớt với cách làm đơn giản lại vô
-                                        cùng ngon miệng...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
+
 <section id="share-section" class="bg-light text-muted py-5 mt-5">
     <div class="container shop-info">
 

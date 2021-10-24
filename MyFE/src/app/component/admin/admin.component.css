@@ -354,9 +354,6 @@ body{
 }
 
 
-#fb-root{
-  display: none!important;
-}
-#fb-customer-chat{
+.fb_dialog_contentt{
   display: none!important;
 }
