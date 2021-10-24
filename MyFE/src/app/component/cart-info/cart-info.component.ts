@@ -81,7 +81,7 @@ export class CartInfoComponent implements OnInit {
       this.router.navigateByUrl("/checkout")
     }
     else{
-      this.toast.info("Please login to continue!")
+      this.toast.info("Hãy đăng nhập để tiếp tục!")
       this.openloginModal(this.loginModal)
     }
     

@@ -11,7 +11,7 @@ namespace MyAPI.Configurations
     public class EmailHelper
     {
         public string site = "http://localhost:4200/#/";
-        public string siteOnline = "http://circle-shop-18110320.000webhostapp.com/#/";
+        public string siteOnline = "http://18110320.000webhostapp.com/#/";
         public string SendEmailConfirm(string userEmail, string token)
         {
             MailMessage mailMessage = new MailMessage();

@@ -54,7 +54,7 @@ export class PromoInfoComponent implements OnInit {
   }
 
   getRelatedPromo(){
-    this.proService.getRelatedPromotion(this.promotion.id,2).subscribe(
+    this.proService.getRelatedPromotion(this.promotion.id,3).subscribe(
       data=>{
         this.relatedPromo=data.result
       },

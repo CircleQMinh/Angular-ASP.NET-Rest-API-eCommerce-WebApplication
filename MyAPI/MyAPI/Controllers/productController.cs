@@ -406,6 +406,74 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet("getLatestProduct")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetLatestProduct(int top)
+        {
+
+
+            try
+            {
+                var pro = await _unitOfWork.Products.GetAll(q => q.Status == 1, q=>q.OrderByDescending(q=>q.Id), null,new PaginationFilter(1,top));
+                var result = _mapper.Map<IList<ProductDTO>>(pro);
+
+                var promoInfo = new List<PromotionInfoDTO>();
+                foreach (var item in result)
+                {
+                    var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+
+                return Accepted(new {result,promoInfo });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetLatestProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+        [HttpGet("getMostFavoriteProduct")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetMostFavoriteProduct(int top)
+        {
+
+
+            try
+            {
+                var pro = await _unitOfWork.Products.GetAll(q => q.Status == 1, q => q.OrderByDescending(q => q.FavoritedUsers.Count), 
+                    new List<string> { "FavoritedUsers" }, new PaginationFilter(1, top));
+                var numberFav = new List<int>();
+                foreach (var item in pro)
+                {
+                    numberFav.Add(item.FavoritedUsers.Count);
+                }
+
+                var result = _mapper.Map<IList<ProductDTO>>(pro);
+
+                var promoInfo = new List<PromotionInfoDTO>();
+                foreach (var item in result)
+                {
+                    var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+
+                return Accepted(new { result,numberFav,promoInfo });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetLatestProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
+
+
 
         [HttpGet("getPromotion")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -413,14 +481,10 @@ namespace MyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPromotionOnGoing()
         {
-
-
             try
             {
                 var query = await _unitOfWork.Promotions.GetAll(q=>q.Visible==1, null, null);
                 var result = _mapper.Map<IList<PromotionDTO>>(query);
-
-
                 return Accepted(new { result });
             }
             catch (Exception ex)
@@ -470,7 +534,7 @@ namespace MyAPI.Controllers
         {
             try
             {
-                var query = await _unitOfWork.Promotions.GetAll(q => q.Id != id && q.Status == 1,null, null);
+                var query = await _unitOfWork.Promotions.GetAll(q => q.Id != id && q.Visible == 1,null, null);
                 var list = _mapper.Map<IList<PromotionDTO>>(query);
                 var random = list.OrderBy(x => Guid.NewGuid()).ToList();
                 var result = new List<PromotionDTO>();

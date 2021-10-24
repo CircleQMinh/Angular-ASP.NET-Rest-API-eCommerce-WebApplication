@@ -99,7 +99,7 @@
                                 <span class="currency-dis">đ</span>
                                 <span class="badge bg-success"
                                     ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
-                                    placement="auto" tooltipClass="tooltip-inner">-{{promoInfo[i].promotionPercent}}%
+                                    placement="auto" >-{{promoInfo[i].promotionPercent}}%
                                 </span>
                             </h5>
                             <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
@@ -108,7 +108,7 @@
                                 <span class="badge bg-danger"
                                     ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionAmount}} VND&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
                                     placement="auto" data-html="true"
-                                    tooltipClass="tooltip-inner">-{{promoInfo[i].promotionAmount|
+                                    >-{{promoInfo[i].promotionAmount|
                                     currency:'VND':''}}
                                     <span class="currency-dis">đ</span>
                                 </span>
