@@ -49,3 +49,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 19-10-2021 : sửa nhiều thứ.<br>
 20-10-2021 : cải thiện hiệu suất.<br>
 21-10-2021 : thêm chat facebook và host lại web.<br>
+24-10-2021 : nâng cấp hình ảnh.<br>
