@@ -43,9 +43,36 @@ namespace MyAPI.Controllers
             {
                 var totalProduct = await _unitOfWork.Products.GetCount(null);
                 var totalOrder = await _unitOfWork.Orders.GetCount(q=>q.Status==0);
-                var totalUser = await _unitOfWork.Users.GetCount();
 
-                return Ok(new {totalUser,totalProduct,totalOrder  });
+                var allUser = await _unitOfWork.Users.GetAll(null,null,null);
+
+                var emp = new List<APIUser>();
+                var cus = new List<APIUser>();
+
+                foreach (var item in allUser)
+                {
+                    var r = await _userManager.GetRolesAsync(item);
+                    if (r.Contains("User"))
+                    {
+                        cus.Add(item);
+                    }
+                    else if (r.Contains("Employee"))
+                    {
+                        emp.Add(item);
+                    }
+                    else if(r.Contains("Shipper"))
+                    {
+                        emp.Add(item);
+                    }
+                }
+
+
+                var totalUser = cus.Count;
+                var totalEmp = emp.Count;
+
+                var totalPromo = await _unitOfWork.Promotions.GetCount(q => q.Status == 1);
+
+                return Ok(new {totalUser,totalProduct,totalOrder,totalEmp,totalPromo  });
             }
             catch (Exception ex)
             {
@@ -306,7 +333,18 @@ namespace MyAPI.Controllers
                 var query = await _unitOfWork.Products.GetAll(expression, orderBy, null, pf);
                 var result = _mapper.Map<IList<ProductDTO>>(query);
                 var count = await _unitOfWork.Products.GetCount(expression);
-                return Ok(new { result,count });
+                var saleNum = new List<int>();
+                foreach (var item in result)
+                {
+                    var sum = 0;
+                    var orderList = await _unitOfWork.OrderDetails.GetAll(q => q.ProductId == item.Id && q.Order.Status == 3, null, null);
+                    foreach (var ord in orderList)
+                    {
+                        sum += ord.Quantity;
+                    }
+                    saleNum.Add(sum);
+                }
+                return Ok(new { result,count,saleNum });
             }
             catch (Exception ex)
             {

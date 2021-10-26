@@ -14,73 +14,119 @@
 
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
-    <div class="row justify-content-center border border-3 border-primary rounded">
-        <div class="col-md-5 ">
-            <div class="d-flex justify-content-center p-3 
-            flex-column align-item-center ">
-                <lib-ngx-image-zoom [thumbImage]=product.imgUrl [fullImage]=product.imgUrl [enableLens]=true
-                    [lensWidth]=250 [lensHeight]=250 [magnification]=1.05 [enableScrollZoom]=true></lib-ngx-image-zoom>
-                <p class="text-center"><i class="fas fa-search"></i> Rê/Nhấp chuột vào ảnh để phóng to</p>
-            </div>
+    <div class="row">
+        <div class="col-form_id-form_9367402777406408 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-sp-12">
+            <section class="page-content" id="content">
+                <div class="images-container">
+                    <div class="product-cover">
+                        <ul class="product-flags">
+                        </ul>
+                        <!-- <img id="zoom_product" data-type-zoom="" class="js-qv-product-cover img-fluid"
+                            src="https://demo73leotheme.b-cdn.net/prestashop/at_freshio/36-large_default/mug-today-is-a-good-day.jpg"
+                            alt="" title="" itemprop="image"> -->
+                        <lib-ngx-image-zoom [thumbImage]="product.imgUrl" [fullImage]="product.imgUrl" [enableLens]=true
+                            [lensWidth]=200 [lensHeight]=200 [magnification]=1.05 [enableScrollZoom]=true
+                            id="zoom_product" data-type-zoom="" class="js-qv-product-cover img-fluid">
+                        </lib-ngx-image-zoom>
+                        <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
+                            <i class="material-icons zoom-in"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-        <div class="col-md-6">
-            <h4 class="pro-d-title mt-3"> <a href="#" class="mt-2 text-monospace text-lg lead"> {{product.name}} </a>
-            </h4>
-            <strong>Mô tả sản phẩm :</strong> <br>
-            <p class="lead pro-des p-3">
-                <a>{{product.description}}</a>
-            </p>
-            <div class="product_meta">
-                <span class="posted_in">
-                    <strong class="mr-2">Danh mục : </strong>
-                    <a rel="tag"> <span>{{ getDisplayCategory(product.category)}}</span> </a>
-
-                </span>
-                <span class="posted_in">
-                    <strong class="mr-2">Yêu thích : </strong>
-                    <a rel="tag"> {{ product.favoritedUsers.length}} <i class="fas fa-users"></i></a>
-
-                </span>
+        <div class="product-paddingleft col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-sp-12">
+            <h1 class="" itemprop="name">{{product.name}}</h1>
+            <h4 style="color: red;">Mô tả sản phẩm</h4>
+            <hr>
+            <div id="product-description-short-8" class="description-short" itemprop="description">
+                <p><span style="font-size:10pt;font-style:normal;">{{product.description}}</span></p>
             </div>
-            <div class="m-bot15 d-flex">
-                <strong class="mr-2">Giá : </strong>
-                <div *ngIf="!promoInfo">
-                    <span class="pro-price">
-                        {{product.price| currency:'VND':''}} <span class="currency-dis">đ</span>
-                    </span>
+            <hr>
+            <div class="product-prices">
+                <div class="product-price h5 " itemprop="offers" itemscope="" itemtype="https://schema.org/Offer">
+                    <div class="current-price">
+                        <span class="pro-price">
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Fruit'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-apple-alt"></i> Trái cây</span>
+                            </p>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Vegetable'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-carrot"></i> Rau củ</span>
+                            </p>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Confectionary'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
+                            </p>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Snack'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-cookie-bite"></i> Snack</span>
+                            </p>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='AnimalProduct'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng vật</span>
+                            </p>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='CannedFood'">
+                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-spray-can"></i> Đồ hộp</span>
+                            </p>
+                        </span>
+                        <div *ngIf="!promoInfo">
+                            <span class="pro-price">
+                                <p class="mr-2">Giá : <span style="color: red;">{{product.price| currency:'VND':''}}</span> 
+                                    <span class="currency-dis" style="color: red;">đ</span> 
+                                </p>
+                            </span>
+                        </div>
+                        <div *ngIf="promoInfo">
+                            <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
+                                <p class="mr-2">Giá : 
+                                    <span style="color: red;">
+                                        {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100|
+                                        currency:'VND':''}}
+                                    </span>
+                                    <span class="currency-dis" style="color: red;">đ</span>
+                                    <span class="badge bg-success"
+                                        ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionPercent}}%&#013;Giá gốc : {{product.price| currency:'VND':''}} đ"
+                                        placement="auto" data-html="true">-{{promoInfo.promotionPercent}}%</span>
+                                </p>
+                            </span>
+                            <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
+                                <p class="mr-2">Giá : <span style="color: red;">{{product.price-toNumber(promoInfo.promotionAmount)|
+                                        currency:'VND':''}}</span> <span class="currency-dis" style="color: red;">đ</span>
+                                    <span class="badge bg-danger"
+                                        ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionAmount}}VND&#013;Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
+                                        placement="auto" data-html="true">-{{promoInfo.promotionAmount|
+                                        currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div *ngIf="promoInfo">
-                    <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
-                        {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100| currency:'VND':''}}
-                        <span class="currency-dis">đ</span>
-                        <span class="badge bg-success"
-                            ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionPercent}}%&#013;Giá gốc : {{product.price| currency:'VND':''}} đ"
-                            placement="auto" data-html="true"
-                            >-{{promoInfo.promotionPercent}}%</span>
-                    </span>
-
-                    <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
-                        {{product.price-toNumber(promoInfo.promotionAmount)| currency:'VND':''}} <span
-                            class="currency-dis">đ</span>
-                        <span class="badge bg-danger"
-                            ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionAmount}}VND&#013;Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
-                            placement="auto" data-html="true" >-{{promoInfo.promotionAmount|
-                            currency:'VND':''}} <span class="currency-dis">đ</span></span>
-                    </span>
+                <div class="tax-shipping-delivery-label">
                 </div>
-
             </div>
-            <p class="mt-3">
-                <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
-                        class="fa fa-shopping-cart"></i> Thêm vào giỏ
-                </button>
-                <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i
-                        class="far fa-heart"></i> Yêu thích
-                </button>
 
-            </p>
+            <div class="product-actions">
+                <form action="https://demo73.leotheme.com/prestashop/at_freshio/en/cart" method="post">
+                    <div class="product-variants">
+                    </div>
+                    <section class="product-discounts">
+                    </section>
+                    <div class="btn-group" style="margin-top: -50px;">
+
+                        <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
+                                class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                        </button>
+                        <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i
+                                class="far fa-heart"></i> Yêu thích
+                        </button>
+
+                    </div>
+                    <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="Refresh"
+                        style="display: none;">
+                </form>
+            </div>
         </div>
     </div>
+
+
+
     <blockquote class="blockquote mt-4 ml-5">
         <p class="text-monospace text-tron text-center" style="margin-right: 3rem;">Các sản phẩm tương tự</p>
     </blockquote>

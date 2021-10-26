@@ -16,7 +16,7 @@ export class Product {
     reviews!:Review[]
     promoInfo!:PromotionInfo
     status!:number
-
+    numSales!:number
 
 	constructor(id:number,name:string,price:number,des:string,unit:number,cate:string,img:string,last:string) {
         this.id=id;

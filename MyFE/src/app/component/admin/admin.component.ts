@@ -57,9 +57,11 @@ export class AdminComponent implements OnInit {
   isLoading = false
 
   dashboardInfo = {
-    totalOrder: 7,
-    totalProduct: 102,
-    totalUser: 0
+    totalUser: 5,
+    totalProduct: 142,
+    totalOrder: 3,
+    totalEmp: 5,
+    totalPromo: 1
   }
 
   numberOfNewOrder = 0
@@ -2048,5 +2050,9 @@ export class AdminComponent implements OnInit {
   }
   toNumber(string: string): number {
     return Number(string)
+  }
+
+  openProductExport() {
+    window.open(`/#/xuatpdf?mode=${1}&category=${this.category}&orderBy=${this.orderProduct}&pageNumber=${this.pageNumberProduct}&pageSize=${this.pageSizeProduct}&orderDir=${this.orderDirProduct}`, '_blank');
   }
 }

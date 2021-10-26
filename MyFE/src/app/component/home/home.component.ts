@@ -100,9 +100,9 @@ export class HomeComponent implements OnInit {
         }
       )
 
-      // this.getTopProduct()
-      // this.getLatestProduct()
-      // this.getMostFavProduct()
+      this.getTopProduct()
+      this.getLatestProduct()
+      this.getMostFavProduct()
     }, 6000)
   }
   getNextPromo() {
