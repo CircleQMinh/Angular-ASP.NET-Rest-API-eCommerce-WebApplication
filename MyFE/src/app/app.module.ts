@@ -40,6 +40,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { PromoInfoComponent } from './component/promo-info/promo-info.component';
+import { PdfExportComponent } from './component/pdf-export/pdf-export.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,7 +73,8 @@ import { PromoInfoComponent } from './component/promo-info/promo-info.component'
     NewsComponent,
     ContactComponent,
     NhanvienComponent,
-    PromoInfoComponent
+    PromoInfoComponent,
+    PdfExportComponent
   ],
   imports: [
     BrowserModule,

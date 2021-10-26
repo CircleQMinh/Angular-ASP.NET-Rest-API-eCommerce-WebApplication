@@ -9,8 +9,8 @@ import { User } from '../class/user';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
-  // apiUrl: string = "https://localhost:44324/api/";
+  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  apiUrl: string = "https://localhost:44324/api/";
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
 
   userInfo!:User

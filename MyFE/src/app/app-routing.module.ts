@@ -12,6 +12,7 @@ import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { NewsComponent } from './component/news/news.component';
 import { NhanvienComponent } from './component/nhanvien/nhanvien.component';
+import { PdfExportComponent } from './component/pdf-export/pdf-export.component';
 import { ProductCategoryComponent } from './component/product-category/product-category.component';
 import { ProductInfoComponent } from './component/product-info/product-info.component';
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
@@ -58,6 +59,7 @@ const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'quanly', component: NhanvienComponent },
+  { path: 'xuatpdf', component: PdfExportComponent },
   { path: 'khuyenmai/:id', component: PromoInfoComponent },
   { path: 'error', component: ErrorComponent },
   {path: '**', redirectTo: '/error', pathMatch: 'full'}

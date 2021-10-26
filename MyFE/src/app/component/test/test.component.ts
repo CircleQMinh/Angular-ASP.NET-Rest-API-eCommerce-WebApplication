@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { OrderService } from 'src/app/service/order.service';
+import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-test',
@@ -12,11 +13,12 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class TestComponent implements OnInit {
 
-  myThumbnail="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg";
-  myFullresImage="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1629696503/fritos-198624_yqgozm.jpg";
+  myThumbnail="https://demo73leotheme.b-cdn.net/prestashop/at_freshio/36-large_default/mug-today-is-a-good-day.jpg";
+  myFullresImage="https://demo73leotheme.b-cdn.net/prestashop/at_freshio/36-large_default/mug-today-is-a-good-day.jpg";
 
   constructor(private http: HttpClient,private authService:AuthenticationService,private orderService:OrderService,
-    private toast:HotToastService,private router:Router) { }
+    private toast:HotToastService,private router:Router,private proService:ProductService) { }
+
   ngOnInit(): void {
 
   }

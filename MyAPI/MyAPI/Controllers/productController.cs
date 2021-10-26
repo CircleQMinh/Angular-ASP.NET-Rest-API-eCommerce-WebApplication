@@ -85,6 +85,8 @@ namespace MyAPI.Controllers
                     promoInfo.Add(pi_map);
                 }
 
+
+
                 return Ok(new { results, totalItem,promoInfo });
             }
             catch (Exception ex)
@@ -113,7 +115,7 @@ namespace MyAPI.Controllers
                 //sử dụng mapper
                 var reviews = _mapper.Map<IList<ReviewDTO>>(query2);
 
-                var query3 = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id, new List<string> { "Promotion" });
+                var query3 = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id&&q.Promotion.Status==1, new List<string> { "Promotion" });
 
                 var promoInfo = _mapper.Map<PromotionInfoDTO>(query3);
                 //trả lời request
