@@ -9,33 +9,33 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
         <ul class="navbar-nav  ml-auto ">
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='db'" (click)="switchTab('db')"
-                    class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                    class="nav-link d-flex"><i class="fas fa-home mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Dashboard</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='order'" (click)="switchTab('order')"
-                    class="nav-link"><i class="fas fa-shopping-cart"></i> Đơn hàng</a>
+                    class="nav-link d-flex"><i class="fas fa-shopping-cart mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Đơn hàng</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='product'" (click)="switchTab('product')"
-                    class="nav-link"><i class="fas fa-box-open"></i> Sản phẩm</a>
+                    class="nav-link d-flex"><i class="fas fa-box-open mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='user'" (click)="switchTab('user')"
-                    class="nav-link"><i class="far fa-user-circle"></i> Người dùng</a>
+                    class="nav-link d-flex"><i class="far fa-user-circle mt-1 mr-1"></i><p class="hide_for_1399 show_for_991"> Người dùng</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='employee'" (click)="switchTab('employee')"
-                    class="nav-link"><i class="fas fa-id-card-alt"></i> Nhân viên</a>
+                    class="nav-link d-flex"><i class="fas fa-id-card-alt mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Nhân viên</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='tk'" (click)="switchTab('tk')"
-                    class="nav-link"><i class="fas fa-chart-line"></i> Thống kê</a>
+                    class="nav-link d-flex"><i class="fas fa-chart-line mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Thống kê</p></a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 mt-1">
                 <a href="javascript:void(0)" [class.active]="active_tab=='pm'" (click)="switchTab('pm')"
-                    class="nav-link"><i class="fas fa-comment-dollar"></i> Khuyến mãi</a>
+                    class="nav-link d-flex"><i class="fas fa-comment-dollar mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Khuyến mãi</p></a>
             </li>
         </ul>
 
@@ -158,49 +158,7 @@
         </div>
     </div>
 </header>
-<!-- ACTIONS -->
-<!-- <section id="actions" class="py-4 mb-4 bg-light" *ngIf="!isLoading">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-success btn-block" (click)="switchTab('db')">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-danger btn-block" (click)="switchTab('order')">
-                    <i class="fas fa-shopping-cart"></i> Đơn hàng
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-warning btn-block" (click)="switchTab('product')">
-                    <i class="fas fa-box-open"></i> Sản phẩm
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-info btn-block" (click)="switchTab('user')">
-                    <i class="far fa-user-circle"></i> Người dùng
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-danger btn-block" (click)="switchTab('employee')">
-                    <i class="fas fa-id-card-alt"></i> Nhân viên
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-warning btn-block" (click)="switchTab('tk')">
-                    <i class="fas fa-chart-line"></i> Thống kê
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a class="btn btn-info btn-block" (click)="switchTab('pm')">
-                    <i class="fas fa-comment-dollar"></i> Khuyến mãi
-                </a>
-            </div>
-        </div>
-        <hr>
-    </div>
-</section> -->
+
 
 <div class="container mb-3">
     <hr>
@@ -212,20 +170,7 @@
     </div>
     <p class="text monospace">Xin chờ 1 xíu...</p>
 </div>
-<!-- <div class="col" *ngIf="active_tab=='product'">
-    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
-        <div class="wrap">
-            <div class="search">
-                <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword"
-                    [ngbTypeahead]="searchProduct" [resultTemplate]="rt"
-                    (selectItem)="selectedItemProduct($event,edit_product)">
-                <button type="submit" class="searchButton">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div> -->
+
 <div class="col" *ngIf="active_tab=='product'">
     <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
         <div class="wrap">
@@ -366,6 +311,9 @@
                             <button class="btn btn-warning " (click)="ExportTOExcel('User')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
+                            <button class="btn btn-danger " (click)="openUserExport()">
+                                <i class="fas fa-download"></i> Tải file PDF
+                            </button>
                         </div>
 
                         <hr>
@@ -421,31 +369,34 @@
                                         <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                                         <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
                                     </td>
-                                    <td style="word-break: break-all;">{{o.email}}</td>
+                                    <td style="word-wrap: break-word;">{{o.email}}</td>
                                     <td>{{o.phoneNumber}}</td>
                                     <td *ngIf="o.emailConfirmed">
-                                        <p class="text-tron text-success"><i class="fas fa-check"></i></p>
-                                        <p class="d-no">1</p>
+
+                                        <img style="width: 20px;height: 20px;"
+                                            src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1635286911/check_zmrgdj.png">
                                     </td>
                                     <td *ngIf="!o.emailConfirmed">
-                                        <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
-                                        <p class="d-no">0</p>
+
+                                        <img style="width: 20px;height: 20px;"
+                                            src="https://res.cloudinary.com/dkmk9tdwx/image/upload/v1635287079/no-check_wooynp.png">
                                     </td>
                                     <td>
-                                    
-                                        <button type="button" class="btn btn-primary position-relative" (click)="openUserOrderModal(user_order,o)">
+
+                                        <button type="button" class="btn btn-primary position-relative"
+                                            (click)="openUserOrderModal(user_order,o)">
                                             <i class="fas fa-shopping-cart"></i>
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                 {{o.orderCount}}
-                                              <span class="visually-hidden">unread messages</span>
+                                                <span class="visually-hidden">đơn hàng</span>
                                             </span>
-                                          </button>
+                                        </button>
                                     </td>
 
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-info  "
-                                                (click)="openEditUserModal(changeProfile,o)">
+                                            <button class="btn btn-info  " (click)="openEditUserModal(changeProfile,o)">
                                                 <i class="far fa-edit"></i>
                                             </button>
                                             <button class="btn btn-danger  "
@@ -491,6 +442,9 @@
                             </button>
                             <button class="btn btn-warning " (click)="ExportTOExcel('NhanVien')">
                                 <i class="fas fa-download"></i> Tải file excel
+                            </button>
+                            <button class="btn btn-danger " (click)="openEmployeeExport()">
+                                <i class="fas fa-download"></i> Tải file PDF
                             </button>
                         </div>
 
@@ -568,7 +522,7 @@
                                     <td>
                                         <p class="text-tron text-monospace">{{o.CMND}}</p>
                                     </td>
-                                    <td style="word-break: break-all;">{{o.email}}</td>
+                                    <td style="word-wrap: break-word;">{{o.email}}</td>
                                     <td>{{o.phoneNumber}}</td>
                                     <td>{{o.Address}}</td>
                                     <td>{{o.Salary}}</td>
@@ -576,20 +530,19 @@
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-info "
-                                            (click)="openEditEmployeeModal(edit_Employee,o)">
-                                            <i class="far fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-warning "
-                                            *ngIf="o.roles[0]=='Shipper'"
-                                            (click)="openShipperHistoryModal(shipper_history,o.id)">
-                                            <i class="fas fa-history"></i>
-                                        </button>
-                                        <button class="btn btn-danger "
-                                            (click)="openDeleteEmployeeModal(delete_Employee,o)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                                (click)="openEditEmployeeModal(edit_Employee,o)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-warning " *ngIf="o.roles[0]=='Shipper'"
+                                                (click)="openShipperHistoryModal(shipper_history,o.id)">
+                                                <i class="fas fa-history"></i>
+                                            </button>
+                                            <button class="btn btn-danger "
+                                                (click)="openDeleteEmployeeModal(delete_Employee,o)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
-                        
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -733,18 +686,18 @@
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-warning  "
-                                            (click)="openOrderInfoModal(order_info,o)">
-                                            <i class="fas fa-box-open"></i></button>
-                                        <button class="btn btn-info  "
-                                            (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
-                                            <i class="far fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger"
-                                            (click)="openDeleteOrderInfoModal(order_delete,o)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                                (click)="openOrderInfoModal(order_info,o)">
+                                                <i class="fas fa-box-open"></i></button>
+                                            <button class="btn btn-info  "
+                                                (click)="openEditOrderInfoModal(edit_order,o)" *ngIf="o.status==0">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger"
+                                                (click)="openDeleteOrderInfoModal(order_delete,o)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
-         
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -785,7 +738,7 @@
                             <button class="btn btn-warning " (click)="ExportTOExcel('SanPham')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
-                            <button class="btn btn-danger " (click)="openProductExport()" >
+                            <button class="btn btn-danger " (click)="openProductExport()">
                                 <i class="fas fa-download"></i> Tải file PDF
                             </button>
                         </div>
@@ -854,6 +807,7 @@
                                     <th>Danh mục</th>
                                     <th>Chỉnh sửa</th>
                                     <th>Hiển thị</th>
+                                    <th>SL bán</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -865,7 +819,7 @@
                                         <p class="text-tron text-monospace">{{o.name}}</p>
                                     </td>
                                     <td class="d-none">{{o.imgUrl}}</td>
-                                    <td>{{o.description}}</td>
+                                    <td class="truncate_texts">{{o.description}}</td>
                                     <td>{{o.price| currency:'VND':''}} <span
                                             style="text-decoration: underline;">đ</span></td>
                                     <td>{{o.unitInStock}}</td>
@@ -881,18 +835,19 @@
                                         <p class="text-tron text-danger"><i class="fas fa-times"></i></p>
                                         <p class="d-no">0</p>
                                     </td>
+                                    <td>{{o.numSales}}</td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-info "
-                                            (click)="openEditProductModal(edit_product,o)">
-                                            <i class="far fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger "
-                                            (click)="openDeleteProductModal(deleteProductModal,o.id)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                                (click)="openEditProductModal(edit_product,o)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger "
+                                                (click)="openDeleteProductModal(deleteProductModal,o.id)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
-                         
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -918,6 +873,51 @@
             <!-- ------------------------------------------------------------------------------------- -->
 
             <div class="col p-5" *ngIf="active_tab=='tk'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4> <i class="fas fa-download"></i> Tải PDF</h4>
+                        <div class="d-flex justify-content-start">
+
+                            <div class="col-3">
+                                <button class="btn btn-danger " (click)=" openTKDTExport() ">
+                                    <i class="fas fa-download"></i> Tải file PDF TK doanh thu
+                                </button>
+                            </div>
+                            <div class="col-9">
+                                <form class="d-flex justify-content-start">
+                                    <div class="form-group">
+                                        <label>Từ ngày : </label>
+                                        <input class="form-control" type="date" [(ngModel)]="tkdtDayFrom" name="bob">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Đến ngày : </label>
+                                        <input class="form-control" type="date" [(ngModel)]="tkdtDayTo" name="bill">
+                                    </div>
+                                </form>
+                            </div>
+                        
+                     
+
+                        </div>
+                        <div class="d-flex justify-content-start">
+
+                            <div class="col-3">
+                                <button class="btn btn-warning " (click)=" openTKSPExport()">
+                                    <i class="fas fa-download"></i> Tải file PDF TK sản phẩn
+                                </button>
+                            </div>
+                            <div class="col-9">
+                                <div class="form-group">
+                                    <label>Top sản phẩm : </label>
+                                    <input class="form-control" type="number" [(ngModel)]="tkTop" name="billy">
+                                </div>
+                            </div>
+                      
+                  
+                        </div>
+                        <hr>
+                    </div>
+                </div>
                 <div class="card ">
                     <div class="card-header">
                         <h4><i class="fas fa-box-open"></i> Thống kê doanh thu</h4>
@@ -1111,13 +1111,13 @@
                         <table class="table  ">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Thông tin</th>
-                                    <th style="min-width: 200px;">Mô tả</th>
-                                    <th>Ngày bắt đầu</th>
-                                    <th>Ngày kết thúc</th>
-                                    <th>Đang diễn ra</th>
-                                    <th>Hiển thị</th>
-                                    <th></th>
+                                    <th style="width: 15%;word-wrap: break-word;">Thông tin</th>
+                                    <th style="width: 30%;word-wrap: break-word;" >Mô tả</th>
+                                    <th style="width: 10%;word-wrap: break-word;">Ngày bắt đầu</th>
+                                    <th style="width: 10%;word-wrap: break-word;">Ngày kết thúc</th>
+                                    <th style="width: 10%;word-wrap: break-word;">Đang diễn ra</th>
+                                    <th style="width: 10%;word-wrap: break-word;">Hiển thị</th>
+                                    <th style="width: 5%;word-wrap: break-word;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1126,7 +1126,7 @@
                                         <img src="{{o.imgUrl}}" style="width: 240px;height: 120px;" id="promo-pic">
                                         <p class=" text-monospace">{{o.name}}</p>
                                     </td>
-                                    <td>{{o.description}}</td>
+                                    <td class="truncate_texts" >{{o.description}}</td>
                                     <td>{{o.startDate | date:"dd-MM-yyyy"}}</td>
                                     <td>{{o.endDate| date:"dd-MM-yyyy"}}</td>
                                     <td *ngIf="o.status==0">
@@ -1150,7 +1150,10 @@
                                             (click)="openChooseProductPromoModal(pick_pro_promo,o)">
                                             <i class="fas fa-plus-square"></i>
                                         </button>
-
+                                        <button class="btn btn-primary btn-sm admin-button mr-2"
+                                            (click)="openPromoExport(o)">
+                                            <i class="fas fa-download"></i>
+                                        </button>
 
                                         <button class="btn btn-info btn-sm admin-button mr-2"
                                             (click)="openEditPromoModal(edit_promo,o)">
@@ -1181,29 +1184,33 @@
                 </div>
             </div>
 
-            <div class="col" id='side-info' *ngIf="active_tab=='db'">
+            <div class="col" *ngIf="active_tab=='db'">
                 <div class="row">
                     <div class="col-md-12 mt-3">
                         <div class="row ">
                             <div class="col-xl-4 col-lg-6">
                                 <div class="card l-bg-cherry">
                                     <div class="card-statistic-3 p-4">
-                                        <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>
+                                        <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i>
+                                        </div>
                                         <div class="mb-4">
                                             <h5 class="card-title mb-0">Đơn hàng chưa duyệt</h5>
                                         </div>
                                         <div class="row align-items-center mb-2 d-flex">
                                             <div class="col-8">
                                                 <h2 class="d-flex align-items-center mb-0">
-                                                   {{dashboardInfo.totalOrder}}
+                                                    {{dashboardInfo.totalOrder}}
                                                 </h2>
                                             </div>
                                             <div class="col-4 text-right">
-                                                <button class="btn btn-success" (click)="switchTab('order')">Xem</button>
+                                                <button class="btn btn-success"
+                                                    (click)="switchTab('order')">Xem</button>
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1222,11 +1229,14 @@
                                                 </h2>
                                             </div>
                                             <div class="col-4 text-right">
-                                                <button class="btn btn-success" (click)="switchTab('product')">Xem</button>
+                                                <button class="btn btn-success"
+                                                    (click)="switchTab('product')">Xem</button>
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1249,7 +1259,9 @@
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-2" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-2" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1268,11 +1280,14 @@
                                                 </h2>
                                             </div>
                                             <div class="col-4 text-right">
-                                                <button class="btn btn-success" (click)="switchTab('employee')">Xem</button>
+                                                <button class="btn btn-success"
+                                                    (click)="switchTab('employee')">Xem</button>
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-green" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1280,7 +1295,8 @@
                             <div class="col-xl-4 col-lg-6">
                                 <div class="card l-bg-green-dark">
                                     <div class="card-statistic-3 p-4">
-                                        <div class="card-icon card-icon-large"><i class="fas fa-comment-dollar"></i></div>
+                                        <div class="card-icon card-icon-large"><i class="fas fa-comment-dollar"></i>
+                                        </div>
                                         <div class="mb-4">
                                             <h5 class="card-title mb-0">Khuyến mãi đang diễn ra</h5>
                                         </div>
@@ -1295,12 +1311,14 @@
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-xl-4 col-lg-6">
                                 <div class="card l-bg-2">
                                     <div class="card-statistic-3 p-4">
@@ -1311,15 +1329,18 @@
                                         <div class="row align-items-center mb-2 d-flex">
                                             <div class="col-8">
                                                 <h2 class="d-flex align-items-center mb-0">
-                                                    <button class="btn btn-success" (click)="switchTab('tk')">Xem</button>
+                                                    <button class="btn btn-success"
+                                                        (click)="switchTab('tk')">Xem</button>
                                                 </h2>
                                             </div>
                                             <div class="col-4 text-right">
-                                               
+
                                             </div>
                                         </div>
                                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
-                                            <div class="progress-bar l-bg-1" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                            <div class="progress-bar l-bg-1" role="progressbar" data-width="25%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 100%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2551,13 +2572,12 @@
                         <td>{{ o.product.price }}</td>
                         <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger"
                                 ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND"
-                                placement="auto" data-html="true" tooltipClass="tooltip-inner">-{{o.promotionAmount|
+                                placement="auto" data-html="true">-{{o.promotionAmount|
                                 currency:'VND':''}}
                                 <span class="currency-dis">đ</span></span></td>
                         <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success"
                                 ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%"
-                                placement="auto" data-html="true"
-                                tooltipClass="tooltip-inner">-{{o.promotionPercent}}%</span></td>
+                                placement="auto" data-html="true">-{{o.promotionPercent}}%</span></td>
                         <td>
 
                             <button class="btn btn-info  btn-sm admin-button mr-2"
@@ -2926,7 +2946,7 @@
                             <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
                             <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
                         </td>
-                        <td style="word-break: break-all;">{{o.email}}</td>
+                        <td style="word-wrap: break-word;">{{o.email}}</td>
                         <td>{{o.phoneNumber}}</td>
                         <td *ngIf="o.emailConfirmed">
                             <p class="text-tron text-success"><i class="fas fa-check"></i></p>
@@ -3004,7 +3024,7 @@
                         <td>
                             <p class="text-tron text-monospace">{{o.CMND}}</p>
                         </td>
-                        <td style="word-break: break-all;">{{o.email}}</td>
+                        <td style="word-wrap: break-word;">{{o.email}}</td>
                         <td>{{o.phoneNumber}}</td>
                         <td>{{o.Address}}</td>
                         <td>{{o.Salary}}</td>

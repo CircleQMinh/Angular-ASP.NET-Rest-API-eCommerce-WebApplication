@@ -31,47 +31,14 @@ namespace MyAPI.Controllers
             _logger = logger;
         }
 
-       // [Authorize]
-        [HttpGet(Name = "GetOrders")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetOrders()
-        {
-
-            try
-            {
-                var query = await _unitOfWork.Orders.GetAll(null, null, new List<string> { "User","OrderDetails" });
-                var results = _mapper.Map<IList<OrderDTO>>(query);
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrders)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
-            }
-        }
+ 
 
 
-        [HttpGet("{id:int}", Name = "GetOrder")]
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetOrder(int id)
-        {
-            try
-            {
-                var query = await _unitOfWork.Orders.Get(q => q.Id == id, new List<string> { "User", "OrderDetails" });
-                var result = _mapper.Map<FullOrderDTO>(query);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrder)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
-        }
 
+      
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -98,8 +65,9 @@ namespace MyAPI.Controllers
             }
         }
 
-
+ 
         [HttpPut("{id:int}", Name = "UpdateOrder")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -135,6 +103,7 @@ namespace MyAPI.Controllers
 
 
         [HttpDelete("{id:int}", Name = "DeleteOrder")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -171,8 +140,9 @@ namespace MyAPI.Controllers
         }
 
 
-
+    
         [HttpPost("addOrderDetails")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -218,6 +188,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getOrderDetails")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -243,6 +214,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("availableOrder", Name = "GetAvailableOrder")]
+        [Authorize(Roles = "Shipper")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAvailableOrder(int status, string order, int pageNumber, int pageSize, string orderDir)
@@ -323,6 +295,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpPost("acceptOrder")]
+        [Authorize(Roles = "Shipper")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -364,6 +337,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpGet("acceptedOrder", Name = "GetAcceptedOrder")]
+        [Authorize(Roles = "Shipper")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAcceptedOrder(string shipperId)
@@ -382,6 +356,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpPost("finishOrder")]
+        [Authorize(Roles = "Shipper")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -423,6 +398,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("shipperOrderHistory", Name = "GetShipperOrderHistory")]
+        [Authorize(Roles = "Shipper,Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetShipperOrderHistory(string shipperId)
@@ -444,6 +420,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpGet("getOrderShippingInfo", Name = "GetOrderShippingInfo")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetOrderShippingInfo(int orderId)
@@ -465,6 +442,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getPaySign", Name = "GetPaySign")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPaySign(string Id,string totalPrice)
@@ -476,11 +454,11 @@ namespace MyAPI.Controllers
                 string accessKey = "Vxo6vQMlwjbrGq3c";
                 string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
                 string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
-                //string redirectUrl = "http://localhost:4200/#/thankyou";
-                //string notifyUrl = "http://localhost:4200/#/thankyou";
+                string redirectUrl = "http://localhost:4200/#/thankyou";
+                string notifyUrl = "http://localhost:4200/#/thankyou";
 
-                string redirectUrl = "http://18110320.000webhostapp.com/#/thankyou";
-                string notifyUrl = "http://18110320.000webhostapp.com/#/thankyou";
+                //string redirectUrl = "http://18110320.000webhostapp.com/#/thankyou";
+                //string notifyUrl = "http://18110320.000webhostapp.com/#/thankyou";
 
                 //string requestType = "captureWallet";
 
@@ -517,6 +495,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getVNPayUrl", Name = "getVNPayUrl")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetVNPayUrl(int totalPrice)
@@ -524,9 +503,9 @@ namespace MyAPI.Controllers
             try
             {
                 string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                string returnUrl = "http://18110320.000webhostapp.com/#/thankyou";
+                //string returnUrl = "http://18110320.000webhostapp.com/#/thankyou";
 
-                //string returnUrl = "http://localhost:4200/#/thankyou";
+                string returnUrl = "http://localhost:4200/#/thankyou";
 
                 //string tmnCode = "V0A4GQCF";
                 //string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
@@ -570,6 +549,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getVNPayUrl2", Name = "getVNPayUrl2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetVNPayUrl2(int totalPrice)
@@ -577,8 +557,8 @@ namespace MyAPI.Controllers
             try
             {
                 //Get Config Info
-                //string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
@@ -634,9 +614,5 @@ namespace MyAPI.Controllers
         }
 
     }
-
-
-
-
 
 }

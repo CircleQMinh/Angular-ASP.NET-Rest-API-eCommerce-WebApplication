@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Routing;
 using MyAPI.IRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyAPI.Controllers
 {
@@ -195,14 +196,24 @@ namespace MyAPI.Controllers
             }
         }
 
+
+    
         [HttpGet( Name = "GetUserInfo")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUserInfo(string id)
         {
+            var requestId = User.Identity.Name;
+            var requestUser = await _userManager.FindByNameAsync(requestId);
             try
             {
                 APIUser u = await _userManager.FindByIdAsync(id);
+                if (u.Id != requestUser.Id)
+                {
+                    var error = "ID không hợp lệ! Bad hacker :)";
+                    return BadRequest(new { msg = error });
+                }
                 var roles = await _userManager.GetRolesAsync(u);
                 var user = _unitOfWork.Users.Get(q=>q.Id==id, new List<string> { "Orders", "FavoriteProducts" });
                 var rs = _mapper.Map<UserOrderInfoDTO>(user.Result);
@@ -217,6 +228,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPut( Name = "UpdateUserInfo")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -251,6 +263,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("addFavoriteProduct",Name = "AddUserFavoriteProduct")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddUserFavoriteProduct([FromBody] AddUserFavoriteProductDTO unitDTO)
@@ -259,9 +272,16 @@ namespace MyAPI.Controllers
             {
                 return BadRequest("Submitted data is invalid");
             }
+            var requestId = User.Identity.Name;
+
             try
             {
                 APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
+                if (u.Email != requestId)
+                {
+                    var error = "ID không hợp lệ! Bad hacker :)";
+                    return BadRequest(new { msg = error });
+                }
                 Product pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
 
                 foreach (var item in u.FavoriteProducts)
@@ -272,9 +292,9 @@ namespace MyAPI.Controllers
                     }
                 }
 
+
                 var User = u;
                 _unitOfWork.Users.Update(User);
-
                 var Product = pro;
                 _unitOfWork.Products.Update(Product);
                 User.FavoriteProducts.Add(Product);
@@ -300,10 +320,13 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("removeFavoriteProduct", Name = "RemoveFavoriteProduct")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveFavoriteProduct([FromBody] AddUserFavoriteProductDTO unitDTO)
         {
+            var requestId = User.Identity.Name;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest("Submitted data is invalid");
@@ -311,6 +334,11 @@ namespace MyAPI.Controllers
             try
             {
                 APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId, new List<string> { "FavoriteProducts" });
+                if (u.Email != requestId)
+                {
+                    var error = "ID không hợp lệ! Bad hacker :)";
+                    return BadRequest(new { msg = error });
+                }
                 Product pro = await _unitOfWork.Products.Get(q => q.Id == unitDTO.ProductId, new List<string> { "FavoritedUsers" });
 
                 bool isItemInFav = false;
@@ -360,24 +388,5 @@ namespace MyAPI.Controllers
         }
 
 
-        //[HttpGet("getFavoriteProduct", Name = "GetFavoriteProduct")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> GetFavoriteProduct(string id)
-        //{
-
-        //    try
-        //    {
-                
-               
-        //        return Ok(new { success = true });
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetFavoriteProduct)}");
-        //        return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
-        //    }
-        //}
     }
 }

@@ -103,7 +103,7 @@ export class ProfileFavoriteComponent implements OnInit {
     this.authService.removeFromFav(this.userInfo.id, pro.id).subscribe(
       data => {
         if (data.success) {
-          this.toast.success("Product remove from favorite list successfully")
+          this.toast.success("Đã loại bỏ sản phẩm khỏi danh sách yêu thích")
           //console.log(this.userInfo.favoriteProducts)
           this.removeFromLocal(pro.id)
           //console.log(this.userInfo.favoriteProducts)
@@ -131,7 +131,7 @@ export class ProfileFavoriteComponent implements OnInit {
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)
-    this.toast.success("Product added to cart!")
+    this.toast.success("Thêm sản phẩm vào giỏ hàng thành công!")
   }
   signOut() {
     let a = this.router.url

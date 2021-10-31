@@ -1334,6 +1334,18 @@ img{transition:opacity 1s;opacity:1;}
     width: 100% !important;
     height: 100% !important;
 }
+
+.truncate_texts {
+    word-wrap: break-word;
+    max-width: 200px;
+    width: 200px;
+    height: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+
+
 .product-list-3{list-style: none;}
 .open>a{outline:0;}
 .clearfix::after{content:"";display:table;clear:both;}
@@ -1473,6 +1485,9 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
     .connect_nofity{
         left: 37%;
     }
+    .hide_for_1399{
+        display: none;
+    }
 }
 @media (max-width: 1199.98px) { 
     .review-box{
@@ -1499,6 +1514,12 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
     }
 }
 @media (max-width: 991.98px) { 
+    .truncate_texts{
+        white-space: nowrap;
+    }
+    .show_for_991{
+        display: block;
+    }
     .chat-enter{
         height: 12%;
     }
@@ -1509,8 +1530,12 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
     .connect_nofity{
         left: 33%;
     }
+    #promo-pic{
+        display: none;
+    }
 }
 @media (max-width: 767.98px) { 
+
     #latestPro{
         display: block;
     }
@@ -1551,14 +1576,13 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
         display: flex;
         justify-content: space-evenly;
     }
-    #promo-pic{
-        display: none;
-    }
+
     #filter_search{
         display: none;
     }
 }
 @media (max-width: 575.98px) { 
+
     .connect_nofity{
         left: 20%;
     }
@@ -1667,6 +1691,8 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
         height: 200px !important;
     }
 }
+
+
 @media (max-width: 450px) {
     .shop-info{
         display: none;

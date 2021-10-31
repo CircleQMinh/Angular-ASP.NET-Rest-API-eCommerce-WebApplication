@@ -45,10 +45,11 @@ export class LoginComponent implements OnInit {
       // console.log(this.rf1.controls['password'].value)
       this.authService.signIn(this.rf1.controls['email'].value, this.rf1.controls['password'].value).subscribe(
         data => {
-          //console.log(data)
-
+          console.log(data)
+          console.log(data.token)
           this.user=data.user
           this.user.roles=data.roles
+          localStorage.setItem('JWT_token',data.token)
           localStorage.setItem('isLogin', "true")
           localStorage.setItem("user-id",this.user.id)
           localStorage.setItem("user-disName",this.user.displayName)
