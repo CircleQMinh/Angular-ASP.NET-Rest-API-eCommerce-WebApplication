@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,12 +16,6 @@ using System.Web;
 
 namespace MyAPI.Controllers
 {
-    //public class Test
-    //{
-    //    public string Name { get; set; }
-
-    //    public int Age { get; set; }
-    //}
 
     [Route("api/[controller]")]
     [ApiController]
@@ -35,12 +30,6 @@ namespace MyAPI.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-
-        //[HttpGet("GetPerson")]
-        //public string GetQueryParams([FromQuery] Test person)
-        //{
-        //    return person.Name + " " + person.Age;
-        //}
 
         [HttpGet(Name ="GetProducts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -131,6 +120,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -157,7 +147,7 @@ namespace MyAPI.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id:int}",Name ="UpdateProduct")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -193,7 +183,7 @@ namespace MyAPI.Controllers
         }
 
 
-
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id:int}",Name ="DeleteProduct")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

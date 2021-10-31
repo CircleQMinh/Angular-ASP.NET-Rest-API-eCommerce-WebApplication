@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpGet("dashboardInfo",Name = "GetDashboardInfo")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetDashboardInfo()
@@ -83,6 +85,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("users", Name = "GetUserForAdmin")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetUserForAdmin(string role,string order, string orderDir)
@@ -175,6 +178,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("employees", Name = "GetEmployeeForAdmin")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEmployeeForAdmin(string role, string order, string orderDir)
@@ -274,6 +278,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("products", Name = "GetProductForAdmin")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProductForAdmin(string category,string order, int pageNumber, int pageSize, string orderDir)
@@ -356,6 +361,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("orders", Name = "GetOrderForAdmin")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetOrderForAdmin(int status, string order, int pageNumber, int pageSize,string orderDir)
@@ -450,6 +456,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("createUser")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -497,6 +504,7 @@ namespace MyAPI.Controllers
 
 
         [HttpDelete("deleteUser", Name = "DeleteUser")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -537,6 +545,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("createEmployee")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -599,6 +608,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPut("editEmployee")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -645,6 +655,7 @@ namespace MyAPI.Controllers
             }
         }
         [HttpDelete("deleteEmployee", Name = "DeleteEmployee")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -676,6 +687,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpGet("getSalesChart", Name = "GetSalesChart")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSalesChart(string from,string to)
@@ -744,6 +756,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getProductChart", Name = "GetProductChart")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProductChart()
@@ -774,6 +787,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getTopProductChart", Name = "GetTopProductChart")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetTopProductChart(int top)
@@ -849,6 +863,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("promotion", Name = "getPromotions")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -935,8 +950,32 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+        [HttpGet("promo/{id:int}", Name = "GetPromoOne")]
+        [Authorize(Roles = "Administrator")]
+        //thiết lập hình thức trả lời của api
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //hàm mà api sẽ gọi
+        public async Task<IActionResult> GetPromoOne(int id)//nhận vào 1 id
+        {
+            try
+            {
 
+                var query = await _unitOfWork.Promotions.Get(q => q.Id == id, null);
+
+                var result = _mapper.Map<PromotionDTO>(query);
+
+                return Ok(new { result  });
+            }
+            catch (Exception ex)
+            {
+                //nếu có lỗi
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPromoOne)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
         [HttpPost("createPromotion", Name = "createPromotion")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -965,6 +1004,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPut("editPromotion/{id:int}", Name = "editPromotion")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -997,6 +1037,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpDelete("deletePromotion", Name = "deletePromotion")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1026,6 +1067,7 @@ namespace MyAPI.Controllers
 
 
         [HttpGet("getPromotionInfo", Name = "getPromotionInfo")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1047,6 +1089,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpPost("createPromotionInfo", Name = "createPromotionInfo")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1081,6 +1124,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPut("editPromotionInfo/{id:int}", Name = "editPromotionInfo")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1117,6 +1161,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpDelete("deletePromotionInfo", Name = "deletePromotionInfo")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1146,6 +1191,30 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
+
+
+        [HttpGet("getAuthorizeHttp", Name = "GetAuthorizeHttp")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAuthorizeHttp(int variable)
+        {
+            var id = User.Identity.Name;
+            try
+            {
+                var greet = "Hello world! ";
+
+                return Accepted(new { variable,greet,id });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAuthorizeHttp)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
     }
 
 }

@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -19,27 +20,35 @@ export class AdminService {
   constructor(private http: HttpClient, private route: Router) { }
 
   getDashboardInfo(): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/dashboardInfo`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/dashboardInfo`, { headers: header })
   }
 
 
   getProducts(category: string, order: string, pageNumber: number, pageSize: number,orderDir:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/products?category=${category}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`);
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/products?category=${category}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`
+    , { headers: header });
   }
 
   getOrders(status: number, order: string, pageNumber: number, pageSize: number,orderDir:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/orders?status=${status}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`);
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/orders?status=${status}&order=${order}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderDir=${orderDir}`
+    , { headers: header });
   }
 
   getUsers(order: string, role: string,orderDir:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/users?role=${role}&order=${order}&orderDir=${orderDir}`);
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/users?role=${role}&order=${order}&orderDir=${orderDir}`, { headers: header });
   }
 
   getEmployees(order: string, role: string,orderDir:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}admin/employees?order=${order}&role=${role}&orderDir=${orderDir}`);
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/employees?order=${order}&role=${role}&orderDir=${orderDir}`, { headers: header });
   }
 
   createUser(email: string, password: string, userName: string, phoneNumber: string, role: string,imgUrl:string): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}admin/createUser`, {
       email: email,
       password: password,
@@ -49,13 +58,15 @@ export class AdminService {
       roles: [
         role
       ]
-    })
+    }, { headers: header })
   }
   deleteUser(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}admin/deleteUser?id=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deleteUser?id=${id}`, { headers: header })
   }
 
   createProduct(name: string, price: number, des: string, uis: number, cate: string, imgurl: string, date: string,status:string):Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}product`, {
       name: name,
       price: price,
@@ -65,11 +76,12 @@ export class AdminService {
       imgUrl: imgurl,
       lastUpdate: date,
       status:status
-    })
+    }, { headers: header })
   }
 
   editProduct(id:number,name: string, price: number, des: string,
     uis: number, cate: string, imgurl: string, date: string,status:string):Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}product/${id}`, {
       name: name,
       price: price,
@@ -79,13 +91,15 @@ export class AdminService {
       imgUrl: imgurl,
       lastUpdate: date,
       status:status
-    })
+    }, { headers: header })
   }
   deleteProduct(id:number):Observable<any>{
-    return this.http.delete(`${this.apiUrl}product/${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}product/${id}`, { headers: header })
   }
 
   editOrder(o:Order):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}order/${o.id}`,{
       contactName: o.contactName,
       address: o.address,
@@ -97,16 +111,19 @@ export class AdminService {
       totalPrice: o.totalPrice,
       note: o.note,
       status: o.status
-    })
+    }, { headers: header })
   }
   deleteOrder(id:number):Observable<any>{
-    return this.http.delete(`${this.apiUrl}order/${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}order/${id}`, { headers: header })
   }
   getNew(category:string):Observable<any>{
-    return this.http.get(`https://newsapi.org/v2/top-headlines?category=${category}&country=us&apiKey=${this.apikey}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`https://newsapi.org/v2/top-headlines?category=${category}&country=us&apiKey=${this.apikey}`, { headers: header })
   }
 
   createEmployee(e:Employee,password:any): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}admin/createEmployee`, {
       password: password,
       email: e.email,
@@ -120,10 +137,11 @@ export class AdminService {
       displayName: e.displayName,
       phoneNumber: e.phoneNumber,
       roles: e.roles
-    })
+    }, { headers: header })
   }
 
   editEmployee(e:Employee,id:any): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}admin/editEmployee?id=${id}`, {
       address: e.Address,
       imgUrl: e.imgUrl,
@@ -135,31 +153,43 @@ export class AdminService {
       displayName: e.displayName,
       phoneNumber: e.phoneNumber,
       roles: e.roles
-    })
+    }, { headers: header })
   }
 
   deleteEmployee(id:any):Observable<any>{
-    return this.http.delete(`${this.apiUrl}admin/deleteEmployee?id=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deleteEmployee?id=${id}`, { headers: header })
   }
 
   getSalesChart(from:string,to:string):Observable<any>{
-    return this.http.get(`${this.apiUrl}admin/getSalesChart?from=${from}&to=${to}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getSalesChart?from=${from}&to=${to}`, { headers: header })
   }
 
   getProductChart():Observable<any>{
-    return this.http.get(`${this.apiUrl}admin/getProductChart`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getProductChart`, { headers: header })
   }
 
   getTopProductChart(top:any):Observable<any>{
-    return this.http.get(`${this.apiUrl}admin/getTopProductChart?top=${top}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getTopProductChart?top=${top}`, { headers: header })
   }
 
   getPromotion(status: number, order: string, pageNumber: number, pageSize: number, orderDir: string):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.get(`${this.apiUrl}admin/promotion?status=${status}&order=${order}&pageNumber=${pageNumber}
-    &pageSize=${pageSize}&orderDir=${orderDir}`)
+    &pageSize=${pageSize}&orderDir=${orderDir}`, { headers: header })
   }
 
+  getOnePromotion(id:any):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/promo/${id}`, { headers: header });
+  }
+
+
   createPromotion(promo:Promotion){
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}admin/createPromotion`, {
       name: promo.name,
       description: promo.description,
@@ -168,10 +198,11 @@ export class AdminService {
       endDate: promo.endDate,
       status: 0,
       visible:0
-    })
+    }, { headers: header })
   }
 
   editPromotion(promo:Promotion){
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}admin/editPromotion/${promo.id}`, {
       name: promo.name,
       description: promo.description,
@@ -180,34 +211,45 @@ export class AdminService {
       endDate: promo.endDate,
       status: promo.status,
       visible:promo.visible
-    })
+    }, { headers: header })
   }
 
   deletePromotion(id:any):Observable<any>{
-    return this.http.delete(`${this.apiUrl}admin/deletePromotion?id=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deletePromotion?id=${id}`, { headers: header })
   }
 
   getPromotionInfo(id:any):Observable<any>{
-    return this.http.get(`${this.apiUrl}admin/getPromotionInfo?promoId=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getPromotionInfo?promoId=${id}`, { headers: header })
   }
   createPromotionInfo(promoInfo:PromotionInfo):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}admin/createPromotionInfo`, {
       productId: promoInfo.productId,
       promotionId: promoInfo.promotionId,
       promotionPercent: promoInfo.promotionPercent,
       promotionAmount: promoInfo.promotionAmount
-    })
+    }, { headers: header })
   }
   editPromotionInfo(promoInfo:PromotionInfo):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}admin/editPromotionInfo/${promoInfo.id}`, {
       productId: promoInfo.productId,
       promotionId: promoInfo.promotionId,
       promotionPercent: promoInfo.promotionPercent,
       promotionAmount: promoInfo.promotionAmount
-    })
+    }, { headers: header })
   }
 
   deletePromotionInfo(id:any):Observable<any>{
-    return this.http.delete(`${this.apiUrl}admin/deletePromotionInfo?id=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deletePromotionInfo?id=${id}`,{ headers: header })
+  }
+
+
+  getAuthorizeHttp(auth_token:any): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + auth_token);
+    return this.http.get(`${this.apiUrl}admin/getAuthorizeHttp?variable=3`, { headers: header })
   }
 }

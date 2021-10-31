@@ -1,4 +1,3 @@
-
 <div class="container-fluid   bg-warning" style="position: absolute;top: 0;">
     <div class="row justify-content-center">
         <div class="col-4 d-flex justify-content-start">
@@ -40,8 +39,8 @@
         </div>
         <div class="">
             <div class="">
-                <p class="">Ngày in : 27/12/2021 18:23:45</p>
-                <p class="">Người in : Boss</p>
+                <p class="">Ngày in : {{today}}</p>
+                    <p class="">Người in : {{user.displayName}}</p>
             </div>
         </div>
 
@@ -82,4 +81,359 @@
 
 </div>
 
-<app-footer></app-footer>
+<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='2'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+
+        <div class="">
+            <div class="">
+
+            </div>
+            <div class="">
+                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+                    tin khách hàng</h4>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <p class="">Ngày in : {{today}}</p>
+                <p class="">Người in : {{user.displayName}}</p>
+            </div>
+        </div>
+
+        <div _ngcontent-ddp-c96="" class="table-responsive">
+            <table _ngcontent-ddp-c96="" class="table">
+                <thead _ngcontent-ddp-c96="" class="thead-dark">
+                    <tr _ngcontent-ddp-c96="">
+                        <th>Thông tin</th>
+                        <th>Email</th>
+                        <th>SDT</th>
+                        <th>Đã xác thực</th>
+                        <th>Số đơn hàng</th>
+                    </tr>
+                </thead>
+                <tbody _ngcontent-ddp-c96="">
+                    <tr *ngFor="let o of pagedUserList,index as i">
+
+                        <td>
+                            <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                            <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+                        </td>
+                        <td style="word-break: break-all;">{{o.email}}</td>
+                        <td>{{o.phoneNumber}}</td>
+                        <td *ngIf="o.emailConfirmed">
+
+                            <img style="width: 20px;height: 20px;"
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAIAAADZ8fBYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADdSURBVEhL7dOhDsIwEIBhHgfHC0yCmpoCQ4JFEAxuqnieYzwDlgSzZAKxLWEeQTDjAcZtPUKb3tbLBq5/aprLfVmabFT9J+fKnCv7gVsWBz8KVskN701D3QadjevjL+IvPchVUHnECScDXAMNNtc7znq73ShEu2my9aLlvnjhXc9Ed9kTZ58IN43XE1wgaA4Kme451NY0molCxPc+MuFpy0jzUYh+X5MOL4KPQrQLGbR6LCjU6kIttB2FulzIoFkoZHEhheaikN2FylxMj/Mwp38TMpbbI+fKnFtXVW+0zREEOr4xzQAAAABJRU5ErkJggg==">
+                        </td>
+                        <td *ngIf="!o.emailConfirmed">
+
+                            <img style="width: 20px;height: 20px;"
+                                src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAIAAADganh7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFxSURBVEhLY/z//z8DtQETlKYqGDWU+oC+hv57cOrdsUf/oDxU8PfdlwNHvryF8rAAYDrFBD8P9d6zcL1j6np/xtW/UDEY+PP8TWkgUOqOR/7rm1AxNIDVpafeNO/49xfE+ju34NHMawj3/n3xtjLrw4EvIPbbax/71/wEC6MBrIZqcdnyQJnI5iKbCAbM5gbsUCYKwJFN/75715DyfieS/uQK3rtTUExMniCXroXVUbjzPoa5yACPiUCAM/YZmIWEGuYIuiPCAQ7wmwgEeKTA5tZ2cWtCeRDA6FwkhddEIMArCwyB5rKv16E8CPi/t+8ZcnrABnAbijtM0dMZBsBhKJbYb0EOX/zmYo39L+9r494hm5g+TT5ZhRHTpqxpCgkqUA4SwOrSa99PYpgIYqGnh78nLxCfo8xEaj2YmEEshIkQgGyusBZ/YQjWHIW9QAGCv/dPvrv89h+Uhwr+vP28//DnN1AeJhitTakPaGAoAwMAbyY4RxiS6IUAAAAASUVORK5CYII='>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary position-relative">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{o.orderCount}}
+                                    <span class="visually-hidden">đơn hàng</span>
+                                </span>
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='3'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+
+        <div class="">
+            <div class="">
+
+            </div>
+            <div class="">
+                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+                    tin nhân viên</h4>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <p class="">Ngày in : {{today}}</p>
+                <p class="">Người in : {{user.displayName}}</p>
+            </div>
+        </div>
+
+        <div _ngcontent-ddp-c96="" class="table-responsive">
+            <table _ngcontent-ddp-c96="" class="table">
+                <thead _ngcontent-ddp-c96="" class="thead-dark">
+                    <tr _ngcontent-ddp-c96="">
+                        <th>Thông tin</th>
+                        <th>Giới tính</th>
+                        <th>CMND</th>
+                        <th>Liên lạc</th>
+                        <th>Lương</th>
+                        <th>Ngày bắt đầu</th>
+                    </tr>
+                </thead>
+                <tbody _ngcontent-ddp-c96="">
+                    <tr *ngFor="let o of pagedEmployeeList,index as i">
+
+                        <td>
+                            <img src="{{o.imgUrl}}" style="width: 40px;height: 40px;">
+                            <p class="text-tron text-monospace">{{o.displayName}}({{o.roles[0]}})</p>
+
+
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace" *ngIf="o.Sex=='M'">Nam</p>
+                            <p class="text-tron text-monospace" *ngIf="o.Sex=='F'">Nữ</p>
+                        </td>
+                        <td>
+                            <p class="text-tron text-monospace">{{o.CMND}}</p>
+                        </td>
+                        <td>
+                            <p>Email : {{o.email}}</p>
+                            <p>SDT : {{o.phoneNumber}} </p>
+                            <p>Địa chỉ : {{o.Address}}</p>
+                        </td>
+
+                        <td>{{o.Salary}}</td>
+                        <td>{{o.StartDate}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='4'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+
+        <div class="">
+            <div class="">
+
+            </div>
+            <div class="">
+                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+                    tin khuyến mãi</h4>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <p class="">Ngày in : {{today}}</p>
+                <p class="">Người in : {{user.displayName}}</p>
+                <h3>{{promotion.name}}</h3>
+                <img src="{{promotion.imgUrl}}" style="width: 42rem;">
+                <div>
+                    <p>
+                        Ngày bắt đầu : {{promotion.startDate|date:'dd-MM-yyyy'}}</p>
+                    <p>
+                        Ngày kết thúc : {{promotion.endDate|date:'dd-MM-yyyy'}}</p>
+                </div>
+                <h2 style="margin-bottom: 20px;">Danh sách sản phẩm khuyến mãi</h2>
+            </div>
+        </div>
+
+        <div _ngcontent-ddp-c96="" class="table-responsive">
+            <table _ngcontent-ddp-c96="" class="table" style="margin-top: 20px;">
+                <thead _ngcontent-ddp-c96="" class="thead-dark">
+                    <tr _ngcontent-ddp-c96="">
+                        <th class="bdwT-0">SP</th>
+                        <th class="bdwT-0">Tên</th>
+                        <th class="bdwT-0">Giá</th>
+                        <th class="bdwT-0">Khuyến mãi</th>
+                    </tr>
+                </thead>
+                <tbody _ngcontent-ddp-c96="">
+
+                    <tr *ngFor="let o of promotionInfos">
+                        <td><img style="height: 40px;width: 40px;" src="{{ o.product.imgUrl }}"></td>
+                        <td>{{ o.product.name }}</td>
+                        <td>{{ o.product.price }}</td>
+                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger"
+                                ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND"
+                                placement="auto" data-html="true">-{{o.promotionAmount|
+                                currency:'VND':''}}
+                                <span class="currency-dis">đ</span></span></td>
+                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success"
+                                ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%"
+                                placement="auto" data-html="true">-{{o.promotionPercent}}%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='5'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+        <div class="">
+            <div class="">
+
+            </div>
+            <div class="">
+                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+                    tin doanh thu</h4>
+            </div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="">
+            <div class="">
+                <p class="">Ngày in : {{today}}</p>
+                <p class="">Người in : {{user.displayName}}</p>
+            </div>
+
+            <div>
+                <p>
+                    Thống kê từ : {{from|date:'dd-MM-yyyy'}}</p>
+                <p>
+                    Đến ngày : {{to|date:'dd-MM-yyyy'}}</p>
+            </div>
+            <div _ngcontent-ddp-c96="" class="table-responsive">
+                <table _ngcontent-ddp-c96="" class="table">
+                    <thead _ngcontent-ddp-c96="" class="thead-dark">
+                        <tr >
+                            <th class="bdwT-0" style="width: 10%;">STT</th>
+                            <th class="bdwT-0" style="width: 20%;">Ngày</th>
+                            <th class="bdwT-0" style="width: 35%;">Doanh thu</th>
+                            <th class="bdwT-0" style="width: 35%;">Số đơn hàng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of tkdtData,index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{o.Date}}</td>
+                            <td><span>{{o.Total| currency:'VND':''}}</span> 
+                                <span class="currency-dis" style="color: red;">đ</span> </td>
+                            <td>{{o.NumberOfOrder}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='6'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+        <div class="">
+            <div class="">
+
+            </div>
+            <div class="">
+                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+                    tin sản phẩm bán ra </h4>
+            </div>
+            <div class="">
+                <div class="">
+                    <p class="">Ngày in : {{today}}</p>
+                    <p class="">Người in : {{user.displayName}}</p>
+                </div>
+    
+            </div>
+            <div _ngcontent-ddp-c96="" class="table-responsive">
+                <p>Sản phẩm bán ra theo danh mục</p>
+                <table _ngcontent-ddp-c96="" class="table">
+                    <thead _ngcontent-ddp-c96="" class="thead-dark">
+                        <tr >
+                            <th class="bdwT-0" style="width: 10%;">STT</th>
+                            <th class="bdwT-0" style="width: 40%;">Danh mục</th>
+                            <th class="bdwT-0" style="width: 40%;">Sản phẩm bán ra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of topCate,index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{o["name"]}}</td>
+                            <td>{{o["value"]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Sản phẩm bán chạy nhất (Top : {{top}})</p>
+                <table _ngcontent-ddp-c96="" class="table">
+                    <thead _ngcontent-ddp-c96="" class="thead-dark">
+                        <tr >
+                            <th class="bdwT-0" style="width: 10%;">STT</th>
+                            <th class="bdwT-0" style="width: 20%;">SP</th>
+                            <th class="bdwT-0" style="width: 35%;">Tên SP</th>
+                            <th class="bdwT-0" style="width: 35%;">Số lượng bán ra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of topSaleProduct,index as i">
+                            <td>{{i+1}}</td>
+                            <td> <img src="{{o.product.imgUrl}}" style="width: 40px;height: 40px;"></td>
+                            <td>{{o.product.name}}</td>
+                            <td>{{o.quantity}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h6>Về chúng tôi</h6>
+                <p class="text-justify">Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau sạch, củ quả, trái
+                    cây, thực phẩm tươi sống</p>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <h6>Dịch vụ</h6>
+                <ul class="footer-links">
+                    <li><a>Tìm sản phẩm</a></li>
+                    <li><a>Mua sắm trực tuyến</a></li>
+                    <li><a>Giao hàng miễn phí</a></li>
+                </ul>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <h6>Quick Links</h6>
+                <ul class="footer-links">
+                    <li><a href="https://myanimelist.net/" target='_blank'>MyAnimeList.net </a></li>
+                    <li><a href="https://jikan.moe/" target='_blank'>Jikan API</a></li>
+                    <li><a href="https://github.com/CircleQMinh" target='_blank'>My Github Page</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <p class="copyright-text">Copyright &copy; 2021 All Rights Reserved by
+                    <a href="#">Circle</a>.
+                </p>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <ul class="social-icons">
+                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                    <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

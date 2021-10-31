@@ -27,13 +27,6 @@ namespace MyAPI.Controllers
         }
 
 
-
-
-
-
-
-
-
         [HttpGet("{id:int}", Name = "GetOrderDetail")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

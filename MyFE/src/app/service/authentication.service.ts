@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -28,6 +28,7 @@ export class AuthenticationService {
 
       if (timeOut.getTime() < timeNow.getTime()) {
         //console.log("time out remove key")
+        localStorage.removeItem("JWT_token")
         localStorage.removeItem("isLogin")
         localStorage.removeItem("user-id")
         localStorage.removeItem("user-email")
@@ -106,44 +107,50 @@ export class AuthenticationService {
   }
 
   getUserInfo(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}account?id=${id}`)
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}account?id=${id}`, { headers: header })
   }
 
   upLoadIMG(blob_string: any): Observable<any> {
     return this.http.post('https://api.cloudinary.com/v1_1/dkmk9tdwx/image/upload', { file: blob_string, upload_preset: 'v0q5hczm' })
   }
   updateProfile(url: string, phone: string, name: string, id: string): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.put(`${this.apiUrl}account?id=${id}`, {
       username: name,
       imgUrl: url,
       phone: phone
-    })
+    }, { headers: header })
   }
 
   addToFav(userID: string, proID: number): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}account/addFavoriteProduct`, {
       productId: proID,
       userId: userID
-    })
+    }, { headers: header })
   }
   removeFromFav(userID: string, proID: number): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}account/removeFavoriteProduct`, {
       productId: proID,
       userId: userID
-    })
+    }, { headers: header })
   }
 
   addReview(userID: string, proID: number, content: string, star: number, date: string): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}review`, {
       star: star,
       content: content,
       productId: proID,
       userID: userID,
       date: date
-    })
+    }, { headers: header })
   }
 
   addChatMess(user: string, time: string, content: string, role: string): Observable<any> {
+
     return this.http.post(`${this.firebaseUrl}chatME.json`, {
       user: user,
       time: time,

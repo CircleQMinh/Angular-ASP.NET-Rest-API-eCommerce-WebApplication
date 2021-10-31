@@ -232,6 +232,10 @@ export class AdminComponent implements OnInit {
   searchResult_Product: Product[] = []
   allProduct: Product[] = []
 
+  tkdtDayFrom:any
+  tkdtDayTo:any
+  tkTop:any=10
+
 
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
@@ -456,6 +460,8 @@ export class AdminComponent implements OnInit {
     let to = new Date;
     let from = new Date;
     from.setDate(from.getDate() - 7);
+    this.tkdtDayFrom=formatDate(from, 'yyyy-MM-dd', 'en')
+    this.tkdtDayTo=formatDate(to, 'yyyy-MM-dd', 'en')
     this.rf7.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'));
     this.rf7.controls["to"].setValue(formatDate(to, 'yyyy-MM-dd', 'en'));
     this.rf8.controls["from"].setValue(formatDate(from, 'yyyy-MM-dd', 'en'));
@@ -665,6 +671,9 @@ export class AdminComponent implements OnInit {
         //console.log(data)
         this.productList = data.result
         this.collectionSizeProduct = data.count
+        for(let i=0;i<this.productList.length;i++){
+          this.productList[i].numSales=data.saleNum[i]
+        }
         this.isDisconnect = false
       },
       error => {
@@ -756,7 +765,7 @@ export class AdminComponent implements OnInit {
         this.isLoading = false
         break
       case "user":
-        this.getUser()
+       this.getUser()
         this.isLoading = false
         break
       case "employee":
@@ -2054,5 +2063,23 @@ export class AdminComponent implements OnInit {
 
   openProductExport() {
     window.open(`/#/xuatpdf?mode=${1}&category=${this.category}&orderBy=${this.orderProduct}&pageNumber=${this.pageNumberProduct}&pageSize=${this.pageSizeProduct}&orderDir=${this.orderDirProduct}`, '_blank');
+  }
+
+  openUserExport() {
+    window.open(`/#/xuatpdf?mode=${2}&category=User&orderBy=${this.orderUser}&pageNumber=${this.pageNumberUser}&pageSize=${this.pageSizeUser}&orderDir=${this.orderDirUser}`, '_blank');
+  }
+
+  openEmployeeExport() {
+    window.open(`/#/xuatpdf?mode=${3}&category=${this.roleEmployee}&orderBy=${this.orderEmployee}&pageNumber=${this.pageNumberEmployee}&pageSize=${this.pageSizeEmployee}&orderDir=${this.orderDirEmployee}`, '_blank');
+  }
+  openPromoExport(promo:Promotion) {
+    localStorage.setItem("promo",JSON.stringify(promo))
+    window.open(`/#/xuatpdf?mode=4&promoId=${promo.id}`, '_blank');
+  }
+  openTKDTExport() {
+    window.open(`/#/xuatpdf?mode=5&from=${this.tkdtDayFrom}&to=${this.tkdtDayTo}`, '_blank');
+  }
+  openTKSPExport() {
+    window.open(`/#/xuatpdf?mode=6&top=${this.tkTop}`, '_blank');
   }
 }
