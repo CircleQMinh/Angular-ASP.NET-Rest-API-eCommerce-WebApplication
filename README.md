@@ -51,3 +51,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 21-10-2021 : thêm chat facebook và host lại web.<br>
 24-10-2021 : nâng cấp hình ảnh.<br>
 26-10-2021 : thêm xuất pdf.<br>
+31-10-2021 : thêm JWT.<br>
