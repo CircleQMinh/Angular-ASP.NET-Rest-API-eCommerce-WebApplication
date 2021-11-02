@@ -1471,6 +1471,17 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
 .h5-box-product-2>div:first-child{margin-bottom:50px;}
 }
 .h5-box-product-2>div:last-child .ApImage:first-child{margin-bottom:30px;}
+
+.hide_for_1399{
+    display: inline;
+}
+.badge.even-larger-badge {
+    font-size: 1.1em;
+  }
+.badge.even-larger-badge:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
 @media (max-width: 1399.98px) { 
     .float-btn-nav{
         display: none;
@@ -1518,7 +1529,7 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
         white-space: nowrap;
     }
     .show_for_991{
-        display: block;
+        display: inline;
     }
     .chat-enter{
         height: 12%;

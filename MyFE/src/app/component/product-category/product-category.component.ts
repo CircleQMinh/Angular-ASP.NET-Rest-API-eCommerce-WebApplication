@@ -86,52 +86,54 @@ export class ProductCategoryComponent implements OnInit {
       distinctUntilChanged(),
       map(term => term.length < 2 ? []
         : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-    getUpdate(){
-  
-      this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
-        data => {
-          this.isDisconnect=false
-          let updateList:Product[] = data.results
-          let updatePromo:PromotionInfo[] = data.promoInfo
-          for (let i = 0; i < updatePromo.length; i++) {
-            updateList[i].promoInfo = updatePromo[i]
-          }
-          // console.log(updateList)
-          // console.log(this.content)
-          if(!this.arraysEqual(this.content,updateList)){
-            this.content = data.results
-            this.collectionSize = data.totalItem
-            this.promoInfo = data.promoInfo
-            // console.log(this.promoInfo)
-           // console.log('Có update')
-          
-            for (let i = 0; i < this.promoInfo.length; i++) {
-              this.content[i].promoInfo = this.promoInfo[i]
-            }
-          }
-          else{
-            //console.log("Không có gì mới!")
-          }
-        },
-        error => {
-          this.isDisconnect=true
-          console.log(error)
+  )
+  getUpdate(){
+    this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
+      data => {
+        this.isDisconnect=false
+        let updateList:Product[] = data.results
+        let updatePromo:PromotionInfo[] = data.promoInfo
+        for (let i = 0; i < updatePromo.length; i++) {
+          updateList[i].promoInfo = updatePromo[i]
         }
-      )
-    }
-    arraysEqual(a:Product[], b:Product[]) {
-      return JSON.stringify(a)==JSON.stringify(b);
-    }
+        // console.log(updateList)
+        // console.log(this.content)
+        if(!this.arraysEqual(this.content,updateList)){
+          this.content = data.results
+          this.collectionSize = data.totalItem
+          this.promoInfo = data.promoInfo
+          // console.log(this.promoInfo)
+          // console.log('Có update')
+        
+          for (let i = 0; i < this.promoInfo.length; i++) {
+            this.content[i].promoInfo = this.promoInfo[i]
+          }
+        }
+        else{
+          //console.log("Không có gì mới!")
+        }
+      },
+      error => {
+        this.isDisconnect=true
+        console.log(error)
+      }
+    )
+  }
+  arraysEqual(a:Product[], b:Product[]) {
+    return JSON.stringify(a)==JSON.stringify(b);
+  }
 
   getProduct() {
     this.isLoading = true
     this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
       data => {
-        // console.log(data)
+        //  console.log(data)
         this.content = data.results
         this.collectionSize = data.totalItem
         this.promoInfo=data.promoInfo
+        for(let i=0;i<this.content.length;i++){
+          this.content[i].promoInfo=this.promoInfo[i]
+        }
         this.isLoading = false
       },
       error => {

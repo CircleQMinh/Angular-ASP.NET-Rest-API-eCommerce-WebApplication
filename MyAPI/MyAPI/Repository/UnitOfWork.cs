@@ -19,6 +19,7 @@ namespace MyAPI.Repository
         private IGenericRepository<EmployeeInfo> _employeeInfo;
         private IGenericRepository<Promotion> _promotion;
         private IGenericRepository<PromotionInfo> _promotionInfo;
+        private IGenericRepository<Tag> _tag;
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -33,6 +34,7 @@ namespace MyAPI.Repository
         public IGenericRepository<EmployeeInfo> EmployeeInfos => _employeeInfo ??= new GenericRepository<EmployeeInfo>(_context);
         public IGenericRepository<Promotion> Promotions => _promotion ??= new GenericRepository<Promotion>(_context);
         public IGenericRepository<PromotionInfo> PromotionInfos => _promotionInfo ??= new GenericRepository<PromotionInfo>(_context);
+        public IGenericRepository<Tag> Tags => _tag ??= new GenericRepository<Tag>(_context);
         public void Dispose()
         {
             _context.Dispose();

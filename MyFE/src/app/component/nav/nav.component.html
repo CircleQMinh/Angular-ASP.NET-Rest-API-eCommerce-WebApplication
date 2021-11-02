@@ -17,14 +17,14 @@
         <ul class="navbar-nav ml-auto topnav">
         
             <li class="nav-item">
-                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart"></i> Sản phẩm</a>
+                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart mr-2"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
                     <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
                         <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
                             Year</button> -->
-                        <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars"></i> Danh mục</a>
+                        <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars mr-2"></i> <p class="hide_for_1399 show_for_991">Danh mục</p></a>
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu>
                             <a routerLink="/products" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
                                 Toàn bộ</a>
@@ -47,20 +47,20 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/news"><i class="far fa-newspaper"></i> Tin tức</a>
+                <a class="nav-link" routerLink="/news"><i class="far fa-newspaper mr-2"></i> <p class="hide_for_1399 show_for_991">Tin tức</p></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/contact"><i class="far fa-question-circle"></i> Liên hệ</a>
+                <a class="nav-link" routerLink="/contact"><i class="far fa-question-circle mr-2"></i> <p class="hide_for_1399 show_for_991">Liên hệ</p></a>
             </li>
             <li class="nav-item" *ngIf="!isLogin">
-                <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt mr-2"></i> <p class="hide_for_1399 show_for_991">Đăng nhập</p></a>
             </li>
             <li class="nav-item dropdown" *ngIf="isLogin">
                 <div class="btn-group ">
                     <div class="btn-group mr-3" ngbDropdown role="group">
                         <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" ngbDropdownToggle>
-                            <i class="far fa-user"></i>
-                            {{user.displayName}}</a>
+                            <i class="far fa-user mr-2"></i>
+                            <p class="hide_for_1399 show_for_991">{{user.displayName}}</p></a>
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1">
                             <a ngbDropdownItem routerLink="/profile/{{user.id}}"><i class="fas fa-clipboard-list"></i>
                                 Tài khoản</a>

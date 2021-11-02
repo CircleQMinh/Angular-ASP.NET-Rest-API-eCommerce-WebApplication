@@ -24,26 +24,12 @@ export class TestComponent implements OnInit {
 
   }
 
-  test(){
-    this.adminService.getAuthorizeHttp(localStorage.getItem('JWT_token')).subscribe(
-      data=>{
-        console.log(data)
-        this.toast.success(data.greet)
-      }
-      ,error=>{
-        console.log(error)
-        console.log(error.status)
-        if(error.status==403){
-          this.toast.error('403 : Bạn không có quyền')
-        }
-        else if(error.status==401){
-          this.toast.error('401 : Token không hợp lệ')
-        }
-    
-      }
-    )
-  }
 
+
+  goToSearch(cate:any){
+    localStorage.setItem("searchCate",cate)
+    this.router.navigateByUrl("/search")
+  }
 
 
 

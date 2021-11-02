@@ -107,8 +107,12 @@ namespace MyAPI.Controllers
                 var query3 = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == id&&q.Promotion.Status==1, new List<string> { "Promotion" });
 
                 var promoInfo = _mapper.Map<PromotionInfoDTO>(query3);
+
+                var query4 = await _unitOfWork.Tags.GetAll(q => q.ProductId == id ,null,null);
+
+                var tags = _mapper.Map<IList < TagDTO >> (query4);
                 //trả lời request
-                return Ok(new { result,reviews,promoInfo });
+                return Ok(new { result,reviews,promoInfo,tags });
             }
             catch (Exception ex)
             {
@@ -126,6 +130,8 @@ namespace MyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO unitDTO)
         {
+            List<string> cate = new List<string> { "Fruit", "Vegetable", "Confectionery", "Snack", "AnimalProduct", "CannedFood" };
+            List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"Invalid POST attempt in {nameof(CreateProduct)}");
@@ -136,14 +142,29 @@ namespace MyAPI.Controllers
             {
                 var query = _mapper.Map<Product>(unitDTO);
                 await _unitOfWork.Products.Insert(query);
+           
+           
                 await _unitOfWork.Save();
 
+                var tag = new Tag();
+                tag.ProductId = query.Id;
+                tag.Product = query;
+                for (int i = 0; i < cate.Count; i++)
+                {
+                    if (query.Category == cate[i])
+                    {
+                        tag.Name = cateVN[i];
+                        break;
+                    }
+                }
+                await _unitOfWork.Tags.Insert(tag);
+                await _unitOfWork.Save();
                 return Accepted(new { query });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateProduct)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
             }
         }
 
@@ -222,10 +243,10 @@ namespace MyAPI.Controllers
 
 
 
-        [HttpGet("search",Name = "SearchProducts")]
+        [HttpPost("search",Name = "SearchProducts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SearchProducts(string keyword, string priceRange,  string category)
+        public async Task<IActionResult> SearchProducts([FromBody] SearchForProductDTO unitDTO)
         {
             if (!ModelState.IsValid )
             {
@@ -234,18 +255,30 @@ namespace MyAPI.Controllers
             }
             try
             {
-                string[] range = priceRange.Split(",");
-                string[] cate = category.Split(",");  
-                if (keyword == null || keyword.Trim()=="")
+                string[] range = unitDTO.priceRange.Split(",");
+                string[] cate = unitDTO.category.Split(",");  
+                if (unitDTO.keyword == null || unitDTO.keyword.Trim()=="")
                 {
                     var query = await _unitOfWork.Products.GetAll(null, null, null);
+
                     var list = _mapper.Map<IList<ProductDTO>>(query);
                     var rs = new List<ProductDTO>();
-                    foreach (var item in list)
+                    var tags = new List<List<String>>();
+                    foreach (var item in list)                   
                     {
-                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <=Int32.Parse(range[1]))
+                        var product_tags = await _unitOfWork.Tags.GetAll(q => q.ProductId == item.Id, null, null);
+                        var product_tags_string = new List<String>();
+                        foreach (var t in product_tags)
+                        {
+                            product_tags_string.Add(t.Name);
+                        }
+                        
+                        
+                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <=Int32.Parse(range[1])
+                            &&(product_tags_string.Contains(unitDTO.tag)|| unitDTO.tag =="all"))
                         {
                             rs.Add(item);
+                            tags.Add(product_tags_string);
                         }
                     }
 
@@ -259,19 +292,29 @@ namespace MyAPI.Controllers
                     }
 
 
-                    return Ok(new { result = rs, total = rs.Count , promoInfo });
+                    return Ok(new { result = rs, total = rs.Count , promoInfo,tags });
                 }
                 else
                 {
-                    var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(keyword.Trim()), null, null);
+                    var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(unitDTO.keyword.Trim()), null, null);
 
                     var list = _mapper.Map<IList<ProductDTO>>(query);
                     var rs = new List<ProductDTO>();
+                    var tags = new List<List<String>>();
                     foreach (var item in list)
                     {
-                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <= Int32.Parse(range[1]))
+                        var product_tags = await _unitOfWork.Tags.GetAll(q => q.ProductId == item.Id, null, null);
+                        var product_tags_string = new List<String>();
+                        foreach (var t in product_tags)
+                        {
+                            product_tags_string.Add(t.Name);
+                        }
+                       
+                        if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <= Int32.Parse(range[1])
+                            && (product_tags_string.Contains(unitDTO.tag) || unitDTO.tag == "all"))
                         {
                             rs.Add(item);
+                            tags.Add(product_tags_string);
                         }
                     }
                     var promoInfo = new List<PromotionInfoDTO>();
@@ -282,7 +325,7 @@ namespace MyAPI.Controllers
                         var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
                         promoInfo.Add(pi_map);
                     }
-                    return Ok(new { result = rs, total = rs.Count ,promoInfo});
+                    return Ok(new { result = rs, total = rs.Count ,promoInfo,tags});
                 }
       
             }
@@ -546,6 +589,8 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
+
+
 
     }
 }

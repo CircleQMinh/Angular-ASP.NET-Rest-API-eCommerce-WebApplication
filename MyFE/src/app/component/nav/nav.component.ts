@@ -44,7 +44,7 @@ export class NavComponent implements OnInit {
       this.keyword=" "
     }
     this.router.navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword, category: this.stringCate, priceRange: this.priceRange } }));
+      .then(() => this.router.navigate([`/search`]));
   }
 
   searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
@@ -113,4 +113,10 @@ export class NavComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
   }
+
+  goToSearch(cate:any){
+    localStorage.setItem("searchCate",cate)
+    this.router.navigateByUrl("/search")
+  }
+
 }

@@ -1,145 +1,357 @@
-<div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
-    <div class="wrap">
-        <div class="search">
-            <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword"
-                [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
-            <button type="submit" class="searchButton" (click)="newSearch()">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </div>
-</div>
+<!-- <app-nav></app-nav> -->
 
-
-
-<div class="container-fluid" #top>
-    <div class="row" style="margin-top: 3%;" *ngIf="!searchMode">
-        <div class="col">
-            <div class="row" style="margin-top: 3%;margin:0 auto;
-            width: 100%;display: block;">
-                    <div class="col-lg-12">
-                        <div class="">
-                            <h2 class="text-tron text-monospace" style="text-align: center;"><i class="fas fa-shopping-basket"></i> Sản phẩm của Shop </h2>
-                        </div>
-                    </div>
-                </div>
-            <div class="featured__controls">
-                <ul>
-                    <li [class.active]="category=='all'" (click)="switchCategory('all')"><a class="text-tron"><i class="fas fa-bars"></i> Toàn
-                            bộ</a></li>
-                    <li [class.active]="category=='Fruit'" (click)="switchCategory('Fruit')"><a class="text-tron"><i class="fas fa-apple-alt"></i> Trái
-                            cây</a></li>
-                    <li [class.active]="category=='Vegetable'" (click)="switchCategory('Vegetable')">
-                        <a class="text-tron"><i class="fas fa-carrot"></i> Rau củ</a>
-                    </li>
-                    <li [class.active]="category=='Confectionery'" (click)="switchCategory('Confectionery')">
-                        <a class="text-tron"><i class="fas fa-candy-cane"></i> Bánh kẹo</a>
-                    </li>
-                    <li [class.active]="category=='Snack'" (click)="switchCategory('Snack')"><a
-                            class="text-tron"><i class="fas fa-cookie-bite"></i> Snack</a></li>
-                    <li [class.active]="category=='AnimalProduct'" (click)="switchCategory('AnimalProduct')"><a
-                            class="text-tron"><i class="fas fa-drumstick-bite"></i> Thịt tươi sống</a></li>
-                    <li [class.active]="category=='CannedFood'" (click)="switchCategory('CannedFood')"><a
-                            class="text-tron"><i class="fas fa-spray-can"></i> Đồ hộp</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- <div class="row" style="margin-top: 3%;" *ngIf="searchMode">
-    <div class="col-lg-12">
-        <div class="section-title">
-           <button (click)="backToProduct()">Back to product list</button>
-        </div>
-    </div>
-</div> -->
-<div *ngIf="isLoading" class="d-flex justify-content-center " style="height: 1000px;">
-    <div class="spinner-border text-warning" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div>
-<!-- 2308 -->
-
-<section *ngIf="!isLoading">
-    <div class="container-fluid dflex-jus">
-        <a class="float-btn-nav" (click)="  prevPropage()">
-
-            <i class="fas fa-arrow-left float-btn-icon"></i>
-        </a>
-        <div class="row justify-content-center  animate__animated animate__fadeIn" style="width: 80%;">
-
-            <div *ngFor="let pro of content,index as i  " class="  gradient-border "
-                style=" margin: 20px;margin-bottom: 100px;">
-                <div class="featured__item" >
-                    <div class="featured__item__pic set-bg animate__animated animate__zoomIn "
-                        [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}" ngbTooltip="{{pro.description}}"
-                        [openDelay]="100" [closeDelay]="100" placement="auto" container="body" >
-                        <ul class="featured__item__pic__hover mr-3">
-                            <li ngbTooltip="Thêm vào yêu thích" container="body"><a (click)="addToFav(pro)"><i
-                                        class="fa fa-heart"></i></a></li>
-                            <li ngbTooltip="Xem thông tin" container="body" (click)="openProductUrlInNewWindow(pro.id)"><a><i
-                                        class="fas fa-info"></i></a></li>
-                            <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro)"><a><i
-                                        class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="featured__item__text">
-                        <h6><a hrer="#"  (click)="openProductUrlInNewWindow(pro.id)">{{pro.name}}</a></h6>
-                        <div *ngIf="!promoInfo[i]">
-                            <h5>{{pro.price | currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
-                            </h5>
-                        </div>
-
-                        <div *ngIf="promoInfo[i]">
-                            <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
-                                {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 | currency:'VND':''}}
-                                <span class="currency-dis">đ</span>
-                                <span class="badge bg-success"
-                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
-                                    placement="auto" >-{{promoInfo[i].promotionPercent}}%
-                                </span>
-                            </h5>
-                            <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
-                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}}
-                                <span class="currency-dis">đ</span>
-                                <span class="badge bg-danger"
-                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionAmount}} VND&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
-                                    placement="auto" data-html="true"
-                                    >-{{promoInfo[i].promotionAmount|
-                                    currency:'VND':''}}
-                                    <span class="currency-dis">đ</span>
-                                </span>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <a class="float-btn-nav" (click)="nextProPage()">
-
-            <i class="fas fa-arrow-right float-btn-icon"></i>
-        </a>
-    </div>
-</section>
-
-<div class="container d-flex justify-content-center ">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
-            <div id="ng-pagi">
-                <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="collectionSize"
-                    [maxSize]="3" [boundaryLinks]=true (pageChange)="scroll(top);productPageChange()" size="sm">
-                </ngb-pagination>
+
+            <p class="lead text-monospace text-center mt-5"><i class="fas fa-search"></i> Nhập tên sản phẩm bạn cần tìm
+                kiếm !
+            </p>
+            <div class="div-center-content" style="margin-bottom: 15px;" id='searchBarProduct'>
+                <div class="wrap">
+                    <div class="search">
+                        <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?"
+                            [(ngModel)]="keyword" (keydown.enter)="newSearch()">
+                        <button type="submit" class="searchButton" (click)="newSearch()">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <div class="d-flex justify-content-center">
+                <h4 class="tag-search-h4" *ngIf="keyword">
+                    <span class="badge rounded-pill bg-info mx-2">Từ khóa : {{keyword}}</span>
+                </h4>
+                <h4 class="tag-search-h4" *ngIf="allCate">
+                    <span class="badge rounded-pill bg-success mx-2">Danh mục : Toàn bộ</span>
+                </h4>
+                <ng-container *ngFor="let o of cate">
+                    <h4 class="tag-search-h4" *ngIf="o.checked==true">
+                        <span class="badge rounded-pill bg-success mx-2">*{{o.name}}*</span>
+                    </h4>
+                </ng-container>
+                <ng-container>
+
+                </ng-container>
+                <h4 class="tag-search-h4" *ngIf="priceRange!='0,999999'">
+                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : {{priceRange}}</span>
+                </h4>
+                <h4 class="tag-search-h4" *ngIf="priceRange=='0,999999'">
+                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : Toàn bộ</span>
+                </h4>
+                <h4 class="tag-search-h4" *ngIf="onPromoOnly">
+                    <span class="badge rounded-pill bg-warning text-dark mx-2">*Đang khuyến mãi*</span>
+                </h4>
+            </div>
+
+            <div class="container">
+                <hr>
+            </div>
+
+            <div class="container-fluid ">
+                <div class="row">
+                    <div class="col-3 border-end border-secondary" id="filter_search">
+                        <h4>Theo danh mục</h4>
+                        <form>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="all" [(ngModel)]="allCate"
+                                    name="allCate" (change)="filterChange(true)">
+                                <label class="form-check-label">
+                                    Toàn bộ
+                                </label>
+                            </div>
+                            <div class="form-check" *ngFor="let o of cate">
+                                <input class="form-check-input" type="checkbox" value="{{o.value}}"
+                                    [(ngModel)]="o.checked" name="{{o.value}}" (change)="filterChange(false)">
+                                <label class="form-check-label">
+                                    {{o.name}}
+                                </label>
+                            </div>
+                        </form>
+                        <hr>
+                        <h4>Giá</h4>
+                        <form>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,999999" name="pr1"
+                                    (change)="filterChange(null)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Toàn bộ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="0,20000" name="pr2"
+                                    (change)="filterChange(null)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Dưới 20.000
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="20000,40000" name="pr3"
+                                    (change)="filterChange(null)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Từ 20.000 dến 40.000
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="40000,120000" name="pr4"
+                                    (change)="filterChange(null)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Từ 40.000 dến 120.000
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" [(ngModel)]="priceRange" value="120000,999999" name="pr5"
+                                    (change)="filterChange(null)">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Trên 120.000
+                                </label>
+                            </div>
+                        </form>
+                        <hr>
+                        <h4>Khoảng giá</h4>
+                        <form>
+                            <div class="form-check ">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Từ</span>
+                                    <input type="number" class="form-control" placeholder="từ" name="minPrice"
+                                        [(ngModel)]="priceMin">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Đến</span>
+                                    <input type="number" class="form-control" placeholder="đến" name="maxPrice"
+                                        [(ngModel)]="priceMax">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-success" (click)="applyPriceRange()">Áp dụng</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        <h4>Khuyến mãi</h4>
+                        <form>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="checkbox" value="onPromo" name="PromoOnly"
+                                    [(ngModel)]="onPromoOnly" (change)="scrollToTop()">
+                                <label class="form-check-label">
+                                    Đang được khuyến mãi
+                                </label>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="col col-md-9">
+                        <div class="loading-full" *ngIf="isLoading">
+                            <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text monospace">Xin chờ 1 xíu...</p>
+                        </div>
+                        <div class="row justify-content-center">
+                            <p class="text-center">Mục sản phẩm nổi bật</p>
+                        </div>
+                        <div class="row justify-content-center">
+
+                            <p style="width: fit-content;display: flex;flex-wrap: wrap;justify-content: center;" >
+                                <ng-container *ngIf="allCate">
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')" >Trái cây Việt Nam</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh Choco Pie')">Bánh Choco Pie</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Snack Oishi</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                                </ng-container>
+                     
+                        
+                                <ng-container *ngIf="cate[0].checked">
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')">Trái cây Việt Nam</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                                </ng-container>
+                        
+                        
+                                <ng-container *ngIf="cate[1].checked">
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ gia vị')">Rau củ gia vị</span>
+                                </ng-container>
+                          
+                                <ng-container *ngIf="cate[2].checked"> 
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh choco Pie')">Bánh choco Pie</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Kẹo')">Kẹo</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Alpenliebe')">Alpenliebe</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('AFC')">AFC</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Chupa Chups')">Chupa Chups</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                                </ng-container>
+                        
+                                <ng-container *ngIf="cate[3].checked">
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Oishi</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Lays')">Lay's</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Pringles')">Pringles </span>
+                                </ng-container>
+                           
+                                <ng-container *ngIf="cate[4].checked">
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt gà')">Thịt gà</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò')">Thịt bò</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá tươi')">Cá tươi</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                                </ng-container>
+                       
+                                <ng-container *ngIf="cate[5].checked">
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo hộp')">Thịt heo hộp</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò hộp')">Thịt bò hộp</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                                </ng-container>
+                             
+                            </p>
+                        </div>
+                        <div class="row justify-content-center" *ngIf="!onPromoOnly&&!isLoading">
+
+                            <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
+                                phẩm !</p>
+                            <div *ngFor="let pro of pagedProduct ,index as i " class="gradient-border"
+                                style=" margin: 10px;margin-bottom: 110px;">
+                                <div class="featured__item">
+                                    <div class="featured__item__pic set-bg"
+                                        [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                                        ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
+                                        placement="auto" container="body">
+                                        <ul class="featured__item__pic__hover">
+                                            <li ngbTooltip="Thêm vào yêu thích" container="body"><a
+                                                    (click)="addToFav(pro)"><i class="fa fa-heart"></i></a></li>
+                                            <li ngbTooltip="Xem thông tin" container="body"
+                                                (click)="openProductUrlInNewWindow(pro.id)">
+                                                <a><i class="fas fa-info"></i></a>
+                                            </li>
+                                            <li ngbTooltip="Thêm vào giỏ hàng" container="body"
+                                                (click)="addToCart(pro)">
+                                                <a><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a (click)="openProductUrlInNewWindow(pro.id)" href="#">{{pro.name}}</a>
+                                        </h6>
+                                        <div *ngIf="!pro.promoInfo">
+                                            <h5>{{pro.price | currency:'VND':''}} <span
+                                                    style="text-decoration: underline;">đ</span>
+                                            </h5>
+                                        </div>
+
+                                        <div *ngIf="pro.promoInfo">
+                                            <h5 *ngIf="pro.promoInfo.promotionPercent!='null'">
+                                                {{pro.price-pro.price*toNumber(pro.promoInfo.promotionPercent)/100 |
+                                                currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-success"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    data-html="true">-{{pro.promoInfo.promotionPercent}}%</span>
+                                            </h5>
+                                            <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
+                                                {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
+                                                currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-danger"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                    placement="auto" data-html="true">-{{pro.promoInfo.promotionAmount|
+                                                    currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container d-flex justify-content-center ">
+                            <div class="row">
+                                <div class="col">
+                                    <div id="ng-pagi">
+                                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize"
+                                            [collectionSize]="products.length" [maxSize]="3" [boundaryLinks]=true
+                                            (pageChange)="getPagedProduct()" size="sm">
+                                        </ngb-pagination>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center" *ngIf="onPromoOnly&&!isLoading">
+                            <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
+                                phẩm !</p>
+                            <ng-container *ngFor="let pro of products ,index as i ">
+                                <div class="gradient-border" style=" margin: 10px;margin-bottom: 110px;"
+                                    *ngIf="pro.promoInfo">
+                                    <div class="featured__item">
+                                        <div class="featured__item__pic set-bg"
+                                            [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
+                                            ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
+                                            placement="auto" container="body">
+                                            <ul class="featured__item__pic__hover">
+                                                <li ngbTooltip="Thêm vào yêu thích" container="body"><a
+                                                        (click)="addToFav(pro)"><i class="fa fa-heart"></i></a></li>
+                                                <li ngbTooltip="Xem thông tin" container="body"
+                                                    routerLink="/product/{{pro.id}}">
+                                                    <a><i class="fas fa-info"></i></a>
+                                                </li>
+                                                <li ngbTooltip="Thêm vào giỏ hàng" container="body"
+                                                    (click)="addToCart(pro)">
+                                                    <a><i class="fa fa-shopping-cart"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="featured__item__text">
+                                            <h6><a href="#">{{pro.name}}</a></h6>
+                                            <div *ngIf="!pro.promoInfo">
+                                                <h5>{{pro.price | currency:'VND':''}} <span
+                                                        style="text-decoration: underline;">đ</span>
+                                                </h5>
+                                            </div>
+
+                                            <div>
+                                                <h5 *ngIf="pro.promoInfo.promotionPercent!='null'">
+                                                    {{pro.price-pro.price*toNumber(pro.promoInfo.promotionPercent)/100 |
+                                                    currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span> <span class="badge bg-success"
+                                                        ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                        placement="auto"
+                                                        data-html="true">-{{pro.promoInfo.promotionPercent}}%</span>
+                                                </h5>
+                                                <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
+                                                    {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
+                                                    currency:'VND':''}}
+                                                    <span class="currency-dis">đ</span> <span class="badge bg-danger"
+                                                        ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                        placement="auto"
+                                                        data-html="true">-{{pro.promoInfo.promotionAmount|
+                                                        currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 400px;" *ngIf="products.length==0">
+                <p class="text-monospace text-center">
+
+                </p>
+            </div>
         </div>
     </div>
 </div>
 
-<div class=" p-3 connect_nofity "  *ngIf="isDisconnect">
+<div class=" p-3 connect_nofity " *ngIf="isDisconnect">
     <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
 
         <div class="toast-header" style="background-color: #000000;
@@ -155,11 +367,3 @@
 
     </div>
 </div>
-
-<ng-template #rt let-r="result" let-t="term" style="height: 400px;width: 50%;">
-    <div>
-        <img [src]="r.imgUrl" class="mr-1 typeahead-tron-img">
-        <ngb-highlight [result]="r.name" [term]="t" class="text-tron"></ngb-highlight>
-    </div>
-
-</ng-template>

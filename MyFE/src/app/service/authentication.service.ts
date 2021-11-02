@@ -66,6 +66,7 @@ export class AuthenticationService {
     localStorage.removeItem("user-imgUrl")
     localStorage.removeItem("user-role")
     localStorage.removeItem("user-info")
+    localStorage.removeItem("JWT_token")
     //localStorage.removeItem("submitedForm")
 
     this.toast.info("Đăng xuất thành công")
