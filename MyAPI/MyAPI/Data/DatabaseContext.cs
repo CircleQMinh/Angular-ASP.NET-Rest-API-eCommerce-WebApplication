@@ -25,6 +25,8 @@ namespace MyAPI.Data
         public DbSet<EmployeeInfo> EmployeeInfos { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<PromotionInfo> PromotionInfos { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

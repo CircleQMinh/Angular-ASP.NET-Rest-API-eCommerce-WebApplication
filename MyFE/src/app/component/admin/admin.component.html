@@ -9,33 +9,47 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse" [collapse]="isCollapsed">
         <ul class="navbar-nav  ml-auto ">
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='db'" (click)="switchTab('db')"
-                    class="nav-link d-flex"><i class="fas fa-home mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Dashboard</p></a>
+                    class="nav-link d-flex"><i class="fas fa-home  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Dashboard</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='order'" (click)="switchTab('order')"
-                    class="nav-link d-flex"><i class="fas fa-shopping-cart mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Đơn hàng</p></a>
+                    class="nav-link d-flex"><i class="fas fa-shopping-cart  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Đơn hàng</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='product'" (click)="switchTab('product')"
-                    class="nav-link d-flex"><i class="fas fa-box-open mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
+                    class="nav-link d-flex"><i class="fas fa-box-open  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Sản phẩm</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='user'" (click)="switchTab('user')"
-                    class="nav-link d-flex"><i class="far fa-user-circle mt-1 mr-1"></i><p class="hide_for_1399 show_for_991"> Người dùng</p></a>
+                    class="nav-link d-flex"><i class="far fa-user-circle  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991"> Người dùng</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='employee'" (click)="switchTab('employee')"
-                    class="nav-link d-flex"><i class="fas fa-id-card-alt mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Nhân viên</p></a>
+                    class="nav-link d-flex"><i class="fas fa-id-card-alt  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Nhân viên</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='tk'" (click)="switchTab('tk')"
-                    class="nav-link d-flex"><i class="fas fa-chart-line mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Thống kê</p></a>
+                    class="nav-link d-flex"><i class="fas fa-chart-line  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Thống kê</p>
+                </a>
             </li>
-            <li class="nav-item px-2 mt-1">
+            <li class="nav-item px-2 ">
                 <a href="javascript:void(0)" [class.active]="active_tab=='pm'" (click)="switchTab('pm')"
-                    class="nav-link d-flex"><i class="fas fa-comment-dollar mt-1 mr-1"></i> <p class="hide_for_1399 show_for_991">Khuyến mãi</p></a>
+                    class="nav-link d-flex"><i class="fas fa-comment-dollar  mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Khuyến mãi</p>
+                </a>
             </li>
         </ul>
 
@@ -804,7 +818,7 @@
                                     <th>Mô tả</th>
                                     <th>Giá</th>
                                     <th>Số lượng</th>
-                                    <th>Danh mục</th>
+                                    <th>Danh mục/Thẻ</th>
                                     <th>Chỉnh sửa</th>
                                     <th>Hiển thị</th>
                                     <th>SL bán</th>
@@ -825,6 +839,8 @@
                                     <td>{{o.unitInStock}}</td>
                                     <td>
                                         <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
+                                        <hr>
+                                        <span class="badge bg-primary" *ngFor="let i of o.tags">{{i.name}}</span>
                                     </td>
                                     <td>{{o.lastUpdate}}</td>
                                     <td *ngIf="o.status==1">
@@ -841,6 +857,10 @@
                                             <button class="btn btn-info "
                                                 (click)="openEditProductModal(edit_product,o)">
                                                 <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-primary "
+                                                (click)="openProductTagModal(product_tag,o)">
+                                                <i class="fas fa-tags"></i>
                                             </button>
                                             <button class="btn btn-danger "
                                                 (click)="openDeleteProductModal(deleteProductModal,o.id)">
@@ -895,8 +915,8 @@
                                     </div>
                                 </form>
                             </div>
-                        
-                     
+
+
 
                         </div>
                         <div class="d-flex justify-content-start">
@@ -912,8 +932,8 @@
                                     <input class="form-control" type="number" [(ngModel)]="tkTop" name="billy">
                                 </div>
                             </div>
-                      
-                  
+
+
                         </div>
                         <hr>
                     </div>
@@ -1112,7 +1132,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th style="width: 15%;word-wrap: break-word;">Thông tin</th>
-                                    <th style="width: 30%;word-wrap: break-word;" >Mô tả</th>
+                                    <th style="width: 30%;word-wrap: break-word;">Mô tả</th>
                                     <th style="width: 10%;word-wrap: break-word;">Ngày bắt đầu</th>
                                     <th style="width: 10%;word-wrap: break-word;">Ngày kết thúc</th>
                                     <th style="width: 10%;word-wrap: break-word;">Đang diễn ra</th>
@@ -1126,7 +1146,7 @@
                                         <img src="{{o.imgUrl}}" style="width: 240px;height: 120px;" id="promo-pic">
                                         <p class=" text-monospace">{{o.name}}</p>
                                     </td>
-                                    <td class="truncate_texts" >{{o.description}}</td>
+                                    <td class="truncate_texts">{{o.description}}</td>
                                     <td>{{o.startDate | date:"dd-MM-yyyy"}}</td>
                                     <td>{{o.endDate| date:"dd-MM-yyyy"}}</td>
                                     <td *ngIf="o.status==0">
@@ -3227,5 +3247,151 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #product_tag let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thẻ của sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <button class="btn btn-primary mb-3" (click)="openAddProductTagModal(product_tag_add)">+</button>
+        <p *ngIf="editingProduct.tags.length==0">Sản phẩm không có thẻ!</p>
+        <div class="table-responsive p-20" *ngIf="editingProduct.tags.length!=0">
+            <p>Tổng số thẻ : {{editingProduct.tags.length}}</p>
+          
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Tên thẻ</th>
+                        <th>Chỉnh sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of editingProduct.tags,index as i">
+                        <td>{{o.id}}</td>
+                        <td>{{o.name}}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm admin-button mr-2" (click)="openEditProductTagModal(product_tag_edit,o)">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button " (click)="openDeleteProductTagModal(product_tag_delete,o)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #product_tag_add let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm thẻ cho sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf13">
+
+            <label for="des">Tên thẻ</label>
+            <div class="input-group">
+                <input id="des" class="form-control" placeholder="Tên thẻ..." name="name" formControlName="name">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf13.controls.name?.errors?.required&&showFormError">
+                Tên  thẻ chưa điền!
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isAddingTag">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="addProductTag()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isAddingTag">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #product_tag_edit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa thẻ cho sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf14">
+
+            <label for="des">Tên thẻ</label>
+            <div class="input-group">
+                <input id="des" class="form-control" placeholder="Tên thẻ..." name="name" formControlName="name">
+            </div>
+            <div class="col alert alert-danger" role="alert"
+                *ngIf="rf14.controls.name?.errors?.required&&showFormError">
+                Tên  thẻ chưa điền!
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditTag">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editProductTag()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditTag">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #product_tag_delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa thẻ của sản phẩm </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa thẻ của sản phẩm?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeleteTag">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteProductTag()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeleteTag">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
     </div>
 </ng-template>

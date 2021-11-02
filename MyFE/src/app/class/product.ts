@@ -1,5 +1,6 @@
 import { PromotionInfo } from "./promotion-info";
 import { Review } from "./review";
+import { Tag } from "./tag";
 import { User } from "./user";
 
 export class Product {
@@ -17,6 +18,7 @@ export class Product {
     promoInfo!:PromotionInfo
     status!:number
     numSales!:number
+    tags!:Tag[]
 
 	constructor(id:number,name:string,price:number,des:string,unit:number,cate:string,img:string,last:string) {
         this.id=id;

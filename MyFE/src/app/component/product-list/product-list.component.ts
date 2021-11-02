@@ -15,144 +15,195 @@ import { PromotionInfo } from 'src/app/class/promotion-info';
 })
 export class ProductListComponent implements OnInit {
 
-  products!: Product[];
-  content!: Product[];
-  pageNumber: number = 1;
-  pageSize: number = 10;
-  collectionSize: number = 0;
-  category: string = "all"
-  order: string = ""
-  searchMode: boolean = false;
-  searchCount: number = 0
+  isLoading = false
+  keyword: any
 
+  cate = [
+    { name: 'Trái cây', value: 'Fruit', checked: false },
+    { name: 'Rau củ', value: 'Vegetable', checked: false },
+    { name: 'Bánh kẹo', value: 'Confectionery', checked: false },
+    { name: 'Snack', value: 'Snack', checked: false },
+    { name: 'Thịt tươi sống', value: 'AnimalProduct', checked: false },
+    { name: 'Đồ hộp', value: 'CannedFood', checked: false }
+  ]
+  defaultPriceRange = ["0,20000", "20000,40000", "40000,120000", "120000,999999", "0,999999"]
+
+  allCate = false
+
+  priceMin: any
+  priceMax: any
+  priceRange: any = "0,999999"
+  stringCate: string = ""
+  tag:string ="all"
+  onPromoOnly = false
+
+  products: Product[] = []
   promoInfo: PromotionInfo[] = []
 
-  isDisconnect=false
-  autoInterval:any
-  
-  isLoading: boolean = false
-  @ViewChild('top', { static: true }) contentPage!: ElementRef;
-  constructor(private proService: ProductService, private toast: HotToastService, private cartService: CartService,
-    private router: Router, private authService: AuthenticationService) { }
+  pagedProduct:Product[]=[]
 
+  isDisconnect = false
+  autoInterval: any
 
-  keyword: any;
+  pageNumber:number=1
+  pageSize:number=10
 
-  searchProduct: OperatorFunction<string, readonly Product[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+  constructor(private productService: ProductService, private toast: HotToastService,
+    private cartService: CartService, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.getProductAll()
-    this.getProduct()
-    this.autoInterval=setInterval(()=>{
-     this.getUpdate()
-    },5000)
+    this.isLoading = true
+
+    if(localStorage.getItem("searchCate")){
+      let a = localStorage.getItem("searchCate")
+      for(let i=0;i<this.cate.length;i++){
+        if(a==this.cate[i].value){
+          this.cate[i].checked=true
+        }
+      }
+      this.stringCate=a!
+    }
+    else{
+      this.allCate = true
+      this.stringCate = "all"
+    }
+
+    this.priceRange = "0,999999"
+    this.keyword = ""
+    this.findProduct()
+
+    //console.log(this.keyword)
+    this.autoInterval = setInterval(() => {
+      this.findProduct()
+    }, 5000)
+    window.scrollTo(0, 0)
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval product!")
+      console.log("Xóa interval search!")
+    }
+    localStorage.removeItem("searchCate")
+  }
+  findProduct() {
+
+    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate,this.tag).subscribe(
+      data => {
+        this.isDisconnect = false
+        this.products = data.result
+        this.promoInfo = data.promoInfo
+        for(let i=0;i<this.products.length;i++){
+          this.products[i].promoInfo=this.promoInfo[i]
+        }
+        this.getPagedProduct()
+        //console.log(this.products)
+        this.isLoading = false
+      },
+      error => {
+        console.log(error)
+        this.isDisconnect = true
+        //this.toast.error("Kết nối API không được!")
+        this.isLoading = false
+      }
+    )
+  }
+  getPagedProduct() {
+    this.pagedProduct = []
+    for (let i = 0; i < this.pageSize; i++) {
+      if (this.products[i + this.pageSize * (this.pageNumber - 1)]) {
+        this.pagedProduct.push(this.products[i + this.pageSize * (this.pageNumber - 1)])
+      }
+
     }
   }
+  filterChange(bool: any) {
+    this.stringCate = ""
+    this.tag="all"
+    if (bool != null) {
+      this.allCate = bool
+    }
+    if (!this.allCate) {
+      let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
+      // console.log(this.priceRange)
+      // console.log(listCate)
 
-  openProductUrlInNewWindow(id:any) {
-    
-    window.open(`/#/product/${id}`, '_blank');
-  }
-  getUpdate(){
-  
-    this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
-      data => {
-        this.isDisconnect=false
-        let updateList:Product[] = data.results
-        let updatePromo:PromotionInfo[] = data.promoInfo
-        for (let i = 0; i < updatePromo.length; i++) {
-          updateList[i].promoInfo = updatePromo[i]
-        }
-        // console.log(updateList)
-        // console.log(this.content)
-        if(!this.arraysEqual(this.content,updateList)){
-          this.content = data.results
-          this.collectionSize = data.totalItem
-          this.promoInfo = data.promoInfo
-          // console.log(this.promoInfo)
-         // console.log('Có update')
-        
-          for (let i = 0; i < this.promoInfo.length; i++) {
-            this.content[i].promoInfo = this.promoInfo[i]
-          }
-        }
-        else{
-          //console.log("Không có gì mới!")
-        }
-      },
-      error => {
-        this.isDisconnect=true
-        console.log(error)
+      if (listCate.length == 0) {
+        listCate.push("all")
+        this.allCate=true
       }
-    )
-  }
-  arraysEqual(a:Product[], b:Product[]) {
-    return JSON.stringify(a)==JSON.stringify(b);
-  }
-  getProduct() {
-    this.isLoading = true
-    this.proService.getProduct(this.category, this.order, this.pageNumber, this.pageSize).subscribe(
-      data => {
-        // console.log(data)
-        this.content = data.results
-        this.collectionSize = data.totalItem
-        this.promoInfo = data.promoInfo
-        // console.log(this.promoInfo)
-        for (let i = 0; i < this.promoInfo.length; i++) {
-          this.content[i].promoInfo = this.promoInfo[i]
-        }
-        this.isLoading = false
-      },
-      error => {
-        this.toast.error("Kết nối với API không được!")
-        this.isLoading = false
-        console.log(error)
-      }
-    )
-  }
-  getProductAll() {
-    this.isLoading = true
-    this.proService.getProduct("all", "", 1, 999).subscribe(
-      data => {
-        //console.log(data)
-        this.products = data.results
-        this.collectionSize = data.totalItem
-        this.promoInfo = data.promoInfo
-        for (let i = 0; i < this.promoInfo.length; i++) {
-          this.products[i].promoInfo = this.promoInfo[i]
-        }
-        // console.log(this.promoInfo)
-        localStorage.setItem("products", JSON.stringify(this.products))
-        this.isLoading = false
-      },
-      error => {
-        this.toast.error("Kết nối với API không được!")
-        this.isLoading = false
-        console.log(error)
-      }
-    )
-  }
 
-  getSearchResult(keyword: string) {
+      for (let i = 0; i < listCate.length; i++) {
+        this.stringCate += listCate[i] + ","
+      }
 
+      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
+      this.newSearch()
+    }
+    else {
+      this.cate.forEach(element => {
+        element.checked = false
+      });
+      let listCate: string[] = []
+
+      listCate.push("all")
+      for (let i = 0; i < listCate.length; i++) {
+        this.stringCate += listCate[i] + ","
+      }
+      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
+      this.newSearch()
+    }
   }
   newSearch() {
+    // let url = this.router.createUrlTree([], {
+    //   relativeTo: this.route, queryParams:
+    //     { keyword: this.keyword, category: this.stringCate, priceRange: this.priceRange }
+    // }).toString();
+    // //console.log(url)
+    // this.location.go(url)
+    this.tag="all"
+    this.findProduct()
+    // this.router.navigateByUrl('/', { skipLocationChange: true })
+    //   .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:this.priceRange } }));
+  }
 
-    this.router.navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword } }));
+  applyPriceRange() {
+    if (this.priceMin && this.priceMax) {
+      try {
+        if (Number(this.priceMin) > Number(this.priceMax)) {
+          this.toast.error("Khoảng giá không hợp lệ")
+        }
+        else {
+          this.tag="all"
+          let newRange = String(this.priceMin) + "," + String(this.priceMax)
+          // this.router.navigateByUrl('/', { skipLocationChange: true })
+          // .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:newRange } }));
+          // let url = this.router.createUrlTree([], {
+          //   relativeTo: this.route, queryParams:
+          //     { keyword: this.keyword, category: this.stringCate, priceRange: newRange }
+          // }).toString();
+          //console.log(url)
+          this.priceRange = newRange
+          //this.location.go(url)
+          this.findProduct()
+        }
+      }
+      catch (e) {
+        this.toast.error("Khoảng giá không hợp lệ")
+      }
+    }
+    else {
+      this.toast.error("Khoảng giá không hợp lệ")
+    }
+  }
+  openProductUrlInNewWindow(id: any) {
+
+    window.open(`/#/product/${id}`, '_blank');
+  }
+  applyTag(t:any){
+    this.tag=t
+    this.findProduct()
   }
   addToFav(pro: Product) {
     if (localStorage.getItem("isLogin")) {
@@ -180,36 +231,28 @@ export class ProductListComponent implements OnInit {
     this.cartService.addToCart(pro)
     this.toast.success("Đã thêm sản phẩm vào giỏ!")
   }
-  productPageChange() {
-    this.getProduct()
-  }
-  scroll(el: HTMLParagraphElement) {
-    el.scrollIntoView({ behavior: 'smooth' });
-  }
-  switchCategory(category: string) {
-    this.category = category
-    this.pageNumber = 1
-    this.getProduct()
-  }
-  nextProPage() {
-    if (this.collectionSize / this.pageSize > this.pageNumber) {
-      this.pageNumber += 1
-      this.getProduct()
-    }
-  }
-  prevPropage() {
-    if (1 < this.pageNumber) {
-      this.pageNumber -= 1
-      this.getProduct()
-
-    }
-  }
-  selectedItem(item: any) {
-    this.router.navigateByUrl(`/product/${item.item.id}`)
-
-  }
 
   toNumber(string: string): number {
     return Number(string)
+  }
+
+  totalProduct(): number {
+
+    if (this.onPromoOnly == true) {
+      let s = 0;
+      this.promoInfo.forEach(element => {
+        if (element != null) {
+          s += 1
+        }
+      });
+      return s;
+    }
+    else {
+      return this.products.length
+    }
+
+  }
+  scrollToTop() {
+    //window.scrollTo(0, 0)
   }
 }

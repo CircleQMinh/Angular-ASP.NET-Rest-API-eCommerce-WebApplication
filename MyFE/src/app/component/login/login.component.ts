@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
       // console.log(this.rf1.controls['password'].value)
       this.authService.signIn(this.rf1.controls['email'].value, this.rf1.controls['password'].value).subscribe(
         data => {
-          console.log(data)
-          console.log(data.token)
+          // console.log(data)
+          // console.log(data.token)
           this.user=data.user
           this.user.roles=data.roles
           localStorage.setItem('JWT_token',data.token)
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
       )
     }
     else{
-      this.toast.error("The submitted data is not valid. Please correct it to continue")
+      this.toast.error("Thông tin nhập không hợp lệ!")
       this.isLoading=false
     }
   }

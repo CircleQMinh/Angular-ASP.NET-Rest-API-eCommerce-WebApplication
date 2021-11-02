@@ -148,13 +148,74 @@
                             </div>
                             <p class="text monospace">Xin chờ 1 xíu...</p>
                         </div>
+                        <div class="row justify-content-center">
+                            <p class="text-center">Mục sản phẩm nổi bật</p>
+                        </div>
+                        <div class="row justify-content-center">
+
+                            <p style="width: fit-content;display: flex;flex-wrap: wrap;justify-content: center;" >
+                                <ng-container *ngIf="allCate">
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')" >Trái cây Việt Nam</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh Choco Pie')">Bánh Choco Pie</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Snack Oishi</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                                </ng-container>
+                     
+                        
+                                <ng-container *ngIf="cate[0].checked">
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')">Trái cây Việt Nam</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                                </ng-container>
+                        
+                        
+                                <ng-container *ngIf="cate[1].checked">
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ gia vị')">Rau củ gia vị</span>
+                                </ng-container>
+                          
+                                <ng-container *ngIf="cate[2].checked"> 
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh choco Pie')">Bánh choco Pie</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Kẹo')">Kẹo</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Alpenliebe')">Alpenliebe</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('AFC')">AFC</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Chupa Chups')">Chupa Chups</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                                </ng-container>
+                        
+                                <ng-container *ngIf="cate[3].checked">
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Oishi</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Lays')">Lay's</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Pringles')">Pringles </span>
+                                </ng-container>
+                           
+                                <ng-container *ngIf="cate[4].checked">
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt gà')">Thịt gà</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò')">Thịt bò</span>
+                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá tươi')">Cá tươi</span>
+                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                                </ng-container>
+                       
+                                <ng-container *ngIf="cate[5].checked">
+                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo hộp')">Thịt heo hộp</span>
+                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò hộp')">Thịt bò hộp</span>
+                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                                </ng-container>
+                             
+                            </p>
+                        </div>
                         <div class="row justify-content-center" *ngIf="!onPromoOnly&&!isLoading">
                             <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0"><i class="fas fa-search"></i> Tìm thấy
                                 {{totalProduct()}} sản
                                 phẩm !</p>
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
                                 phẩm !</p>
-                            <div *ngFor="let pro of products ,index as i " class="gradient-border"
+                            <div *ngFor="let pro of pagedProduct ,index as i " class="gradient-border"
                                 style=" margin: 10px;margin-bottom: 110px;">
                                 <div class="featured__item" >
                                     <div class="featured__item__pic set-bg"
@@ -176,42 +237,53 @@
                                     </div>
                                     <div class="featured__item__text">
                                         <h6><a (click)="openProductUrlInNewWindow(pro.id)" href="#">{{pro.name}}</a></h6>
-                                        <div *ngIf="!promoInfo[i]">
+                                        <div *ngIf="!pro.promoInfo">
                                             <h5>{{pro.price | currency:'VND':''}} <span
                                                     style="text-decoration: underline;">đ</span>
                                             </h5>
                                         </div>
 
-                                        <div *ngIf="promoInfo[i]">
-                                            <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
-                                                {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 |
+                                        <div *ngIf="pro.promoInfo">
+                                            <h5 *ngIf="pro.promoInfo.promotionPercent!='null'">
+                                                {{pro.price-pro.price*toNumber(pro.promoInfo.promotionPercent)/100 |
                                                 currency:'VND':''}}
                                                 <span class="currency-dis">đ</span> <span class="badge bg-success"
-                                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
                                                     placement="auto" data-html="true"
-                                                    tooltipClass="tooltip-inner">-{{promoInfo[i].promotionPercent}}%</span>
+                                                    >-{{pro.promoInfo.promotionPercent}}%</span>
                                             </h5>
-                                            <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
-                                                {{pro.price-toNumber(promoInfo[i].promotionAmount) | currency:'VND':''}}
+                                            <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
+                                                {{pro.price-toNumber(pro.promoInfo.promotionAmount) | currency:'VND':''}}
                                                 <span class="currency-dis">đ</span> <span class="badge bg-danger"
-                                                    ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
                                                     placement="auto" data-html="true"
-                                                    tooltipClass="tooltip-inner">-{{promoInfo[i].promotionAmount|
+                                                    >-{{pro.promoInfo.promotionAmount|
                                                     currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                             </h5>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
+                        <div class="container d-flex justify-content-center ">
+                            <div class="row">
+                                <div class="col">
+                                    <div id="ng-pagi">
+                                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="products.length"
+                                            [maxSize]="3" [boundaryLinks]=true (pageChange)="getPagedProduct()" size="sm">
+                                        </ngb-pagination>
+                                    </div>
+                        
+                                </div>
+                            </div>
+                        </div>
                         <div class="row justify-content-center" *ngIf="onPromoOnly&&!isLoading">    
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
                                 phẩm !</p>
                             <ng-container *ngFor="let pro of products ,index as i ">
                                 <div class="gradient-border" style=" margin: 10px;margin-bottom: 110px;"
-                                    *ngIf="promoInfo[i]">
+                                    *ngIf="pro.promoInfo">
                                     <div class="featured__item">
                                         <div class="featured__item__pic set-bg"
                                             [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
@@ -232,28 +304,28 @@
                                         </div>
                                         <div class="featured__item__text">
                                             <h6><a href="#">{{pro.name}}</a></h6>
-                                            <div *ngIf="!promoInfo[i]">
+                                            <div *ngIf="!pro.promoInfo">
                                                 <h5>{{pro.price | currency:'VND':''}} <span
                                                         style="text-decoration: underline;">đ</span>
                                                 </h5>
                                             </div>
 
                                             <div>
-                                                <h5 *ngIf="promoInfo[i].promotionPercent!='null'">
-                                                    {{pro.price-pro.price*toNumber(promoInfo[i].promotionPercent)/100 |
+                                                <h5 *ngIf="pro.promoInfo.promotionPercent!='null'">
+                                                    {{pro.price-pro.price*toNumber(pro.promoInfo.promotionPercent)/100 |
                                                     currency:'VND':''}}
                                                     <span class="currency-dis">đ</span> <span class="badge bg-success"
-                                                        ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                        ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
                                                         placement="auto" data-html="true"
-                                                        tooltipClass="tooltip-inner">-{{promoInfo[i].promotionPercent}}%</span>
+                                                       >-{{pro.promoInfo.promotionPercent}}%</span>
                                                 </h5>
-                                                <h5 *ngIf="promoInfo[i].promotionAmount!='null'">
-                                                    {{pro.price-toNumber(promoInfo[i].promotionAmount) |
+                                                <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
+                                                    {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
                                                     currency:'VND':''}}
                                                     <span class="currency-dis">đ</span> <span class="badge bg-danger"
-                                                        ngbTooltip="{{promoInfo[i].promotion.name}}&#013;Bắt đầu : {{promoInfo[i].promotion.startDate}}&#013;Kết thúc : {{promoInfo[i].promotion.endDate}}&#013;Giảm : {{promoInfo[i].promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                        ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
                                                         placement="auto" data-html="true"
-                                                        tooltipClass="tooltip-inner">-{{promoInfo[i].promotionAmount|
+                                                       >-{{pro.promoInfo.promotionAmount|
                                                         currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                                 </h5>
                                             </div>

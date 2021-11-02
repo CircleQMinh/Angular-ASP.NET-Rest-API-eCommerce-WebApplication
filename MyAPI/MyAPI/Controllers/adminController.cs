@@ -339,17 +339,23 @@ namespace MyAPI.Controllers
                 var result = _mapper.Map<IList<ProductDTO>>(query);
                 var count = await _unitOfWork.Products.GetCount(expression);
                 var saleNum = new List<int>();
+                var productTags = new List<IList<TagDTO>>();
                 foreach (var item in result)
                 {
                     var sum = 0;
+                    
                     var orderList = await _unitOfWork.OrderDetails.GetAll(q => q.ProductId == item.Id && q.Order.Status == 3, null, null);
                     foreach (var ord in orderList)
                     {
                         sum += ord.Quantity;
                     }
+
+                    var qr = await _unitOfWork.Tags.GetAll(q => q.ProductId == item.Id, null, null);
+                    var tag = _mapper.Map<IList<TagDTO>>(qr);
+                    productTags.Add(tag);
                     saleNum.Add(sum);
                 }
-                return Ok(new { result,count,saleNum });
+                return Ok(new { result,count,saleNum,productTags });
             }
             catch (Exception ex)
             {
@@ -1194,6 +1200,108 @@ namespace MyAPI.Controllers
 
 
 
+
+
+
+        [HttpPost("addProductTag", Name = "addProductTag")]
+        //[Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddProductTag([FromBody] CreateTagDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(AddProductTag)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var query = _mapper.Map<Tag>(unitDTO);
+                await _unitOfWork.Tags.Insert(query);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true, query });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(AddProductTag)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpPut("editProductTag", Name = "editProductTag")]
+        //[Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditProductTag([FromBody] TagDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditProductTag)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var query = await _unitOfWork.Tags.Get(q => q.Id == unitDTO.Id);
+                query.Name = unitDTO.Name;
+
+                if (query == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(EditProductTag)}");
+                    return BadRequest("Submitted data is invalid");
+                }
+                _unitOfWork.Tags.Update(query);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true, query });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditProductTag)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpDelete("deleteProductTag", Name = "deleteProductTag")]
+        //[Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteProductTag(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteProductTag)}");
+                return BadRequest();
+            }
+
+
+            try
+            {
+                var query = await _unitOfWork.Tags.Get(q => q.Id == id);
+                if (query == null)
+                {
+                    _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteProductTag)}");
+                    var error = "Submitted data is invalid";
+                    return BadRequest(new { error });
+                }
+
+                await _unitOfWork.Tags.Delete(id);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteProductTag)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
         [HttpGet("getAuthorizeHttp", Name = "GetAuthorizeHttp")]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -1206,7 +1314,7 @@ namespace MyAPI.Controllers
             {
                 var greet = "Hello world! ";
 
-                return Accepted(new { variable,greet,id });
+                return Accepted(new { variable, greet, id });
             }
             catch (Exception ex)
             {
@@ -1214,6 +1322,7 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
 
     }
 

@@ -7,6 +7,7 @@ import { Employee } from '../class/employee';
 import { Order } from '../class/order';
 import { Promotion } from '../class/promotion';
 import { PromotionInfo } from '../class/promotion-info';
+import { Tag } from '../class/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -246,6 +247,30 @@ export class AdminService {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.delete(`${this.apiUrl}admin/deletePromotionInfo?id=${id}`,{ headers: header })
   }
+
+
+  createProductTag(t:Tag): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}admin/addProductTag`, {
+      name: t.name,
+      productId: t.productId
+    }, { headers: header })
+  }
+
+  editProductTag(t:Tag): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.put(`${this.apiUrl}admin/editProductTag`, {
+      id: t.id,
+      name: t.name,
+      productId: t.productId
+    }, { headers: header })
+  }
+
+  deleteProductTag(id:any):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deleteProductTag?id=${id}`, { headers: header })
+  }
+
 
 
   getAuthorizeHttp(auth_token:any): Observable<any> {

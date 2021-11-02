@@ -20,8 +20,14 @@ export class ProductService {
     return this.http.get(`${this.apiUrl}product/${id}`);
   }
   
-  getSearchProductResult(keyword:string,priceRange:string,cate:string):Observable<any>{
-    return this.http.get(`${this.apiUrl}product/search?keyword=${keyword}&priceRange=${priceRange}&category=${cate}`)
+  getSearchProductResult(keyword:string,priceRange:string,cate:string,tag:string):Observable<any>{
+    return this.http.post(`${this.apiUrl}product/search`, {
+      tag: tag,
+      category: cate,
+      priceRange: priceRange,
+      keyword: keyword,
+      
+    })
   }
 
   

@@ -27,6 +27,13 @@ namespace MyAPI.DTOs
         public int Status { get; set; }
     }
 
+    public class SearchForProductDTO
+    {
+        public string category { get; set; }
+        public string priceRange { get; set; }
+        public string keyword { get; set; }
+        public string tag { get; set; }
+    }
     public class ProductDTO : CreateProductDTO
     {
         public int Id { get; set; }

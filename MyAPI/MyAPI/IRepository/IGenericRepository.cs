@@ -14,7 +14,18 @@ namespace MyAPI.IRepository
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             List<string> includes = null
          );
+        Task<IList<T>> GetAllDistinct(
+            Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> includes = null
+         );
         Task<IList<T>> GetAll(
+            Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> includes = null,
+            PaginationFilter validFilter = null
+         );
+        Task<IList<T>> GetAllDistinct(
             Expression<Func<T, bool>> expression = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             List<string> includes = null,

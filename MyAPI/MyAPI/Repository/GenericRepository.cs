@@ -102,6 +102,58 @@ namespace MyAPI.Repository
                .ToListAsync(); 
         }
 
+        public async Task<IList<T>> GetAllDistinct(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, PaginationFilter validFilter = null)
+        {
+            IQueryable<T> query = _db;
+
+            if (expression != null)
+            {
+                query = query.Where(expression).Distinct();
+            }
+
+            if (includes != null)
+            {
+                foreach (var includePropery in includes)
+                {
+                    query = query.Include(includePropery);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.AsNoTracking().Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+               .Take(validFilter.PageSize)
+               .ToListAsync();
+        }
+
+        public async Task<IList<T>> GetAllDistinct(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        {
+            IQueryable<T> query = _db;
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            if (includes != null)
+            {
+                foreach (var includePropery in includes)
+                {
+                    query = query.Include(includePropery);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.AsNoTracking().ToListAsync();
+        }
+
         public async Task<int> GetCount(Expression<Func<T, bool>> expression = null)
         {
             IQueryable<T> query = _db;

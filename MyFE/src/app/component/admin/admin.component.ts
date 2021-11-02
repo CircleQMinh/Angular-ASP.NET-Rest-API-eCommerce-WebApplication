@@ -11,6 +11,7 @@ import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { Promotion } from 'src/app/class/promotion';
 import { PromotionInfo } from 'src/app/class/promotion-info';
+import { Tag } from 'src/app/class/tag';
 import { User } from 'src/app/class/user';
 import { AdminService } from 'src/app/service/admin.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -236,6 +237,13 @@ export class AdminComponent implements OnInit {
   tkdtDayTo:any
   tkTop:any=10
 
+  rf13!: FormGroup
+  rf14!: FormGroup
+  isAddingTag=false
+  isEditTag=false
+  isDeleteTag=false
+  edittingTag!:Tag
+  deletingTag!:Tag
 
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
@@ -456,7 +464,14 @@ export class AdminComponent implements OnInit {
       number: new FormControl('',
         [Validators.required, Validators.pattern('^[0-9]*$')])
     });
-
+    this.rf13 = new FormGroup({
+      name: new FormControl('',
+        [Validators.required])
+    });
+    this.rf14 = new FormGroup({
+      name: new FormControl('',
+        [Validators.required])
+    });
     let to = new Date;
     let from = new Date;
     from.setDate(from.getDate() - 7);
@@ -650,7 +665,7 @@ export class AdminComponent implements OnInit {
         }, 3000)
         this.autoInterval = setInterval(() => {
           this.autoReload()
-        }, 3000)
+        }, 1200)
       },
       error => {
         console.log(error)
@@ -668,11 +683,13 @@ export class AdminComponent implements OnInit {
   getProduct() {
     this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct, this.orderDirProduct).subscribe(
       data => {
-        //console.log(data)
+        console.log(data.productTags)
         this.productList = data.result
         this.collectionSizeProduct = data.count
         for(let i=0;i<this.productList.length;i++){
           this.productList[i].numSales=data.saleNum[i]
+          this.productList[i].tags=data.productTags[i]
+          console.log(this.productList[i])
         }
         this.isDisconnect = false
       },
@@ -2081,5 +2098,85 @@ export class AdminComponent implements OnInit {
   }
   openTKSPExport() {
     window.open(`/#/xuatpdf?mode=6&top=${this.tkTop}`, '_blank');
+  }
+
+  openProductTagModal(modal: any,pro:Product) {
+    this.editingProduct=pro
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openAddProductTagModal(modal: any) {
+    this.showFormError=false
+
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openEditProductTagModal(modal: any,t:Tag) {
+
+    this.showFormError=false
+    this.edittingTag = t
+    this.rf14.controls["name"].setValue(t.name)
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openDeleteProductTagModal(modal: any,t:Tag) {
+
+    this.showFormError=false
+    this.deletingTag=t
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  addProductTag(){
+    this.showFormError=true
+    if(this.rf13.valid){
+      this.isAddingTag=true
+      let t = new Tag()
+      t.name=this.rf13.controls["name"].value
+      t.productId=this.editingProduct.id
+      this.adminService.createProductTag(t).subscribe(
+        data=>{
+          this.toast.success("Thêm thành công")
+          this.isAddingTag=false
+          this.modalService.dismissAll()
+        },
+        error=>{
+          this.isAddingTag=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        }
+      )
+    }
+    else{
+      this.toast.error("Giá trị nhập không hợp lệ")
+    }
+  }
+  editProductTag(){
+    this.showFormError=true
+    if(this.rf14.valid){
+      this.isEditTag=true
+      this.edittingTag.name=this.rf14.controls["name"].value
+      this.adminService.editProductTag(this.edittingTag).subscribe(
+        data=>{
+          this.toast.success("Chỉnh sửa thành công")
+          this.isEditTag=false
+          this.modalService.dismissAll()
+        },
+        error=>{
+          this.isEditTag=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        }
+      )
+    }
+    else{
+      this.toast.error("Giá trị nhập không hợp lệ")
+    }
+  }
+  deleteProductTag(){
+    this.adminService.deleteProductTag(this.deletingTag.id).subscribe(
+      data=>{
+        this.toast.success("Chỉnh sửa thành công")
+        this.isDeleteTag=false
+        this.modalService.dismissAll()
+      }
+      ,error=>{
+        this.isDeleteTag=false
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
   }
 }
