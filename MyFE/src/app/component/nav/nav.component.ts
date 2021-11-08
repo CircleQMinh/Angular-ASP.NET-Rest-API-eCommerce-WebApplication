@@ -25,10 +25,12 @@ export class NavComponent implements OnInit {
   keyword: any
   priceRange: any = "0,999999"
   stringCate: string = "all"
+  autoInterval:any
   constructor(private router: Router, private proService: ProductService, private toast: HotToastService, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.authService.getLocalStorage()
+
     this.user = this.authService.user
     this.isLogin = this.authService.isLogin
     if (localStorage.getItem("products")) {
@@ -37,12 +39,27 @@ export class NavComponent implements OnInit {
     else {
       this.getProductAll()
     }
-
+    this.autoInterval=setInterval(()=>{
+      this.authService.getLocalStorage()
+      this.user = this.authService.user
+      this.isLogin = this.authService.isLogin
+    },1000)
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      console.log("Xóa interval profile!")
+    }
   }
   newSearch() {
     if(this.keyword==null){
       this.keyword=" "
+   
     }
+    localStorage.setItem("searchKeyWord",this.keyword)
+
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([`/search`]));
   }
@@ -116,7 +133,7 @@ export class NavComponent implements OnInit {
 
   goToSearch(cate:any){
     localStorage.setItem("searchCate",cate)
-    this.router.navigateByUrl("/search")
+    window.open("/#/search")
   }
 
 }

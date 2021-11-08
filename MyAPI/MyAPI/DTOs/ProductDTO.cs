@@ -32,7 +32,7 @@ namespace MyAPI.DTOs
         public string category { get; set; }
         public string priceRange { get; set; }
         public string keyword { get; set; }
-        public string tag { get; set; }
+        public string[] tag { get; set; }
     }
     public class ProductDTO : CreateProductDTO
     {

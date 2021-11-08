@@ -34,7 +34,7 @@ export class ProductListComponent implements OnInit {
   priceMax: any
   priceRange: any = "0,999999"
   stringCate: string = ""
-  tag:string ="all"
+  tag:string[] =["all"]
   onPromoOnly = false
 
   products: Product[] = []
@@ -88,7 +88,7 @@ export class ProductListComponent implements OnInit {
     localStorage.removeItem("searchCate")
   }
   findProduct() {
-
+  
     this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate,this.tag).subscribe(
       data => {
         this.isDisconnect = false
@@ -120,7 +120,6 @@ export class ProductListComponent implements OnInit {
   }
   filterChange(bool: any) {
     this.stringCate = ""
-    this.tag="all"
     if (bool != null) {
       this.allCate = bool
     }
@@ -162,7 +161,7 @@ export class ProductListComponent implements OnInit {
     // }).toString();
     // //console.log(url)
     // this.location.go(url)
-    this.tag="all"
+    this.isLoading=true
     this.findProduct()
     // this.router.navigateByUrl('/', { skipLocationChange: true })
     //   .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:this.priceRange } }));
@@ -175,17 +174,9 @@ export class ProductListComponent implements OnInit {
           this.toast.error("Khoảng giá không hợp lệ")
         }
         else {
-          this.tag="all"
+          this.isLoading=true
           let newRange = String(this.priceMin) + "," + String(this.priceMax)
-          // this.router.navigateByUrl('/', { skipLocationChange: true })
-          // .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:newRange } }));
-          // let url = this.router.createUrlTree([], {
-          //   relativeTo: this.route, queryParams:
-          //     { keyword: this.keyword, category: this.stringCate, priceRange: newRange }
-          // }).toString();
-          //console.log(url)
           this.priceRange = newRange
-          //this.location.go(url)
           this.findProduct()
         }
       }
@@ -202,7 +193,69 @@ export class ProductListComponent implements OnInit {
     window.open(`/#/product/${id}`, '_blank');
   }
   applyTag(t:any){
-    this.tag=t
+    if(this.tag.includes("all")){
+      this.tag=[]
+    }
+    // if(this.tag.includes(t)){
+    //   for(let i=0;i<this.tag.length;i++){
+    //     if(this.tag[i]==t){
+    //       this.tag.splice(i, 1);
+    //       break
+    //     }
+    //   }
+    // }
+    this.tag.push(t)
+    this.isLoading=true
+    this.findProduct()
+  }
+  removeTag(t:any){
+    this.isLoading=true
+    for(let i=0;i<this.tag.length;i++){
+      if(this.tag[i]==t){
+        this.tag.splice(i, 1);
+        break
+      }
+    }
+    if(this.tag.length==0){
+      this.tag=["all"]
+    }
+    this.findProduct()
+  }
+  removeCate(c:any){
+    this.isLoading=true
+    this.stringCate = ""
+    for(let i=0;i<this.cate.length;i++){
+      if(this.cate[i].name==c){
+        this.cate[i].checked=false
+      }
+    }
+    let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
+    if (listCate.length == 0) {
+      listCate.push("all")
+      this.allCate=true
+    }
+    for (let i = 0; i < listCate.length; i++) {
+      this.stringCate += listCate[i] + ","
+    }
+    this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
+    this.findProduct()
+  }
+  removePriceRange(){
+    this.isLoading=true
+    this.priceRange='0,999999'
+    this.findProduct()
+  }
+  resetFilter(){
+    this.isLoading=true
+    this.allCate = true
+    this.stringCate = "all"
+    this.priceRange = "0,999999"
+    this.keyword = ""
+    this.tag=["all"]
+    this.onPromoOnly=false
+    for(let i=0;i<this.cate.length;i++){
+      this.cate[i].checked=false
+    }
     this.findProduct()
   }
   addToFav(pro: Product) {

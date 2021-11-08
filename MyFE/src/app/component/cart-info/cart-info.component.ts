@@ -102,6 +102,7 @@ export class CartInfoComponent implements OnInit {
           this.user=data.user
           this.user.roles=data.roles
           localStorage.setItem('isLogin', "true")
+          localStorage.setItem('JWT_token',data.token)
           localStorage.setItem("user-id",this.user.id)
           localStorage.setItem("user-disName",this.user.displayName)
           localStorage.setItem("user-email",this.user.email)

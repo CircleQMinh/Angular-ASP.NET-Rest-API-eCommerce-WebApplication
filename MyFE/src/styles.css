@@ -1482,12 +1482,21 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
     cursor: pointer;
     opacity: 0.8;
 }
+.hover_badge:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+.hover_badge_blue:hover{
+    cursor: pointer;
+    opacity: 0.8;
+    color: blue;
+}
 @media (max-width: 1399.98px) { 
     .float-btn-nav{
         display: none;
     }
     .top-nav-searchbar{
-        width: 500px;
+        width: 760px;
     }
     .product-img{
         height: 350px;
@@ -1511,7 +1520,7 @@ div.star.star_on:before{content:"\f005";font-family:"FontAwesome";display:inline
         width: 70%;
     }
     .top-nav-searchbar{
-        width:  295px;
+        width:  515px;
     }
     .feed-title{
         height:24px;

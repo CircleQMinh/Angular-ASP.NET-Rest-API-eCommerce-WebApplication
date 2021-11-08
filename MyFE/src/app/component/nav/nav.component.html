@@ -16,48 +16,48 @@
         </form>
         <ul class="navbar-nav ml-auto topnav">
         
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/products"><i class="fas fa-shopping-cart mr-2"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
+            <li class="nav-item hover_badge_blue">
+                <a class="nav-link" routerLink="/search"><i class="fas fa-shopping-cart mr-2"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
-                    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                    <div class="btn-group hover_badge_blue" ngbDropdown role="group" #myDrop="ngbDropdown" (mouseenter)="myDrop.toggle()" (mouseleave)="myDrop.toggle()">
                         <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
                             Year</button> -->
                         <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars mr-2"></i> <p class="hide_for_1399 show_for_991">Danh mục</p></a>
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu>
-                            <a routerLink="/products" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
+                            <a routerLink="/search" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
                                 Toàn bộ</a>
                             <hr>
-                            <a routerLink="/fruit" ngbDropdownItem><i class="fas fa-apple-alt"></i>
+                            <a (click)="goToSearch('Fruit')"  ngbDropdownItem><i class="fas fa-apple-alt"></i>
                                 Trái cây</a>
-                            <a routerLink="/vegetable" ngbDropdownItem><i class="fas fa-carrot"></i>
+                            <a (click)="goToSearch('Vegetable')"  ngbDropdownItem><i class="fas fa-carrot"></i>
                                 Rau củ</a>
-                            <a routerLink="/confectionary" ngbDropdownItem><i class="fas fa-candy-cane"></i>
+                            <a (click)="goToSearch('Confectionery')"  ngbDropdownItem><i class="fas fa-candy-cane"></i>
                                 Bánh kẹo</a>
-                            <a routerLink="/snack" ngbDropdownItem><i class="fas fa-cookie-bite"></i>
+                            <a (click)="goToSearch('Snack')"  ngbDropdownItem><i class="fas fa-cookie-bite"></i>
                                 Snack</a>
-                            <a routerLink="/animalproduct" ngbDropdownItem><i class="fas fa-drumstick-bite"></i>
+                            <a (click)="goToSearch('AnimalProduct')"  ngbDropdownItem><i class="fas fa-drumstick-bite"></i>
                                 Thịt tươi sống</a>
-                            <a routerLink="/cannedfood" ngbDropdownItem><i class="fas fa-spray-can"></i>
+                            <a (click)="goToSearch('CannedFood')"  ngbDropdownItem><i class="fas fa-spray-can"></i>
                                 Đồ hộp</a>
                         </div>
 
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hover_badge_blue">
                 <a class="nav-link" routerLink="/news"><i class="far fa-newspaper mr-2"></i> <p class="hide_for_1399 show_for_991">Tin tức</p></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item hover_badge_blue">
                 <a class="nav-link" routerLink="/contact"><i class="far fa-question-circle mr-2"></i> <p class="hide_for_1399 show_for_991">Liên hệ</p></a>
             </li>
-            <li class="nav-item" *ngIf="!isLogin">
+            <li class="nav-item hover_badge_blue" *ngIf="!isLogin">
                 <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt mr-2"></i> <p class="hide_for_1399 show_for_991">Đăng nhập</p></a>
             </li>
-            <li class="nav-item dropdown" *ngIf="isLogin">
+            <li class="nav-item dropdown hover_badge_blue" *ngIf="isLogin">
                 <div class="btn-group ">
-                    <div class="btn-group mr-3" ngbDropdown role="group">
+                    <div class="btn-group mr-3" ngbDropdown role="group" #myDrop2="ngbDropdown" (mouseenter)="myDrop2.toggle()" (mouseleave)="myDrop2.toggle()">
                         <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" ngbDropdownToggle>
                             <i class="far fa-user mr-2"></i>
                             <p class="hide_for_1399 show_for_991">{{user.displayName}}</p></a>
