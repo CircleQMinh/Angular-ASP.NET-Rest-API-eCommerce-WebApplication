@@ -275,7 +275,7 @@ namespace MyAPI.Controllers
                         
                         
                         if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <=Int32.Parse(range[1])
-                            &&(product_tags_string.Contains(unitDTO.tag)|| unitDTO.tag =="all"))
+                            &&(product_tags_string.Intersect(unitDTO.tag).Any() || unitDTO.tag.Contains("all")))
                         {
                             rs.Add(item);
                             tags.Add(product_tags_string);
@@ -311,7 +311,7 @@ namespace MyAPI.Controllers
                         }
                        
                         if ((cate.Contains(item.Category) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <= Int32.Parse(range[1])
-                            && (product_tags_string.Contains(unitDTO.tag) || unitDTO.tag == "all"))
+                            && (product_tags_string.Intersect(unitDTO.tag).Any() || unitDTO.tag.Contains("all")))
                         {
                             rs.Add(item);
                             tags.Add(product_tags_string);

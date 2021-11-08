@@ -557,8 +557,8 @@ namespace MyAPI.Controllers
             try
             {
                 //Get Config Info
-                string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat

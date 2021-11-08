@@ -48,54 +48,65 @@
                     <div class="current-price">
                         <span class="pro-price">
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Fruit'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-apple-alt"></i> Trái cây</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-apple-alt"></i> Trái cây</span>
                             </p>
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Vegetable'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-carrot"></i> Rau củ</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-carrot"></i> Rau củ</span>
                             </p>
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Confectionary'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
                             </p>
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Snack'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-cookie-bite"></i> Snack</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-cookie-bite"></i> Snack</span>
                             </p>
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='AnimalProduct'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng vật</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng vật</span>
                             </p>
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='CannedFood'">
-                                Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-spray-can"></i> Đồ hộp</span>
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-spray-can"></i> Đồ hộp</span>
                             </p>
                         </span>
                         <div *ngIf="!promoInfo">
                             <span class="pro-price">
-                                <p class="mr-2">Giá : <span style="color: red;">{{product.price| currency:'VND':''}}</span> 
+                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá : <span style="color: red;">{{product.price| currency:'VND':''}}</span> 
                                     <span class="currency-dis" style="color: red;">đ</span> 
                                 </p>
                             </span>
                         </div>
                         <div *ngIf="promoInfo">
                             <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
-                                <p class="mr-2">Giá : 
+                                <p class="mr-2"><i class="fas fa-dollar-sign " style="height: 23px;width: 23px;"></i> Giá : 
                                     <span style="color: red;">
                                         {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100|
                                         currency:'VND':''}}
                                     </span>
                                     <span class="currency-dis" style="color: red;">đ</span>
-                                    <span class="badge bg-success"
+                                    <span class="badge bg-success hover_badge"
                                         ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionPercent}}%&#013;Giá gốc : {{product.price| currency:'VND':''}} đ"
                                         placement="auto" data-html="true">-{{promoInfo.promotionPercent}}%</span>
                                 </p>
                             </span>
                             <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
-                                <p class="mr-2">Giá : <span style="color: red;">{{product.price-toNumber(promoInfo.promotionAmount)|
+                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá : <span style="color: red;">{{product.price-toNumber(promoInfo.promotionAmount)|
                                         currency:'VND':''}}</span> <span class="currency-dis" style="color: red;">đ</span>
-                                    <span class="badge bg-danger"
+                                    <span class="badge bg-danger hover_badge"
                                         ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionAmount}}VND&#013;Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
                                         placement="auto" data-html="true">-{{promoInfo.promotionAmount|
                                         currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                 </p>
                             </span>
                         </div>
+                        <span class="pro-price">
+                            <p class="mr-2" style="margin-top: -60px;">
+                                <i class="fas fa-tags" style="height: 23px;width: 23px;"></i> Tags sản phẩm : <span style="color: rgb(167 164 234)" > 
+                                    <ng-container *ngFor="let o of product.tags,index as i">
+                                        <span class="hover_badge" (click)="searchByTag(o.name)" *ngIf="i!=product.tags.length-1">{{o.name}}, </span>
+                                        <span class="hover_badge" (click)="searchByTag(o.name)" *ngIf="i==product.tags.length-1">{{o.name}}</span>
+                                    </ng-container>
+                                 
+                                </span>
+                            </p>
+                        </span>
                     </div>
                 </div>
                 <div class="tax-shipping-delivery-label">

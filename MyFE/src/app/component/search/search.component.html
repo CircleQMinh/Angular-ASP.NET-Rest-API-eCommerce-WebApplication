@@ -4,7 +4,8 @@
     <div class="row">
         <div class="col">
 
-            <p class="lead text-monospace text-center mt-5"><i class="fas fa-search"></i> Nhập tên sản phẩm bạn cần tìm kiếm !
+            <p class="lead text-monospace text-center mt-5"><i class="fas fa-search"></i> Nhập tên sản phẩm bạn cần tìm
+                kiếm !
             </p>
             <div class="div-center-content" style="margin-bottom: 15px;" id='searchBarProduct'>
                 <div class="wrap">
@@ -17,34 +18,70 @@
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-center">
 
-            <div class="d-flex justify-content-center">
-                <h4 class="tag-search-h4" *ngIf="keyword">
-                    <span class="badge rounded-pill bg-info mx-2">Từ khóa : {{keyword}}</span>
-                </h4>
-                <h4 class="tag-search-h4" *ngIf="allCate">
-                    <span class="badge rounded-pill bg-success mx-2">Danh mục : Toàn bộ</span>
-                </h4>
-                <ng-container *ngFor="let o of cate">
-                    <h4 class="tag-search-h4" *ngIf="o.checked==true">
-                        <span class="badge rounded-pill bg-success mx-2">*{{o.name}}*</span>
-                    </h4>
-                </ng-container>
-                <ng-container>
+                <p style="width: fit-content;display: flex;flex-wrap: wrap;justify-content: center;" >
+                    <ng-container *ngIf="allCate">
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')" >Trái cây Việt Nam</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh Choco Pie')">Bánh Choco Pie</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Snack Oishi</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                    </ng-container>
+         
+            
+                    <ng-container *ngIf="cate[0].checked">
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')">Trái cây Việt Nam</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                    </ng-container>
+            
+            
+                    <ng-container *ngIf="cate[1].checked">
+                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ gia vị')">Rau củ gia vị</span>
+                    </ng-container>
+              
+                    <ng-container *ngIf="cate[2].checked"> 
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh choco Pie')">Bánh choco Pie</span>
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Kẹo')">Kẹo</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Alpenliebe')">Alpenliebe</span>
+                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('AFC')">AFC</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Chupa Chups')">Chupa Chups</span>
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
+                    </ng-container>
+            
+                    <ng-container *ngIf="cate[3].checked">
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Oishi</span>
+                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Lays')">Lay's</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Pringles')">Pringles </span>
+                    </ng-container>
+               
+                    <ng-container *ngIf="cate[4].checked">
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt gà')">Thịt gà</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò')">Thịt bò</span>
+                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá tươi')">Cá tươi</span>
+                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
+                    </ng-container>
+           
+                    <ng-container *ngIf="cate[5].checked">
+                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo hộp')">Thịt heo hộp</span>
+                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò hộp')">Thịt bò hộp</span>
+                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
+                    </ng-container>
+                 
+                </p>
+            </div>
+            
 
-                </ng-container>
-                <h4 class="tag-search-h4" *ngIf="priceRange!='0,999999'">
-                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : {{priceRange}}</span>
-                </h4>
-                <h4 class="tag-search-h4" *ngIf="priceRange=='0,999999'">
-                    <span class="badge rounded-pill bg-danger mx-2">Khoảng giá : Toàn bộ</span>
-                </h4>
-                <h4 class="tag-search-h4" *ngIf="onPromoOnly">
-                    <span class="badge rounded-pill bg-warning text-dark mx-2">*Đang khuyến mãi*</span>
-                </h4>
+            <div class="container">
+                <hr>
             </div>
 
-            <hr>
             <div class="container-fluid ">
                 <div class="row">
                     <div class="col-3 border-end border-secondary" id="filter_search">
@@ -148,85 +185,64 @@
                             </div>
                             <p class="text monospace">Xin chờ 1 xíu...</p>
                         </div>
-                        <div class="row justify-content-center">
-                            <p class="text-center">Mục sản phẩm nổi bật</p>
-                        </div>
-                        <div class="row justify-content-center">
-
-                            <p style="width: fit-content;display: flex;flex-wrap: wrap;justify-content: center;" >
-                                <ng-container *ngIf="allCate">
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')" >Trái cây Việt Nam</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
-                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh Choco Pie')">Bánh Choco Pie</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Snack Oishi</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
-                                </ng-container>
-                     
-                        
-                                <ng-container *ngIf="cate[0].checked">
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')">Trái cây Việt Nam</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
-                                </ng-container>
-                        
-                        
-                                <ng-container *ngIf="cate[1].checked">
-                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ gia vị')">Rau củ gia vị</span>
-                                </ng-container>
-                          
-                                <ng-container *ngIf="cate[2].checked"> 
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh choco Pie')">Bánh choco Pie</span>
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Kẹo')">Kẹo</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Alpenliebe')">Alpenliebe</span>
-                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('AFC')">AFC</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Chupa Chups')">Chupa Chups</span>
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
-                                </ng-container>
-                        
-                                <ng-container *ngIf="cate[3].checked">
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Oishi</span>
-                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Lays')">Lay's</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Pringles')">Pringles </span>
-                                </ng-container>
-                           
-                                <ng-container *ngIf="cate[4].checked">
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt gà')">Thịt gà</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò')">Thịt bò</span>
-                                    <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá tươi')">Cá tươi</span>
-                                    <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
-                                </ng-container>
-                       
-                                <ng-container *ngIf="cate[5].checked">
-                                    <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo hộp')">Thịt heo hộp</span>
-                                    <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò hộp')">Thịt bò hộp</span>
-                                    <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
-                                </ng-container>
-                             
+                        <div class="row justify-content-center" *ngIf="!isLoading">
+                            <p class="text-center">Bộ lọc tìm kiếm: <button class="btn btn-success" ngbTooltip="Reset bộ lọc" (click)="resetFilter()">
+                                <i class="fas fa-redo"></i></button>
                             </p>
                         </div>
+                        <div class="d-flex justify-content-center" *ngIf="!isLoading">
+                            <h4 class="tag-search-h4" *ngIf="keyword" ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc" (click)="keyword=''">
+                                <span class="badge rounded-pill bg-info mx-2 hover_badge">Từ khóa : {{keyword}} <i class="far fa-times-circle"></i></span>
+                            </h4>
+                            <h4 class="tag-search-h4" *ngIf="allCate">
+                                <span class="badge rounded-pill bg-success mx-2 hover_badge">Danh mục : Toàn bộ</span>
+                            </h4>
+                            <ng-container *ngFor="let o of cate">
+                                <h4 class="tag-search-h4" *ngIf="o.checked==true">
+                                    <span class="badge rounded-pill bg-success mx-2 hover_badge" (click)="removeCate(o.name)" 
+                                    ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc">{{o.name}} <i class="far fa-times-circle"></i></span>
+                                </h4>
+                            </ng-container>
+                            <ng-container>
+                            <ng-container *ngFor="let o of tag">
+                                <h4 class="tag-search-h4"*ngIf="o!='all'" (click)="removeTag(o)">
+                                    <span class="badge rounded-pill bg-info mx-2 hover_badge"
+                                    ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc">{{o}} <i class="far fa-times-circle"></i></span>
+                                </h4>
+                            </ng-container>
+                            </ng-container>
+                            <h4 class="tag-search-h4" *ngIf="priceRange!='0,999999'">
+                                <span class="badge rounded-pill bg-danger mx-2 hover_badge" ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc"
+                                (click)="removePriceRange()">Khoảng giá : {{priceRange}} <i class="far fa-times-circle"></i></span>
+                            </h4>
+                            <h4 class="tag-search-h4" *ngIf="priceRange=='0,999999'">
+                                <span class="badge rounded-pill bg-danger mx-2 hover_badge">Khoảng giá : Toàn bộ </span>
+                            </h4>
+                            <!-- <h4 class="tag-search-h4" *ngIf="tag!='all'">
+                                <span class="badge rounded-pill bg-danger mx-2">{{tag}}</span>
+                            </h4> -->
+                            <h4 class="tag-search-h4" *ngIf="onPromoOnly">
+                                <span class="badge rounded-pill bg-warning text-dark mx-2  hover_badge" ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc"
+                                (click)="onPromoOnly=false">Đang khuyến mãi <i class="far fa-times-circle"></i></span>
+                            </h4>
+                        </div>
+                        
                         <div class="row justify-content-center" *ngIf="!onPromoOnly&&!isLoading">
-                            <p class="lead text-monospace text-center mt-5" *ngIf="products.length!=0"><i class="fas fa-search"></i> Tìm thấy
-                                {{totalProduct()}} sản
-                                phẩm !</p>
+
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
                                 phẩm !</p>
                             <div *ngFor="let pro of pagedProduct ,index as i " class="gradient-border"
                                 style=" margin: 10px;margin-bottom: 110px;">
-                                <div class="featured__item" >
+                                <div class="featured__item">
                                     <div class="featured__item__pic set-bg"
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
                                         ngbTooltip="{{pro.description}}" [openDelay]="100" [closeDelay]="100"
-                                        placement="auto" container="body" >
+                                        placement="auto" container="body">
                                         <ul class="featured__item__pic__hover">
                                             <li ngbTooltip="Thêm vào yêu thích" container="body"><a
                                                     (click)="addToFav(pro)"><i class="fa fa-heart"></i></a></li>
                                             <li ngbTooltip="Xem thông tin" container="body"
-                                            (click)="openProductUrlInNewWindow(pro.id)">
+                                                (click)="openProductUrlInNewWindow(pro.id)">
                                                 <a><i class="fas fa-info"></i></a>
                                             </li>
                                             <li ngbTooltip="Thêm vào giỏ hàng" container="body"
@@ -236,7 +252,8 @@
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a (click)="openProductUrlInNewWindow(pro.id)" href="#">{{pro.name}}</a></h6>
+                                        <h6><a (click)="openProductUrlInNewWindow(pro.id)" href="javascript:void(0)">{{pro.name}}</a>
+                                        </h6>
                                         <div *ngIf="!pro.promoInfo">
                                             <h5>{{pro.price | currency:'VND':''}} <span
                                                     style="text-decoration: underline;">đ</span>
@@ -249,15 +266,15 @@
                                                 currency:'VND':''}}
                                                 <span class="currency-dis">đ</span> <span class="badge bg-success"
                                                     ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
-                                                    placement="auto" data-html="true"
-                                                    >-{{pro.promoInfo.promotionPercent}}%</span>
+                                                    placement="auto"
+                                                    data-html="true">-{{pro.promoInfo.promotionPercent}}%</span>
                                             </h5>
                                             <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
-                                                {{pro.price-toNumber(pro.promoInfo.promotionAmount) | currency:'VND':''}}
+                                                {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
+                                                currency:'VND':''}}
                                                 <span class="currency-dis">đ</span> <span class="badge bg-danger"
                                                     ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
-                                                    placement="auto" data-html="true"
-                                                    >-{{pro.promoInfo.promotionAmount|
+                                                    placement="auto" data-html="true">-{{pro.promoInfo.promotionAmount|
                                                     currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                             </h5>
                                         </div>
@@ -266,19 +283,20 @@
                             </div>
                         </div>
 
-                        <div class="container d-flex justify-content-center ">
+                        <div class="container d-flex justify-content-center mt-5 ">
                             <div class="row">
                                 <div class="col">
                                     <div id="ng-pagi">
-                                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="products.length"
-                                            [maxSize]="3" [boundaryLinks]=true (pageChange)="getPagedProduct()" size="sm">
+                                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize"
+                                            [collectionSize]="products.length" [maxSize]="3" [boundaryLinks]=true
+                                            (pageChange)="getPagedProduct()" size="sm">
                                         </ngb-pagination>
                                     </div>
-                        
+
                                 </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center" *ngIf="onPromoOnly&&!isLoading">    
+                        <div class="row justify-content-center" *ngIf="onPromoOnly&&!isLoading">
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
                                 phẩm !</p>
                             <ng-container *ngFor="let pro of products ,index as i ">
@@ -303,7 +321,7 @@
                                             </ul>
                                         </div>
                                         <div class="featured__item__text">
-                                            <h6><a href="#">{{pro.name}}</a></h6>
+                                            <h6><a href="javascript:void(0)">{{pro.name}}</a></h6>
                                             <div *ngIf="!pro.promoInfo">
                                                 <h5>{{pro.price | currency:'VND':''}} <span
                                                         style="text-decoration: underline;">đ</span>
@@ -316,16 +334,16 @@
                                                     currency:'VND':''}}
                                                     <span class="currency-dis">đ</span> <span class="badge bg-success"
                                                         ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
-                                                        placement="auto" data-html="true"
-                                                       >-{{pro.promoInfo.promotionPercent}}%</span>
+                                                        placement="auto"
+                                                        data-html="true">-{{pro.promoInfo.promotionPercent}}%</span>
                                                 </h5>
                                                 <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
                                                     {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
                                                     currency:'VND':''}}
                                                     <span class="currency-dis">đ</span> <span class="badge bg-danger"
                                                         ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
-                                                        placement="auto" data-html="true"
-                                                       >-{{pro.promoInfo.promotionAmount|
+                                                        placement="auto"
+                                                        data-html="true">-{{pro.promoInfo.promotionAmount|
                                                         currency:'VND':''}} <span class="currency-dis">đ</span></span>
                                                 </h5>
                                             </div>

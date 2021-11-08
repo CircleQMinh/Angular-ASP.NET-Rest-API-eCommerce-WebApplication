@@ -34,6 +34,19 @@ export class LoginComponent implements OnInit {
     this.authService.getLocalStorage()
     this.user=this.authService.user
     this.isLogin=this.authService.isLogin
+
+    setTimeout(()=>{
+      if(this.isLogin){
+        if(this.user.roles.includes("Administrator")){
+          this.router.navigateByUrl('/', {skipLocationChange: true})
+          .then(() => this.router.navigate(['/admin']));
+        }
+        else if(this.user.roles.includes("Shipper")){
+          this.router.navigateByUrl('/', {skipLocationChange: true})
+          .then(() => this.router.navigate(['/shipper']));
+        }
+      }
+    },3000)
     window.scrollTo(0,0)
   }
   trySignIn(){

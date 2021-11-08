@@ -113,9 +113,10 @@ export class ProductInfoComponent implements OnInit {
 
     this.proService.getProductInfo(this.id).subscribe(
       data => {
-        // console.log(data)
+        //console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
+        this.product.tags=data.tags
         this.displayCategory = this.getDisplayCategory(this.product.category)
         this.promoInfo=data.promoInfo
         this.getProductRating()
@@ -149,6 +150,7 @@ export class ProductInfoComponent implements OnInit {
         //console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
+        this.product.tags=data.tags
         this.displayCategory = this.getDisplayCategory(this.product.category)
         this.promoInfo=data.promoInfo
         // console.log(this.product)
@@ -351,5 +353,10 @@ export class ProductInfoComponent implements OnInit {
   
   toNumber(string:string):number{
     return Number(string)
+  }
+
+  searchByTag(t:any){
+    localStorage.setItem("searchTag",t)
+    window.open("/#/search")
   }
 }
