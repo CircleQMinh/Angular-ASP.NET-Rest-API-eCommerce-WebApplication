@@ -23,4 +23,10 @@ namespace MyAPI.DTOs
 
     }
 
+    public class RemoveReviewDTO
+    {
+        public int ProductId { get; set; }
+        public string UserID { get; set; }
+    }
+
 }

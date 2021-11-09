@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -34,12 +35,19 @@ export class ProfileOrderInfoComponent implements OnInit {
   isDisconnect = false
 
   autoInterval: any
-
+  isCancelingOrder=false
+  rf1!: FormGroup;
+  
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,
     private cartService: CartService) { }
 
   ngOnInit(): void {
+    this.rf1 = new FormGroup({
+      note: new FormControl('',
+        [Validators.required])
+    });
+
     this.userID = this.route.snapshot.paramMap.get("id")
     this.orderID = this.route.snapshot.paramMap.get("oid")
     window.scrollTo(0, 0)
@@ -78,7 +86,7 @@ export class ProfileOrderInfoComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval admin!")
+     // console.log("Xóa interval admin!")
     }
   }
   getUserInfo() {
@@ -114,6 +122,7 @@ export class ProfileOrderInfoComponent implements OnInit {
         this.currentOrderDetails = data.orderDetails
         //console.log(this.currentOrderDetails)
         //console.log(this.userInfo)
+       // console.log(this.currentOrder)
         this.isLoading = false
       },
       error => {
@@ -159,5 +168,33 @@ export class ProfileOrderInfoComponent implements OnInit {
   }
   toNumber(string: string): number {
     return Number(string)
+  }
+  openCancelOrderInfoModal(modal:any) {
+    //this.rf1.controls["note"].setValue("Tôi muốn hủy đơn hàng!")
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  cancelOrder(){
+    if(this.rf1.valid){
+      this.isCancelingOrder=true
+      this.orderService.cancelOrder(this.currentOrder.id,this.rf1.controls["note"].value).subscribe(
+        data=>{
+          if(data.success==false){
+            this.toast.info("Đơn hàng không thể hủy!")
+          }
+          else{
+            this.toast.info("Đơn hàng đã được hủy")
+          }
+          this.isCancelingOrder=false
+          this.modalService.dismissAll()
+        },
+        error=>{
+          this.isCancelingOrder=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại!")
+        }
+      )
+    }
+    else{
+      this.toast.error("Hãy nhập lý do hủy đơn hàng!")
+    }
   }
 }

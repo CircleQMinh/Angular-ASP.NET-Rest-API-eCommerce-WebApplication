@@ -1,11 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Product } from 'src/app/class/product';
 import { PromotionInfo } from 'src/app/class/promotion-info';
 import { Review } from 'src/app/class/review';
 import { User } from 'src/app/class/user';
+import { AdminService } from 'src/app/service/admin.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
@@ -57,8 +59,11 @@ export class ProductInfoComponent implements OnInit {
 
   promoInfo!:PromotionInfo
 
+  isRemovingReview=false
+  review_owner_id=""
+
   constructor(private router: Router, private route: ActivatedRoute, private proService: ProductService, private toast: HotToastService
-    , private cartService: CartService, private authService: AuthenticationService) { }
+    , private cartService: CartService, private authService: AuthenticationService,private modalService:NgbModal,private adminService:AdminService) { }
 
   ngOnInit(): void {
     window.scrollTo(0, 0)
@@ -72,7 +77,8 @@ export class ProductInfoComponent implements OnInit {
         this.updateInfo()
         setInterval(()=>{
           this.refreshInfo()
-        },5000)
+         // console.log(this.user)
+        },1000)
       }
     )
   }
@@ -116,6 +122,7 @@ export class ProductInfoComponent implements OnInit {
         //console.log(data)
         this.product = data.result
         this.product.reviews = data.reviews
+        //console.log(this.product.reviews)
         this.product.tags=data.tags
         this.displayCategory = this.getDisplayCategory(this.product.category)
         this.promoInfo=data.promoInfo
@@ -155,7 +162,7 @@ export class ProductInfoComponent implements OnInit {
         this.promoInfo=data.promoInfo
         // console.log(this.product)
         this.getRandomProduct()
-        this.getProductRating()
+        this.getProductRating() ///khác chỗ này
         this.product.reviews.sort((a, b) => {
           var c: any = new Date(a.date);
           var d: any = new Date(b.date);
@@ -304,7 +311,7 @@ export class ProductInfoComponent implements OnInit {
         r.content = this.review
         r.star = this.rating
         r.user = this.user
-        r.date = formatDate(Date.now(), "dd-MM-yyyy hh:mm:ss", "en")
+        r.date = formatDate(Date.now(), "dd-MM-yyyy HH:mm:ss", "en")
 
         this.authService.addReview(r.user.id, this.product.id, r.content, r.star, r.date).subscribe(
           data => {
@@ -328,27 +335,27 @@ export class ProductInfoComponent implements OnInit {
   }
   addReviewLocal(r: Review) {
 
-    let isExist = false
-    let index = 0
-    for (let i = 0; i < this.product.reviews.length; i++) {
-      let item = this.product.reviews[i]
-      if (item.user.id == r.user.id) {
-        isExist = true
-        index = i
-        break
-      }
-    }
-    if (isExist) {
-      this.product.reviews[index].content = r.content
-      this.product.reviews[index].star = r.star
-      this.product.reviews[index].date = r.date
-    }
-    else {
-      this.product.reviews.push(r)
-      this.checkIfReviewed()
-      this.sortChange()
-    }
-    this.checkIfReviewed()
+    // let isExist = false
+    // let index = 0
+    // for (let i = 0; i < this.product.reviews.length; i++) {
+    //   let item = this.product.reviews[i]
+    //   if (item.user.id == r.user.id) {
+    //     isExist = true
+    //     index = i
+    //     break
+    //   }
+    // }
+    // if (isExist) {
+    //   this.product.reviews[index].content = r.content
+    //   this.product.reviews[index].star = r.star
+    //   this.product.reviews[index].date = r.date
+    // }
+    // else {
+    //   this.product.reviews.push(r)
+    //   this.checkIfReviewed()
+    //   this.sortChange()
+    // }
+    // this.checkIfReviewed()
   }
   
   toNumber(string:string):number{
@@ -358,5 +365,54 @@ export class ProductInfoComponent implements OnInit {
   searchByTag(t:any){
     localStorage.setItem("searchTag",t)
     window.open("/#/search")
+  }
+  openDeleteReViewModal(modal: any) {
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  removeReview(){
+    //this.toast.info("Đã xóa review của bạn!")
+    this.isRemovingReview=true
+    this.authService.removeReview(this.reviewedContent.userId,this.product.id).subscribe(
+      data=>{
+        this.toast.info("Đã xóa review của bạn!")
+        this.isRemovingReview=false
+        this.alreadyReview=false
+        this.modalService.dismissAll()
+      },
+      error=>{
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại!")
+        this.isRemovingReview=false
+      }
+    )
+  }
+  openAdminDeleteReViewModal(modal: any,userID:any) {
+    this.review_owner_id=userID
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  removeUserReview(){
+    this.isRemovingReview=true
+    this.adminService.removeReview(this.review_owner_id,this.product.id).subscribe(
+      data=>{
+        this.toast.info("Đã xóa review!")
+        this.isRemovingReview=false
+        this.alreadyReview=false
+        this.modalService.dismissAll()
+      },
+      error=>{
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại!")
+        this.isRemovingReview=false
+      }
+    )
+  }
+  isAdminUser():boolean{
+    if(this.isLogin){
+      if(this.user.roles.includes("Administrator")){
+        return true
+      }
+      return false
+    }
+    else{
+      return false
+    }
   }
 }

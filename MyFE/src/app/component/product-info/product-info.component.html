@@ -3,7 +3,7 @@
     <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="text monospace">Please wait a sec...</p>
+    <p class="text monospace">Xin chờ một chút...</p>
 </div>
 <div class="container" *ngIf="!isLoading">
     <ol class="breadcrumb mt-3">
@@ -47,35 +47,50 @@
                 <div class="product-price h5 " itemprop="offers" itemscope="" itemtype="https://schema.org/Offer">
                     <div class="current-price">
                         <span class="pro-price">
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Fruit'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-apple-alt"></i> Trái cây</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='Fruit'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-apple-alt"></i> Trái cây</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Vegetable'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-carrot"></i> Rau củ</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='Vegetable'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-carrot"></i> Rau củ</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Confectionary'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='Confectionary'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='Snack'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-cookie-bite"></i> Snack</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='Snack'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-cookie-bite"></i> Snack</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='AnimalProduct'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng vật</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='AnimalProduct'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng
+                                    vật</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;" *ngIf="product.category=='CannedFood'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span style="color: darkslateblue;" ><i class="fas fa-spray-can"></i> Đồ hộp</span>
+                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
+                                *ngIf="product.category=='CannedFood'">
+                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
+                                    style="color: darkslateblue;"><i class="fas fa-spray-can"></i> Đồ hộp</span>
                             </p>
                         </span>
                         <div *ngIf="!promoInfo">
                             <span class="pro-price">
-                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá : <span style="color: red;">{{product.price| currency:'VND':''}}</span> 
-                                    <span class="currency-dis" style="color: red;">đ</span> 
+                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá
+                                    : <span style="color: red;">{{product.price| currency:'VND':''}}</span>
+                                    <span class="currency-dis" style="color: red;">đ</span>
                                 </p>
                             </span>
                         </div>
                         <div *ngIf="promoInfo">
                             <span class="pro-price" *ngIf="promoInfo.promotionPercent!='null'">
-                                <p class="mr-2"><i class="fas fa-dollar-sign " style="height: 23px;width: 23px;"></i> Giá : 
+                                <p class="mr-2"><i class="fas fa-dollar-sign " style="height: 23px;width: 23px;"></i>
+                                    Giá :
                                     <span style="color: red;">
                                         {{product.price-product.price*toNumber(promoInfo.promotionPercent)/100|
                                         currency:'VND':''}}
@@ -87,8 +102,10 @@
                                 </p>
                             </span>
                             <span class="pro-price" *ngIf="promoInfo.promotionAmount!='null'">
-                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá : <span style="color: red;">{{product.price-toNumber(promoInfo.promotionAmount)|
-                                        currency:'VND':''}}</span> <span class="currency-dis" style="color: red;">đ</span>
+                                <p class="mr-2"><i class="fas fa-dollar-sign" style="height: 23px;width: 23px;"></i> Giá
+                                    : <span style="color: red;">{{product.price-toNumber(promoInfo.promotionAmount)|
+                                        currency:'VND':''}}</span> <span class="currency-dis"
+                                        style="color: red;">đ</span>
                                     <span class="badge bg-danger hover_badge"
                                         ngbTooltip="{{promoInfo.promotion.name}}&#013;Bắt đầu : {{promoInfo.promotion.startDate}}&#013;Kết thúc : {{promoInfo.promotion.endDate}}&#013;Giảm : {{promoInfo.promotionAmount}}VND&#013;Giá gốc : {{product.price| currency:'VND':''}} đ&#013;"
                                         placement="auto" data-html="true">-{{promoInfo.promotionAmount|
@@ -98,12 +115,15 @@
                         </div>
                         <span class="pro-price">
                             <p class="mr-2" style="margin-top: -60px;">
-                                <i class="fas fa-tags" style="height: 23px;width: 23px;"></i> Tags sản phẩm : <span style="color: rgb(167 164 234)" > 
+                                <i class="fas fa-tags" style="height: 23px;width: 23px;"></i> Tags sản phẩm : <span
+                                    style="color: rgb(167 164 234)">
                                     <ng-container *ngFor="let o of product.tags,index as i">
-                                        <span class="hover_badge" (click)="searchByTag(o.name)" *ngIf="i!=product.tags.length-1">{{o.name}}, </span>
-                                        <span class="hover_badge" (click)="searchByTag(o.name)" *ngIf="i==product.tags.length-1">{{o.name}}</span>
+                                        <span class="hover_badge" (click)="searchByTag(o.name)"
+                                            *ngIf="i!=product.tags.length-1">{{o.name}}, </span>
+                                        <span class="hover_badge" (click)="searchByTag(o.name)"
+                                            *ngIf="i==product.tags.length-1">{{o.name}}</span>
                                     </ng-container>
-                                 
+
                                 </span>
                             </p>
                         </span>
@@ -233,7 +253,7 @@
     <hr>
     <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="product.reviews.length!=0">
         <div *ngFor="let r of pagedReview " class="shopee-product-rating">
-            <div>
+            <div class="row">
                 <a class="shopee-product-rating__avatar">
                     <div class="shopee-avatar">
                         <img src="{{r.user.imgUrl}}" style="width: 40px;height: 40px;border-radius: 50%;">
@@ -257,8 +277,15 @@
                         stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></polygon>
                 </svg> -->
                     </div>
+               
                     <div class="shopee-product-rating__content">{{r.content}}</div>
                     <div class="shopee-product-rating__time">{{r.date}}</div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col d-flex justify-content-end">
+                    <button class="btn btn-sm btn-danger" *ngIf="isAdminUser()"
+                    (click)="openAdminDeleteReViewModal(admin_review_delete,r.userID)">Xóa nhận xét</button>
                 </div>
             </div>
         </div>
@@ -294,7 +321,8 @@
         <hr>
         <div class="form commentBoxContainer" *ngIf="isLogin&&!alreadyReview||reWriteReview">
             <div class="input review-box"><textarea class="text-cmt fmsidWidgetCommentMessage"
-                    placeholder="Your review..." name="review" [(ngModel)]="review"></textarea></div>
+                    placeholder="Your review..." name="review" [(ngModel)]="review"
+                    (keydown.enter)="(addReview())"></textarea></div>
             <p class="sent-cmt clearfix"><a id="btnSubmit" class="btnSubmit disabled fmsidWidgetCommentBtnSend"
                     (click)="addReview()">Gửi</a>
             </p>
@@ -311,8 +339,9 @@
             </p>
             <button class="btn btn-outline-success text-tron" (click)="reWriteReview=true" *ngIf="!reWriteReview">Chỉnh
                 sửa nhận xét </button>
-            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false"
-                *ngIf="reWriteReview">Hủy</button>
+            <button class="btn btn-outline-danger text-tron" (click)="reWriteReview=false" *ngIf="reWriteReview">Dừng
+                chỉnh sửa nhận xét</button>
+            <button class="btn btn-danger text-tron" (click)="openDeleteReViewModal(review_delete)" >Xóa nhận xét của tôi </button>
         </div>
         <div class="d-flex justify-content-center mt-5 flex-column align-item-center" *ngIf="isLogin&&alreadyReview">
             <div class="shopee-product-rating">
@@ -345,3 +374,57 @@
 
 </div>
 <app-footer></app-footer>
+
+
+
+<ng-template #review_delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa nhận xét </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa nhận xét?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isRemovingReview">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="removeReview()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isRemovingReview">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #admin_review_delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa nhận xét </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa nhận xét?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isRemovingReview">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="removeUserReview()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isRemovingReview">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>

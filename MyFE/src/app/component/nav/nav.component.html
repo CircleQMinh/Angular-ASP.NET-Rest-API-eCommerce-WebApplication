@@ -21,7 +21,7 @@
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
-                    <div class="btn-group hover_badge_blue" ngbDropdown role="group" #myDrop="ngbDropdown" (mouseenter)="myDrop.toggle()" (mouseleave)="myDrop.toggle()">
+                    <div class="btn-group hover_badge_blue" ngbDropdown role="group" #myDrop="ngbDropdown" (mouseenter)="myDrop.open()" (mouseleave)="myDrop.close()">
                         <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
                             Year</button> -->
                         <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars mr-2"></i> <p class="hide_for_1399 show_for_991">Danh mục</p></a>
@@ -53,12 +53,12 @@
                 <a class="nav-link" routerLink="/contact"><i class="far fa-question-circle mr-2"></i> <p class="hide_for_1399 show_for_991">Liên hệ</p></a>
             </li>
             <li class="nav-item hover_badge_blue" *ngIf="!isLogin">
-                <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt mr-2"></i> <p class="hide_for_1399 show_for_991">Đăng nhập</p></a>
+                <a class="nav-link" href="javascript:void(0)" (click)="goToLogin()"><i class="fas fa-sign-in-alt mr-2"></i> <p class="hide_for_1399 show_for_991">Đăng nhập</p></a>
             </li>
             <li class="nav-item dropdown hover_badge_blue" *ngIf="isLogin">
                 <div class="btn-group ">
-                    <div class="btn-group mr-3" ngbDropdown role="group" #myDrop2="ngbDropdown" (mouseenter)="myDrop2.toggle()" (mouseleave)="myDrop2.toggle()">
-                        <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" ngbDropdownToggle>
+                    <div class="btn-group mr-3" ngbDropdown role="group" #myDrop2="ngbDropdown" (mouseenter)="myDrop2.open()" (mouseleave)="myDrop2.close()">
+                        <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" >
                             <i class="far fa-user mr-2"></i>
                             <p class="hide_for_1399 show_for_991">{{user.displayName}}</p></a>
                         <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1">

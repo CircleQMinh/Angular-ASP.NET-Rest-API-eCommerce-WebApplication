@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
   isLogin: boolean = false
   user!:User
 
+  tick=3
+
   constructor(private authService: AuthenticationService,private toast:HotToastService,private router:Router) { }
 
   ngOnInit(): void {
@@ -35,6 +37,10 @@ export class LoginComponent implements OnInit {
     this.user=this.authService.user
     this.isLogin=this.authService.isLogin
 
+    setInterval(()=>{
+      this.tick-=1
+    },1000)
+
     setTimeout(()=>{
       if(this.isLogin){
         if(this.user.roles.includes("Administrator")){
@@ -45,7 +51,16 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/', {skipLocationChange: true})
           .then(() => this.router.navigate(['/shipper']));
         }
+        else{
+          if(localStorage.getItem("redirectURL")){
+            let reURL = localStorage.getItem("redirectURL")
+            localStorage.removeItem("redirectURL")
+            this.router.navigateByUrl('/', {skipLocationChange: true})
+            .then(() => this.router.navigate([reURL]));
+          }
+        }
       }
+ 
     },3000)
     window.scrollTo(0,0)
   }

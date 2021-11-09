@@ -440,6 +440,47 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpPost("cancelOrder", Name = "CancelOrder")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderDTO unitDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError($"Invalid POST attempt in {nameof(CreateOrderDetail)}");
+                    return BadRequest(ModelState);
+                }
+
+                var order = await _unitOfWork.Orders.Get(q => q.Id == unitDTO.Id, null);
+                if (order==null)
+                {
+                    return Ok(new { success = false,msg="null order",id=unitDTO });
+                }
+                if (order.Status==0)
+                {
+                    order.Status = 4;
+                    order.Note = unitDTO.Note;
+                    _unitOfWork.Orders.Update(order);
+                    await _unitOfWork.Save();
+                    return Ok(new { success = true });
+                }
+                else
+                {
+                    return Ok(new { success = false, msg = "Không thể hủy" });
+                }
+
+            
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetOrderShippingInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + "\n" + ex.ToString());
+            }
+        }
+
 
         [HttpGet("getPaySign", Name = "GetPaySign")]
         [Authorize]
@@ -557,8 +598,8 @@ namespace MyAPI.Controllers
             try
             {
                 //Get Config Info
-                //string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
