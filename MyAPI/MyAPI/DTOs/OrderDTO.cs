@@ -74,4 +74,10 @@ namespace MyAPI.DTOs
     {
         public int Id { get; set; }
     }
+    public class CancelOrderDTO 
+        
+    {
+        public int Id { get; set; }
+        public string Note { get; set; }
+    }
 }

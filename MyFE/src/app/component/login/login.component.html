@@ -109,6 +109,9 @@
                 <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="isLogin">
                     <span class="text-center">{{user.email}}</span>
                 </p>
+                <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="isLogin">
+                    <span class="text-center">Bạn sẽ được điều hướng trong {{tick}}s</span>
+                </p>
                 <p style="display: block;font-size: 18px;    word-break: break-word;" *ngIf="login_error">Sai mật khẩu
                     hoặc sai
                     email!</p>

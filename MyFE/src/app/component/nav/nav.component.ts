@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -26,7 +26,8 @@ export class NavComponent implements OnInit {
   priceRange: any = "0,999999"
   stringCate: string = "all"
   autoInterval:any
-  constructor(private router: Router, private proService: ProductService, private toast: HotToastService, private authService: AuthenticationService) { }
+  constructor(private router: Router, private proService: ProductService, private toast: HotToastService, private authService: AuthenticationService
+    ,private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
     this.authService.getLocalStorage()
@@ -136,4 +137,9 @@ export class NavComponent implements OnInit {
     window.open("/#/search")
   }
 
+  goToLogin(){
+    //console.log(this.router.url)
+    localStorage.setItem("redirectURL",String(this.router.url))
+    this.router.navigateByUrl("/login")
+  }
 }

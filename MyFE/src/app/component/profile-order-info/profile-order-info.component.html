@@ -337,25 +337,25 @@
                                                 <p class="font__family-montserrat font__size-15 steps__title">Đã lưu</p>
                                             </a>
                                         </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
+                                        <li class="" style="background-color: red;">
+                                            <a class="">
                                                 <span
                                                     class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
                                                     <span class="before"></span>
                                                     <span class="after"></span>
-                                                    2
+                                                   X
                                                 </span>
                                                 <p class="font__family-montserrat font__size-15 steps__title">Được duyệt
                                                 </p>
                                             </a>
                                         </li>
-                                        <li class="complete" style="background-color: greenyellow;">
-                                            <a class="active">
+                                        <li class="" style="background-color: red;">
+                                            <a class="">
                                                 <span
                                                     class="font__family-montserrat font__weight-bold font__size-15 steps__dot">
                                                     <span class="before"></span>
                                                     <span class="after"></span>
-                                                    3
+                                                   X
                                                 </span>
                                                 <p class="font__family-montserrat font__size-15 steps__title">Đang giao
                                                 </p>
@@ -369,7 +369,7 @@
                                                     <span class="after"></span>
                                                    X
                                                 </span>
-                                                <p class="font__family-montserrat font__size-15 steps__title">Hoàn thành
+                                                <p class="font__family-montserrat font__size-15 steps__title">Đã hủy
                                                 </p>
                                             </a>
                                         </li>
@@ -379,19 +379,33 @@
                         </div>
                     </div>
                     <div class="card-header" style="margin-top: 50px;">
-                        <h4 class="text-monospace">Thông tin đơn hàng</h4>
-                        <p class="text-monospace">Ngày đặt hàng - {{currentOrder.orderDate}}</p>
-                        <p class="text-monospace">Tên liên lạc - {{currentOrder.contactName}}</p>
-                        <p class="text-monospace">Email - {{currentOrder.email}}</p>
-                        <p class="text-monospace">SDT - {{currentOrder.phone}}</p>
-                        <p class="text-monospace">Thanh toán - {{getPaymentMethod(currentOrder.paymentMethod)}}</p>
-                        <div *ngIf="currentOrderShippingInfo">
-                            <h4 class="text-monospace">Thông tin giao hàng</h4>
-                            <p class="text-monospace">Ngày giao : {{currentOrderShippingInfo.deliveryDate}}</p>
-                            <p class="text-monospace">Shipper : {{currentOrderShippingInfo.shipper.displayName}} </p>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="text-monospace">Thông tin đơn hàng</h4>
+                                <p class="text-monospace" *ngIf="currentOrder.status==0">Trạng thái - <span class="badge bg-info text-dark">Chưa duyệt</span></p>
+                                <p class="text-monospace" *ngIf="currentOrder.status==1">Trạng thái - <span class="badge bg-primary text-dark">Đã duyệt</span></p>
+                                <p class="text-monospace" *ngIf="currentOrder.status==2">Trạng thái - <span class="badge bg-warning text-dark">Đang giao</span></p>
+                                <p class="text-monospace" *ngIf="currentOrder.status==3">Trạng thái - <span class="badge bg-success text-dark">Hoàn thành </span></p>
+                                <p class="text-monospace" *ngIf="currentOrder.status==4">Trạng thái - <span class="badge bg-secondary text-dark">Hủy</span></p>
+                                <p class="text-monospace">Ngày đặt hàng - {{currentOrder.orderDate}}</p>
+                                <p class="text-monospace">Tên liên lạc - {{currentOrder.contactName}}</p>
+                                <p class="text-monospace">Email - {{currentOrder.email}}</p>
+                                <p class="text-monospace">SDT - {{currentOrder.phone}}</p>
+                                <p class="text-monospace">Thanh toán - {{getPaymentMethod(currentOrder.paymentMethod)}}</p>
+                                <p class="text-monospace">Ghi chú : {{currentOrder.note}}</p>
+                                <div *ngIf="currentOrderShippingInfo">
+                                    <h4 class="text-monospace">Thông tin giao hàng</h4>
+                                    <p class="text-monospace">Ngày giao : {{currentOrderShippingInfo.deliveryDate}}</p>
+                                    <p class="text-monospace">Shipper : {{currentOrderShippingInfo.shipper.displayName}} </p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-danger" *ngIf="currentOrder.status==0"
+                                (click)="openCancelOrderInfoModal(order_cancel)">Yêu cầu hủy đơn hàng</button>
+                            </div>
                         </div>
-
-
+                   
+              
                     </div>
                     <div class="table-responsive">
                         <table class="table ">
@@ -508,3 +522,38 @@
     </div>
 </div>
 <app-footer></app-footer>
+
+
+<ng-template #order_cancel let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Hủy đơn hàng này?</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf1">
+            <div class="form-group">
+                <label for="des">Lý do hủy hàng</label>
+                <div class="input-group">
+                    <input id="des" class="form-control" placeholder="Note..." name="name" formControlName="note">
+                </div>
+            </div>
+        </form>
+      
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isCancelingOrder">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="cancelOrder()">Yes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isCancelingOrder">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>

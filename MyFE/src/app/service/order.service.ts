@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
-  hostUrl:string="http://18110320.000webhostapp.com//#/"
+  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  // hostUrl:string="http://18110320.000webhostapp.com//#/"
 
-  // hostUrl:string="http://localhost:4200/#/"
-  // apiUrl: string = "https://localhost:44324/api/";
+  hostUrl:string="http://localhost:4200/#/"
+  apiUrl: string = "https://localhost:44324/api/";
 
   momoUrl: string = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
 
@@ -96,6 +96,14 @@ export class OrderService {
       orderId: orderId,
       status: status,
       date: date,
+      note: note
+    }, { headers: header })
+  }
+
+  cancelOrder(orderId: number, note: string): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}order/cancelOrder`, {
+      id: orderId,
       note: note
     }, { headers: header })
   }

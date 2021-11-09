@@ -1324,6 +1324,41 @@ namespace MyAPI.Controllers
         }
 
 
+        [HttpPost("removeReview")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveReview([FromBody] RemoveReviewDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid UPDATE attempt in {nameof(RemoveReview)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var review = await _unitOfWork.Reviews.Get(q => q.ProductId == unitDTO.ProductId && q.UserID == unitDTO.UserID, null);
+
+                if (review == null)
+                {
+                    var error = "Submitted data is invalid";
+                    return BadRequest(new { error });
+                }
+
+                await _unitOfWork.Reviews.Delete(review.Id);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(RemoveReview)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
     }
 
 }

@@ -15,11 +15,13 @@ export class CartComponent implements OnInit {
   constructor(private cartService:CartService) { }
 
   ngOnInit(): void {
-    this.cartService.getLocalStorage()
+
     setInterval(()=>{
+      this.cartService.getLocalStorage()
       if(this.totalItem!=this.cartService.totalItem){
         this.justUpdateCart=true
         //console.log("Update")
+        
       }
       this.totalItem=this.cartService.totalItem
       this.totalPrice=this.cartService.totalPrice
