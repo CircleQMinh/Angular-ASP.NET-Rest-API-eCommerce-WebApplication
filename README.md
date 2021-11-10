@@ -1,5 +1,6 @@
 # Angular-ASP.NET-Rest-API-eCommerce-WebApplication
-Host tại : http://18110320.000webhostapp.com/#/home <br> http://circleqm31052000-001-site1.itempurl.com/#/home <br>
+Host tại : http://18110320.000webhostapp.com/#/home <br> 
+và : http://circleqm31052000-001-site1.itempurl.com/#/home <br>
 Api tại : http://circleqm31052000-001-site1.itempurl.com/swagger/index.html <br>
 Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 24-08-2021 : setup API, trang chủ.<br>
