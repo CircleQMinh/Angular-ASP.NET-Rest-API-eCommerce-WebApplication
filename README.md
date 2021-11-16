@@ -54,3 +54,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 26-10-2021 : thêm xuất pdf.<br>
 31-10-2021 : thêm JWT.<br>
 02-11-2021 : thêm thẻ sản phẩm.<br>
+16-11-2021 : nâng cấp email và thêm thông tin tiền ship.<br>
