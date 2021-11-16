@@ -25,5 +25,8 @@ namespace MyAPI.Data
         public string Note { get; set; }
         public virtual IList<OrderDetail> OrderDetails { get; set; }
 
+        public DiscountCode discountCode { get; set; }
+        public int ShippingFee { get; set; }
+
     }
 }

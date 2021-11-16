@@ -486,6 +486,50 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <ng-container *ngIf="currentOrder.totalPrice>=200000"> 
+                                <div class="d-flex justify-content-center">
+                                    <div>
+                                        <strong>Tổng tiền</strong>
+                                        <p>{{(currentOrder.totalPrice)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                    <div class="mx-5">
+                                        <strong>Phí shipping </strong>
+                                        <p>+{{(0)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                    <div>
+                                        <strong>Tổng cộng</strong>
+                                        <p>={{(currentOrder.totalPrice)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                </div>
+                             
+                            </ng-container>
+                            <ng-container *ngIf="currentOrder.totalPrice<200000"> 
+                                <div class="d-flex justify-content-center">
+                                    <div>
+                                        <strong>Tổng tiền</strong>
+                                        <p>{{(currentOrder.totalPrice)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                    <div class="mx-5">
+                                        <strong>Phí shipping </strong>
+                                        <p>+{{(shippingFee)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                    <div>
+                                        <strong>Tổng cộng</strong>
+                                        <p>= {{(currentOrder.totalPrice+shippingFee)| currency:'VND':''}} <span
+                                        style="text-decoration: underline;">đ</span> </p>
+                                    </div>
+                                </div>
+                            </ng-container>
+                     
+                        </div>
+                    </div>
                 </div>
                 <div class="container d-flex justify-content-center ">
                     <div class="row">

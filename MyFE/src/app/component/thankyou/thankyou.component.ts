@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -53,13 +54,22 @@ export class ThankyouComponent implements OnInit {
     if(this.vnp_ResponseCode=="00"){
       this.payment_status="OK"
       this.user_Order=JSON.parse(localStorage.getItem("user-current-order")!)
+      let haveFee = 0
+      if(this.user_Order.totalPrice>=200000){
+        haveFee=0
+      }
+      else{
+        haveFee=1
+      }
       this.orderService.saveOrderPrePay(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
         ,this.user_Order.email,this.user_Order.paymentMethod,this.user_Order.orderDate,this.user_Order.totalItem
-        ,this.user_Order.totalPrice,this.user_Order.note).subscribe(
+        ,this.user_Order.totalPrice,this.user_Order.note,haveFee).subscribe(
           data=>{
             this.saveOrderDetail(data.order_id)
+            
             localStorage.removeItem("user-current-order")
             this.cartService.emptyCart()
+            
             this.isLoading=false
           },
           error=>{
@@ -92,7 +102,7 @@ export class ThankyouComponent implements OnInit {
       this.user_Order=JSON.parse(localStorage.getItem("user-current-order")!)
       this.orderService.saveOrderPrePay(this.user_Order.userID,this.user_Order.contactName,this.user_Order.address,this.user_Order.phone
         ,this.user_Order.email,this.user_Order.paymentMethod,this.user_Order.orderDate,this.user_Order.totalItem
-        ,this.user_Order.totalPrice,this.user_Order.note).subscribe(
+        ,this.user_Order.totalPrice,this.user_Order.note,0).subscribe(
           data=>{
             this.saveOrderDetail(data.order_id)
             localStorage.removeItem("user-current-order")
@@ -121,6 +131,7 @@ export class ThankyouComponent implements OnInit {
         data => {
           //console.log(data)
           if (i == this.cartItems.length - 1) {
+            this.sendEmailWithOrderInfo(this.user_Order.email,orderID)
             window.scrollTo(0, 0)
           }
         },
@@ -132,4 +143,15 @@ export class ThankyouComponent implements OnInit {
       //console.log(this.cartItems[i].id, this.cartItemsQuantity[i])
     }
   }
+  sendEmailWithOrderInfo(email:string,id:number){
+    // console.log("aaaaaaaaaaaaaaaaaaaaaa")
+     this.orderService.sentEmailWithOrderInfo(id,email).subscribe(
+       data=>{
+         console.log(data)
+       },
+       error=>{
+         console.log(error)
+       }
+     ) 
+   }
 }

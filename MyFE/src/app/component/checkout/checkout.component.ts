@@ -34,6 +34,9 @@ export class CheckoutComponent implements OnInit {
   user!: User
 
   rf1!: FormGroup;
+
+  shippingFee:number=0
+  haveFee:number=0
   constructor(private toast: HotToastService, private orderService: OrderService, private cartService: CartService
     , private router: Router) { }
 
@@ -47,6 +50,14 @@ export class CheckoutComponent implements OnInit {
     if (!this.isLogin) {
       this.router.navigateByUrl("/cart")
     }
+    this.shippingFee=this.orderService.shippingFee
+    if(this.totalPrice>=200000){
+      this.haveFee=0
+    }
+    else{
+      this.haveFee=1
+    }
+
     this.rf1 = new FormGroup({
       email: new FormControl('',
         [Validators.required, Validators.email]),
@@ -146,17 +157,17 @@ export class CheckoutComponent implements OnInit {
       }
       else {
 
-        // console.log(today)
         this.isLoading = true
         this.orderService.saveOrder(
           this.user.id,
           this.rf1.controls["contactname"].value, address,
           this.rf1.controls["phone"].value,
           this.rf1.controls["email"].value, this.rf1.controls["billOption"].value, today, this.totalItem, this.totalPrice,
-          this.rf1.controls["note"].value).subscribe(
+          this.rf1.controls["note"].value,this.haveFee).subscribe(
             data => {
               //console.log(data)
               this.saveOrderDetail(data.order_id)
+           
               this.cartService.emptyCart()
             },
             error => {
@@ -212,6 +223,7 @@ export class CheckoutComponent implements OnInit {
           //console.log(data)
           if (i == this.cartItems.length - 1) {
             window.scrollTo(0, 0)
+            this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
             this.isDone = true
           }
         },
@@ -242,6 +254,18 @@ export class CheckoutComponent implements OnInit {
       this.rf1.controls["note"].setValue(form["note"])
       this.toast.info("Tự động điền form cho bạn!")
     }
+  }
+
+  sendEmailWithOrderInfo(email:string,id:number){
+   // console.log("aaaaaaaaaaaaaaaaaaaaaa")
+    this.orderService.sentEmailWithOrderInfo(id,email).subscribe(
+      data=>{
+        console.log(data)
+      },
+      error=>{
+        console.log(error)
+      }
+    ) 
   }
 
 }

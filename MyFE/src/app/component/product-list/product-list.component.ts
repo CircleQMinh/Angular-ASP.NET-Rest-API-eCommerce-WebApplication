@@ -196,17 +196,22 @@ export class ProductListComponent implements OnInit {
     if(this.tag.includes("all")){
       this.tag=[]
     }
-    // if(this.tag.includes(t)){
-    //   for(let i=0;i<this.tag.length;i++){
-    //     if(this.tag[i]==t){
-    //       this.tag.splice(i, 1);
-    //       break
-    //     }
-    //   }
-    // }
-    this.tag.push(t)
-    this.isLoading=true
-    this.findProduct()
+
+    let exist = false
+
+    for(let i=0;i<this.tag.length;i++){
+      if(this.tag[i]==t){
+        exist=true
+      }
+    }
+
+    if(exist==false){
+      this.tag.push(t)
+      this.isLoading=true
+      this.findProduct()
+    }
+ 
+
   }
   removeTag(t:any){
     this.isLoading=true

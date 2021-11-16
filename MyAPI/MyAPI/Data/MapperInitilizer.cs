@@ -48,6 +48,8 @@ namespace MyAPI.Data
             CreateMap<Tag, FullTagDTO>().ReverseMap();
             CreateMap<Tag, TagDTO>().ReverseMap();
             CreateMap<Tag, CreateTagDTO>().ReverseMap();
+
+            CreateMap<DiscountCode, DiscountCodeDTO>().ReverseMap();
         }
     }
 }

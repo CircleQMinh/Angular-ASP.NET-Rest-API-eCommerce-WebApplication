@@ -165,6 +165,8 @@
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
+                            <th>Phí Shiping</th>
+                            <th>Tổng cộng</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -189,6 +191,22 @@
                             <td>
                                 <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
+                            <ng-container *ngIf="o.totalPrice>=200000">
+                                <td>
+                                    <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                                <td>
+                                    <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="o.totalPrice<200000">
+                                <td>
+                                    <p class=" text-monospace">{{(shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                                <td>
+                                    <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                            </ng-container>
                             <td *ngIf="o.status==0">
                                 <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
@@ -247,6 +265,8 @@
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
+                            <th>Phí Shiping</th>
+                            <th>Tổng cộng</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -271,6 +291,22 @@
                             <td>
                                 <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
+                            <ng-container *ngIf="o.totalPrice>=200000">
+                                <td>
+                                    <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                                <td>
+                                    <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                            </ng-container>
+                            <ng-container *ngIf="o.totalPrice<200000">
+                                <td>
+                                    <p class=" text-monospace">{{(shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                                <td>
+                                    <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                </td>
+                            </ng-container>
                             <td *ngIf="o.status==0">
                                 <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
@@ -318,6 +354,8 @@
                             <th>Ngày giao</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
+                            <th>Phí Shiping</th>
+                            <th>Tổng cộng</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -346,6 +384,22 @@
                                 <td>
                                     <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                 </td>
+                                <ng-container *ngIf="o.totalPrice>=200000">
+                                    <td>
+                                        <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                    <td>
+                                        <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngIf="o.totalPrice<200000">
+                                    <td>
+                                        <p class=" text-monospace">{{(shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                    <td>
+                                        <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                </ng-container>
                                 <td *ngIf="o.status==3">
                                     <span class="badge bg-danger">Hoàn thành</span>
                                 </td>
