@@ -8,6 +8,7 @@ import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { CartService } from 'src/app/service/cart.service';
+import { OrderService } from 'src/app/service/order.service';
 import { ProductService } from 'src/app/service/product.service';
 
 @Component({
@@ -28,9 +29,11 @@ export class CartInfoComponent implements OnInit {
   showFormError=false
   isLoadingLogin=false
 
+  shippingFee:number = 0
 
   constructor(private authService: AuthenticationService, private toast: HotToastService,private cartService:CartService,
-    private router:Router,private route:ActivatedRoute,private proService:ProductService,private modalService: NgbModal) { }
+    private router:Router,private route:ActivatedRoute,private proService:ProductService,private modalService: NgbModal,
+    private orderService:OrderService) { }
 
   ngOnInit(): void {
  
@@ -38,7 +41,7 @@ export class CartInfoComponent implements OnInit {
     this.authService.getLocalStorage()
     this.user=this.authService.user
     this.isLogin=this.authService.isLogin
-
+    this.shippingFee=this.orderService.shippingFee
     this.rf1 = new FormGroup({
       email: new FormControl('',
         [Validators.required, Validators.email]),

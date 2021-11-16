@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -141,5 +142,16 @@ export class NavComponent implements OnInit {
     //console.log(this.router.url)
     localStorage.setItem("redirectURL",String(this.router.url))
     this.router.navigateByUrl("/login")
+  }
+
+  openDropDwon(drop:NgbDropdown){
+    drop.open()
+  }
+  waitForDropDown(drop:NgbDropdown){
+
+    setTimeout(()=>{
+
+      drop.close()
+    },1000)
   }
 }

@@ -503,8 +503,13 @@ export class AdminComponent implements OnInit {
     this.searchDataInterval = setInterval(() => {
       this.adminService.getProducts("all", "Id", 1, 999, "Asc").subscribe(
         data => {
-          //console.log(data)
           this.allProduct = data.result
+          for(let i=0;i<this.allProduct.length;i++){
+            this.allProduct[i].numSales=data.saleNum[i]
+            this.allProduct[i].tags=data.productTags[i]
+            //console.log(this.productList[i])
+          }
+          //console.log(this.allProduct)
           this.isDisconnect = false
         },
         error => {
@@ -683,14 +688,22 @@ export class AdminComponent implements OnInit {
   getProduct() {
     this.adminService.getProducts(this.category, this.orderProduct, this.pageNumberProduct, this.pageSizeProduct, this.orderDirProduct).subscribe(
       data => {
-        console.log(data.productTags)
-        this.productList = data.result
-        this.collectionSizeProduct = data.count
-        for(let i=0;i<this.productList.length;i++){
-          this.productList[i].numSales=data.saleNum[i]
-          this.productList[i].tags=data.productTags[i]
-          console.log(this.productList[i])
+  
+        for(let i=0;i<data.result.length;i++){
+          data.result[i].numSales=data.saleNum[i]
+          data.result[i].tags=data.productTags[i]
         }
+        //console.log(this.arraysEqual(this.productList,data.result))
+        if(!this.arraysEqual(this.productList,data.result)){
+          this.productList = data.result
+          this.collectionSizeProduct = data.count
+          for(let i=0;i<this.productList.length;i++){
+            this.productList[i].numSales=data.saleNum[i]
+            this.productList[i].tags=data.productTags[i]
+            //console.log(this.productList[i])
+          }
+        }
+
         this.isDisconnect = false
       },
       error => {
@@ -1424,6 +1437,7 @@ export class AdminComponent implements OnInit {
     this.saleChart[0]["series"] = []
     this.adminService.getSalesChart(from, to).subscribe(
       data => {
+        console.log(data)
         data.result.forEach((element: any) => {
           this.saleChart[0]["series"].push(
             { name: element.Date, value: Number(element.Total) }
@@ -2070,6 +2084,23 @@ export class AdminComponent implements OnInit {
           console.log(e)
         }
         break
+      case "Tag":
+        try {
+          this.searchResult_Product=[]
+          this.allProduct.forEach(element => {
+            for(let i=0;i<element.tags.length;i++){
+              if(element.tags[i].name.toLowerCase().includes(this.searchKey_Product.toLowerCase())){
+                this.searchResult_Product.push(element)
+                break
+              }
+            }
+          });
+        }
+        catch (e) {
+          this.toast.error("Tên thẻ không hợp lệ!")
+          console.log(e)
+        }
+        break
     }
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
@@ -2179,4 +2210,12 @@ export class AdminComponent implements OnInit {
       }
     )
   }
+
+  arraysEqual(a:any[], b:any[]) {
+    // console.log(JSON.stringify(a))
+    // console.log(JSON.stringify(b))
+    return JSON.stringify(a)==JSON.stringify(b);
+  }
+
+
 }

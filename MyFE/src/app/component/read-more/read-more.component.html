@@ -1,0 +1,8 @@
+{{ content }}
+
+<a  *ngIf="!isContentToggled" (click)="toggleContent()" i18n style="color: cornflowerblue;text-decoration: underline;cursor: pointer;">More</a>
+<a  *ngIf="isContentToggled" (click)="toggleContent()" i18n style="color: cornflowerblue;text-decoration: underline;cursor: pointer;">Less</a>
+
+
+<!-- <app-read-more [content]="o.content" [limit]="300" [completeWords]="true">
+</app-read-more> -->

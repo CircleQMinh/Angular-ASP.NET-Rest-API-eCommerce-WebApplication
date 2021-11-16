@@ -163,7 +163,7 @@
 
                         <button type="button" class="btn btn-success" (click)="checkOut()">Thanh toán <i
                                 class="fas fa-dollar-sign"></i></button>
-                        <button type="button" class="btn btn-warning" routerLink="/products">Tiếp tục Shopping <i
+                        <button type="button" class="btn btn-warning" routerLink="/search">Tiếp tục Shopping <i
                                 class="fas fa-shopping-cart"></i></button>
 
                     </div>
@@ -180,11 +180,15 @@
                                 |currency:'VND':''}} <span style="text-decoration: underline;">đ</span>
                             </div>
                         </div>
-                        <div class="brk-cart__footer-total-item font__family-montserrat">
+                        <div class="brk-cart__footer-total-item font__family-montserrat" *ngIf="totalPrice>=200000">
                             <div class="font__size-sm-14 font__size-13 line-height-1-5">Giao hàng và vận chuyển</div>
                             <div class="font__size-14 line-height-1-5 font__weight-bold">Free</div>
                         </div>
-
+                        <div class="brk-cart__footer-total-item font__family-montserrat" *ngIf="totalPrice<200000">
+                            <div class="font__size-sm-14 font__size-13 line-height-1-5">Giao hàng và vận chuyển</div>
+                            <div class="font__size-14 line-height-1-5 font__weight-bold">{{(shippingFee)
+                                |currency:'VND':''}} <span style="text-decoration: underline;">đ</span></div>
+                        </div>
                     </div>
                 </div>
             </div>

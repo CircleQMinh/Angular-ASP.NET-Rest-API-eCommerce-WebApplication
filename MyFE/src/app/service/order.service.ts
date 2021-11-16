@@ -7,8 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
+
+  shippingFee:number = 15000
+
   // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
-  // hostUrl:string="http://18110320.000webhostapp.com//#/"
+  // hostUrl:string="http://circleqm31052000-001-site1.itempurl.com/#/"
 
   hostUrl:string="http://localhost:4200/#/"
   apiUrl: string = "https://localhost:44324/api/";
@@ -26,7 +29,7 @@ export class OrderService {
   constructor(private http: HttpClient, private route: Router) { }
 
   saveOrder(userID: string, contactName: string, address: string, phone: string, email: string,
-    paymentMethod: string, orderDate: string, totalItem: number, totalPrice: number, note: string): Observable<any> {
+    paymentMethod: string, orderDate: string, totalItem: number, totalPrice: number, note: string,shippingFee:number): Observable<any> {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}order`, {
       userID: userID,
@@ -39,11 +42,12 @@ export class OrderService {
       totalItem: totalItem,
       totalPrice: totalPrice,
       note: note,
-      status: 0
+      status: 0,
+      shippingFee: shippingFee
     }, { headers: header })
   }
   saveOrderPrePay(userID: string, contactName: string, address: string, phone: string, email: string,
-    paymentMethod: string, orderDate: string, totalItem: number, totalPrice: number, note: string): Observable<any> {
+    paymentMethod: string, orderDate: string, totalItem: number, totalPrice: number, note: string,shippingFee:number): Observable<any> {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.post(`${this.apiUrl}order`, {
       userID: userID,
@@ -56,7 +60,8 @@ export class OrderService {
       totalItem: totalItem,
       totalPrice: totalPrice,
       note: note,
-      status: 1
+      status: 1,
+      shippingFee: shippingFee
     }, { headers: header })
   }
 
@@ -145,4 +150,9 @@ export class OrderService {
     return this.http.get(`${this.apiUrl}order/getVNPayUrl2?totalPrice=${totalPrice}`, { headers: header })
   }
 
+
+  sentEmailWithOrderInfo(id: number, email: string): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}order/sendEmailWithOrderInfo?Id=${id}&email=${email}`, { headers: header })
+  }
 }

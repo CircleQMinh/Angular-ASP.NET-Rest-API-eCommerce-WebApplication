@@ -27,6 +27,8 @@ namespace MyAPI.Data
         public DbSet<PromotionInfo> PromotionInfos { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<DiscountCode> DiscountCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -63,29 +63,29 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "898710e3-b2ec-49a6-890c-cd379fae62a8",
-                            ConcurrencyStamp = "812d109d-3ff3-4533-ab15-3e2db6afabd3",
+                            Id = "08423e9b-c566-4ac0-b644-3116b5328c30",
+                            ConcurrencyStamp = "a6f7b667-8826-4146-b2a1-c9752ba08fae",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "b894db69-2638-48eb-b5d4-ce4adeda8afa",
-                            ConcurrencyStamp = "3e7c3347-c195-40b8-abfa-aecea2b51587",
+                            Id = "025b57e3-f0f2-426e-a15f-893b34b60123",
+                            ConcurrencyStamp = "fcdc5a6c-3ec8-450b-9340-4bed7ab980cf",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "db08f21f-ba32-4660-b1a1-9dcd70526f98",
-                            ConcurrencyStamp = "05409345-f9d4-4bc3-b432-3d53833aa50b",
+                            Id = "76798ffe-c5c6-4e7f-91ea-ffcb86d319f2",
+                            ConcurrencyStamp = "fc6f912c-4e0b-4b9c-84e7-1b4e2c79e83a",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "3d057bac-440f-4aa7-b1e3-d4c8d6a26a93",
-                            ConcurrencyStamp = "709d2b10-928d-4d1b-a0a9-bfd471fc16e1",
+                            Id = "20cdb8c8-0321-42c1-b4a7-0d3c8b8502bd",
+                            ConcurrencyStamp = "70967610-723d-4797-a057-4358ef60272a",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -203,6 +203,9 @@ namespace MyAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("Coins")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -264,6 +267,42 @@ namespace MyAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("MyAPI.Data.DiscountCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountAmount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscountPercent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StartDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("DiscountCodes");
                 });
 
             modelBuilder.Entity("MyAPI.Data.EmployeeInfo", b =>
@@ -328,6 +367,9 @@ namespace MyAPI.Migrations
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShippingFee")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -618,6 +660,17 @@ namespace MyAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyAPI.Data.DiscountCode", b =>
+                {
+                    b.HasOne("MyAPI.Data.Order", "Order")
+                        .WithOne("discountCode")
+                        .HasForeignKey("MyAPI.Data.DiscountCode", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("MyAPI.Data.EmployeeInfo", b =>
                 {
                     b.HasOne("MyAPI.Data.APIUser", "Employee")
@@ -728,6 +781,8 @@ namespace MyAPI.Migrations
 
             modelBuilder.Entity("MyAPI.Data.Order", b =>
                 {
+                    b.Navigation("discountCode");
+
                     b.Navigation("OrderDetails");
                 });
 

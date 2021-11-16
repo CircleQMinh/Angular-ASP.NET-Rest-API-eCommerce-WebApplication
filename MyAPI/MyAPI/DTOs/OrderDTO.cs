@@ -38,6 +38,7 @@ namespace MyAPI.DTOs
         public string Note { get; set; }
         public int Status { get; set; }
         public virtual IList<OrderDetailDTO> OrderDetails { get; set; }
+        public int ShippingFee { get; set; }
 
     }
 
@@ -54,6 +55,7 @@ namespace MyAPI.DTOs
         public double TotalPrice { get; set; }
         public string Note { get; set; }
         public int Status { get; set; }
+        public int ShippingFee { get; set; }
     }
 
     public class UpdateOrderDTO

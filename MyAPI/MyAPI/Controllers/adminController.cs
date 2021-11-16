@@ -751,7 +751,7 @@ namespace MyAPI.Controllers
                         result.Add(list[i]);
                     }
                 }
-                return Accepted(new { result });
+                return Accepted(new { result=result.OrderBy(q=> DateTime.ParseExact(q["Date"], "dd-MM-yyyy", CultureInfo.InvariantCulture))});
             }
             catch (Exception ex)
             {

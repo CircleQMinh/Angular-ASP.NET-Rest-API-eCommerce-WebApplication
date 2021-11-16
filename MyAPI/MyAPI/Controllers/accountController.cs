@@ -79,8 +79,9 @@ namespace MyAPI.Controllers
 
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                
                 EmailHelper emailHelper = new EmailHelper();
-                string emailResponse = emailHelper.SendEmailConfirm(user.Email, token);
+                string emailResponse = emailHelper.SendEmailConfirm(user.Email, token,userDTO.DisplayName);
 
 
                 return Accepted(new { success= emailResponse });
@@ -133,7 +134,7 @@ namespace MyAPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             EmailHelper emailHelper = new EmailHelper();
-            string emailResponse = emailHelper.SendEmailResetPassword(user.Email, token);
+            string emailResponse = emailHelper.SendEmailResetPassword(user.Email, token,user.DisplayName);
 
             return Accepted(new { success = emailResponse });
         }

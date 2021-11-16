@@ -31,12 +31,6 @@ namespace MyAPI.Controllers
             _logger = logger;
         }
 
- 
-
-
-
-
-      
         [HttpPost]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -599,7 +593,7 @@ namespace MyAPI.Controllers
             {
                 //Get Config Info
                 string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://18110320.000webhostapp.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://circleqm31052000-001-site1.itempurl.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
@@ -654,6 +648,38 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet("sendEmailWithOrderInfo", Name = "sendEmailWithOrderInfo")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> sendEmailWithOrderInfo(string email, int id)
+        {
+
+            try
+            {
+                //APIUser user = await _userManager.FindByEmailAsync(email);
+                //EmailHelper emailHelper = new EmailHelper();
+                //string emailResponse = emailHelper.SendEmailTest(email,user.DisplayName);
+
+
+                var order = await _unitOfWork.Orders.Get(q => q.Id == id);
+                Expression<Func<OrderDetail, bool>> expression = q => q.OrderId == id;
+                var query = await _unitOfWork.OrderDetails.GetAll(expression, null, new List<string> { "Product" });
+                var results = _mapper.Map<IList<FullOrderDetailDTO>>(query);
+
+                EmailHelper emailHelper = new EmailHelper();
+                string emailResponse = emailHelper.SendEmailWithOrderInfo(email, order, results);
+
+                return Accepted(new { emailResponse });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(sendEmailWithOrderInfo)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
     }
 
 }

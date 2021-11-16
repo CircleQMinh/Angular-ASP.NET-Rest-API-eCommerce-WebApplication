@@ -17,4 +17,5 @@ export class Order {
     shipper!:User
     note!:string
     orderDetails!:OrderDetail[]
+    shippingFee!:number
 }

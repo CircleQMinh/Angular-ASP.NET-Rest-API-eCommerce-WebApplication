@@ -37,6 +37,7 @@ export class ProfileOrderInfoComponent implements OnInit {
   autoInterval: any
   isCancelingOrder=false
   rf1!: FormGroup;
+  shippingFee:number=0
   
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,
@@ -73,6 +74,7 @@ export class ProfileOrderInfoComponent implements OnInit {
           this.currentOrder = element
         }
       });
+      this.shippingFee=this.orderService.shippingFee
       this.isLoading = true
       this.getDetail()
       this.autoInterval = setInterval(() => {
@@ -92,15 +94,10 @@ export class ProfileOrderInfoComponent implements OnInit {
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
-        //console.log(data)
+
         this.isDisconnect = false
         this.userInfo = data.user
         this.userInfo.roles = data.roles
-        //console.log(this.userInfo)
-        // this.getOrderDetails()
-        // this.getPagedOrder()
-        // this.getPagedFavProduct()
-        // //console.log(this.userInfo)
         this.userInfo.orders.forEach(element => {
           if (this.orderID == element.id) {
             this.currentOrder = element

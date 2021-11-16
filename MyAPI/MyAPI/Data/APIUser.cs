@@ -11,6 +11,7 @@ namespace MyAPI.Data
     {
         public string DisplayName { get; set; }
         public string imgUrl { get; set; }
+        public int Coins { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Product> FavoriteProducts { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }

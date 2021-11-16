@@ -202,6 +202,7 @@
                 <option value="Id" selected="true">Id</option>
                 <option value="Price">Giá</option>
                 <option value="Name">Tên</option>
+                <option value="Tag">Thẻ</option>
             </select>
         </div>
         <div *ngIf="isGettingSearchResult">
@@ -833,7 +834,10 @@
                                         <p class="text-tron text-monospace">{{o.name}}</p>
                                     </td>
                                     <td class="d-none">{{o.imgUrl}}</td>
-                                    <td class="truncate_texts">{{o.description}}</td>
+                                    <td class="truncate_texts">
+                                        <app-read-more [content]="o.description" [limit]="100" [completeWords]="true">
+                                        </app-read-more>
+                                    </td>
                                     <td>{{o.price| currency:'VND':''}} <span
                                             style="text-decoration: underline;">đ</span></td>
                                     <td>{{o.unitInStock}}</td>
@@ -3098,7 +3102,6 @@
                         <th>Giá</th>
                         <th>Số lượng</th>
                         <th>Danh mục</th>
-                        <th>Chỉnh sửa</th>
                         <th>Hiển thị</th>
                         <th></th>
                     </tr>
@@ -3116,7 +3119,6 @@
                         <td>
                             <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
                         </td>
-                        <td>{{o.lastUpdate|date:'medium'}}</td>
                         <td *ngIf="o.status==1">
                             <p class="text-tron text-success"><i class="fas fa-check"></i></p>
                             <p class="d-no">1</p>

@@ -19,6 +19,7 @@ namespace MyAPI.IRepository
         IGenericRepository<Promotion> Promotions { get; }
         IGenericRepository<PromotionInfo> PromotionInfos { get; }
         IGenericRepository<Tag> Tags { get; }
+        IGenericRepository<DiscountCode> DiscountCodes { get; }
         Task Save();
     }
 }

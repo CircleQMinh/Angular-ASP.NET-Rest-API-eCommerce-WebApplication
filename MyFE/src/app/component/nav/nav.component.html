@@ -14,18 +14,18 @@
             [(ngModel)]="keyword" [ngbTypeahead]="searchProduct" [resultTemplate]="rt" (selectItem)="selectedItem($event)">
             <button class="btn2 " type="submit" (click)="newSearch()"><i class="fas fa-search"></i></button>
         </form>
-        <ul class="navbar-nav ml-auto topnav">
+        <ul class="navbar-nav topnav">
         
             <li class="nav-item hover_badge_blue">
                 <a class="nav-link" routerLink="/search"><i class="fas fa-shopping-cart mr-2"></i> <p class="hide_for_1399 show_for_991">Sản phẩm</p></a>
             </li>
             <li class="nav-item dropdown ">
                 <div class="btn-group">
-                    <div class="btn-group hover_badge_blue" ngbDropdown role="group" #myDrop="ngbDropdown" (mouseenter)="myDrop.open()" (mouseleave)="myDrop.close()">
+                    <div class="btn-group " ngbDropdown role="group" #myDrop="ngbDropdown" (mouseenter)="myDrop.open()" >
                         <!-- <button class="btn btn-outline-dark" ngbDropdownToggle><i class="fas fa-bars"></i>
                             Year</button> -->
                         <a class="nav-link" ngbDropdownToggle><i class="fas fa-bars mr-2"></i> <p class="hide_for_1399 show_for_991">Danh mục</p></a>
-                        <div class="dropdown-menu dd-menu" ngbDropdownMenu>
+                        <div class="dropdown-menu dd-menu" ngbDropdownMenu (mouseleave)="myDrop.close()">
                             <a routerLink="/search" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
                                 Toàn bộ</a>
                             <hr>
@@ -55,13 +55,13 @@
             <li class="nav-item hover_badge_blue" *ngIf="!isLogin">
                 <a class="nav-link" href="javascript:void(0)" (click)="goToLogin()"><i class="fas fa-sign-in-alt mr-2"></i> <p class="hide_for_1399 show_for_991">Đăng nhập</p></a>
             </li>
-            <li class="nav-item dropdown hover_badge_blue" *ngIf="isLogin">
+            <li class="nav-item dropdown " *ngIf="isLogin">
                 <div class="btn-group ">
-                    <div class="btn-group mr-3" ngbDropdown role="group" #myDrop2="ngbDropdown" (mouseenter)="myDrop2.open()" (mouseleave)="myDrop2.close()">
+                    <div class="btn-group mr-3" ngbDropdown role="group" #myDrop2="ngbDropdown" (mouseenter)="myDrop2.open()" >
                         <a class="nav-link" aria-label="dropdownMenu1" id="dropdownMenu1" >
                             <i class="far fa-user mr-2"></i>
                             <p class="hide_for_1399 show_for_991">{{user.displayName}}</p></a>
-                        <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1">
+                        <div class="dropdown-menu dd-menu" ngbDropdownMenu aria-labelledby="dropdownMenu1" (mouseleave)="myDrop2.close()">
                             <a ngbDropdownItem routerLink="/profile/{{user.id}}"><i class="fas fa-clipboard-list"></i>
                                 Tài khoản</a>
                             <hr>

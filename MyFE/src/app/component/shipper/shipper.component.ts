@@ -44,13 +44,14 @@ export class ShipperComponent implements OnInit {
   isDisconnect = false
   autoInterval: any
 
+  shippingFee:number=0
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
     private modalService: NgbModal) { }
 
   ngOnInit(): void {
-
+    this.shippingFee=this.orderService.shippingFee
     this.rf1 = new FormGroup({
       status: new FormControl('',
         [Validators.required]),
@@ -141,6 +142,7 @@ export class ShipperComponent implements OnInit {
     this.orderService.getAvailableOrder(1, this.orderOrder, this.pageNumberOrder, this.pageSizeOrder, this.orderDirOrder).subscribe(
       data => {
         this.orderList = data.result
+        //console.log(this.orderList)
         this.collectionSizeOrder = data.count
         this.isDisconnect=false
         this.isLoading = false
