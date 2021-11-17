@@ -6,6 +6,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { DiscountCode } from 'src/app/class/discount-code';
 import { Employee } from 'src/app/class/employee';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
@@ -245,6 +246,27 @@ export class AdminComponent implements OnInit {
   edittingTag!:Tag
   deletingTag!:Tag
 
+
+  isAddingDiscountCode=false
+  isEditDiscountCode=false
+  isDeleteDiscountCode=false
+  rf15!: FormGroup
+  rf16!: FormGroup
+  orderDiscountCode = "StartDate"
+  orderDirDiscountCode = "Asc"
+  pageSizeDiscountCode  = 5
+  pageNumberDiscountCode  = 1
+  collectionSizeDiscountCode = 0
+  discountCodeList:DiscountCode[]=[]
+  editingDCode!:DiscountCode
+  deletingDCode!:DiscountCode
+
+  searchBy_DCode = "Code"
+  searchKey_DCode!: string
+  searchResult_DCode: DiscountCode[] = []
+  allDCode: DiscountCode[] = []
+
+
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
 
@@ -472,6 +494,35 @@ export class AdminComponent implements OnInit {
       name: new FormControl('',
         [Validators.required])
     });
+
+    this.rf15 = new FormGroup({
+      code: new FormControl('',
+        [Validators.required]),
+      type: new FormControl('',
+        [Validators.required]),
+      number: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
+      startDate: new FormControl('',
+        [Validators.required]),
+      endDate: new FormControl('',
+        [Validators.required]),
+    });
+    this.rf16 = new FormGroup({
+      code: new FormControl('',
+        [Validators.required]),
+      type: new FormControl('',
+        [Validators.required]),
+      number: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
+      status: new FormControl('',
+        [Validators.required]),
+      startDate: new FormControl('',
+        [Validators.required]),
+      endDate: new FormControl('',
+        [Validators.required]),
+    });
+
+
     let to = new Date;
     let from = new Date;
     from.setDate(from.getDate() - 7);
@@ -565,6 +616,16 @@ export class AdminComponent implements OnInit {
           }
         },
         error => {
+          console.log(error)
+          this.isDisconnect = true
+        }
+      )
+      this.adminService.getDiscountCode("Id",1,999,"Asc").subscribe(
+        data=>{
+          this.isDisconnect = false
+          this.allDCode=data.result
+        },
+        error=>{
           console.log(error)
           this.isDisconnect = true
         }
@@ -810,6 +871,10 @@ export class AdminComponent implements OnInit {
         this.getPromotion()
         this.isLoading = false
         break
+      case "dc":
+        this.getDiscountCodes()
+        this.isLoading = false
+        break
     }
   }
   switchTab(s: string) {
@@ -847,6 +912,10 @@ export class AdminComponent implements OnInit {
         break
       case "pm":
         this.getPromotion()
+        this.isLoading = false
+        break
+      case "dc":
+        this.getDiscountCodes()
         this.isLoading = false
         break
     }
@@ -2216,6 +2285,196 @@ export class AdminComponent implements OnInit {
     // console.log(JSON.stringify(b))
     return JSON.stringify(a)==JSON.stringify(b);
   }
+
+  addDiscountCode(){
+    if(this.rf15.valid){
+      // console.log(this.rf15.controls)
+      // console.log("đã thêm")
+      let valid = true
+      try {
+        let type = this.rf15.controls["type"].value
+        if (type == 0) {
+          if (this.rf15.controls["number"].value > 100 || this.rf15.controls["number"].value <= 0) {
+            valid = false
+          }
+        }
+      }
+      catch (e) {
+        valid = false
+      }
+      if(valid){
+        let dc:DiscountCode = new DiscountCode
+        dc.code=this.rf15.controls["code"].value
+        dc.startDate=this.rf15.controls["startDate"].value
+        dc.endDate=this.rf15.controls["endDate"].value
+        if(this.rf15.controls["type"].value==0){
+          dc.discountPercent=this.rf15.controls["number"].value
+          dc.discountAmount="null"
+        }
+        else{
+          dc.discountAmount=this.rf15.controls["number"].value
+          dc.discountPercent="null"
+        }
+        this.isAddingDiscountCode=true
+        this.adminService.createDisCountCode(dc).subscribe(
+          data=>{
+            this.isAddingDiscountCode=false
+            this.modalService.dismissAll()
+            this.toast.success("Thêm mã giảm giá thành công!")
+          },
+          error=>{
+            this.isAddingDiscountCode=false
+            //console.log(error)
+            this.toast.error(error.error.msg)
+          }
+        )
+      }
+      else{
+        this.toast.error("Thông tin nhập chưa hợp lệ!")
+      }
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+  }
+  editDiscountCode(){
+    if(this.rf16.valid){
+      // console.log(this.rf15.controls)
+      // console.log("đã thêm")
+      let valid = true
+      try {
+        let type = this.rf16.controls["type"].value
+        if (type == 0) {
+          if (this.rf16.controls["number"].value > 100 || this.rf16.controls["number"].value <= 0) {
+            valid = false
+          }
+        }
+      }
+      catch (e) {
+        valid = false
+      }
+      if(valid){
+        let dc:DiscountCode = this.editingDCode
+        dc.code=this.rf16.controls["code"].value
+        dc.startDate=this.rf16.controls["startDate"].value
+        dc.endDate=this.rf16.controls["endDate"].value
+        dc.status=this.rf16.controls["status"].value
+        if(this.rf16.controls["type"].value==0){
+          dc.discountPercent=this.rf16.controls["number"].value
+          dc.discountAmount="null"
+        }
+        else{
+          dc.discountAmount=this.rf16.controls["number"].value
+          dc.discountPercent="null"
+        }
+        this.isEditDiscountCode=true
+        this.adminService.editDisCountCode(dc).subscribe(
+          data=>{
+            this.isEditDiscountCode=false
+            this.modalService.dismissAll()
+            this.toast.success("Chỉnh sửa mã giảm giá thành công!")
+          },
+          error=>{
+            this.isEditDiscountCode=false
+            //console.log(error)
+            this.toast.error(error.error.msg)
+          }
+        )
+      }
+      else{
+        this.toast.error("Thông tin nhập chưa hợp lệ!")
+      }
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+  }
+  deleteDiscountCode(){
+    this.isDeleteDiscountCode=true
+    this.adminService.deleteDisCountCode(this.deletingDCode).subscribe(
+      data=>{
+        this.isDeleteDiscountCode=false
+        this.toast.success("Xóa mã giảm giá thành công!")
+        this.modalService.dismissAll()
+      },
+      error=>{
+        console.log(error)
+        this.isDeleteDiscountCode=false
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+
+  codeToUppercase(){
+    let s:string =  this.rf15.controls["code"].value
+    this.rf15.controls["code"].setValue(s.toUpperCase().replace(/\s/g, ""))
+  }
+
+  openAddDiscountCodeModal(modal:any){
+    this.rf15.controls["type"].setValue(0)
+    this.rf15.controls["number"].setValue(10)
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openEditDiscountCodeModal(modal:any,dc:DiscountCode){
+    this.editingDCode=dc
+    console.log(this.editingDCode)
+    if(dc.discountAmount!='null'){
+      this.rf16.controls["type"].setValue(1)
+      this.rf16.controls["number"].setValue(this.editingDCode.discountAmount)
+    }
+    else{
+      this.rf16.controls["type"].setValue(0)
+      this.rf16.controls["number"].setValue(this.editingDCode.discountPercent)
+    }
+    this.rf16.controls["code"].setValue(this.editingDCode.code)
+    this.rf16.controls["startDate"].setValue(this.editingDCode.startDate)
+    this.rf16.controls["endDate"].setValue(this.editingDCode.endDate)
+    this.rf16.controls["status"].setValue(this.editingDCode.status)
+
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openDeleteDiscountCodeModal(modal: any,dc:DiscountCode) {
+
+    this.showFormError=false
+    this.deletingDCode=dc
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  getDiscountCodes(){
+    this.adminService.getDiscountCode(this.orderDiscountCode,this.pageNumberDiscountCode,
+      this.pageSizeDiscountCode,this.orderDirDiscountCode).subscribe(
+      data=>{
+        //console.log(data)
+        this.isDisconnect=false
+        this.discountCodeList=data.result
+        this.collectionSizeDiscountCode=data.count
+      },
+      error=>{
+        console.log(error)
+        this.isDisconnect = true
+      }
+    )
+  }
+
+  getSearchResultDCode(modal: any) {
+    this.searchResult_DCode = []
+    console.log(this.allDCode)
+    switch (this.searchBy_DCode) {
+      case "Code":
+        try {
+          this.searchResult_DCode = this.allDCode.filter(t => String(t.code).includes(this.searchKey_DCode))
+          // console.log(this.searchResult_DCode)
+          // console.log(this.searchKey_DCode)
+        }
+        catch (e) {
+          this.toast.error("Code không hợp lệ!")
+          console.log(e)
+        }
+        break
+    }
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+  }
+
 
 
 }

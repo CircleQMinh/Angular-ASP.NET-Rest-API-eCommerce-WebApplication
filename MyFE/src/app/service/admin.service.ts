@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { DiscountCode } from '../class/discount-code';
 import { Employee } from '../class/employee';
 import { Order } from '../class/order';
 import { Promotion } from '../class/promotion';
@@ -284,5 +285,39 @@ export class AdminService {
   getAuthorizeHttp(auth_token:any): Observable<any> {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + auth_token);
     return this.http.get(`${this.apiUrl}admin/getAuthorizeHttp?variable=3`, { headers: header })
+  }
+
+  getDiscountCode(order: string, pageNumber: number, pageSize: number, orderDir: string):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getDiscountCode?&order=${order}&pageNumber=${pageNumber}
+    &pageSize=${pageSize}&orderDir=${orderDir}`, { headers: header })
+  }
+
+  createDisCountCode(dc:DiscountCode):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}admin/createDiscountCode`, {
+      code:dc.code,
+      discountPercent: dc.discountPercent,
+      discountAmount: dc.discountAmount,
+      startDate: dc.startDate,
+      endDate: dc.endDate,
+      status: 0
+    }, { headers: header })
+  }
+
+  editDisCountCode(dc:DiscountCode):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.put(`${this.apiUrl}admin/editDiscountCode/${dc.id}`, {
+      code:dc.code,
+      discountPercent: dc.discountPercent,
+      discountAmount: dc.discountAmount,
+      startDate: dc.startDate,
+      endDate: dc.endDate,
+      status: dc.status
+    }, { headers: header })
+  }
+  deleteDisCountCode(dc:DiscountCode):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deleteDiscountCode/${dc.id}`, { headers: header })
   }
 }

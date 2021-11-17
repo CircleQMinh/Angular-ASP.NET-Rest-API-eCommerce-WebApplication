@@ -1359,6 +1359,214 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet("getDiscountCode", Name = "getDiscountCode")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetDiscountCode(string order, int pageNumber, int pageSize, string orderDir)
+        {
+            Func<IQueryable<DiscountCode>, IOrderedQueryable<DiscountCode>> orderBy = null;
+            Expression<Func<DiscountCode, bool>> expression = null;
+            try
+            {
+                IList<DiscountCodeDTO> result;
+                var orderedList = new List<DiscountCodeDTO>();
+                var pagedList = new List<DiscountCodeDTO>();
+
+                switch (order)
+                {
+                    case "Id":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Id);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Id);
+                        }
+                        break;
+                    case "Code":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Code);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Code);
+                        }
+                        break;
+                    case "Status":
+                        if (orderDir == "Desc")
+                        {
+                            orderBy = a => a.OrderByDescending(x => x.Status);
+                        }
+                        else
+                        {
+                            orderBy = a => a.OrderBy(x => x.Status);
+                        }
+                        break;
+                    case "StartDate":
+                        var query = await _unitOfWork.DiscountCodes.GetAll(expression, orderBy, null);
+                        result = _mapper.Map<IList<DiscountCodeDTO>>(query);
+                        orderedList = result.OrderBy(x => DateTime.Parse(x.StartDate)).ToList();
+                        if (orderDir == "Desc")
+                        {
+                            orderedList.Reverse();
+                        }
+                        for (int i = 0; i < pageSize; i++)
+                        {
+                            if ((i + pageSize * (pageNumber - 1)) < orderedList.Count)
+                            {
+                                pagedList.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                            }
+                        }
+                        return Accepted(new { result = pagedList, count = orderedList.Count });
+                    case "EndDate":
+                        var query2 = await _unitOfWork.DiscountCodes.GetAll(expression, orderBy, null);
+                        result = _mapper.Map<IList<DiscountCodeDTO>>(query2);
+                        orderedList = result.OrderBy(x => DateTime.Parse(x.EndDate)).ToList();
+                        if (orderDir == "Desc")
+                        {
+                            orderedList.Reverse();
+                        }
+                        for (int i = 0; i < pageSize; i++)
+                        {
+                            if ((i + pageSize * (pageNumber - 1)) < orderedList.Count)
+                            {
+                                pagedList.Add(orderedList[i + pageSize * (pageNumber - 1)]);
+                            }
+                        }
+                        return Accepted(new { result = pagedList, count = orderedList.Count });
+                }
+
+                var query3 = await _unitOfWork.DiscountCodes.GetAll(expression, orderBy, null, new PaginationFilter(pageNumber, pageSize));
+                result = _mapper.Map<IList<DiscountCodeDTO>>(query3);
+                var count = await _unitOfWork.DiscountCodes.GetCount(expression);
+
+                return Accepted(new { result, count });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpPost("createDiscountCode")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateDiscountCode([FromBody] CreateDiscountCodeDTO unitDTO)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateDiscountCode)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var query = _mapper.Map<DiscountCode>(unitDTO);
+
+                var existedCode = await _unitOfWork.DiscountCodes.Get(q => q.Code == query.Code);
+                if (existedCode!=null)
+                {
+                    return BadRequest(new { msg = "Mã giảm giá này đã tồn tại!" ,existedCode});
+                }
+
+                await _unitOfWork.DiscountCodes.Insert(query);
+
+
+                await _unitOfWork.Save();
+
+                return Accepted(new { success=true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpPut("editDiscountCode/{id:int}", Name = "editDiscountCode")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditDiscountCode(int id, [FromBody] CreateDiscountCodeDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditDiscountCode)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var dc = await _unitOfWork.DiscountCodes.Get(q => q.Id == id);
+
+                var existedCode = await _unitOfWork.DiscountCodes.Get(q => q.Code == unitDTO.Code&&q.Id!=dc.Id);
+                if (existedCode != null)
+                {
+                    return BadRequest(new { msg = "Mã giảm giá này đã tồn tại!", existedCode });
+                }
+
+                if (dc == null)
+                {
+                    _logger.LogError($"Invalid UPDATE attempt in {nameof(EditDiscountCode)}");
+                    return BadRequest("Submitted data is invalid");
+                }
+                _mapper.Map(unitDTO, dc);
+                _unitOfWork.DiscountCodes.Update(dc);
+                await _unitOfWork.Save();
+                return Accepted(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpDelete("deleteDiscountCode/{id:int}", Name = "deleteDiscountCode")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteDiscountCode(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteProductTag)}");
+                return BadRequest();
+            }
+
+
+            try
+            {
+                var query = await _unitOfWork.DiscountCodes.Get(q => q.Id == id);
+                if (query == null)
+                {
+                    _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteProductTag)}");
+                    var error = "Không tìm thấy mã giảm giá";
+                    return BadRequest(new { msg=error });
+                }
+
+                await _unitOfWork.DiscountCodes.Delete(id);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
     }
 
 }
