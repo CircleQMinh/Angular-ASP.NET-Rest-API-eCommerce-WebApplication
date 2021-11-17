@@ -55,3 +55,4 @@ Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 31-10-2021 : thêm JWT.<br>
 02-11-2021 : thêm thẻ sản phẩm.<br>
 16-11-2021 : nâng cấp email và thêm thông tin tiền ship.<br>
+17-11-2021 : thêm mã giảm giá.<br>
