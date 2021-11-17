@@ -51,6 +51,12 @@
                     <p class="hide_for_1399 show_for_991">Khuyến mãi</p>
                 </a>
             </li>
+            <li class="nav-item ">
+                <a href="javascript:void(0)" [class.active]="active_tab=='dc'" (click)="switchTab('dc')"
+                    class="nav-link "><i class="far fa-clipboard mr-1"></i>
+                    <p class="hide_for_1399 show_for_991">Mã gi.giá</p>
+                </a>
+            </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
@@ -172,7 +178,18 @@
         </div>
     </div>
 </header>
-
+<header id="main-header" class="py-2 bg-success text-white animate__animated animate__slideInDown"
+    *ngIf="active_tab=='dc'&&!isLoading" style="margin-top: -15px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ">
+                <h1 class="text-tron">
+                    <i class="far fa-clipboard"></i> Mã giảm giá
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
 
 <div class="container mb-3">
     <hr>
@@ -303,7 +320,32 @@
 
     </div>
 </div>
+<div class="col" *ngIf="active_tab=='dc'">
+    <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Bạn đang tìm mã giảm giá nào?"
+                    [(ngModel)]="searchKey_DCode" (keyup.enter)="getSearchResultDCode(dcode_search)">
+                <button type="submit" class="searchButton" (click)="getSearchResultDCode(dcode_search)">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tìm kiếm bằng : </label>
+            <select class="form-select" [(ngModel)]="searchBy_DCode">
+                <option value="Code" selected="true">Mã</option>
+            </select>
+        </div>
+        <div *ngIf="isGettingSearchResult">
+            <p>Đang tải kết quả tìm kiếm</p>
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
 
+    </div>
+</div>
 <!-- POSTS -->
 <section id="posts" *ngIf="!isLoading" class="mb-3">
     <div class="container">
@@ -733,8 +775,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <!-- ------------------------------------------------------------------------------------------------------------------ -->
 
@@ -1457,6 +1497,109 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col" *ngIf="active_tab=='dc'">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4><i class="far fa-clipboard"></i> Danh sách mã giảm giá</h4>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-info " (click)="openAddDiscountCodeModal(add_discountCode)">
+                                <i class="fas fa-plus"></i> Thêm mã giảm giá
+                            </button>
+                            <button class="btn btn-info " (click)="getPromotion()">
+                                <i class="fas fa-sync-alt"></i> Tải lại
+                            </button>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex flex-wrap justify-content-around ">
+                            <div class="form-group">
+                                <label>Sắp xếp theo: </label>
+                                <select class="form-select" [(ngModel)]="orderDiscountCode" (change)=" getDiscountCodes()">
+                                    <option value="StartDate">Ngày bắt đầu</option>
+                                    <option value="EndDate">Ngày kết thúc</option>
+                                    <option value="Id">Id</option>
+                                    <option value="Status">Trạng thái</option>
+                                    <option value="Code">Mã</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Asc/Desc: </label>
+                                <select class="form-select" [(ngModel)]="orderDirDiscountCode" (change)="  getDiscountCodes()">
+                                    <option value="Asc">
+                                        <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
+                                    </option>
+                                    <option value="Desc">
+                                        <p>Desc<i class="fas fa-sort-amount-down"></i></p>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Hiển thị: </label>
+                                <select class="form-select" [(ngModel)]="pageSizeDiscountCode" (change)=" getDiscountCodes()">
+                                    <option value="5" selected="true">5</option>
+                                    <option value="2">2</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Giảm</th>
+                                    <th>Bắt đầu</th>
+                                    <th>Kết thúc</th>
+                                    <th>Đã sử dụng</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let o of discountCodeList">
+                                    <th>{{o.code}}</th>
+                                    <th *ngIf="o.discountAmount!='null'">{{o.discountAmount}}đ</th>
+                                    <th *ngIf="o.discountPercent!='null'">{{o.discountPercent}}%</th>
+                                    <th>{{o.startDate}}</th>
+                                    <th>{{o.endDate}}</th>
+                                    <th>{{o.status}}</th>
+                                    <th>
+                                        <div class="btn-group">
+                                            <button class="btn btn-info "
+                                                (click)="openEditDiscountCodeModal(edit_discountCode,o)">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger "
+                                            (click)="openDeleteDiscountCodeModal(delete_discountCode,o)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </tbody> 
+                        </table>
+                    </div>
+                    <div class="container d-flex justify-content-center ">
+                        <div class="row">
+                            <div class="col">
+                                <div id="ng-pagi">
+                                    <ngb-pagination [(page)]="pageNumberDiscountCode" [pageSize]="pageSizeDiscountCode"
+                                        [collectionSize]="collectionSizeDiscountCode" [maxSize]="3" [boundaryLinks]=true
+                                        (pageChange)="getDiscountCodes()" size="sm">
+                                    </ngb-pagination>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -3395,5 +3538,207 @@
             </div>
             <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
+    </div>
+</ng-template>
+
+
+
+<ng-template #add_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm mã giảm giá</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf15">
+
+            <label for="email">Mã giảm giá</label>
+            <div class="input-group">
+                <input id="name" class="form-control" placeholder="Mã giảm giá" name="7" formControlName="code"
+                    (keyup)="codeToUppercase()">
+
+            </div>
+            <label for="email">Loại hình giảm giá</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="type">
+                    <option selected value="0">Theo %</option>
+                    <option value="1">Theo đơn vị tiền</option>
+                </select>
+
+            </div>
+            <label for="email">Giá trị khuyến mãi</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="number" type="number">
+            </div>
+            <label for="email">Ngày bắt đầu</label>
+            <div class="input-group">
+                <input id="sd" class="form-control" name="3" formControlName="startDate" type="date">
+
+            </div>
+            <label for="email">Ngày kết thúc</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="endDate" type="date">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isAddingDiscountCode">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="addDiscountCode()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isAddingDiscountCode">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #edit_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">chỉnh sửa mã giảm giá</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf16">
+
+            <label for="email">Mã giảm giá</label>
+            <div class="input-group">
+                <input id="name" class="form-control" placeholder="Mã giảm giá" name="7" formControlName="code"
+                    (keyup)="codeToUppercase()">
+
+            </div>
+            <label for="email">Loại hình giảm giá</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="type">
+                    <option selected value="0">Theo %</option>
+                    <option value="1">Theo đơn vị tiền</option>
+                </select>
+
+            </div>
+            <label for="email">Giá trị khuyến mãi</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="number" type="number">
+            </div>
+            <label for="email">Ngày bắt đầu</label>
+            <div class="input-group">
+                <input id="sd" class="form-control" name="3" formControlName="startDate" type="date">
+
+            </div>
+            <label for="email">Ngày kết thúc</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="endDate" type="date">
+            </div>
+            <label for="email">Trạng thái</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="status">
+                    <option selected value="0">Chưa sử dụng</option>
+                    <option value="1">Đã sử dụng</option>
+                </select>
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditDiscountCode">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editDiscountCode()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditDiscountCode">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #delete_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa mã giảm giá này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa mã giảm giá này?</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeleteDiscountCode">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteDiscountCode()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeleteDiscountCode">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #dcode_search let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thông tin tìm kiếm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <p *ngIf="searchResult_DCode.length==0">Không tìm thấy mã giảm giá!</p>
+        <div class="table-responsive p-20" *ngIf="searchResult_DCode.length!=0">
+            <p>Tổng số kết quả : {{searchResult_DCode.length}}</p>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Mã</th>
+                        <th>Giảm</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                        <th>Đã sử dụng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of searchResult_DCode">
+                        <th>{{o.code}}</th>
+                        <th *ngIf="o.discountAmount!='null'">{{o.discountAmount}}đ</th>
+                        <th *ngIf="o.discountPercent!='null'">{{o.discountPercent}}%</th>
+                        <th>{{o.startDate}}</th>
+                        <th>{{o.endDate}}</th>
+                        <th>{{o.status}}</th>
+                        <th>
+                            <div class="btn-group">
+                                <button class="btn btn-info "
+                                    (click)="openEditDiscountCodeModal(edit_discountCode,o)">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger "
+                                (click)="openDeleteDiscountCodeModal(delete_discountCode,o)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
     </div>
 </ng-template>
