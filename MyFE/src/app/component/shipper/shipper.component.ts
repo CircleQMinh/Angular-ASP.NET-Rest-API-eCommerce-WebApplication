@@ -160,7 +160,7 @@ export class ShipperComponent implements OnInit {
   getAcceptedOrder() {
     this.orderService.getAcceptedOrder(this.user.id).subscribe(
       data => {
-        // console.log(data)
+         console.log(data)
         // console.log(data.sil)
         // console.log(data.sil[0])
         this.isDisconnect=false
@@ -178,7 +178,6 @@ export class ShipperComponent implements OnInit {
     )
   }
   getOrderHistory() {
-
     this.orderService.getShipperOrderHistory(this.user.id).subscribe(
       data => {
         //console.log(data)
@@ -205,7 +204,7 @@ export class ShipperComponent implements OnInit {
     this.orderService.getOrderDetails(o.id).subscribe(
       data => {
         this.selectedOrder.orderDetails = data.orderDetails
-
+        this.selectedOrder.discountCode = data.discountCode
         this.isGettingOrderDetail = false
         //console.log(data)
       },
@@ -263,5 +262,23 @@ export class ShipperComponent implements OnInit {
   }
   toNumber(string: string): number {
     return Number(string)
+  }
+  calculateTotalPrice(o:Order):number{
+    let shippingFee=0
+    if(o.shippingFee==1){
+      shippingFee=15000
+    }
+    if(o.discountCode){
+      if(o.discountCode.discountAmount!='null'){
+        if(o.totalPrice+shippingFee-Number(o.discountCode.discountAmount)<0){
+          return 0
+        }
+        return o.totalPrice+shippingFee-Number(o.discountCode.discountAmount)
+      }
+      return (o.totalPrice+shippingFee)-(o.totalPrice+shippingFee)*Number(o.discountCode.discountPercent)/100
+    }
+    else{
+      return o.totalPrice+shippingFee
+    }
   }
 }

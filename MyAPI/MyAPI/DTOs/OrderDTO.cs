@@ -39,7 +39,7 @@ namespace MyAPI.DTOs
         public int Status { get; set; }
         public virtual IList<OrderDetailDTO> OrderDetails { get; set; }
         public int ShippingFee { get; set; }
-
+        public DiscountCode discountCode { get; set; }
     }
 
     public class CreateOrderDTO

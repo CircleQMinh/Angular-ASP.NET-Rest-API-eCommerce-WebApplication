@@ -18,6 +18,7 @@ import { ProductInfoComponent } from './component/product-info/product-info.comp
 import { ProfileFavoriteComponent } from './component/profile-favorite/profile-favorite.component';
 import { ProfileOrderInfoComponent } from './component/profile-order-info/profile-order-info.component';
 import { ProfileOrderComponent } from './component/profile-order/profile-order.component';
+import { ProfileXuComponent } from './component/profile-xu/profile-xu.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { PromoInfoComponent } from './component/promo-info/promo-info.component';
 import { RegisterComponent } from './component/register/register.component';
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'profile/:id/favorite', component: ProfileFavoriteComponent },
   { path: 'profile/:id/order', component: ProfileOrderComponent },
   { path: 'profile/:id/order/:oid', component: ProfileOrderInfoComponent },
+  { path: 'profile/:id/xu', component: ProfileXuComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'shipper', component: ShipperComponent },
   { path: 'thankyou', component: ThankyouComponent },

@@ -177,4 +177,12 @@ export class AuthenticationService {
   getChatMess(): Observable<any> {
     return this.http.get(`${this.firebaseUrl}chatME.json`)
   }
+
+  exchangeDiscountCode(userID: string, mode:number): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}account/exchangeDiscountCode`, {
+      userID: userID,
+      mode: mode
+    }, { headers: header })
+  }
 }

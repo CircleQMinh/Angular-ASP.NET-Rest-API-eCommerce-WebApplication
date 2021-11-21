@@ -128,41 +128,25 @@ export class SearchComponent implements OnInit {
 
     }
   }
-  filterChange(bool: any) {
-    this.stringCate = ""
-    if (bool != null) {
-      this.allCate = bool
-    }
-    if (!this.allCate) {
-      let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
-      // console.log(this.priceRange)
-      // console.log(listCate)
+  filterChange(name: any) {
 
-      if (listCate.length == 0) {
-        listCate.push("all")
-        this.allCate=true
+    if (name) {
+      if (name == "all") {
+        this.allCate = true
       }
-
-      for (let i = 0; i < listCate.length; i++) {
-        this.stringCate += listCate[i] + ","
+      else {
+        this.allCate = false
       }
-
-      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
-      this.newSearch()
-    }
-    else {
       this.cate.forEach(element => {
-        element.checked = false
+        if (element.value != name) {
+          element.checked = false
+        }
       });
-      let listCate: string[] = []
-
-      listCate.push("all")
-      for (let i = 0; i < listCate.length; i++) {
-        this.stringCate += listCate[i] + ","
-      }
-      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
-      this.newSearch()
+      this.stringCate = name
+      this.tag=[]
+      this.tag = ["all"]
     }
+    this.newSearch()
   }
   newSearch() {
     // let url = this.router.createUrlTree([], {
@@ -202,21 +186,11 @@ export class SearchComponent implements OnInit {
 
     window.open(`/#/product/${id}`, '_blank');
   }
-  applyTag(t:any){
-    if(this.tag.includes("all")){
-      this.tag=[]
-    }
-    // if(this.tag.includes(t)){
-    //   for(let i=0;i<this.tag.length;i++){
-    //     if(this.tag[i]==t){
-    //       this.tag.splice(i, 1);
-    //       break
-    //     }
-    //   }
-    // }
+  applyTag(t: any) {
+    this.tag = []
     this.tag.push(t)
-    this.isLoading=true
-    this.findProduct()
+    this.newSearch()
+
   }
   removeTag(t:any){
     this.isLoading=true
@@ -231,23 +205,25 @@ export class SearchComponent implements OnInit {
     }
     this.findProduct()
   }
-  removeCate(c:any){
-    this.isLoading=true
+  removeCate(c: any) {
+    this.isLoading = true
     this.stringCate = ""
-    for(let i=0;i<this.cate.length;i++){
-      if(this.cate[i].name==c){
-        this.cate[i].checked=false
+    for (let i = 0; i < this.cate.length; i++) {
+      if (this.cate[i].name == c) {
+        this.cate[i].checked = false
       }
     }
     let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
     if (listCate.length == 0) {
       listCate.push("all")
-      this.allCate=true
+      this.allCate = true
     }
     for (let i = 0; i < listCate.length; i++) {
       this.stringCate += listCate[i] + ","
     }
     this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
+    this.tag=[]
+    this.tag = ["all"]
     this.findProduct()
   }
   removePriceRange(){

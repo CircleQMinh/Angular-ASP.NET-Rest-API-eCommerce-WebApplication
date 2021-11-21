@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Routing;
 using MyAPI.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace MyAPI.Controllers
 {
@@ -388,6 +389,151 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpPost("exchangeDiscountCode", Name = "exchangeDiscountCode")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ExchangeDiscountCode([FromBody] GetDiscountCodeDTO unitDTO)
+        {
+            var requestId = User.Identity.Name;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Submitted data is invalid");
+            }
+            try
+            {
+                APIUser u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId);
+
+                if (u==null)
+                {
+                    return BadRequest("User không tồn tại!");
+                }
+                DiscountCode dc = new DiscountCode();
+
+                DateTime today = DateTime.Today;
+                DateTime endDay = today.AddDays(30);
+                String s_today = today.ToString("yyyy-MM-dd");
+                String s_endDay = endDay.ToString("yyyy-MM-dd");
+                Util util = new Util();
+           
+                switch (unitDTO.Mode)
+                {
+                    case 1://20k 20
+                        if (u.Coins>=20)
+                        {
+                            u.Coins -= 20;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountAmount = "20000";
+                            dc.DiscountPercent = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success=false,msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    case 2://50k 50
+                        if (u.Coins >= 50)
+                        {
+                            u.Coins -= 50;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountAmount = "50000";
+                            dc.DiscountPercent = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success = false, msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    case 3://100k 100
+                        if (u.Coins >= 100)
+                        {
+                            u.Coins -= 100;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountAmount = "100000";
+                            dc.DiscountPercent = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success = false, msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    case 4://10% 20
+                        if (u.Coins >= 20)
+                        {
+                            u.Coins -= 20;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountPercent = "10";
+                            dc.DiscountAmount = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success = false, msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    case 5://30% 50
+                        if (u.Coins >= 50)
+                        {
+                            u.Coins -= 100;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountPercent = "30";
+                            dc.DiscountAmount = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success = false, msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    case 6://50% 120
+                        if (u.Coins >= 120)
+                        {
+                            u.Coins -= 120;
+                            dc.Code = util.RandomString(12);
+                            dc.Status = 0;
+                            dc.StartDate = s_today;
+                            dc.EndDate = s_endDay;
+                            dc.DiscountPercent = "50";
+                            dc.DiscountAmount = "null";
+                        }
+                        else
+                        {
+                            return Accepted(new { success = false, msg = "Không đủ shop xu để đổi mã giảm giá!" });
+                        }
+                        break;
+                    default:
+                        return BadRequest("Không hợp lệ!");
+                }
+                _unitOfWork.Users.Update(u);
+                await _unitOfWork.DiscountCodes.Insert(dc);
+                await _unitOfWork.Save();
+
+                EmailHelper email = new EmailHelper();
+                var emailSend = email.SendEmailWithDiscountCode(u.DisplayName, u.Email, dc);
+
+                return Accepted(new { success = true,msg="Đã đổi mã giảm giá thành công",discountCode=dc,emailSend });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(RemoveFavoriteProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
 
     }
 }

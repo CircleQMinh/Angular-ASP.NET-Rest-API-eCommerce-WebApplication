@@ -411,7 +411,7 @@ namespace MyAPI.Controllers
                 if (flag==1)
                 {
 
-                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "discountCode" });
                     var result = _mapper.Map<IList<OrderDTO>>(query);
                     var orderedList = result.OrderBy(x => DateTime.ParseExact(x.OrderDate,"dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
                     List<OrderDTO> list = new List<OrderDTO>();
@@ -439,7 +439,7 @@ namespace MyAPI.Controllers
                 {
                 
                     PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
-                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "discountCode" }, pf);
                     var result = _mapper.Map<IList<OrderDTO>>(query);
                     List<ShortShippingInfo> shippingInfos = new List<ShortShippingInfo>();
                     foreach (var item in result)
@@ -692,6 +692,8 @@ namespace MyAPI.Controllers
             }
         }
 
+
+
         [HttpGet("getSalesChart", Name = "GetSalesChart")]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -710,15 +712,19 @@ namespace MyAPI.Controllers
 
                 var list = new List<Dictionary<string, string>>();
                 var result = new List<Dictionary<string, string>>();
+
+                var ult = new Util();
                 foreach (var item in si_map)
                 {
                     item.deliveryDate = item.deliveryDate.Substring(0, 10);
                     DateTime dt = DateTime.ParseExact(item.deliveryDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    
                     if (dt>=dfrom&&dt<=dto)
                     {
+                        var order = await _unitOfWork.Orders.Get(q=>q.Id==item.OrderId, new List<string> { "discountCode" });
                         var dic = new Dictionary<string, string>();
                         dic.Add("Date", item.deliveryDate);
-                        dic.Add("Total", item.Order.TotalPrice.ToString());
+                        dic.Add("Total", ult.CalculateOrderWorth(order).ToString());
                         dic.Add("NumberOfOrder", 1.ToString());
                         list.Add(dic);
                     }
@@ -1564,6 +1570,42 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPut("editUserCoins", Name = "editUserCoins")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditUserCoins([FromBody] EditUserCoinDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditUserCoins)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var u = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId);
+                if (u==null)
+                {
+                    return BadRequest(new { msg = "User không tồn tại!" });
+                }
+                u.Coins = unitDTO.Coins;
+
+
+                _unitOfWork.Users.Update(u);
+
+                await _unitOfWork.Save();
+                return Accepted(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditUserCoins)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }

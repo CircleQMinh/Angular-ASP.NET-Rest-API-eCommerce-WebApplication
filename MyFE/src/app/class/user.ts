@@ -5,6 +5,7 @@ export class User {
     id!:string;
     displayName!:string
     phoneNumber!:string
+    coins!:number
     email!:string
     imgUrl!:string
     favoriteProducts!:Product[]

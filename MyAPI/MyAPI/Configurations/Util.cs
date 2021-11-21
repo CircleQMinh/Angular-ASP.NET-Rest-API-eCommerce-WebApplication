@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using MyAPI.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace MyAPI.Configurations
 {
+
     public class Util
     {
+        private static Random random = new Random();
         public static string Md5(string sInput)
         {
             HashAlgorithm algorithmType = default(HashAlgorithm);
@@ -49,6 +53,36 @@ namespace MyAPI.Configurations
         {
             return "113.172.68.41";
 
+        }
+
+        public double CalculateOrderWorth(Order o)
+        {
+
+            var shippingFee = new ShopSetting().shippingFee;
+            double worth = o.TotalPrice;
+            if (o.ShippingFee==1)
+            {
+                worth += shippingFee;
+            }
+            if (o.discountCode!=null)
+            {
+                if (o.discountCode.DiscountAmount!="null")
+                {
+                    worth -= double.Parse(o.discountCode.DiscountAmount);
+                }
+                else
+                {
+                    worth -= worth * double.Parse(o.discountCode.DiscountPercent) / 100;
+                }
+            }
+            return worth;
+        }
+
+        public string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

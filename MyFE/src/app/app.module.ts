@@ -42,6 +42,7 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { PromoInfoComponent } from './component/promo-info/promo-info.component';
 import { PdfExportComponent } from './component/pdf-export/pdf-export.component';
 import { ReadMoreComponent } from './component/read-more/read-more.component';
+import { ProfileXuComponent } from './component/profile-xu/profile-xu.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +77,8 @@ import { ReadMoreComponent } from './component/read-more/read-more.component';
     NhanvienComponent,
     PromoInfoComponent,
     PdfExportComponent,
-    ReadMoreComponent
+    ReadMoreComponent,
+    ProfileXuComponent
   ],
   imports: [
     BrowserModule,

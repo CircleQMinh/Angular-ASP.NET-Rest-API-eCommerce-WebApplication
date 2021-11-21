@@ -1,9 +1,11 @@
 import { formatDate } from '@angular/common';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { DiscountCode } from 'src/app/class/discount-code';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -28,6 +30,12 @@ export class CartInfoComponent implements OnInit {
   rf1!: FormGroup;
   showFormError=false
   isLoadingLogin=false
+  
+  isCheckingDCode=false
+
+  dcode!:string
+  discountCode!:DiscountCode
+  appliedCode=false
 
   shippingFee:number = 0
 
@@ -41,7 +49,11 @@ export class CartInfoComponent implements OnInit {
     this.authService.getLocalStorage()
     this.user=this.authService.user
     this.isLogin=this.authService.isLogin
-    this.shippingFee=this.orderService.shippingFee
+    if(this.totalPrice<200000){
+      this.shippingFee=this.orderService.shippingFee
+    }
+    
+
     this.rf1 = new FormGroup({
       email: new FormControl('',
         [Validators.required, Validators.email]),
@@ -51,6 +63,12 @@ export class CartInfoComponent implements OnInit {
     window.scrollTo(0,0)
  
     //console.log(this.cartItemsQuantity)
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    // localStorage.removeItem("DiscountCode")
   }
   getCartInfo(){
     this.cartService.getLocalStorage()
@@ -70,16 +88,41 @@ export class CartInfoComponent implements OnInit {
   addOneToCart(pro:Product){
     this.cartService.incrementQuantity(pro)
     this.getCartInfoWithoutDelete()
+    if(this.totalPrice<200000){
+      this.shippingFee=this.orderService.shippingFee
+    }
+    else{
+      this.shippingFee=0
+    }
   }
   removeOneFromCart(pro:Product){
     this.cartService.decrementQuantity(pro)
     this.getCartInfoWithoutDelete()
+    if(this.totalPrice<200000){
+      this.shippingFee=this.orderService.shippingFee
+    }
+    else{
+      this.shippingFee=0
+    }
   }
   removeFromCart(pro:Product){
     this.cartService.removeItem(pro)
     this.getCartInfo()
+    if(this.totalPrice<200000){
+      this.shippingFee=this.orderService.shippingFee
+    }
+    else{
+      this.shippingFee=0
+    }
   }
   checkOut(){
+    if(this.appliedCode){
+      localStorage.setItem("DiscountCode",JSON.stringify(this.discountCode))
+    }
+    else{
+      localStorage.removeItem("DiscountCode")
+    }
+
     if(this.isLogin){
       this.router.navigateByUrl("/checkout")
     }
@@ -131,5 +174,42 @@ export class CartInfoComponent implements OnInit {
   }
   toNumber(string: string): number {
     return Number(string)
+  }
+
+  applyDCode(){
+    this.isCheckingDCode=true
+    this.orderService.checkDiscountCode(this.dcode).subscribe(
+      data=>{
+        if(data.success){
+          this.isCheckingDCode=false
+          this.discountCode=data.discountCode
+          this.appliedCode=true
+          this.toast.success("Áp dụng mã giảm giá thành công!")
+        }
+        else{
+          this.toast.error(data.msg)
+          this.isCheckingDCode=false
+        }
+      },
+      error=>{
+        this.isCheckingDCode=false
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
+
+  calculateFullPrice():number{
+    if(this.appliedCode){
+      if(this.discountCode.discountAmount!='null'){
+        if(this.totalPrice+this.shippingFee-Number(this.discountCode.discountAmount)<0){
+          return 0
+        }
+        return this.totalPrice+this.shippingFee-Number(this.discountCode.discountAmount)
+      }
+      return (this.totalPrice+this.shippingFee)-(this.totalPrice+this.shippingFee)*Number(this.discountCode.discountPercent)/100
+    }
+    else{
+      return this.totalPrice+this.shippingFee
+    }
   }
 }

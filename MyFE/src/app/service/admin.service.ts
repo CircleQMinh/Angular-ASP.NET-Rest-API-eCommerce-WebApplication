@@ -320,4 +320,12 @@ export class AdminService {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.delete(`${this.apiUrl}admin/deleteDiscountCode/${dc.id}`, { headers: header })
   }
+
+  editUserCoins(userID:string,coin:number):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.put(`${this.apiUrl}admin/editUserCoins`, {
+      userId: userID,
+      coins: coin
+    }, { headers: header })
+  }
 }

@@ -43,13 +43,14 @@ namespace MyAPI.DTOs
         public string Email { get; set; }
 
         public bool EmailConfirmed { get; set; }
-
+        public int Coins { get; set; }
     }
     public class UserOrderInfoDTO
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }
         public string imgUrl { get; set; }
+        public int Coins { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
@@ -95,5 +96,16 @@ namespace MyAPI.DTOs
     {
         public int ProductId { get; set; }
         public string UserId { get; set; }
+    }
+
+    public class EditUserCoinDTO
+    {
+        public string UserId { get; set; }
+        public int Coins { get; set; }
+    }
+    public class GetDiscountCodeDTO
+    {
+        public string UserId { get; set; }
+        public int Mode { get; set; }
     }
 }

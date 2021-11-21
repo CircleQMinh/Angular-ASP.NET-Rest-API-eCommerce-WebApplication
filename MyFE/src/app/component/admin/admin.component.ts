@@ -252,7 +252,7 @@ export class AdminComponent implements OnInit {
   isDeleteDiscountCode=false
   rf15!: FormGroup
   rf16!: FormGroup
-  orderDiscountCode = "StartDate"
+  orderDiscountCode = "Id"
   orderDirDiscountCode = "Asc"
   pageSizeDiscountCode  = 5
   pageNumberDiscountCode  = 1
@@ -266,6 +266,10 @@ export class AdminComponent implements OnInit {
   searchResult_DCode: DiscountCode[] = []
   allDCode: DiscountCode[] = []
 
+  shippingFee:number=0
+
+  rf17!:FormGroup
+  isEdittingUserCoins = false
 
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
@@ -430,7 +434,6 @@ export class AdminComponent implements OnInit {
       to: new FormControl('',
         [Validators.required])
     });
-
     this.rf9 = new FormGroup({
       name: new FormControl('',
         [Validators.required]),
@@ -442,8 +445,6 @@ export class AdminComponent implements OnInit {
       endDate: new FormControl('',
         [Validators.required])
     });
-
-
     this.rf10 = new FormGroup({
       name: new FormControl('',
         [Validators.required]),
@@ -459,8 +460,6 @@ export class AdminComponent implements OnInit {
       visible: new FormControl('',
         [Validators.required])
     });
-
-
     this.rf11 = new FormGroup({
       idSP: new FormControl('',
         [Validators.required]),
@@ -473,7 +472,6 @@ export class AdminComponent implements OnInit {
       number: new FormControl('',
         [Validators.required, Validators.pattern('^[0-9]*$')])
     });
-
     this.rf12 = new FormGroup({
       idSP: new FormControl('',
         [Validators.required]),
@@ -494,7 +492,6 @@ export class AdminComponent implements OnInit {
       name: new FormControl('',
         [Validators.required])
     });
-
     this.rf15 = new FormGroup({
       code: new FormControl('',
         [Validators.required]),
@@ -521,7 +518,12 @@ export class AdminComponent implements OnInit {
       endDate: new FormControl('',
         [Validators.required]),
     });
-
+    this.rf17 = new FormGroup({
+      userID: new FormControl('',
+        [Validators.required]),
+      coins: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
+    });
 
     let to = new Date;
     let from = new Date;
@@ -1223,9 +1225,12 @@ export class AdminComponent implements OnInit {
     this.showFormError = false
     this.isGettingOrderDetail = true
     this.selectedOrder = o
+    //console.log( this.selectedOrder)
     this.orderService.getOrderDetails(o.id).subscribe(
       data => {
         this.selectedOrder.orderDetails = data.orderDetails
+        this.selectedOrder.discountCode = data.discountCode
+        console.log(this.selectedOrder.orderDetails)
         this.getOrderShippingInfo(o.id)
         this.isGettingOrderDetail = false
       },
@@ -2302,6 +2307,11 @@ export class AdminComponent implements OnInit {
       catch (e) {
         valid = false
       }
+      var start = new  Date (this.rf15.controls["startDate"].value)
+      var end = new  Date (this.rf15.controls["endDate"].value)
+      if(end<=start){
+        valid=false
+      }
       if(valid){
         let dc:DiscountCode = new DiscountCode
         dc.code=this.rf15.controls["code"].value
@@ -2352,6 +2362,11 @@ export class AdminComponent implements OnInit {
       }
       catch (e) {
         valid = false
+      }
+      var start = new  Date (this.rf16.controls["startDate"].value)
+      var end = new  Date (this.rf16.controls["endDate"].value)
+      if(end<=start){
+        valid=false
       }
       if(valid){
         let dc:DiscountCode = this.editingDCode
@@ -2476,5 +2491,51 @@ export class AdminComponent implements OnInit {
   }
 
 
+  calculateTotalPrice(o:Order):number{
+    let shippingFee=0
+    if(o.shippingFee==1){
+      shippingFee=15000
+    }
+    if(o.discountCode){
+      if(o.discountCode.discountAmount!='null'){
+        if(o.totalPrice+shippingFee-Number(o.discountCode.discountAmount)<0){
+          return 0
+        }
+        return o.totalPrice+shippingFee-Number(o.discountCode.discountAmount)
+      }
+      return (o.totalPrice+shippingFee)-(o.totalPrice+shippingFee)*Number(o.discountCode.discountPercent)/100
+    }
+    else{
+      return o.totalPrice+shippingFee
+    }
+  }
+  openEditUserCoinModal(modal: any, u: User) {
+
+    this.rf17.controls["userID"].setValue(u.id)
+    this.rf17.controls["coins"].setValue(u.coins)
+
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  editUserCoin()
+  {
+    if(this.rf17.valid){
+      this.isEdittingUserCoins=true
+      this.adminService.editUserCoins(this.rf17.controls["userID"].value,this.rf17.controls["coins"].value).subscribe(
+        data=>{
+          this.isEdittingUserCoins=false
+          this.modalService.dismissAll()
+          this.toast.success("Chỉnh sửa thành công!")
+        },
+        error=>{
+          this.isEdittingUserCoins=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        }
+      )
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+
+  }
 
 }

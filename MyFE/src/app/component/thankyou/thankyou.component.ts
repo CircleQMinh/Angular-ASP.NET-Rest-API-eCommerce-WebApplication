@@ -2,6 +2,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { DiscountCode } from 'src/app/class/discount-code';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { CartService } from 'src/app/service/cart.service';
@@ -131,7 +132,8 @@ export class ThankyouComponent implements OnInit {
         data => {
           //console.log(data)
           if (i == this.cartItems.length - 1) {
-            this.sendEmailWithOrderInfo(this.user_Order.email,orderID)
+            this.applyDiscountCode(orderID)
+       
             window.scrollTo(0, 0)
           }
         },
@@ -154,4 +156,18 @@ export class ThankyouComponent implements OnInit {
        }
      ) 
    }
+
+   applyDiscountCode(orderID:number){
+    if(localStorage.getItem("DiscountCode")){
+      let dc:DiscountCode = JSON.parse(localStorage.getItem("DiscountCode")!)
+      this.orderService.applyDiscountCode(dc.code,orderID).subscribe(
+        data=>{
+          this.sendEmailWithOrderInfo(this.user_Order.email,orderID)
+        },
+        error=>{
+          console.log(error)
+        }
+      )
+    }
+  }
 }
