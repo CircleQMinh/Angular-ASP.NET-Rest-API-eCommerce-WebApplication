@@ -52,6 +52,7 @@ namespace MyAPI.Configurations
             try
             {
                 client.Send(mailMessage);
+                client.Dispose();
                 return "true";
             }
             catch (Exception ex)
@@ -98,6 +99,7 @@ namespace MyAPI.Configurations
             try
             {
                 client.Send(mailMessage);
+                client.Dispose();
                 return "true";
             }
             catch (Exception ex)
@@ -139,15 +141,50 @@ namespace MyAPI.Configurations
             {
                 shippingFee = 0;
             }
+            if (order.discountCode!=null)
+            {
+                double totalPrice;
+                string giam;
+                if (order.discountCode.DiscountAmount != "null")
+                {
+                    totalPrice = (order.TotalPrice + shippingFee - double.Parse(order.discountCode.DiscountAmount));
+                    if (totalPrice<0)
+                    {
+                        totalPrice = 0;
+                    }
+                    giam = order.discountCode.DiscountAmount + " đ";
+                }
+                else
+                {
+                    double percent = double.Parse(order.discountCode.DiscountPercent) / (double)100;
+                    double lower = (percent * (order.TotalPrice + shippingFee));
+                    totalPrice = ((order.TotalPrice + shippingFee) - lower);
+                    giam = order.discountCode.DiscountPercent + " %";
+                }
 
-            msg += "</tbody> </table> <p>Tổng giá trị đơn hàng : " + order.TotalPrice + " đ - Phí vận chuyển : "+shippingFee+" đ</p>  " +
-                "<p>Tổng cộng : " + (order.TotalPrice+shippingFee) + " đ </p> " +
+
+                msg += "</tbody> </table> <p>Tổng giá trị đơn hàng : " + order.TotalPrice + " đ - Phí vận chuyển : " + shippingFee + " đ</p>  " +
+                  "<p>Mã giảm giá : "+order.discountCode.Code+" - Giảm : "+giam+"</p>" +
+                  "<p>Tổng cộng : " + totalPrice + " đ </p> " +
+                  "<p>Đơn hàng của bạn đang được xử lý. Hãy theo dõi trạng thái của đơn hàng trên trang profile của bạn!</p> </td> </tr> <tr> " +
+                  "<td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau " +
+                  "sạch, củ quả, trái cây, thực phẩm tươi sống</p> " +
+                  "<p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, TP.HCM</p> " +
+                  "<p>Email : 18110320@student.hcmute.edu.vn</p> " +
+                  "<p>Hot line : 0788283308</p> </td> </tr> </table></body></html>";
+            }
+            else
+            {
+                msg += "</tbody> </table> <p>Tổng giá trị đơn hàng : " + order.TotalPrice + " đ - Phí vận chuyển : " + shippingFee + " đ</p>  " +
+                "<p>Mã giảm giá : Không</p>"+
+                "<p>Tổng cộng : " + (order.TotalPrice + shippingFee) + " đ </p> " +
                 "<p>Đơn hàng của bạn đang được xử lý. Hãy theo dõi trạng thái của đơn hàng trên trang profile của bạn!</p> </td> </tr> <tr> " +
                 "<td style='background-color:#d6ffa6'> <h2>Liên hệ với cửa hàng</h2> <p>Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau " +
                 "sạch, củ quả, trái cây, thực phẩm tươi sống</p> " +
                 "<p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, TP.HCM</p> " +
                 "<p>Email : 18110320@student.hcmute.edu.vn</p> " +
                 "<p>Hot line : 0788283308</p> </td> </tr> </table></body></html>";
+            }
             mailMessage.Body = msg;
             var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
             {
@@ -160,7 +197,61 @@ namespace MyAPI.Configurations
             try
             {
                 client.Send(mailMessage);
-                return "true";
+                client.Dispose();
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public string SendEmailWithDiscountCode(string userName,string userEmail,DiscountCode dc)
+        {
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("timelive.circleqm@gmail.com");
+            mailMessage.To.Add(new MailAddress(userEmail));
+
+            mailMessage.Subject = "Mã giảm giá của bạn!";
+            mailMessage.IsBodyHtml = true;
+
+            string giam = "";
+            if (dc.DiscountAmount!="null")
+            {
+                giam = dc.DiscountAmount + " VND";
+            }
+            else
+            {
+                giam = dc.DiscountPercent + "%";
+            }
+
+            string msg = "<!DOCTYPE html><html><head><title></title><meta charset='utf-8'><style>table,td,th{border:1px solid #000}</style></head><body style='font-family:monospace'>" +
+                "<br><table width='100%'><tr><td style='background-color:#97b6e4;text-align:center'><img src='https://res.cloudinary.com/dkmk9tdwx/image/upload/v1628192627/logo_v5ukvv.png' " +
+                "style='width:45px;height:45px'><h1>Circle"+"'s"+" Shop</h1></td></tr><tr><td style='text-align:center;padding:20px'><p>" +
+                "Thân gửi "+userName+"</p>" +
+                "<p>Shop xin gửi bạn mã giảm giá : "+dc.Code+"</p>" +
+                "<p>Sử dụng mã giảm giá giúp giảm : "+giam+" cho mọi đơn hàng của shop!</p>" +
+                "<p>Có hạn sử dụng từ "+dc.StartDate+" đến "+dc.EndDate+"</p></td></tr><tr><td " +
+                "style='background-color:#d6ffa6'><h2>Liên hệ với cửa hàng</h2><p>" +
+                "Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau sạch, củ quả, trái cây, thực phẩm tươi sống</p>" +
+                "<p>Địa chỉ : 23/25D đường số 1, phường Bình Thuận, Q.7, TP.HCM</p>" +
+                "<p>Email : 18110320@student.hcmute.edu.vn</p>" +
+                "<p>Hot line : 0788283308</p></td></tr></table></body></html>";
+
+            mailMessage.Body = msg;
+            var client = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587))
+            {
+                Credentials = new NetworkCredential("timelive.circleqm@gmail.com", "5YemExFc!6QpT+aT"),
+                EnableSsl = true,
+                UseDefaultCredentials = false, // ?? :D ??
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
+
+            try
+            {
+                //client.Send(mailMessage);
+                //client.Dispose();
+                return msg;
             }
             catch (Exception ex)
             {

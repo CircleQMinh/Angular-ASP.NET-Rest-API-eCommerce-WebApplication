@@ -34,19 +34,19 @@ export class ProductListComponent implements OnInit {
   priceMax: any
   priceRange: any = "0,999999"
   stringCate: string = ""
-  tag:string[] =["all"]
+  tag: string[] = ["all"]
   onPromoOnly = false
 
   products: Product[] = []
   promoInfo: PromotionInfo[] = []
 
-  pagedProduct:Product[]=[]
+  pagedProduct: Product[] = []
 
   isDisconnect = false
   autoInterval: any
 
-  pageNumber:number=1
-  pageSize:number=10
+  pageNumber: number = 1
+  pageSize: number = 10
 
   constructor(private productService: ProductService, private toast: HotToastService,
     private cartService: CartService, private authService: AuthenticationService) { }
@@ -54,16 +54,16 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true
 
-    if(localStorage.getItem("searchCate")){
+    if (localStorage.getItem("searchCate")) {
       let a = localStorage.getItem("searchCate")
-      for(let i=0;i<this.cate.length;i++){
-        if(a==this.cate[i].value){
-          this.cate[i].checked=true
+      for (let i = 0; i < this.cate.length; i++) {
+        if (a == this.cate[i].value) {
+          this.cate[i].checked = true
         }
       }
-      this.stringCate=a!
+      this.stringCate = a!
     }
-    else{
+    else {
       this.allCate = true
       this.stringCate = "all"
     }
@@ -88,14 +88,14 @@ export class ProductListComponent implements OnInit {
     localStorage.removeItem("searchCate")
   }
   findProduct() {
-  
-    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate,this.tag).subscribe(
+
+    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate, this.tag).subscribe(
       data => {
         this.isDisconnect = false
         this.products = data.result
         this.promoInfo = data.promoInfo
-        for(let i=0;i<this.products.length;i++){
-          this.products[i].promoInfo=this.promoInfo[i]
+        for (let i = 0; i < this.products.length; i++) {
+          this.products[i].promoInfo = this.promoInfo[i]
         }
         this.getPagedProduct()
         //console.log(this.products)
@@ -118,41 +118,25 @@ export class ProductListComponent implements OnInit {
 
     }
   }
-  filterChange(bool: any) {
-    this.stringCate = ""
-    if (bool != null) {
-      this.allCate = bool
-    }
-    if (!this.allCate) {
-      let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
-      // console.log(this.priceRange)
-      // console.log(listCate)
+  filterChange(name: any) {
 
-      if (listCate.length == 0) {
-        listCate.push("all")
-        this.allCate=true
+    if (name) {
+      if (name == "all") {
+        this.allCate = true
       }
-
-      for (let i = 0; i < listCate.length; i++) {
-        this.stringCate += listCate[i] + ","
+      else {
+        this.allCate = false
       }
-
-      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
-      this.newSearch()
-    }
-    else {
       this.cate.forEach(element => {
-        element.checked = false
+        if (element.value != name) {
+          element.checked = false
+        }
       });
-      let listCate: string[] = []
-
-      listCate.push("all")
-      for (let i = 0; i < listCate.length; i++) {
-        this.stringCate += listCate[i] + ","
-      }
-      this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
-      this.newSearch()
+      this.stringCate = name
+      this.tag=[]
+      this.tag = ["all"]
     }
+    this.newSearch()
   }
   newSearch() {
     // let url = this.router.createUrlTree([], {
@@ -161,7 +145,7 @@ export class ProductListComponent implements OnInit {
     // }).toString();
     // //console.log(url)
     // this.location.go(url)
-    this.isLoading=true
+    this.isLoading = true
     this.findProduct()
     // this.router.navigateByUrl('/', { skipLocationChange: true })
     //   .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:this.priceRange } }));
@@ -174,7 +158,7 @@ export class ProductListComponent implements OnInit {
           this.toast.error("Khoảng giá không hợp lệ")
         }
         else {
-          this.isLoading=true
+          this.isLoading = true
           let newRange = String(this.priceMin) + "," + String(this.priceMax)
           this.priceRange = newRange
           this.findProduct()
@@ -192,74 +176,61 @@ export class ProductListComponent implements OnInit {
 
     window.open(`/#/product/${id}`, '_blank');
   }
-  applyTag(t:any){
-    if(this.tag.includes("all")){
-      this.tag=[]
-    }
-
-    let exist = false
-
-    for(let i=0;i<this.tag.length;i++){
-      if(this.tag[i]==t){
-        exist=true
-      }
-    }
-
-    if(exist==false){
-      this.tag.push(t)
-      this.isLoading=true
-      this.findProduct()
-    }
- 
+  applyTag(t: any) {
+    this.tag = []
+    this.tag.push(t)
+    this.newSearch()
 
   }
-  removeTag(t:any){
-    this.isLoading=true
-    for(let i=0;i<this.tag.length;i++){
-      if(this.tag[i]==t){
+  removeTag(t: any) {
+    this.isLoading = true
+    for (let i = 0; i < this.tag.length; i++) {
+      if (this.tag[i] == t) {
         this.tag.splice(i, 1);
         break
       }
     }
-    if(this.tag.length==0){
-      this.tag=["all"]
+    if (this.tag.length == 0) {
+      this.tag = ["all"]
     }
     this.findProduct()
   }
-  removeCate(c:any){
-    this.isLoading=true
+  removeCate(c: any) {
+    this.isLoading = true
     this.stringCate = ""
-    for(let i=0;i<this.cate.length;i++){
-      if(this.cate[i].name==c){
-        this.cate[i].checked=false
+    for (let i = 0; i < this.cate.length; i++) {
+      if (this.cate[i].name == c) {
+        this.cate[i].checked = false
       }
     }
     let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
     if (listCate.length == 0) {
       listCate.push("all")
-      this.allCate=true
+      this.allCate = true
     }
     for (let i = 0; i < listCate.length; i++) {
       this.stringCate += listCate[i] + ","
     }
     this.stringCate = this.stringCate.slice(0, this.stringCate.length - 1)
+    this.tag=[]
+    this.tag = ["all"]
     this.findProduct()
   }
-  removePriceRange(){
-    this.isLoading=true
-    this.priceRange='0,999999'
+  removePriceRange() {
+    this.isLoading = true
+    this.priceRange = '0,999999'
     this.findProduct()
   }
-  resetFilter(){
-    this.isLoading=true
+  resetFilter() {
+    this.isLoading = true
     this.allCate = true
     this.stringCate = "all"
     this.priceRange = "0,999999"
     this.keyword = ""
-    this.tag=["all"]
-    this.onPromoOnly=false
-    for(let i=0;i<this.cate.length;i++){
-      this.cate[i].checked=false
+    this.tag = ["all"]
+    this.onPromoOnly = false
+    for (let i = 0; i < this.cate.length; i++) {
+      this.cate[i].checked = false
     }
     this.findProduct()
   }

@@ -119,6 +119,12 @@ namespace MyAPI.Controllers
                     return BadRequest(new { error });
                 }
 
+                var dc = await _unitOfWork.DiscountCodes.Get(q => q.OrderId == id);
+                if (dc!=null)
+                {
+                    await _unitOfWork.DiscountCodes.Delete(dc.Id);
+                }
+
                 await _unitOfWork.Orders.Delete(id);
                 await _unitOfWork.Save();
 
@@ -152,7 +158,7 @@ namespace MyAPI.Controllers
             {
                 var query = _mapper.Map<OrderDetail>(unitDTO);
 
-                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == query.ProductId, new List<string> { "Promotion" });
+                var promoInfo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == query.ProductId&&q.Promotion.Status==1, new List<string> { "Promotion" });
                 if (promoInfo!=null)
                 {
                     if (promoInfo.PromotionAmount != "null")
@@ -194,10 +200,10 @@ namespace MyAPI.Controllers
                 Expression<Func<OrderDetail, bool>> expression = q=>q.OrderId==id;
                 var query = await _unitOfWork.OrderDetails.GetAll(expression,null,new List<string> {"Product"});
                 var results = _mapper.Map<IList<FullOrderDetailDTO>>(query);
-
+                var dc = await _unitOfWork.DiscountCodes.Get(q => q.OrderId == id);
                 var success = true;
 
-                return Accepted(new { success,orderDetails=results });
+                return Accepted(new { success,orderDetails=results,discountCode=dc });
             }
             catch (Exception ex)
             {
@@ -252,7 +258,7 @@ namespace MyAPI.Controllers
                 if (flag == 1)
                 {
 
-                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "discountCode" });
                     var result = _mapper.Map<IList<OrderDTO>>(query);
                     var orderedList = result.OrderBy(x => DateTime.ParseExact(x.OrderDate, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
                     List<OrderDTO> list = new List<OrderDTO>();
@@ -274,7 +280,7 @@ namespace MyAPI.Controllers
                 {
 
                     PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
-                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, null, pf);
+                    var query = await _unitOfWork.Orders.GetAll(expression, orderBy, new List<string> { "discountCode" }, pf);
                     var result = _mapper.Map<IList<OrderDTO>>(query);
                     var count = await _unitOfWork.Orders.GetCount(expression);
                     return Ok(new { result, count });
@@ -339,6 +345,11 @@ namespace MyAPI.Controllers
             try
             {
                 var sil = await _unitOfWork.ShippingInfos.GetAll(q => q.ShipperID == shipperId&&q.Order.Status==2,null,new List<string> { "Order"});
+                foreach (var item in sil)
+                {
+                    var dc = await _unitOfWork.DiscountCodes.Get(q => q.OrderId == item.OrderId);
+                    item.Order.discountCode = dc;
+                }
 
                 return Ok(new {sil });
             }
@@ -401,8 +412,12 @@ namespace MyAPI.Controllers
             {
                 var count = await _unitOfWork.ShippingInfos.GetCount(q => q.ShipperID == shipperId && q.Order.Status == 3 || q.Order.Status == 4);
                 var sil = await _unitOfWork.ShippingInfos.GetAll(q => q.ShipperID == shipperId&&q.Order.Status==3||q.Order.Status==4 , null, new List<string> { "Order" });
-
-                 var result = _mapper.Map<IList<ShippingInfoDTO>>(sil);
+                foreach (var item in sil)
+                {
+                    var dc = await _unitOfWork.DiscountCodes.Get(q => q.OrderId == item.OrderId);
+                    item.Order.discountCode = dc;
+                }
+                var result = _mapper.Map<IList<ShippingInfoDTO>>(sil);
                  var orderedList = result.OrderByDescending(x => DateTime.ParseExact(x.deliveryDate, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ThenBy(x=>x.Id).ToList();
                 return Ok(new { sil=orderedList,count=count });
             }
@@ -649,7 +664,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpGet("sendEmailWithOrderInfo", Name = "sendEmailWithOrderInfo")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -658,12 +673,8 @@ namespace MyAPI.Controllers
 
             try
             {
-                //APIUser user = await _userManager.FindByEmailAsync(email);
-                //EmailHelper emailHelper = new EmailHelper();
-                //string emailResponse = emailHelper.SendEmailTest(email,user.DisplayName);
 
-
-                var order = await _unitOfWork.Orders.Get(q => q.Id == id);
+                var order = await _unitOfWork.Orders.Get(q => q.Id == id, new List<string> { "discountCode" });
                 Expression<Func<OrderDetail, bool>> expression = q => q.OrderId == id;
                 var query = await _unitOfWork.OrderDetails.GetAll(expression, null, new List<string> { "Product" });
                 var results = _mapper.Map<IList<FullOrderDetailDTO>>(query);
@@ -680,6 +691,70 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
+        [HttpGet("checkDiscountCode")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CheckDiscountCode(string code)
+        {
+            try
+            {
+                DateTime today = DateTime.Today;
+                var dc = await _unitOfWork.DiscountCodes.Get(q => q.Code == code);
+                if (dc==null)
+                {
+                    return Accepted(new { success = false, msg = "Mã không hợp lệ!" });
+                }
+                else if (dc.Status==1)
+                {
+                    return Accepted(new { success = false, msg = "Mã đã được sử dụng!" });
+                }
+                else if (DateTime.ParseExact(dc.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture)<today)
+                {
+                    return Accepted(new { success = false, msg = "Mã đã hết hạn!" });
+                }
+                else if (DateTime.ParseExact(dc.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) > today)
+                {
+                    return Accepted(new { success = false, msg = "Mã đã chưa thể sử dụng!" });
+                }
+                return Accepted(new { success = true, discountCode=dc });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(FinishOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPost("applyDiscountCode")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> applyDiscountCode(ApplyDiscountCode unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new {error="error" });
+            }
+            try
+            {
+                var dc = await _unitOfWork.DiscountCodes.Get(q => q.Code == unitDTO.Code);
+                dc.OrderId = unitDTO.OrderID;
+                dc.Status = 1;
+                _unitOfWork.DiscountCodes.Update(dc);
+                await _unitOfWork.Save();
+
+                return Accepted(new { success = true});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(FinishOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
     }
 
 }

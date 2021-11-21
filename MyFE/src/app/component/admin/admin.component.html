@@ -416,6 +416,7 @@
                                     <th>SDT</th>
                                     <th>Đã xác thực</th>
                                     <th>Số đơn hàng</th>
+                                    <th>Số xu tích lũy</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -450,11 +451,20 @@
                                             </span>
                                         </button>
                                     </td>
+                                    <td>
+                                   
+                                        <p>{{o.coins}} <i class="fas fa-coins"></i></p> 
+                                     
+                                     
+                                    </td>
 
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-info  " (click)="openEditUserModal(changeProfile,o)">
                                                 <i class="far fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-warning  " (click)="openEditUserCoinModal(edit_user_coins,o)">
+                                                <i class="fas fa-coins"></i>
                                             </button>
                                             <button class="btn btn-danger  "
                                                 (click)="openDeleteUserModal(deleteUser,o.id)">
@@ -692,6 +702,7 @@
                                     <th>Ngày giao</th>
                                     <th>Số SP</th>
                                     <th>Tổng tiền</th>
+                                    <th>Thanh toán</th>
                                     <th>Trạng thái</th>
                                     <th></th>
                                 </tr>
@@ -703,9 +714,10 @@
                                         <p class="text-tron text-monospace">{{o.id}}</p>
                                     </td>
                                     <td>
-                                        <p class="text-tron text-monospace">{{o.contactName}}</p>
-                                        <p class="text-tron text-monospace">{{o.address}}</p>
-                                        <p class="text-tron text-monospace">{{o.email}}</p>
+                                        <p class=" text-monospace">Tên : {{o.contactName}}</p>
+                                        <p class="text-monospace">Địa chỉ : {{o.address}}</p>
+                                        <p class=" text-monospace">Email : {{o.email}}</p>
+                                        <p class=" text-monospace">SDT : {{o.phone}}</p>
                                     </td>
                                     <td>
                                         <p class="text-tron text-monospace">{{o.orderDate}}</p>
@@ -721,9 +733,14 @@
                                     <td>
                                         <p class="text-tron text-monospace">{{o.totalItem}}</p>
                                     </td>
+                               
                                     <td>
-                                        <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
+                                        <p class="text-tron text-monospace">{{(calculateTotalPrice(o))| currency:'VND':''}} <span
                                                 style="text-decoration: underline;">đ</span></p>
+                                    </td>
+                                    <td>
+                                        <p *ngIf="o.paymentMethod=='cash'">Trả bằng tiền mặt</p>
+                                        <p *ngIf="o.paymentMethod=='vnpay'">Đã thanh toán bằng VNPay</p>
                                     </td>
                                     <td *ngIf="o.status==0">
                                         <span class="badge bg-info text-dark">Chưa duyệt</span>
@@ -1562,13 +1579,14 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let o of discountCodeList">
-                                    <th>{{o.code}}</th>
-                                    <th *ngIf="o.discountAmount!='null'">{{o.discountAmount}}đ</th>
-                                    <th *ngIf="o.discountPercent!='null'">{{o.discountPercent}}%</th>
-                                    <th>{{o.startDate}}</th>
-                                    <th>{{o.endDate}}</th>
-                                    <th>{{o.status}}</th>
-                                    <th>
+                                    <td>{{o.code}}</td>
+                                    <td *ngIf="o.discountAmount!='null'">{{o.discountAmount}}đ</td>
+                                    <td *ngIf="o.discountPercent!='null'">{{o.discountPercent}}%</td>
+                                    <td>{{o.startDate}}</td>
+                                    <td>{{o.endDate}}</td>
+                                    <td *ngIf="o.status==1"><i class="fas fa-check"></i></td>
+                                    <td *ngIf="o.status==0"><i class="fas fa-times"></i></td>
+                                    <td>
                                         <div class="btn-group">
                                             <button class="btn btn-info "
                                                 (click)="openEditDiscountCodeModal(edit_discountCode,o)">
@@ -1579,7 +1597,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
-                                    </th>
+                                    </td>
                                 </tr>
                             </tbody> 
                         </table>
@@ -2048,6 +2066,19 @@
             <p>Tổng SP : {{selectedOrder.totalItem}}</p>
             <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span
                     style="text-decoration: underline;">đ</span></p>
+            <p *ngIf="selectedOrder.shippingFee==0">Phí shipping : {{(0)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>    
+            <p *ngIf="selectedOrder.shippingFee==1">Phí shipping : +{{(15000)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>    
+            <ng-container *ngIf="selectedOrder.discountCode">
+                <p *ngIf="selectedOrder.discountCode.discountAmount!='null'">
+                    Mã giảm giá({{selectedOrder.discountCode.code}}) : - {{(selectedOrder.discountCode.discountAmount)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span> </p>
+                <p *ngIf="selectedOrder.discountCode.discountPercent!='null'"> 
+                    Mã giảm giá({{selectedOrder.discountCode.code}}) : - {{(selectedOrder.discountCode.discountPercent)}}% </p>
+            </ng-container>
+            <p>Tổng cộng : {{calculateTotalPrice(selectedOrder)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>
             <p *ngIf="selectedShippingInfo">Shipper : {{selectedShippingInfo.shipper.displayName}}</p>
             <p *ngIf="selectedShippingInfo">Ngày giao : {{selectedShippingInfo.deliveryDate}}</p>
             <table class="table">
@@ -3740,5 +3771,50 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #edit_user_coins let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa Xu cho người dùng</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf17">
+            <div class="form-group">
+                <label for="name">Mã ID của người dùng : </label>
+                <!-- <p class="text-center" *ngIf="rf3.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
+                </p> -->
+                <div class="input-group">
+                    <input id="name" class="form-control" placeholder="ID..." name="name" formControlName="userID">
+                </div>
+                <label for="uis">Số lượng xu : </label>
+                <!-- <p class="text-center" *ngIf="rf3.controls.uis?.errors?.required&&showFormError"><i
+                        class="fas fa-exclamation-triangle"></i>Product unit not
+                    valid!</p> -->
+                <div class="input-group">
+                    <input id="uis" class="form-control" placeholder="Xu" name="unit"
+                        formControlName="coins" type="number">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEdittingUserCoins">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editUserCoin()">Edit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEdittingUserCoins">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
     </div>
 </ng-template>

@@ -89,14 +89,14 @@
                         <form>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="all" [(ngModel)]="allCate"
-                                    name="allCate" (change)="filterChange(true)">
+                                    name="allCate" (change)="filterChange('all')">
                                 <label class="form-check-label">
                                     Toàn bộ
                                 </label>
                             </div>
                             <div class="form-check" *ngFor="let o of cate">
                                 <input class="form-check-input" type="checkbox" value="{{o.value}}"
-                                    [(ngModel)]="o.checked" name="{{o.value}}" (change)="filterChange(false)">
+                                    [(ngModel)]="o.checked" name="{{o.value}}" (change)="filterChange(o.value)">
                                 <label class="form-check-label">
                                     {{o.name}}
                                 </label>

@@ -1,0 +1,278 @@
+<app-nav></app-nav>
+
+
+<div class="container mt-3 animate__animated animate__bounceInLeft" *ngIf="!isLoading&&selectedTab=='xu'">
+    <div class="main-body">
+
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item"><a class="breadcrumb-link" href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page" href="javascript:void(0)"><a
+                        class="breadcrumb-link">{{userInfo.displayName}}</a></li>
+            </ol>
+        </nav>
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{{userInfo.imgUrl}}" alt="Admin" class="rounded-circle" width="150" height="150"
+                                *ngIf="userInfo.imgUrl">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
+                            <div class="container mt-3">
+                                <h4>{{userInfo.displayName}}</h4>
+                                <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
+                                <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <p>Shop Xu : {{userInfo.coins}} <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                                <button class="btn btn-danger btn-block" (click)="signOut()"><i
+                                        class="fas fa-sign-out-alt"></i>
+                                    Logout</button>
+                                <button class="btn btn-outline-info btn-block" routerLink="/password-recover"><i
+                                        class="fas fa-key"></i>
+                                    Password?</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group ">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                            <button class="btn btn-outline-primary btn-block" routerLink="/profile/{{userInfo.id}}"><i
+                                    class="fas fa-user"></i> Thông tin</button>
+
+                            <button class="btn btn-outline-primary btn-block"
+                                routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
+                                Đơn hàng</button>
+
+                            <button class="btn btn-outline-primary btn-block"
+                                routerLink="/profile/{{userInfo.id}}/favorite"><i class="far fa-heart"></i>
+                                Yêu thích</button>
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
+                                routerLink="/admin">
+                                <i class="fas fa-users-cog"></i> Quản trị viên
+                            </button>
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Employee'"
+                                routerLink="/quanly">
+                                <i class="fas fa-users-cog"></i> Quản lý shop
+                            </button>
+                            <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Shipper'"
+                                routerLink="/shipper">
+                                <i class="fas fa-truck-loading"></i> Trang giao hàng
+                            </button>
+                            <button class="btn btn-primary btn-block"><i class="fab fa-bitcoin"></i> Shop Xu
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+               <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <p class="lead">Tích lũy shop xu <i class="fas fa-coins" style="color:#8c8c1b"></i> 
+                                và sử dụng để mua hàng hoặc đổi mã giảm giá.</p>
+                            <p>Các mã giảm giá có thể đổi</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 20k" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 20 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,1)">Đổi</button>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="background-color: #235f93!important;"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 50k" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 50 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,2)">Đổi</button>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="background-color: #25d930!important"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 100k" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 100 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,3)">Đổi</button>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 10%" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 20 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,4)">Đổi</button>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="background-color: #235f93!important;"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 30%" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 50 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,5)">Đổi</button>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="input-group mb-1">
+                           
+                                <div class="input-group-append">
+                                    <span class="input-group-text" style="background-color: #25d930!important"><i class="fas fa-clipboard"></i></span>
+                                </div>
+                                <input type="text" name="" class="form-control input_user" value="" placeholder="Mã giảm giá(nếu có)"
+                                [attr.disabled]="true" value="Mã giảm giá 50%" >
+                      
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <p>Shop Xu : 120 <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
+                            </div>
+                            <button class="btn btn-danger btn-block" (click)="openExchangeModal(exchage_discountCode,6)">Đổi</button>
+                        </div>
+
+                    </div>
+                    <div class="row" *ngIf="exchangedDC">
+                        <div class="col">
+                            <p class="lead">Mã giảm giá vừa đổi </p>
+                            <hr>
+                            <p>Mã : {{exchangedDC.code}}</p>
+                            <p *ngIf="exchangedDC.discountAmount!='null'">Giảm : {{exchangedDC.discountAmount}} VND</p>
+                            <p *ngIf="exchangedDC.discountPercent!='null'">Giảm : {{exchangedDC.discountPercent}}%</p>
+                            <p>Hết hạn sử dụng : {{exchangedDC.endDate}}</p>
+                            <hr>
+                            <p>Shop đã gửi email với thông tin của mã giảm giá đến email của bạn.</p>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="loading-full" *ngIf="isLoading">
+    <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text monospace">Xin chờ 1 xíu...</p>
+</div>
+
+
+<app-footer></app-footer>
+
+
+
+
+
+<div class=" p-3 connect_nofity " *ngIf="isDisconnect">
+    <div id="liveToast" class="toast fade show p-3" role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header" style="background-color: #000000;
+        color: beige;">
+            <i class="fas fa-ban mr-2" style="color: red;"></i>
+            <strong class="me-auto"> <b>Không thể kết nối với API!</b></strong>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+            ></button> -->
+        </div>
+        <div class="toast-body">
+            Hãy kiểm tra kết nối mạng của bạn và thử tải lại trang.
+        </div>
+
+    </div>
+</div>
+
+
+
+<ng-template #exchage_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Đổi mã giảm giá này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Đổi mã giảm giá này?</p>
+        <p class="text-tron text-monospace">Mã sẽ được gửi về email của bạn.</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isExchangingDC">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="exchangeDiscountCode(exchageMode)">Đổi</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isExchangingDC">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #exchage_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Đổi mã giảm giá này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Đổi mã giảm giá này?</p>
+        <p class="text-tron text-monospace">Mã sẽ được gửi về email của bạn.</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isExchangingDC">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="exchangeDiscountCode(exchageMode)">Đổi</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isExchangingDC">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>

@@ -165,9 +165,10 @@
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
-                            <th>Phí Shiping</th>
-                            <th>Tổng cộng</th>
+                            <!-- <th>Phí Shiping</th>
+                            <th>Tổng cộng</th> -->
                             <th>Trạng thái</th>
+                            <th>Thanh toán</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -178,9 +179,10 @@
                                 <p class="text-monospace">{{o.id}}</p>
                             </td>
                             <td>
-                                <p class=" text-monospace">{{o.contactName}}</p>
-                                <p class="text-monospace">{{o.address}}</p>
-                                <p class=" text-monospace">{{o.email}}</p>
+                                <p class=" text-monospace">Tên : {{o.contactName}}</p>
+                                <p class="text-monospace">Địa chỉ : {{o.address}}</p>
+                                <p class=" text-monospace">Email : {{o.email}}</p>
+                                <p class=" text-monospace">SDT : {{o.phone}}</p>
                             </td>
                             <td>
                                 <p class="text-monospace">{{o.orderDate}}</p>
@@ -189,9 +191,9 @@
                                 <p class="text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class=" text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                <p class=" text-monospace">{{(calculateTotalPrice(o))| currency:'VND':''}}<span style="text-decoration: underline;">đ</span></p>
                             </td>
-                            <ng-container *ngIf="o.totalPrice>=200000">
+                            <!-- <ng-container *ngIf="o.totalPrice>=200000">
                                 <td>
                                     <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                 </td>
@@ -206,7 +208,7 @@
                                 <td>
                                     <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                 </td>
-                            </ng-container>
+                            </ng-container> -->
                             <td *ngIf="o.status==0">
                                 <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
@@ -221,6 +223,10 @@
                             </td>
                             <td *ngIf="o.status==4">
                                 <span class="badge bg-secondary">Hủy</span>
+                            </td>
+                            <td>
+                                <p *ngIf="o.paymentMethod=='cash'">Trả bằng tiền mặt</p>
+                                <p *ngIf="o.paymentMethod=='vnpay'">Đã thanh toán bằng VNPay</p>
                             </td>
                             <td>
                                 <button class="btn btn-warning btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
@@ -265,9 +271,10 @@
                             <th>Ngày đặt</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
-                            <th>Phí Shiping</th>
-                            <th>Tổng cộng</th>
+                            <!-- <th>Phí Shiping</th>
+                            <th>Tổng cộng</th> -->
                             <th>Trạng thái</th>
+                            <th>Thanh toán</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -278,9 +285,10 @@
                                 <p class="text-tron text-monospace">{{o.id}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{o.contactName}}</p>
-                                <p class="text-tron text-monospace">{{o.address}}</p>
-                                <p class="text-tron text-monospace">{{o.email}}</p>
+                                <p class=" text-monospace">Tên : {{o.contactName}}</p>
+                                <p class="text-monospace">Địa chỉ : {{o.address}}</p>
+                                <p class=" text-monospace">Email : {{o.email}}</p>
+                                <p class=" text-monospace">SDT : {{o.phone}}</p>
                             </td>
                             <td>
                                 <p class="text-tron text-monospace">{{o.orderDate}}</p>
@@ -289,9 +297,9 @@
                                 <p class="text-tron text-monospace">{{o.totalItem}}</p>
                             </td>
                             <td>
-                                <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                <p class="text-tron text-monospace">{{(calculateTotalPrice(o))| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                             </td>
-                            <ng-container *ngIf="o.totalPrice>=200000">
+                            <!-- <ng-container *ngIf="o.totalPrice>=200000">
                                 <td>
                                     <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                 </td>
@@ -306,7 +314,7 @@
                                 <td>
                                     <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                 </td>
-                            </ng-container>
+                            </ng-container> -->
                             <td *ngIf="o.status==0">
                                 <span class="badge bg-info text-dark">Chưa duyệt</span>
                             </td>
@@ -321,6 +329,10 @@
                             </td>
                             <td *ngIf="o.status==4">
                                 <span class="badge bg-secondary">Hủy</span>
+                            </td>
+                            <td>
+                                <p *ngIf="o.paymentMethod=='cash'">Trả bằng tiền mặt</p>
+                                <p *ngIf="o.paymentMethod=='vnpay'">Đã thanh toán bằng VNPay</p>
                             </td>
                             <td>
                                 <button class="btn btn-warning  btn-sm admin-button mr-2" (click)="openOrderInfoModal(order_info,o)">
@@ -354,8 +366,8 @@
                             <th>Ngày giao</th>
                             <th>Tổng SP</th>
                             <th>Tổng Giá</th>
-                            <th>Phí Shiping</th>
-                            <th>Tổng cộng</th>
+                            <!-- <th>Phí Shiping</th>
+                            <th>Tổng cộng</th> -->
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -368,9 +380,10 @@
                                     <p class="text-tron text-monospace">{{o.id}}</p>
                                 </td>
                                 <td>
-                                    <p class="text-tron text-monospace">{{o.contactName}}</p>
-                                    <p class="text-tron text-monospace">{{o.address}}</p>
-                                    <p class="text-tron text-monospace">{{o.email}}</p>
+                                    <p class=" text-monospace">Tên : {{o.contactName}}</p>
+                                    <p class="text-monospace">Địa chỉ : {{o.address}}</p>
+                                    <p class=" text-monospace">Email : {{o.email}}</p>
+                                    <p class=" text-monospace">SDT : {{o.phone}}</p>
                                 </td>
                                 <td>
                                     <p class="text-tron text-monospace">{{o.orderDate}}</p>
@@ -382,9 +395,9 @@
                                     <p class="text-tron text-monospace">{{o.totalItem}}</p>
                                 </td>
                                 <td>
-                                    <p class="text-tron text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+                                    <p class="text-tron text-monospace">{{(calculateTotalPrice(o))| currency:'VND':''}}<span style="text-decoration: underline;">đ</span></p>
                                 </td>
-                                <ng-container *ngIf="o.totalPrice>=200000">
+                                <!-- <ng-container *ngIf="o.totalPrice>=200000">
                                     <td>
                                         <p class=" text-monospace">{{(0)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                     </td>
@@ -399,7 +412,7 @@
                                     <td>
                                         <p class=" text-monospace">{{(o.totalPrice+shippingFee)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
                                     </td>
-                                </ng-container>
+                                </ng-container> -->
                                 <td *ngIf="o.status==3">
                                     <span class="badge bg-danger">Hoàn thành</span>
                                 </td>
@@ -425,7 +438,7 @@
 
 <ng-template #order_info let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Order Details</h4>
+        <h4 class="modal-title" id="modal-basic-title">Thông tin đơn hàng</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -439,7 +452,21 @@
         </div>
         <div class="table-responsive p-20" *ngIf="!isGettingOrderDetail">
             <p>Tổng SP : {{selectedOrder.totalItem}}</p>
-            <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></p>
+            <p>Tổng giá : {{(selectedOrder.totalPrice)| currency:'VND':''}} <span
+                    style="text-decoration: underline;">đ</span></p>
+            <p *ngIf="selectedOrder.shippingFee==0">Phí shipping : {{(0)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>    
+            <p *ngIf="selectedOrder.shippingFee==1">Phí shipping : +{{(15000)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>    
+            <ng-container *ngIf="selectedOrder.discountCode">
+                <p *ngIf="selectedOrder.discountCode.discountAmount!='null'">
+                    Mã giảm giá({{selectedOrder.discountCode.code}}) : - {{(selectedOrder.discountCode.discountAmount)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span> </p>
+                <p *ngIf="selectedOrder.discountCode.discountPercent!='null'"> 
+                    Mã giảm giá({{selectedOrder.discountCode.code}}) : - {{(selectedOrder.discountCode.discountPercent)}}% </p>
+            </ng-container>
+            <p>Tổng cộng : {{calculateTotalPrice(selectedOrder)| currency:'VND':''}} <span
+                style="text-decoration: underline;">đ</span></p>
             <table class="table">
                 <thead>
                     <tr>
@@ -454,6 +481,7 @@
                     <tr *ngFor="let od of selectedOrder.orderDetails">
                         <td><img style="height: 40px;width: 40px;" src="{{ od.product.imgUrl }}"></td>
                         <td>{{ od.product.name }}</td>
+
                         <td>
                             <div *ngIf="!od.promotionAmount&&!od.promotionPercent">
                                 {{(od.product.price)| currency:'VND':''}} <span class="currency-dis">đ</span>
@@ -477,6 +505,7 @@
                             </div>
                         </td>
                         <td>{{ od.quantity }}</td>
+                    
                         <td>
                             <div *ngIf="!od.promotionAmount&&!od.promotionPercent">
                                 <span

@@ -155,4 +155,19 @@ export class OrderService {
     let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
     return this.http.get(`${this.apiUrl}order/sendEmailWithOrderInfo?Id=${id}&email=${email}`, { headers: header })
   }
+
+
+  checkDiscountCode(code:string):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}order/checkDiscountCode?code=${code}`, { headers: header })
+  }
+
+  applyDiscountCode(code:string,orderId:number):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}order/applyDiscountCode`, {
+      code: code,
+      orderID: orderId,
+    }, { headers: header })
+  }
+
 }

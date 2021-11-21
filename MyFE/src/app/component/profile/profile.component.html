@@ -21,10 +21,11 @@
                                 *ngIf="userInfo.imgUrl">
                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
                                 class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
-                            <div class="mt-3">
+                                <div class="container mt-3">
                                 <h4>{{userInfo.displayName}}</h4>
                                 <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <p>Shop Xu : {{userInfo.coins}} <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
                                 <button class="btn btn-danger btn-block" (click)="signOut()"><i
                                         class="fas fa-sign-out-alt"></i>
                                     Logout</button>
@@ -61,7 +62,8 @@
                                 routerLink="/shipper">
                                 <i class="fas fa-truck-loading"></i> Trang giao hàng
                             </button>
-                            <button class="btn btn-outline-primary btn-block"><i class="fab fa-bitcoin"></i>Shop Xu
+                            <button class="btn btn-outline-primary btn-block"
+                            routerLink="/profile/{{userInfo.id}}/xu" ><i class="fab fa-bitcoin"></i> Shop Xu
                             </button>
                         </li>
                     </ul>

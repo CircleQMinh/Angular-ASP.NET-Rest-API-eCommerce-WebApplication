@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { DiscountCode } from 'src/app/class/discount-code';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
@@ -50,11 +51,13 @@ export class CheckoutComponent implements OnInit {
     if (!this.isLogin) {
       this.router.navigateByUrl("/cart")
     }
-    this.shippingFee=this.orderService.shippingFee
+
     if(this.totalPrice>=200000){
       this.haveFee=0
+      this.shippingFee=0
     }
     else{
+      this.shippingFee=this.orderService.shippingFee
       this.haveFee=1
     }
 
@@ -78,6 +81,15 @@ export class CheckoutComponent implements OnInit {
     this.reFillFormInfo()
     window.scrollTo(0, 0)
   }
+  
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+
+    localStorage.removeItem("DiscountCode")
+  }
+
+
   getCartInfo() {
     this.cartService.getLocalStorage()
     this.totalItem = this.cartService.totalItem
@@ -145,15 +157,21 @@ export class CheckoutComponent implements OnInit {
       else if (this.rf1.controls["billOption"].value == "vnpay") {
 
         this.saveOrderToLocal(address, today)
-        this.orderService.getVNPayURL(this.totalPrice ).subscribe(
-          data => {
-            window.location.href = data.paymentUrl
-          },
-          error => {
-            console.log(error)
-            this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
-          }
-        )
+        let fullprice = this.calculateFullPrice()
+        if(fullprice<20000){
+          this.toast.info("VN Pay không hỗ trợ thanh toán dưới 20.000VND!")
+        }
+        else{
+          this.orderService.getVNPayURL(fullprice).subscribe(
+            data => {
+              window.location.href = data.paymentUrl
+            },
+            error => {
+              console.log(error)
+              this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
+            }
+          )
+        }
       }
       else {
 
@@ -223,7 +241,8 @@ export class CheckoutComponent implements OnInit {
           //console.log(data)
           if (i == this.cartItems.length - 1) {
             window.scrollTo(0, 0)
-            this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
+            this.applyDiscountCode(orderID)
+          
             this.isDone = true
           }
         },
@@ -268,4 +287,36 @@ export class CheckoutComponent implements OnInit {
     ) 
   }
 
+  applyDiscountCode(orderID:number){
+    if(localStorage.getItem("DiscountCode")){
+      let dc:DiscountCode = JSON.parse(localStorage.getItem("DiscountCode")!)
+      this.orderService.applyDiscountCode(dc.code,orderID).subscribe(
+        data=>{
+          this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
+        },
+        error=>{
+          console.log(error)
+        }
+      )
+    }
+    else{
+      this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
+    }
+  }
+
+  calculateFullPrice():number{
+    if(localStorage.getItem("DiscountCode")){
+      let dc:DiscountCode = JSON.parse(localStorage.getItem("DiscountCode")!)
+      if(dc.discountAmount!='null'){
+        if(this.totalPrice+this.shippingFee-Number(dc.discountAmount)<0){
+          return 0
+        }
+        return this.totalPrice+this.shippingFee-Number(dc.discountAmount)
+      }
+      return (this.totalPrice+this.shippingFee)-(this.totalPrice+this.shippingFee)*Number(dc.discountPercent)/100
+    }
+    else{
+      return this.totalPrice+this.shippingFee
+    }
+  }
 }

@@ -28,4 +28,12 @@ namespace MyAPI.DTOs
         public int Status { get; set; }
         public string Code { get; set; }
     }
+
+    public class ApplyDiscountCode { 
+
+        public string Code { get; set; }
+        public int OrderID { get; set; }
+    }
+
+    
 }

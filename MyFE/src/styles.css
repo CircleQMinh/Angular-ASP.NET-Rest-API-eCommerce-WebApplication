@@ -275,7 +275,7 @@ ol.breadcrumb > li{white-space:nowrap;}
 .brk-cart__count button{width:16px;height:24px;position:relative;}
 .brk-cart__count button i{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
 .brk-cart__footer{display:flex;flex-wrap:wrap;border-bottom:1px solid #e9e9e9;}
-.brk-cart__footer-coupon{flex:0 0 525px;max-width:525px;padding:65px 55px 65px 40px;}
+.brk-cart__footer-coupon{flex:0 0 525px;max-width:525px;padding:65px 55px 65px 40px;background-color: #80adde;}
 @media (max-width:1229px){
 .brk-cart__footer-coupon{flex:0 0 450px;max-width:450px;padding:65px 35px;}
 }
@@ -286,7 +286,8 @@ ol.breadcrumb > li{white-space:nowrap;}
 .brk-cart__footer-coupon{padding:20px 15px;}
 }
 .brk-cart__footer-coupon .btn-lg{padding:15px 45px;}
-.brk-cart__footer-total{flex-basis:0;flex-grow:1;max-width:100%;background-color:#f8f9fb;border-left:1px solid #e9e9e9;padding:28px 15px 28px 73px;}
+.brk-cart__footer-total{flex-basis:0;flex-grow:1;max-width:100%;background-color: #efffa1;
+    border-left: 1px solid #000000;padding:28px 15px 28px 73px;}
 @media (max-width:1229px){
 .brk-cart__footer-total{padding:28px 15px 28px 35px;}
 }

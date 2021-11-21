@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { DiscountCode } from 'src/app/class/discount-code';
 import { Order } from 'src/app/class/order';
 import { OrderDetail } from 'src/app/class/order-detail';
 import { User } from 'src/app/class/user';
@@ -38,6 +39,8 @@ export class ProfileOrderInfoComponent implements OnInit {
   isCancelingOrder=false
   rf1!: FormGroup;
   shippingFee:number=0
+
+  discountCode!:DiscountCode
   
   constructor(private authService: AuthenticationService, private toast: HotToastService, private router: Router,
     private route: ActivatedRoute, private orderService: OrderService, private modalService: NgbModal,
@@ -74,7 +77,9 @@ export class ProfileOrderInfoComponent implements OnInit {
           this.currentOrder = element
         }
       });
-      this.shippingFee=this.orderService.shippingFee
+      if(this.currentOrder.totalPrice<200000){
+        this.shippingFee=this.orderService.shippingFee
+      }
       this.isLoading = true
       this.getDetail()
       this.autoInterval = setInterval(() => {
@@ -120,6 +125,8 @@ export class ProfileOrderInfoComponent implements OnInit {
         //console.log(this.currentOrderDetails)
         //console.log(this.userInfo)
        // console.log(this.currentOrder)
+        this.discountCode = data.discountCode
+        console.log(this.discountCode)
         this.isLoading = false
       },
       error => {
@@ -192,6 +199,21 @@ export class ProfileOrderInfoComponent implements OnInit {
     }
     else{
       this.toast.error("Hãy nhập lý do hủy đơn hàng!")
+    }
+  }
+
+  calculateFullPrice():number{
+    if(this.discountCode){
+      if(this.discountCode.discountAmount!='null'){
+        if(this.currentOrder.totalPrice+this.shippingFee-Number(this.discountCode.discountAmount)<0){
+          return 0
+        }
+        return this.currentOrder.totalPrice+this.shippingFee-Number(this.discountCode.discountAmount)
+      }
+      return (this.currentOrder.totalPrice+this.shippingFee)-(this.currentOrder.totalPrice+this.shippingFee)*Number(this.discountCode.discountPercent)/100
+    }
+    else{
+      return this.currentOrder.totalPrice+this.shippingFee
     }
   }
 }

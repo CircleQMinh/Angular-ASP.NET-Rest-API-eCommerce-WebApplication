@@ -1,3 +1,4 @@
+import { DiscountCode } from "./discount-code"
 import { OrderDetail } from "./order-detail"
 import { User } from "./user"
 
@@ -18,4 +19,5 @@ export class Order {
     note!:string
     orderDetails!:OrderDetail[]
     shippingFee!:number
+    discountCode!:DiscountCode
 }

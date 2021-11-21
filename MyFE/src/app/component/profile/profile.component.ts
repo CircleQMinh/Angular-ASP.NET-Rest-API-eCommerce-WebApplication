@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit {
         // this.getOrderDetails()
         // this.getPagedOrder()
         // this.getPagedFavProduct()
-        //console.log(this.userInfo)
+        console.log(this.userInfo)
         localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
         this.isDisconnect=false
