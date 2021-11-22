@@ -1,6 +1,6 @@
 # Angular-ASP.NET-Rest-API-eCommerce-WebApplication
-Host tại : http://circleqm31052000-001-site1.itempurl.com/#/home <br>
-Api tại : http://circleqm31052000-001-site1.itempurl.com/swagger/index.html <br>
+Host tại : http://minh18110320-001-site1.etempurl.com/#/home <br>
+Api tại : http://minh18110320-001-site1.etempurl.com/swagger/index.html <br>
 Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
 24-08-2021 : setup API, trang chủ.<br>
 25-08-2021 : trang thông tin sản phẩm, chức năng thêm sản phẩm vào giỏ hàng, trang thông tin giỏ hàng.<br>
