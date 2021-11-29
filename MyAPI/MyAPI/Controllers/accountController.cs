@@ -219,7 +219,17 @@ namespace MyAPI.Controllers
                 var roles = await _userManager.GetRolesAsync(u);
                 var user = _unitOfWork.Users.Get(q=>q.Id==id, new List<string> { "Orders", "FavoriteProducts" });
                 var rs = _mapper.Map<UserOrderInfoDTO>(user.Result);
-                return Ok(new {roles,user=rs });
+
+
+                var promoInfo = new List<PromotionInfoDTO>();
+
+                foreach (var item in rs.FavoriteProducts)
+                {
+                    var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+                return Ok(new {roles,user=rs,promoInfo });
             }
             catch (Exception ex)
             {
@@ -534,6 +544,8 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
+
+
 
     }
 }

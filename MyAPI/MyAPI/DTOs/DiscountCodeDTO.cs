@@ -28,7 +28,14 @@ namespace MyAPI.DTOs
         public int Status { get; set; }
         public string Code { get; set; }
     }
-
+    public class AutoCreateDiscountCodeDTO
+    {
+        public string DiscountPercent { get; set; }
+        public string DiscountAmount { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public int Number { get; set; }
+    }
     public class ApplyDiscountCode { 
 
         public string Code { get; set; }

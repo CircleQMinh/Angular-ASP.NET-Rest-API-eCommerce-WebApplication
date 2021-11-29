@@ -29,18 +29,11 @@
                             <a routerLink="/search" ngbDropdownItem><i class="fas fa-clipboard-list"></i>
                                 Toàn bộ</a>
                             <hr>
-                            <a (click)="goToSearch('Fruit')"  ngbDropdownItem><i class="fas fa-apple-alt"></i>
-                                Trái cây</a>
-                            <a (click)="goToSearch('Vegetable')"  ngbDropdownItem><i class="fas fa-carrot"></i>
-                                Rau củ</a>
-                            <a (click)="goToSearch('Confectionery')"  ngbDropdownItem><i class="fas fa-candy-cane"></i>
-                                Bánh kẹo</a>
-                            <a (click)="goToSearch('Snack')"  ngbDropdownItem><i class="fas fa-cookie-bite"></i>
-                                Snack</a>
-                            <a (click)="goToSearch('AnimalProduct')"  ngbDropdownItem><i class="fas fa-drumstick-bite"></i>
-                                Thịt tươi sống</a>
-                            <a (click)="goToSearch('CannedFood')"  ngbDropdownItem><i class="fas fa-spray-can"></i>
-                                Đồ hộp</a>
+                            <ng-container *ngFor="let o of categoryList">
+                                <a (click)="goToSearch(o.name)"  ngbDropdownItem ><i class="fas fa-play"></i>
+                                    {{o.name}}</a>
+                            </ng-container>
+
                         </div>
 
                     </div>

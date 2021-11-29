@@ -82,4 +82,16 @@ namespace MyAPI.DTOs
         public int Id { get; set; }
         public string Note { get; set; }
     }
+
+    public class GetShopCoinsDTO
+
+    {
+        public int OrderId { get; set; }
+        public string UserId { get; set; }
+    }
+    public class GetShopCoinsReviewDTO
+
+    {
+        public string UserId { get; set; }
+    }
 }

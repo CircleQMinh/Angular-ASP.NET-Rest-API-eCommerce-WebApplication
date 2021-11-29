@@ -10,7 +10,7 @@
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/home">Home</a></li>
         <li class="breadcrumb-item"><a class="breadcrumb-link" routerLink="/products">Sản phẩm</a></li>
         <li class="breadcrumb-item"><a class="breadcrumb-link"
-                routerLink="/{{product.category|lowercase}}">{{displayCategory}}</a></li>
+                routerLink="/{{product.category.name|lowercase}}">{{displayCategory}}</a></li>
 
         <li class="breadcrumb-item active" aria-current="page"><a class="breadcrumb-link">{{product.name}}</a></li>
     </ol>
@@ -19,6 +19,8 @@
             <section class="page-content" id="content">
                 <div class="images-container">
                     <div class="product-cover">
+                        <span class="sold-out-overlay" *ngIf="product.unitInStock==0" 
+                        ngbTooltip="Sản phẩm đã hết hàng."  ><i class="fas fa-ban"></i> Hết hàng</span>
                         <ul class="product-flags">
                         </ul>
                         <!-- <img id="zoom_product" data-type-zoom="" class="js-qv-product-cover img-fluid"
@@ -48,36 +50,11 @@
                     <div class="current-price">
                         <span class="pro-price">
                             <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='Fruit'">
+                                >
                                 <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-apple-alt"></i> Trái cây</span>
+                                    style="color: darkslateblue;"> {{product.category.name}}</span>
                             </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='Vegetable'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-carrot"></i> Rau củ</span>
-                            </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='Confectionary'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-candy-cane"></i> Bánh kẹo</span>
-                            </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='Snack'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-cookie-bite"></i> Snack</span>
-                            </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='AnimalProduct'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-drumstick-bite"></i> Sản phẩm dộng
-                                    vật</span>
-                            </p>
-                            <p class="mr-2" style="margin-top: -25px;margin-bottom: -45px;"
-                                *ngIf="product.category=='CannedFood'">
-                                <i class="far fa-list-alt" style="height: 23px;width: 23px;"></i> Loại sản phẩm : <span
-                                    style="color: darkslateblue;"><i class="fas fa-spray-can"></i> Đồ hộp</span>
-                            </p>
+                
                         </span>
                         <div *ngIf="!promoInfo">
                             <span class="pro-price">
@@ -141,8 +118,11 @@
                     </section>
                     <div class="btn-group" style="margin-top: -50px;">
 
-                        <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)"><i
+                        <button class="btn btn-round btn-info" type="button" (click)="addToCart(product)" *ngIf="product.unitInStock!=0"><i
                                 class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                        </button>
+                        <button class="btn btn-round btn-info" type="button" (click)="alertSoldOut()" *ngIf="product.unitInStock==0"><i
+                            class="fa fa-shopping-cart"></i> Thêm vào giỏ
                         </button>
                         <button class="btn btn-round btn-danger" type="button" (click)="addToFav(product)"><i
                                 class="far fa-heart"></i> Yêu thích

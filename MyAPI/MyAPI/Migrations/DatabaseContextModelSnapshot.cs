@@ -63,29 +63,29 @@ namespace MyAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "411a0993-9ce4-4027-9d3a-7fbe10bb3c95",
-                            ConcurrencyStamp = "20dfdc14-ba10-40af-b2ca-0ed2a131ac18",
+                            Id = "254e98e7-ec6f-4b75-81a8-3655ea6089de",
+                            ConcurrencyStamp = "bf985721-1447-4ba1-abc4-4f7ad5a8fa5b",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "73316754-b454-480c-be66-2b06dc0e0522",
-                            ConcurrencyStamp = "b87f2a4f-e105-426f-ad4c-b2ce808667d6",
+                            Id = "3c7f1e45-20a0-4795-adad-ce383d2421f3",
+                            ConcurrencyStamp = "a1e8efea-a417-4cc7-9f07-5f5c53c5f04f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "a671cb66-ab05-46cc-85e1-ec0a309efa34",
-                            ConcurrencyStamp = "c2b3a50e-ba59-41f1-9e31-ec585e1ddd00",
+                            Id = "9957d56b-01e7-47ee-8f7a-e2f63ee06d79",
+                            ConcurrencyStamp = "b2ee7e88-4405-408c-8893-6d744bfdd2af",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "64ef4495-6e73-48fe-be16-8c2b7d51eca1",
-                            ConcurrencyStamp = "16518563-2fd3-4ac0-9f8b-271de2c422e7",
+                            Id = "f1353975-01cc-41b0-8a1b-ff348284a943",
+                            ConcurrencyStamp = "69dd8bf8-56b4-4806-80e3-ab570ec011d6",
                             Name = "Shipper",
                             NormalizedName = "SHIPPER"
                         });
@@ -269,6 +269,21 @@ namespace MyAPI.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MyAPI.Data.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("MyAPI.Data.DiscountCode", b =>
                 {
                     b.Property<int>("Id")
@@ -429,8 +444,8 @@ namespace MyAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -454,6 +469,8 @@ namespace MyAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -705,6 +722,15 @@ namespace MyAPI.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MyAPI.Data.Product", b =>
+                {
+                    b.HasOne("MyAPI.Data.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("MyAPI.Data.PromotionInfo", b =>

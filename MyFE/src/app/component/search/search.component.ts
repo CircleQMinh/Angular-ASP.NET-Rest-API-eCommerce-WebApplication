@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
 import { Location } from '@angular/common';
+import { Category } from 'src/app/class/category';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -16,57 +17,39 @@ export class SearchComponent implements OnInit {
   isLoading = false
   keyword: any
 
-  cate = [
-    { name: 'Trái cây', value: 'Fruit', checked: false },
-    { name: 'Rau củ', value: 'Vegetable', checked: false },
-    { name: 'Bánh kẹo', value: 'Confectionery', checked: false },
-    { name: 'Snack', value: 'Snack', checked: false },
-    { name: 'Thịt tươi sống', value: 'AnimalProduct', checked: false },
-    { name: 'Đồ hộp', value: 'CannedFood', checked: false }
-  ]
   defaultPriceRange = ["0,20000", "20000,40000", "40000,120000", "120000,999999", "0,999999"]
 
   allCate = false
 
   priceMin: any
   priceMax: any
-  priceRange: any = "0,999999"
+  priceRange: any = "0,99999999"
   stringCate: string = ""
-  tag:string[] =["all"]
+  tag: string[] = ["all"]
   onPromoOnly = false
 
   products: Product[] = []
   promoInfo: PromotionInfo[] = []
 
-  pagedProduct:Product[]=[]
+  pagedProduct: Product[] = []
 
   isDisconnect = false
   autoInterval: any
 
-  pageNumber:number=1
-  pageSize:number=10
+  pageNumber: number = 1
+  pageSize: number = 10
+
+  categoryList:Category[]=[]
 
   constructor(private productService: ProductService, private toast: HotToastService,
     private cartService: CartService, private authService: AuthenticationService) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.isLoading = true
+    this.getCategory()
 
-    if(localStorage.getItem("searchCate")){
-      let a = localStorage.getItem("searchCate")
-      console.log(a)
-      localStorage.removeItem("searchCate")
-      for(let i=0;i<this.cate.length;i++){
-        if(a==this.cate[i].value){
-          this.cate[i].checked=true
-        }
-      }
-      this.stringCate=a!
-    }
-    else{
-      this.allCate = true
-      this.stringCate = "all"
-    }
+
+
     this.priceRange = "0,999999"
     this.keyword = ""
     if(localStorage.getItem("searchKeyWord")){
@@ -80,12 +63,15 @@ export class SearchComponent implements OnInit {
       this.tag.push(a!)
       localStorage.removeItem("searchTag")
     }
-    this.findProduct()
+
+
+
 
     //console.log(this.keyword)
     this.autoInterval = setInterval(() => {
+      //this.getCategory()
       this.findProduct()
-    }, 5000)
+    }, 3000)
     window.scrollTo(0, 0)
   }
   ngOnDestroy(): void {
@@ -95,17 +81,48 @@ export class SearchComponent implements OnInit {
       clearInterval(this.autoInterval);
       console.log("Xóa interval search!")
     }
-    //localStorage.removeItem("searchCate")
+    localStorage.removeItem("searchCate")
   }
+
+  getCategory(){
+    this.productService.getCategory().subscribe(
+      data=>{
+        this.isDisconnect = false
+        this.categoryList=data.cate
+        if(localStorage.getItem("searchCate")){
+          let a = localStorage.getItem("searchCate")
+          //console.log(a)
+          localStorage.removeItem("searchCate")
+          for(let i=0;i<this.categoryList.length;i++){
+            if(a==this.categoryList[i].name){
+              this.categoryList[i].checked=true
+            }
+          }
+          this.stringCate=a!
+        }
+        else{
+          this.allCate = true
+          this.stringCate = "all"
+        }
+        this.findProduct()
+      },
+      error=>{
+        console.log(error)
+        this.isDisconnect = true
+      }
+    )
+  }
+
   findProduct() {
-  
-    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate,this.tag).subscribe(
+
+    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate, this.tag).subscribe(
       data => {
         this.isDisconnect = false
         this.products = data.result
+        //console.log(this.products)
         this.promoInfo = data.promoInfo
-        for(let i=0;i<this.products.length;i++){
-          this.products[i].promoInfo=this.promoInfo[i]
+        for (let i = 0; i < this.products.length; i++) {
+          this.products[i].promoInfo = this.promoInfo[i]
         }
         this.getPagedProduct()
         //console.log(this.products)
@@ -137,8 +154,8 @@ export class SearchComponent implements OnInit {
       else {
         this.allCate = false
       }
-      this.cate.forEach(element => {
-        if (element.value != name) {
+      this.categoryList.forEach(element => {
+        if (element.name != name) {
           element.checked = false
         }
       });
@@ -155,7 +172,7 @@ export class SearchComponent implements OnInit {
     // }).toString();
     // //console.log(url)
     // this.location.go(url)
-    this.isLoading=true
+    this.isLoading = true
     this.findProduct()
     // this.router.navigateByUrl('/', { skipLocationChange: true })
     //   .then(() => this.router.navigate([`/search`], { queryParams: { keyword: this.keyword,category: this.stringCate,priceRange:this.priceRange } }));
@@ -168,7 +185,7 @@ export class SearchComponent implements OnInit {
           this.toast.error("Khoảng giá không hợp lệ")
         }
         else {
-          this.isLoading=true
+          this.isLoading = true
           let newRange = String(this.priceMin) + "," + String(this.priceMax)
           this.priceRange = newRange
           this.findProduct()
@@ -192,28 +209,28 @@ export class SearchComponent implements OnInit {
     this.newSearch()
 
   }
-  removeTag(t:any){
-    this.isLoading=true
-    for(let i=0;i<this.tag.length;i++){
-      if(this.tag[i]==t){
+  removeTag(t: any) {
+    this.isLoading = true
+    for (let i = 0; i < this.tag.length; i++) {
+      if (this.tag[i] == t) {
         this.tag.splice(i, 1);
         break
       }
     }
-    if(this.tag.length==0){
-      this.tag=["all"]
+    if (this.tag.length == 0) {
+      this.tag = ["all"]
     }
     this.findProduct()
   }
   removeCate(c: any) {
     this.isLoading = true
     this.stringCate = ""
-    for (let i = 0; i < this.cate.length; i++) {
-      if (this.cate[i].name == c) {
-        this.cate[i].checked = false
+    for (let i = 0; i < this.categoryList.length; i++) {
+      if (this.categoryList[i].name == c) {
+        this.categoryList[i].checked = false
       }
     }
-    let listCate = this.cate.filter(opt => opt.checked).map(opt => opt.value)
+    let listCate = this.categoryList.filter(opt => opt.checked).map(opt => opt.name)
     if (listCate.length == 0) {
       listCate.push("all")
       this.allCate = true
@@ -226,21 +243,21 @@ export class SearchComponent implements OnInit {
     this.tag = ["all"]
     this.findProduct()
   }
-  removePriceRange(){
-    this.isLoading=true
-    this.priceRange='0,999999'
+  removePriceRange() {
+    this.isLoading = true
+    this.priceRange = '0,999999'
     this.findProduct()
   }
-  resetFilter(){
-    this.isLoading=true
+  resetFilter() {
+    this.isLoading = true
     this.allCate = true
     this.stringCate = "all"
     this.priceRange = "0,999999"
     this.keyword = ""
-    this.tag=["all"]
-    this.onPromoOnly=false
-    for(let i=0;i<this.cate.length;i++){
-      this.cate[i].checked=false
+    this.tag = ["all"]
+    this.onPromoOnly = false
+    for (let i = 0; i < this.categoryList.length; i++) {
+      this.categoryList[i].checked = false
     }
     this.findProduct()
   }
@@ -293,5 +310,8 @@ export class SearchComponent implements OnInit {
   }
   scrollToTop() {
     //window.scrollTo(0, 0)
+  }
+  alertSoldOut(){
+    this.toast.info("Sản phẩm đã hết hàng!")
   }
 }

@@ -121,11 +121,15 @@ export class ProductInfoComponent implements OnInit {
       data => {
         //console.log(data)
         this.product = data.result
+        if(this.product.status==0){
+          this.router.navigateByUrl("/error")
+        }
         this.product.reviews = data.reviews
-        //console.log(this.product.reviews)
+        //console.log(this.product)
         this.product.tags=data.tags
-        this.displayCategory = this.getDisplayCategory(this.product.category)
+        this.displayCategory = this.product.category.name
         this.promoInfo=data.promoInfo
+        this.product.promoInfo=data.promoInfo
         this.getProductRating()
         this.product.reviews.sort((a, b) => {
           var c: any = new Date(a.date);
@@ -156,13 +160,17 @@ export class ProductInfoComponent implements OnInit {
       data => {
         //console.log(data)
         this.product = data.result
+        if(this.product.status==0){
+          this.router.navigateByUrl("/error")
+        }
         this.product.reviews = data.reviews
         this.product.tags=data.tags
-        this.displayCategory = this.getDisplayCategory(this.product.category)
+        this.displayCategory = this.product.category.name
         this.promoInfo=data.promoInfo
         // console.log(this.product)
         this.getRandomProduct()
         this.getProductRating() ///khác chỗ này
+
         this.product.reviews.sort((a, b) => {
           var c: any = new Date(a.date);
           var d: any = new Date(b.date);
@@ -253,7 +261,7 @@ export class ProductInfoComponent implements OnInit {
   getRandomProduct() {
 
     this.randomProducts = []
-    this.proService.getRandomProduct(this.product.id,this.product.category,5).subscribe(
+    this.proService.getRandomProduct(this.product.id,this.product.category.name,5).subscribe(
       data=>{
         this.randomProducts=data.result
       },
@@ -414,5 +422,9 @@ export class ProductInfoComponent implements OnInit {
     else{
       return false
     }
+  }
+
+  alertSoldOut(){
+    this.toast.info("Sản phẩm đã hết hàng!")
   }
 }

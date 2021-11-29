@@ -50,11 +50,11 @@ export class ProfileFavoriteComponent implements OnInit {
     }
     else {
       this.userInfo = JSON.parse(localStorage.getItem("user-info")!)
-      this.getPagedFavProduct()
-
+      //this.getPagedFavProduct()
+      this.getUserInfo()
       this.autoInterval = setInterval(() => {
         this.getUserInfo()
-        this.getPagedFavProduct()
+      
         //console.log("beep")
       }, 5000)
     }
@@ -66,7 +66,6 @@ export class ProfileFavoriteComponent implements OnInit {
       clearInterval(this.autoInterval);
 
     }
-
   }
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
@@ -76,19 +75,30 @@ export class ProfileFavoriteComponent implements OnInit {
         this.userInfo = data.user
         this.userInfo.roles = data.roles
         this.isDisconnect = false
-        //console.log(this.userInfo)
-        // this.getOrderDetails()
-        // this.getPagedOrder()
-        // this.getPagedFavProduct()
-        // //console.log(this.userInfo)
+       
+        for(let i=0;i<this.user.favoriteProducts.length;i++){
+          this.userInfo.favoriteProducts[i].promoInfo=data.promoInfo[i]
+        }
+        console.log(this.user.favoriteProducts)
+        this.getPagedFavProduct()
+
         localStorage.setItem("user-info", JSON.stringify(this.userInfo))
         //this.isLoading = false
       },
       error => {
         console.log(error)
         this.isDisconnect = true
+        // this.router.navigateByUrl("/login")
+        // this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
       }
     )
+  }
+  toNumber(string: string): number {
+    return Number(string)
+  }
+  openProductUrlInNewWindow(id: any) {
+
+    window.open(`/#/product/${id}`, '_blank');
   }
   getPagedFavProduct() {
     this.pagedFavProduct = []
@@ -98,6 +108,7 @@ export class ProfileFavoriteComponent implements OnInit {
       }
 
     }
+    console.log(this.pagedFavProduct)
   }
   removeFromFav(pro: Product) {
     this.authService.removeFromFav(this.userInfo.id, pro.id).subscribe(
@@ -140,5 +151,8 @@ export class ProfileFavoriteComponent implements OnInit {
     this.user = this.authService.user
     this.router.navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigateByUrl(a))
+  }
+  alertSoldOut(){
+    this.toast.info("Sản phẩm đã hết hàng!")
   }
 }

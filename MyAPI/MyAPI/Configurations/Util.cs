@@ -75,6 +75,10 @@ namespace MyAPI.Configurations
                     worth -= worth * double.Parse(o.discountCode.DiscountPercent) / 100;
                 }
             }
+            if (worth<0)
+            {
+                worth = 0;
+            }
             return worth;
         }
 

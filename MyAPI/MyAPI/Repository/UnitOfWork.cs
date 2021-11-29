@@ -21,6 +21,8 @@ namespace MyAPI.Repository
         private IGenericRepository<PromotionInfo> _promotionInfo;
         private IGenericRepository<Tag> _tag;
         private IGenericRepository<DiscountCode> _discountcode;
+
+        private IGenericRepository<Category> _category;
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -36,7 +38,7 @@ namespace MyAPI.Repository
         public IGenericRepository<Promotion> Promotions => _promotion ??= new GenericRepository<Promotion>(_context);
         public IGenericRepository<PromotionInfo> PromotionInfos => _promotionInfo ??= new GenericRepository<PromotionInfo>(_context);
         public IGenericRepository<Tag> Tags => _tag ??= new GenericRepository<Tag>(_context);
-
+        public IGenericRepository<Category> Categories => _category ??= new GenericRepository<Category>(_context);
         public IGenericRepository<DiscountCode> DiscountCodes => _discountcode ??= new GenericRepository<DiscountCode>(_context);
         public void Dispose()
         {

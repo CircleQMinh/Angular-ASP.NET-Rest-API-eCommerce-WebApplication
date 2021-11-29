@@ -10,8 +10,8 @@ export class OrderService {
 
   shippingFee:number = 15000
 
-  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
-  // hostUrl:string="http://circleqm31052000-001-site1.itempurl.com/#/"
+  // apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
+  // hostUrl:string="http://minh18110320-001-site1.etempurl.com/#/"
 
   hostUrl:string="http://localhost:4200/#/"
   apiUrl: string = "https://localhost:44324/api/";
@@ -60,7 +60,7 @@ export class OrderService {
       totalItem: totalItem,
       totalPrice: totalPrice,
       note: note,
-      status: 1,
+      status: 0,
       shippingFee: shippingFee
     }, { headers: header })
   }
@@ -169,5 +169,11 @@ export class OrderService {
       orderID: orderId,
     }, { headers: header })
   }
-
+  getShopCoins(userID:string,orderId:number):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}order/getShopCoins`, {
+      userID: userID,
+      orderID: orderId,
+    }, { headers: header })
+  }
 }

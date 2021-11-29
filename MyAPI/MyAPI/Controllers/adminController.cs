@@ -332,10 +332,10 @@ namespace MyAPI.Controllers
                 }
                 if (category != "all")
                 {
-                    expression = q => q.Category == category;
+                    expression = q => q.Category.Name == category;
                 }
                 PaginationFilter pf = new PaginationFilter(pageNumber, pageSize);
-                var query = await _unitOfWork.Products.GetAll(expression, orderBy, null, pf);
+                var query = await _unitOfWork.Products.GetAll(expression, orderBy, new List<string> {"Category" }, pf);
                 var result = _mapper.Map<IList<ProductDTO>>(query);
                 var count = await _unitOfWork.Products.GetCount(expression);
                 var saleNum = new List<int>();
@@ -781,7 +781,7 @@ namespace MyAPI.Controllers
 
                 for (int i=0;i<cate.Count;i++)
                 {
-                    var count = await _unitOfWork.Products.GetCount(q => q.Category == cate[i]);
+                    var count = await _unitOfWork.Products.GetCount(q => q.Category.Name == cate[i]);
                     var dic = new Dictionary<string, string>();
                     dic.Add("name", cateVN[i]);
                     dic.Add("value", count.ToString());
@@ -806,24 +806,25 @@ namespace MyAPI.Controllers
         {
             try
             {
-                List<string> cate = new List<string> { "Fruit", "Vegetable", "Confectionery", "Snack", "AnimalProduct", "CannedFood" };
-                List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
+                var cate = await _unitOfWork.Categories.GetAll(null, null, null);
 
                 var pro = await _unitOfWork.OrderDetails.GetAll(q => q.Order.Status == 3, null, new List<string> { "Product"});
                 var pro_map = _mapper.Map<IList<TKOrderDetailDTO>>(pro);
-
+                
                 var result = new List<TKOrderDetailDTO>();
                 var listCate = new List<Dictionary<string, string>>();
                 for (int i=0;i<cate.Count;i++)
                 {
                     var dic = new Dictionary<string, string>();
-                    dic.Add("name", cate[i]);
+                    dic.Add("name", cate[i].Name);
                     dic.Add("value", 0.ToString());
                     listCate.Add(dic);
                 }
 
                 foreach (var item in pro_map)
                 {
+                    var product = await _unitOfWork.Products.Get(q => q.Id == item.ProductId, new List<string> { "Category" });
+                    item.Product = product;
                     var exist = false;
 
                     for (int i=0;i<result.Count;i++)
@@ -851,17 +852,17 @@ namespace MyAPI.Controllers
 
                     for (int i=0;i<listCate.Count;i++)
                     {
-                        if (item.Product.Category==listCate[i]["name"])
+                        if (item.Product.Category.Name==listCate[i]["name"])
                         {
                             listCate[i]["value"] = (int.Parse(listCate[i]["value"])+item.Quantity).ToString();
                         }
                     }
 
                 }
-                for (int i=0;i<listCate.Count;i++)
-                {
-                    listCate[i]["name"] = cateVN[i];
-                }
+                //for (int i=0;i<listCate.Count;i++)
+                //{
+                //    listCate[i]["name"] = cate[i].Name;
+                //}
                 result.Sort((a,b) => b.Quantity-a.Quantity);
                 var maxCount = result.Max(q => q.Quantity);
                 return Accepted(new { result=result.Take(top),cateCount=listCate,maxCount });
@@ -1203,11 +1204,6 @@ namespace MyAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }
-
-
-
-
-
 
         [HttpPost("addProductTag", Name = "addProductTag")]
         //[Authorize(Roles = "Administrator")]
@@ -1606,6 +1602,195 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditUserCoins)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpGet("getProductWithNoPromotion", Name = "getProductWithNoPromotion")]
+        //[Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProductWithNoPromotion(string category)
+        {
+            try
+            {
+                Expression<Func<Product, bool>> expression = null;
+                if (category!="all")
+                {
+                    expression = q => q.Category.Name == category;
+                }
+
+                var query = await _unitOfWork.Products.GetAll(expression, null, null);
+                var pros = _mapper.Map<IList<ProductDTO>>(query);
+                var result = new List<ProductDTO>();
+
+                foreach (var item in pros)
+                {
+                    var promo = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id);
+                    if (promo==null)
+                    {
+                        result.Add(item);
+                    }
+                }
+                return Accepted(new { success=true,result});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAuthorizeHttp)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPost("autoCreateDiscountCode")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AutoCreateDiscountCode([FromBody] AutoCreateDiscountCodeDTO unitDTO)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(AutoCreateDiscountCode)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                Util util = new Util();
+                List<DiscountCode> dclist = new List<DiscountCode>();
+                for (int i=0;i<unitDTO.Number;i++)
+                {
+                    var dc = new DiscountCode();
+                    dc.Code = util.RandomString(12);
+                    dc.Status = 0;
+                    dc.StartDate = unitDTO.StartDate;
+                    dc.EndDate = unitDTO.EndDate;
+                    if (unitDTO.DiscountAmount!="null")
+                    {
+                        dc.DiscountAmount = unitDTO.DiscountAmount;
+                        dc.DiscountPercent = "null";
+                    }
+                    else
+                    {
+                        dc.DiscountPercent = unitDTO.DiscountPercent;
+                        dc.DiscountAmount = "null";
+                    }
+                    try
+                    {
+                        dclist.Add(dc);
+                        await _unitOfWork.DiscountCodes.Insert(dc);
+                        await _unitOfWork.Save();
+                    }
+                    catch (Exception)
+                    {
+                        i--;
+                    }
+                }
+
+                return Accepted(new { success = true ,dclist});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(AutoCreateDiscountCode)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+        [HttpPost("createCategory")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateCategory(CreateCategoryDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(CreateCategory)}");
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var cate = new Category();
+                cate.Name = unitDTO.Name;
+
+                await _unitOfWork.Categories.Insert(cate);
+                await _unitOfWork.Save();
+
+                return Accepted(new { cate });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateCategory)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpPut("editCategory")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditCategory(EditCategoryDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid POST attempt in {nameof(EditCategory)}");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var cate = await _unitOfWork.Categories.Get(q => q.Id == unitDTO.Id);
+
+                cate.Name = unitDTO.Name;
+                _unitOfWork.Categories.Update(cate);
+                await _unitOfWork.Save();
+
+                return Accepted(new { cate });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(EditCategory)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+
+
+        [HttpDelete("deleteCategory")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+
+            try
+            {
+                var cate = await _unitOfWork.Categories.Get(q => q.Id == id);
+                if (cate == null)
+                {
+                    _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteCategory)}");
+                    var error = "Submitted data is invalid";
+                    return BadRequest(new { error });
+                }
+
+                var listProduct = await _unitOfWork.Products.GetAll(q => q.CategoryId == id, null, null);
+                foreach (var item in listProduct)
+                {
+                    await _unitOfWork.Products.Delete(item.Id);
+                }
+
+                await _unitOfWork.Categories.Delete(id);
+                await _unitOfWork.Save();
+
+
+                return Accepted(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteCategory)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }

@@ -427,13 +427,13 @@ align-items: stretch;" id="home-category">
                     <i class="fas fa-dollar-sign"></i> Bán chạy nhất
                 </h4>
                 <ul class="product_list grid row product-list-3 flex-column">
-                    <li class="ajax_block_product product_block  col "
+                    <li class="ajax_block_product product_block  col  "
                         *ngFor="let pro of topProduct,index as i">
                         <article class="product-miniature js-product-miniature" >
                             <div class="thumbnail-container">
                                 <div class="product-image">
-                                    <a class="thumbnail product-thumbnail">
-                                        <img class="img-fluid" src="{{pro.product.imgUrl}}" (click)="openProductUrlInNewWindow(pro.product.id)" alt="">
+                                    <a class="thumbnail product-thumbnail hover_badge" (click)="openProductUrlInNewWindow(pro.product.id)"  >
+                                        <img class="img-fluid" src="{{pro.product.imgUrl}}" alt="">
                                         <span class="product-additional"></span>
                                     </a>
                                 </div>
@@ -442,7 +442,7 @@ align-items: stretch;" id="home-category">
                                     <div class="leo-list-product-reviews">
                                         <div class="leo-list-product-reviews-wraper">
                                             <div class="star_content clearfix text-muted small">
-                                                {{getDisplayCategory(pro.product.category)}}
+                                                {{pro.product.category.name}}
                                             </div>
                                         </div>
                                     </div>
@@ -480,11 +480,18 @@ align-items: stretch;" id="home-category">
                                         </div>
                                     </div>
                                     <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro.product)"><i class="fa fa-heart"></i></a>
-                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro.product)"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)" *ngIf="pro.product.unitInStock!=0"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="alertSoldOut()" *ngIf="pro.product.unitInStock==0"><i class="fa fa-shopping-cart"></i></a>
                                 </div>
                             </div>
                         </article>
                     </li>
+                    <div class="loading-full" *ngIf="isLoadingTopPro">
+                        <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text monospace">Xin chờ một chút...</p>
+                    </div>
                 </ul>
                 <div class="box-show-more open">
                     <a  href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more">
@@ -502,9 +509,10 @@ align-items: stretch;" id="home-category">
                         *ngFor="let pro of mostFavProduct,index as i">
                         <article class="product-miniature js-product-miniature" >
                             <div class="thumbnail-container">
+
                                 <div class="product-image" >
-                                    <a class="thumbnail product-thumbnail">
-                                        <img class="img-fluid" src="{{pro.imgUrl}}" alt="" (click)="openProductUrlInNewWindow(pro.id)">
+                                    <a class="thumbnail product-thumbnail hover_badge" (click)="openProductUrlInNewWindow(pro.id)">
+                                        <img class="img-fluid" src="{{pro.imgUrl}}" alt="" >
                                         <span class="product-additional"></span>
                                     </a>
                                 </div>
@@ -513,7 +521,7 @@ align-items: stretch;" id="home-category">
                                     <div class="leo-list-product-reviews">
                                         <div class="leo-list-product-reviews-wraper">
                                             <div class="star_content clearfix text-muted small">
-                                                {{getDisplayCategory(pro.category)}}
+                                                {{pro.category.name}}
                                             </div>
                                         </div>
                                     </div>
@@ -551,11 +559,18 @@ align-items: stretch;" id="home-category">
                                         </div>
                                     </div>
                                     <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro)"><i class="fa fa-heart"></i></a>
-                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)" *ngIf="pro.unitInStock!=0"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="alertSoldOut()" *ngIf="pro.unitInStock==0"><i class="fa fa-shopping-cart"></i></a>
                                 </div>
                             </div>
                         </article>
                     </li>
+                    <div class="loading-full" *ngIf="isLoadingMostFavPro">
+                        <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text monospace">Xin chờ một chút...</p>
+                    </div>
                 </ul>
                 <div class="box-show-more open">
                     <a  href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more" >
@@ -569,13 +584,13 @@ align-items: stretch;" id="home-category">
                     <i class="fas fa-history"></i> Mới nhất
                 </h4>
                 <ul class="product_list grid row product-list-3">
-                    <li class="ajax_block_product product_block  col "
+                    <li class="ajax_block_product product_block  col  "
                         *ngFor="let pro of latestProduct,index as i">
                         <article class="product-miniature js-product-miniature" >
                             <div class="thumbnail-container">
                                 <div class="product-image">
-                                    <a class="thumbnail product-thumbnail">
-                                        <img class="img-fluid" (click)="openProductUrlInNewWindow(pro.id)" src="{{pro.imgUrl}}" alt="">
+                                    <a class="thumbnail product-thumbnail hover_badge" (click)="openProductUrlInNewWindow(pro.id)">
+                                        <img class="img-fluid"  src="{{pro.imgUrl}}" alt="">
                                         <span class="product-additional"></span>
                                     </a>
                                 </div>
@@ -584,7 +599,7 @@ align-items: stretch;" id="home-category">
                                     <div class="leo-list-product-reviews">
                                         <div class="leo-list-product-reviews-wraper">
                                             <div class="star_content clearfix text-muted small">
-                                                {{getDisplayCategory(pro.category)}}
+                                                {{pro.category.name}}
                                             </div>
                                         </div>
                                     </div>
@@ -622,11 +637,18 @@ align-items: stretch;" id="home-category">
                                         </div>
                                     </div>
                                     <a class="btn btn-danger mr-2 mt-2" (click)="addToFav(pro)"><i class="fa fa-heart"></i></a>
-                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="addToCart(pro)" *ngIf="pro.unitInStock!=0"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-warning mt-2" (click)="alertSoldOut()" *ngIf="pro.unitInStock==0"><i class="fa fa-shopping-cart"></i></a>
                                 </div>
                             </div>
                         </article>
                     </li>
+                    <div class="loading-full" *ngIf="isLoadingNewPro">
+                        <div class="spinner-border text-info" role="status" style="width: 4rem;height: 4rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text monospace">Xin chờ một chút...</p>
+                    </div>
                 </ul>
                 <div class="box-show-more open">
                     <a href="javascript:void(0)" (click)="newSearch()" class="btn2 btn-default btn-show-more" 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,11 @@ namespace MyAPI.Data
         public double Price { get; set; }
         public string Description { get; set; }
         public int UnitInStock { get; set; }
-        public string Category { get; set; }
+
+        [ForeignKey(nameof(Category))]
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
+
         public string ImgUrl { get; set; }
         public string LastUpdate { get; set; }
         public virtual ICollection<APIUser> FavoritedUsers { get; set; }
@@ -24,5 +29,6 @@ namespace MyAPI.Data
         {
             FavoritedUsers = new HashSet<APIUser>();
         }
+
     }
 }

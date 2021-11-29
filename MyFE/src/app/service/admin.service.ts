@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Category } from '../class/category';
 import { DiscountCode } from '../class/discount-code';
 import { Employee } from '../class/employee';
 import { Order } from '../class/order';
@@ -14,7 +15,7 @@ import { Tag } from '../class/tag';
   providedIn: 'root'
 })
 export class AdminService {
-  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  //apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
   apiUrl: string = "https://localhost:44324/api/";
 
   apikey:string="3113feaeeb294cee92641b976ba196de"
@@ -74,7 +75,7 @@ export class AdminService {
       price: price,
       description: des,
       unitInStock: uis,
-      category: cate,
+      categoryId: cate,
       imgUrl: imgurl,
       lastUpdate: date,
       status:status
@@ -89,7 +90,7 @@ export class AdminService {
       price: price,
       description: des,
       unitInStock: uis,
-      category: cate,
+      categoryId: cate,
       imgUrl: imgurl,
       lastUpdate: date,
       status:status
@@ -327,5 +328,43 @@ export class AdminService {
       userId: userID,
       coins: coin
     }, { headers: header })
+  }
+
+  getProductWithNoPromotion(category:any):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.get(`${this.apiUrl}admin/getProductWithNoPromotion?category=${category}`, { headers: header });
+  }
+
+  
+  autoCreateDisCountCode(dc:DiscountCode,number:number):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}admin/autoCreateDiscountCode`, {
+      discountPercent: dc.discountPercent,
+      discountAmount: dc.discountAmount,
+      startDate: dc.startDate,
+      endDate: dc.endDate,
+      number:number
+    }, { headers: header })
+  }
+
+
+  createProductCategory(t:Category): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.post(`${this.apiUrl}admin/createCategory`, {
+      name: t.name,
+    }, { headers: header })
+  }
+
+  editProductCategory(t:Category): Observable<any> {
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.put(`${this.apiUrl}admin/editCategory`, {
+      id: t.id,
+      name: t.name,
+    }, { headers: header })
+  }
+
+  deleteProductCategory(cate:Category):Observable<any>{
+    let header = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("JWT_token"));
+    return this.http.delete(`${this.apiUrl}admin/deleteCategory?id=${cate.id}`, { headers: header })
   }
 }

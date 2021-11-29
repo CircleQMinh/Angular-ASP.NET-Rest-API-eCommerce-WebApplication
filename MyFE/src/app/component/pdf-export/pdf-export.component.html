@@ -1,7 +1,7 @@
 <div class="container-fluid   bg-warning" style="position: absolute;top: 0;">
     <div class="row justify-content-center">
         <div class="col-4 d-flex justify-content-start">
-            <button class="btn btn-success "><i class="fas fa-sync-alt"></i> Tải lại dữ liệu</button>
+            <button class="btn btn-success " (click)="reload()"><i class="fas fa-sync-alt"></i> Tải lại dữ liệu</button>
         </div>
         <div class="col-4 d-flex justify-content-center">
             <p class="lead mt-2"> Xem trước bản PDF</p>
@@ -22,43 +22,43 @@
     </div>
     <p class="text monospace">Please wait a sec...</p>
 </div>
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='1'">
+<div   class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='1'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
 
-        <div class="">
-            <div class="">
+        <div   >
+            <div   >
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div   >
+                <h4    style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin sản phẩm</h4>
             </div>
-            <div class="">
+            <div   >
 
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <p class="">Ngày in : {{today}}</p>
-                    <p class="">Người in : {{user.displayName}}</p>
+        <div   >
+            <div   >
+                <p   >Ngày in : {{today}}</p>
+                <p   >Người in : {{user.displayName}}</p>
             </div>
         </div>
 
-        <div _ngcontent-ddp-c96="" class="table-responsive">
-            <table _ngcontent-ddp-c96="" class="table">
-                <thead _ngcontent-ddp-c96="" class="thead-dark">
-                    <tr _ngcontent-ddp-c96="">
+        <div>
+            <table>
+                <thead>
+                    <tr>
                         <th>ID</th>
-                        <th _ngcontent-ddp-c96="">Thông tin</th>
-                        <th _ngcontent-ddp-c96="">Mô tả</th>
-                        <th _ngcontent-ddp-c96="">Giá</th>
-                        <th _ngcontent-ddp-c96="">Số lượng</th>
-                        <th _ngcontent-ddp-c96="">Danh mục</th>
-                        <th _ngcontent-ddp-c96="">Chỉnh sửa</th>
+                        <th>Thông tin</th>
+                        <th>Mô tả</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Danh mục</th>
+                        <th>Chỉnh sửa</th>
                         <th>SL Bán</th>
                     </tr>
                 </thead>
-                <tbody _ngcontent-ddp-c96="">
+                <tbody>
                     <tr *ngFor="let o of product">
                         <td>{{o.id}}</td>
                         <td>
@@ -69,7 +69,7 @@
                         <td>{{o.price| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                         <td>{{o.unitInStock}}</td>
                         <td>
-                            <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
+                            <p class="text-tron text-success">{{o.category.name}}</p>
                         </td>
                         <td>{{o.lastUpdate}}</td>
                         <td>{{o.numSales}}</td>
@@ -81,32 +81,32 @@
 
 </div>
 
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='2'">
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='2'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
 
-        <div class="">
-            <div class="">
+        <div >
+            <div >
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div >
+                <h4  style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin khách hàng</h4>
             </div>
-            <div class="">
+            <div >
 
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <p class="">Ngày in : {{today}}</p>
-                <p class="">Người in : {{user.displayName}}</p>
+        <div >
+            <div >
+                <p >Ngày in : {{today}}</p>
+                <p >Người in : {{user.displayName}}</p>
             </div>
         </div>
 
-        <div _ngcontent-ddp-c96="" class="table-responsive">
-            <table _ngcontent-ddp-c96="" class="table">
-                <thead _ngcontent-ddp-c96="" class="thead-dark">
-                    <tr _ngcontent-ddp-c96="">
+        <div>
+            <table>
+                <thead>
+                    <tr>
                         <th>Thông tin</th>
                         <th>Email</th>
                         <th>SDT</th>
@@ -114,7 +114,7 @@
                         <th>Số đơn hàng</th>
                     </tr>
                 </thead>
-                <tbody _ngcontent-ddp-c96="">
+                <tbody>
                     <tr *ngFor="let o of pagedUserList,index as i">
 
                         <td>
@@ -134,14 +134,12 @@
                                 src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAIAAADganh7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFxSURBVEhLY/z//z8DtQETlKYqGDWU+oC+hv57cOrdsUf/oDxU8PfdlwNHvryF8rAAYDrFBD8P9d6zcL1j6np/xtW/UDEY+PP8TWkgUOqOR/7rm1AxNIDVpafeNO/49xfE+ju34NHMawj3/n3xtjLrw4EvIPbbax/71/wEC6MBrIZqcdnyQJnI5iKbCAbM5gbsUCYKwJFN/75715DyfieS/uQK3rtTUExMniCXroXVUbjzPoa5yACPiUCAM/YZmIWEGuYIuiPCAQ7wmwgEeKTA5tZ2cWtCeRDA6FwkhddEIMArCwyB5rKv16E8CPi/t+8ZcnrABnAbijtM0dMZBsBhKJbYb0EOX/zmYo39L+9r494hm5g+TT5ZhRHTpqxpCgkqUA4SwOrSa99PYpgIYqGnh78nLxCfo8xEaj2YmEEshIkQgGyusBZ/YQjWHIW9QAGCv/dPvrv89h+Uhwr+vP28//DnN1AeJhitTakPaGAoAwMAbyY4RxiS6IUAAAAASUVORK5CYII='>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary position-relative">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{o.orderCount}}
-                                    <span class="visually-hidden">đơn hàng</span>
-                                </span>
-                            </button>
+
+                            <span>
+                                {{o.orderCount}}
+                                <span>đơn hàng</span>
+                            </span>
+
                         </td>
 
                     </tr>
@@ -153,32 +151,32 @@
 </div>
 
 
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='3'">
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='3'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
 
-        <div class="">
-            <div class="">
+        <div   >
+            <div   >
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div   >
+                <h4    style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin nhân viên</h4>
             </div>
-            <div class="">
+            <div   >
 
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <p class="">Ngày in : {{today}}</p>
-                <p class="">Người in : {{user.displayName}}</p>
+        <div   >
+            <div   >
+                <p   >Ngày in : {{today}}</p>
+                <p   >Người in : {{user.displayName}}</p>
             </div>
         </div>
 
-        <div _ngcontent-ddp-c96="" class="table-responsive">
-            <table _ngcontent-ddp-c96="" class="table">
-                <thead _ngcontent-ddp-c96="" class="thead-dark">
-                    <tr _ngcontent-ddp-c96="">
+        <div >
+            <table >
+                <thead >
+                    <tr>
                         <th>Thông tin</th>
                         <th>Giới tính</th>
                         <th>CMND</th>
@@ -187,7 +185,7 @@
                         <th>Ngày bắt đầu</th>
                     </tr>
                 </thead>
-                <tbody _ngcontent-ddp-c96="">
+                <tbody>
                     <tr *ngFor="let o of pagedEmployeeList,index as i">
 
                         <td>
@@ -218,25 +216,25 @@
         </div>
     </div>
 </div>
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='4'">
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='4'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
 
-        <div class="">
-            <div class="">
+        <div   >
+            <div   >
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div   >
+                <h4    style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin khuyến mãi</h4>
             </div>
-            <div class="">
+            <div   >
 
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <p class="">Ngày in : {{today}}</p>
-                <p class="">Người in : {{user.displayName}}</p>
+        <div   >
+            <div   >
+                <p   >Ngày in : {{today}}</p>
+                <p   >Người in : {{user.displayName}}</p>
                 <h3>{{promotion.name}}</h3>
                 <img src="{{promotion.imgUrl}}" style="width: 42rem;">
                 <div>
@@ -249,28 +247,28 @@
             </div>
         </div>
 
-        <div _ngcontent-ddp-c96="" class="table-responsive">
-            <table _ngcontent-ddp-c96="" class="table" style="margin-top: 20px;">
-                <thead _ngcontent-ddp-c96="" class="thead-dark">
-                    <tr _ngcontent-ddp-c96="">
+        <div >
+            <table  style="margin-top: 20px;">
+                <thead >
+                    <tr>
                         <th class="bdwT-0">SP</th>
                         <th class="bdwT-0">Tên</th>
                         <th class="bdwT-0">Giá</th>
                         <th class="bdwT-0">Khuyến mãi</th>
                     </tr>
                 </thead>
-                <tbody _ngcontent-ddp-c96="">
+                <tbody>
 
                     <tr *ngFor="let o of promotionInfos">
                         <td><img style="height: 40px;width: 40px;" src="{{ o.product.imgUrl }}"></td>
                         <td>{{ o.product.name }}</td>
                         <td>{{ o.product.price }}</td>
-                        <td *ngIf="o.promotionAmount!='null'"><span class="badge bg-danger"
+                        <td *ngIf="o.promotionAmount!='null'"><span
                                 ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionAmount}}VND"
                                 placement="auto" data-html="true">-{{o.promotionAmount|
                                 currency:'VND':''}}
                                 <span class="currency-dis">đ</span></span></td>
-                        <td *ngIf="o.promotionPercent!='null'"><span class="badge bg-success"
+                        <td *ngIf="o.promotionPercent!='null'"><span 
                                 ngbTooltip="{{o.promotion.name}}&#013;Bắt đầu : {{o.promotion.startDate}}&#013;Kết thúc : {{o.promotion.endDate}}&#013;Giảm : {{o.promotionPercent}}%"
                                 placement="auto" data-html="true">-{{o.promotionPercent}}%</span></td>
                     </tr>
@@ -280,24 +278,24 @@
     </div>
 </div>
 
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='5'">
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='5'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
-        <div class="">
-            <div class="">
+        <div class>
+            <div class>
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div class>
+                <h4 class style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin doanh thu</h4>
             </div>
-            <div class="">
+            <div class>
 
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <p class="">Ngày in : {{today}}</p>
-                <p class="">Người in : {{user.displayName}}</p>
+        <div class>
+            <div class>
+                <p class>Ngày in : {{today}}</p>
+                <p class>Người in : {{user.displayName}}</p>
             </div>
 
             <div>
@@ -306,10 +304,10 @@
                 <p>
                     Đến ngày : {{to|date:'dd-MM-yyyy'}}</p>
             </div>
-            <div _ngcontent-ddp-c96="" class="table-responsive">
-                <table _ngcontent-ddp-c96="" class="table">
-                    <thead _ngcontent-ddp-c96="" class="thead-dark">
-                        <tr >
+            <div >
+                <table >
+                    <thead >
+                        <tr>
                             <th class="bdwT-0" style="width: 10%;">STT</th>
                             <th class="bdwT-0" style="width: 20%;">Ngày</th>
                             <th class="bdwT-0" style="width: 35%;">Doanh thu</th>
@@ -320,8 +318,9 @@
                         <tr *ngFor="let o of tkdtData,index as i">
                             <td>{{i+1}}</td>
                             <td>{{o.Date}}</td>
-                            <td><span>{{o.Total| currency:'VND':''}}</span> 
-                                <span class="currency-dis" style="color: red;">đ</span> </td>
+                            <td><span>{{o.Total| currency:'VND':''}}</span>
+                                <span class="currency-dis" style="color: red;">đ</span>
+                            </td>
                             <td>{{o.NumberOfOrder}}</td>
                         </tr>
                     </tbody>
@@ -330,28 +329,28 @@
         </div>
     </div>
 </div>
-<div class="container my-3" style="width: 210mm;border: solid 1px;" *ngIf="mode=='6'">
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='6'">
     <div id="pdfTable" #pdfTable *ngIf="!isLoading">
-        <div class="">
-            <div class="">
+        <div class>
+            <div class>
 
             </div>
-            <div class="">
-                <h4 class="" style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
+            <div class>
+                <h4 class style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Thống kê thông
                     tin sản phẩm bán ra </h4>
             </div>
-            <div class="">
-                <div class="">
-                    <p class="">Ngày in : {{today}}</p>
-                    <p class="">Người in : {{user.displayName}}</p>
+            <div class>
+                <div class>
+                    <p class>Ngày in : {{today}}</p>
+                    <p class>Người in : {{user.displayName}}</p>
                 </div>
-    
+
             </div>
-            <div _ngcontent-ddp-c96="" class="table-responsive">
+            <div>
                 <p>Sản phẩm bán ra theo danh mục</p>
-                <table _ngcontent-ddp-c96="" class="table">
-                    <thead _ngcontent-ddp-c96="" class="thead-dark">
-                        <tr >
+                <table >
+                    <thead >
+                        <tr>
                             <th class="bdwT-0" style="width: 10%;">STT</th>
                             <th class="bdwT-0" style="width: 40%;">Danh mục</th>
                             <th class="bdwT-0" style="width: 40%;">Sản phẩm bán ra</th>
@@ -366,9 +365,9 @@
                     </tbody>
                 </table>
                 <p>Sản phẩm bán chạy nhất (Top : {{top}})</p>
-                <table _ngcontent-ddp-c96="" class="table">
-                    <thead _ngcontent-ddp-c96="" class="thead-dark">
-                        <tr >
+                <table >
+                    <thead >
+                        <tr>
                             <th class="bdwT-0" style="width: 10%;">STT</th>
                             <th class="bdwT-0" style="width: 20%;">SP</th>
                             <th class="bdwT-0" style="width: 35%;">Tên SP</th>
@@ -387,6 +386,56 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="container my-3" style="width: 210mm;border: solid 1px;min-height: 361px;" *ngIf="mode=='7'">
+    <div id="pdfTable" #pdfTable *ngIf="!isLoading">
+
+        <div class>
+            <div class>
+
+            </div>
+            <div class>
+                <h4 class style="color: red;text-align: center;margin-top: 20px;margin-bottom: 10px;">Danh sách mã giảm
+                    giá</h4>
+            </div>
+            <div class>
+
+            </div>
+        </div>
+        <div class>
+            <div class>
+                <p class>Ngày in : {{today}}</p>
+                <p class>Người in : {{user.displayName}}</p>
+            </div>
+        </div>
+
+        <div >
+            <table >
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Giảm</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of discountCodeJustCreate">
+                        <td>{{o.code}}</td>
+                        <td *ngIf="o.discountAmount!='null'">{{o.discountAmount}}<span
+                                style="text-decoration: underline;">đ</span></td>
+                        <td *ngIf="o.discountPercent!='null'">{{o.discountPercent}}%</td>
+                        <td>{{o.startDate}}</td>
+                        <td>{{o.endDate}} </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 <!-- FOOTER -->
 <footer class="site-footer">

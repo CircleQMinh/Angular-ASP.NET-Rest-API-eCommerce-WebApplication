@@ -72,14 +72,8 @@ export class ProfileComponent implements OnInit {
   getUserInfo() {
     this.authService.getUserInfo(this.userID).subscribe(
       data => {
-        //console.log(data)
-        
         this.userInfo = data.user
         this.userInfo.roles = data.roles
-        //console.log(this.userInfo)
-        // this.getOrderDetails()
-        // this.getPagedOrder()
-        // this.getPagedFavProduct()
         console.log(this.userInfo)
         localStorage.setItem("user-info",JSON.stringify(this.userInfo))
         this.isLoading = false
@@ -88,8 +82,8 @@ export class ProfileComponent implements OnInit {
       error => {
         console.log(error)
         this.isDisconnect=true
-        //this.router.navigateByUrl("/error")
-        //this.toast.error(" An error has occurred ! Try again !")
+        // this.router.navigateByUrl("/login")
+        // this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
       }
     )
   }
@@ -131,7 +125,6 @@ export class ProfileComponent implements OnInit {
   }
   saveProfile() {
     this.upLoadAndUpdateProfile()
-
   }
   upLoadAndUpdateProfile() {
     this.isUpdateProfile = true
@@ -149,6 +142,7 @@ export class ProfileComponent implements OnInit {
         },
         error => {
           console.log(error)
+          this.toast.error("Ảnh quá lớn! Xin hãy thử lại với ảnh nhỏ hơn.")
         }
       )
     }

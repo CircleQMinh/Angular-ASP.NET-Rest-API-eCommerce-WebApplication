@@ -27,6 +27,7 @@
                                 <h4>{{userInfo.displayName}}</h4>
                                 <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <p>Shop Xu : {{userInfo.coins}} <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
                                 <button class="btn btn-danger btn-block" (click)="signOut()"><i
                                         class="fas fa-sign-out-alt"></i>
                                     Logout</button>
@@ -42,10 +43,10 @@
                         <ul class="list-group ">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                                <button class="btn btn-primary btn-block" routerLink="/profile/{{userInfo.id}}"><i
+                                <button class="btn btn-outline-primary btn-block" routerLink="/profile/{{userInfo.id}}"><i
                                         class="fas fa-user"></i> Thông tin</button>
     
-                                <button class="btn btn-outline-primary btn-block"
+                                <button class="btn btn-primary btn-block"
                                     routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
                                     Đơn hàng</button>
     
@@ -126,9 +127,6 @@
                                 <td class="text-monospace">{{o.id}}</td>
                                 <td class="text-monospace">{{o.orderDate}}</td>
                                 <td class="text-monospace">{{o.totalItem}}</td>
-                                <td class="text-monospace">{{(o.totalPrice)| currency:'VND':''}} <span
-                                        style="text-decoration: underline;">đ</span> 
-                                </td>
                                 <td *ngIf="o.status==0">
                                     <span class="badge bg-info text-dark">Chưa duyệt</span>
                                 </td>

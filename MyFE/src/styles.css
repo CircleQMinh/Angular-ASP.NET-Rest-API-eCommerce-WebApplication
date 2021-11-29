@@ -1312,7 +1312,18 @@ img{transition:opacity 1s;opacity:1;}
 .h4-box-service .ApImage .image_description p{margin-bottom:0;line-height:20px;color:#555;}
 
 
-
+.sold-out-overlay {
+    background: #dd122d;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    /* height: 36px; */
+    z-index: 99;
+}
 
 .border-filter{
     border-right: solid 1px darkblue;
