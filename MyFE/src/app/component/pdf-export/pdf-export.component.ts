@@ -15,6 +15,7 @@ import { formatDate } from '@angular/common';
 import { Employee } from 'src/app/class/employee';
 import { PromotionInfo } from 'src/app/class/promotion-info';
 import { Promotion } from 'src/app/class/promotion';
+import { DiscountCode } from 'src/app/class/discount-code';
 
 const htmlToPdfmake = require("html-to-pdfmake");
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -40,10 +41,10 @@ export class PdfExportComponent implements OnInit {
 
   promoId: any
 
-  from:any
-  to:any
+  from: any
+  to: any
 
-  top!:number
+  top!: number
 
   mode: any
   isLoading = true
@@ -59,11 +60,12 @@ export class PdfExportComponent implements OnInit {
   promotion: any
   promotionInfos: PromotionInfo[] = []
 
-  tkdtData:any[]=[]
+  tkdtData: any[] = []
 
   topSaleProduct: any[] = []
-  topCate:any[]=[]
+  topCate: any[] = []
 
+  discountCodeJustCreate:DiscountCode[]=[]
 
   constructor(private router: Router, private route: ActivatedRoute, private toast: HotToastService, private adminService: AdminService,
     private productService: ProductService, private orderService: OrderService, private authService: AuthenticationService,
@@ -82,24 +84,25 @@ export class PdfExportComponent implements OnInit {
     this.pageSize = this.route.snapshot.queryParamMap.get("pageSize")!
     this.today = formatDate(Date.now(), 'dd-MM-yyyy HH:mm:ss', 'en');
 
-
-
-    if (this.mode == null) {
-
-      this.router.navigateByUrl("/error")
-    }
-
-    if (this.mode == '4') {
-      this.promoExport()
-    }
-    else if(this.mode=='5'){
-      this.tkdtExport()
-    }
-    else if(this.mode=='6'){
-      this.tkspExport()
-    }
-    else {
+    switch (this.mode) {
+      case null:
+        this.router.navigateByUrl("/error")
+        break
+      case '4':
+        this.promoExport()
+        break
+      case '5':
+        this.tkdtExport()
+        break
+      case '6':
+        this.tkspExport()
+        break
+      case '7':
+        this.discountCodeExport()
+        break
+      default :
       this.normalExport()
+
     }
 
 
@@ -108,44 +111,75 @@ export class PdfExportComponent implements OnInit {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     localStorage.removeItem("promo")
+    localStorage.removeItem("dclist")
   }
-  tkdtExport(){
+
+  reload(){
+    switch (this.mode) {
+      case null:
+        this.router.navigateByUrl("/error")
+        break
+      case '4':
+        this.promoExport()
+        break
+      case '5':
+        this.tkdtExport()
+        break
+      case '6':
+        this.tkspExport()
+        break
+      case '7':
+        this.discountCodeExport()
+        break
+      default :
+      this.normalExport()
+
+    }
+  }
+
+
+  discountCodeExport(){
+    this.discountCodeJustCreate=JSON.parse(localStorage.getItem("dclist")!)
+    this.isLoading = false
+  }
+
+  tkdtExport() {
     this.from = this.route.snapshot.queryParamMap.get("from")
     this.to = this.route.snapshot.queryParamMap.get("to")
 
-    this.adminService.getSalesChart(this.from,this.to).subscribe(
-      data=>{
-        this.tkdtData=data.result
+    this.adminService.getSalesChart(this.from, this.to).subscribe(
+      data => {
+        this.tkdtData = data.result
         console.log(this.tkdtData)
-        this.isLoading=false
+        this.isLoading = false
       },
-      error=>{
+      error => {
         console.log(error);
         this.toast.error(" An error has occurred ! Try again !");
       }
     )
   }
-  tkspExport(){
+  tkspExport() {
     this.top = Number(this.route.snapshot.queryParamMap.get("top"))
     console.log(this.top)
     this.adminService.getTopProductChart(this.top).subscribe(
-      data=>{
-        this.topSaleProduct=data.result
+      data => {
+        this.topSaleProduct = data.result
         var count = 0
         this.topSaleProduct.forEach(async element => {
           element.product.imgUrl = String(await this.toDataURL(element.product.imgUrl))
-          count+=1
-          if(count==this.topSaleProduct.length){
-            this.isLoading=false
+          count += 1
+          if (count == this.topSaleProduct.length) {
+            this.isLoading = false
           }
         });
         console.log(this.topSaleProduct)
         // console.log(data.cateCount)
         // console.log(data.cateCount[0])
-        this.topCate=data.cateCount
-  
+        this.topCate = data.cateCount
+
       },
-      error=>{
+      error => {
         console.log(error);
         this.toast.error(" An error has occurred ! Try again !");
       }
@@ -183,7 +217,7 @@ export class PdfExportComponent implements OnInit {
   public async downloadAsPDF() {
     this.isLoading = true
     const pdfTable = this.pdfTable.nativeElement;
-    var html = htmlToPdfmake(pdfTable.innerHTML,{ tableAutoSize:true});
+    var html = htmlToPdfmake(pdfTable.innerHTML, { tableAutoSize: true });
     const documentDefinition: any = { content: html };
     pdfMake.createPdf(documentDefinition).download();
     this.isLoading = false
@@ -332,17 +366,17 @@ export class PdfExportComponent implements OnInit {
       data => {
         this.promotionInfos = data.result;
         this.promotionInfos.forEach(async element => {
-          element.product.imgUrl =  String(await this.toDataURL(element.product.imgUrl))
+          element.product.imgUrl = String(await this.toDataURL(element.product.imgUrl))
         });
         console.log(this.promotionInfos)
         this.adminService.getOnePromotion(promoId).subscribe(
-          async data=>{
-            this.promotion=data.result
+          async data => {
+            this.promotion = data.result
             this.promotion.imgUrl = String(await this.toDataURL(this.promotion.imgUrl))
             console.log(this.promotion)
-            this.isLoading=false
+            this.isLoading = false
           },
-          error=>{
+          error => {
             console.log(error);
             this.toast.error(" An error has occurred ! Try again !");
           }

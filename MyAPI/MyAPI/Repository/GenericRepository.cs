@@ -154,6 +154,7 @@ namespace MyAPI.Repository
             return await query.AsNoTracking().ToListAsync();
         }
 
+   
         public async Task<int> GetCount(Expression<Func<T, bool>> expression = null)
         {
             IQueryable<T> query = _db;
@@ -163,6 +164,38 @@ namespace MyAPI.Repository
             }
 
             return await query.CountAsync();
+        }
+        public async Task<double> GetAverage(Expression<Func<T, bool>> expression = null, Expression<Func<T, decimal>> prop = null)
+        {
+            IQueryable<T> query = _db;
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            return (double) query.Average(prop);
+        }
+
+        public async Task<double> GetMax(Expression<Func<T, bool>> expression = null, Expression<Func<T, decimal>> prop = null)
+        {
+            IQueryable<T> query = _db;
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            return (double)query.Max(prop);
+        }
+
+        public async Task<double> GetMin(Expression<Func<T, bool>> expression = null, Expression<Func<T, decimal>> prop = null)
+        {
+            IQueryable<T> query = _db;
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            return (double)query.Min(prop);
         }
 
         public async Task Insert(T entity)

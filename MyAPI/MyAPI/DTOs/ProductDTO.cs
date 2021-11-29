@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,10 +17,10 @@ namespace MyAPI.DTOs
         [Required]
         public string Description { get; set; }
         [Required]
-        [Range(1, 999)]
+        [Range(0, 999)]
         public int UnitInStock { get; set; }
         [Required]
-        public string Category { get; set; }
+        public int? CategoryId { get; set; }
         public string ImgUrl { get; set; }
         [Required]
         public string LastUpdate { get; set; }
@@ -34,11 +35,22 @@ namespace MyAPI.DTOs
         public string keyword { get; set; }
         public string[] tag { get; set; }
     }
-    public class ProductDTO : CreateProductDTO
+    public class ProductDTO 
     {
         public int Id { get; set; }
 
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public string Description { get; set; }
+        public int UnitInStock { get; set; }
 
+        [ForeignKey(nameof(Category))]
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
+
+        public string ImgUrl { get; set; }
+        public string LastUpdate { get; set; }
+        public int Status { get; set; }
     }
 
     public class FullProductDTO
@@ -48,9 +60,12 @@ namespace MyAPI.DTOs
         public double Price { get; set; }
         public string Description { get; set; }
         public int UnitInStock { get; set; }
-        public string Category { get; set; }
+        [ForeignKey(nameof(Category))]
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
         public string ImgUrl { get; set; }
         public string LastUpdate { get; set; }
+        public int Status { get; set; }
         public virtual ICollection<ReviewUserInfoDTO> FavoritedUsers { get; set; }
 
         public virtual ICollection<ReviewDTO> Reviews { get; set; }
@@ -62,5 +77,15 @@ namespace MyAPI.DTOs
         public List<string> categories { get; set; }
 
         public Dictionary<string,int> priceRange { get; set; }
+    }
+
+    public class CreateCategoryDTO
+    {
+        public string Name { get; set; }
+    }
+    public class EditCategoryDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -114,6 +114,8 @@ export class ProfileOrderInfoComponent implements OnInit {
       error => {
         console.log(error)
         this.isDisconnect = true
+        // this.router.navigateByUrl("/login")
+        // this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
       }
     )
   }
@@ -126,7 +128,7 @@ export class ProfileOrderInfoComponent implements OnInit {
         //console.log(this.userInfo)
        // console.log(this.currentOrder)
         this.discountCode = data.discountCode
-        console.log(this.discountCode)
+        //console.log(this.discountCode)
         this.isLoading = false
       },
       error => {
@@ -172,6 +174,9 @@ export class ProfileOrderInfoComponent implements OnInit {
   }
   toNumber(string: string): number {
     return Number(string)
+  }
+  toInteger(number:any){
+    return Math.trunc(number)
   }
   openCancelOrderInfoModal(modal:any) {
     //this.rf1.controls["note"].setValue("Tôi muốn hủy đơn hàng!")

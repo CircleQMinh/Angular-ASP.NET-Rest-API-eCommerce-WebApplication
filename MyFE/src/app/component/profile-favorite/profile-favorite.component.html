@@ -25,10 +25,11 @@
                                 *ngIf="userInfo.imgUrl">
                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
                                 class="rounded-circle" width="150" *ngIf="!userInfo.imgUrl">
-                                <div class="container mt-3">
+                            <div class="container mt-3">
                                 <h4>{{userInfo.displayName}}</h4>
                                 <p class="text-secondary mb-1"><strong>Email : </strong>{{userInfo.email}}</p>
                                 <p class="text-muted font-size-sm"><strong>ID : </strong>{{userInfo.id}}</p>
+                                <p>Shop Xu : {{userInfo.coins}} <i class="fas fa-coins" style="color:#8c8c1b"></i></p>
                                 <button class="btn btn-danger btn-block" (click)="signOut()"><i
                                         class="fas fa-sign-out-alt"></i>
                                     Logout</button>
@@ -43,15 +44,15 @@
                     <ul class="list-group ">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 
-                            <button class="btn btn-primary btn-block" routerLink="/profile/{{userInfo.id}}"><i
+                            <button class="btn btn-outline-primary btn-block" routerLink="/profile/{{userInfo.id}}"><i
                                     class="fas fa-user"></i> Thông tin</button>
 
                             <button class="btn btn-outline-primary btn-block"
                                 routerLink="/profile/{{userInfo.id}}/order"><i class="fas fa-shopping-cart"></i>
                                 Đơn hàng</button>
 
-                            <button class="btn btn-outline-primary btn-block"
-                                routerLink="/profile/{{userInfo.id}}/favorite"><i class="far fa-heart"></i>
+                            <button class="btn btn-primary btn-block" routerLink="/profile/{{userInfo.id}}/favorite"><i
+                                    class="far fa-heart"></i>
                                 Yêu thích</button>
                             <button class="btn btn-outline-primary btn-block" *ngIf="userInfo.roles[0]=='Administrator'"
                                 routerLink="/admin">
@@ -66,7 +67,7 @@
                                 <i class="fas fa-truck-loading"></i> Trang giao hàng
                             </button>
                             <button class="btn btn-outline-primary btn-block"
-                            routerLink="/profile/{{userInfo.id}}/xu" ><i class="fab fa-bitcoin"></i> Shop Xu
+                                routerLink="/profile/{{userInfo.id}}/xu"><i class="fab fa-bitcoin"></i> Shop Xu
                             </button>
                         </li>
                     </ul>
@@ -84,6 +85,8 @@
 
                             <div *ngFor="let pro of pagedFavProduct  " class="gradient-border"
                                 style=" margin: 20px;margin-bottom: 100px;width: 200px;">
+                                <span class="sold-out-overlay" *ngIf="pro.unitInStock==0" 
+                                ngbTooltip="Sản phẩm đã hết hàng."  ><i class="fas fa-ban"></i> Hết hàng</span>
                                 <div class="featured__item">
                                     <div class="featured__item__pic set-bg"
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
@@ -93,16 +96,44 @@
                                             <li ngbTooltip="Bỏ yêu thích" container="body"><a
                                                     (click)="removeFromFav(pro)" class="bg-danger"><i
                                                         class="fas fa-heart-broken"></i></a></li>
-                                            <li ngbTooltip="Xem thông tin" container="body"
-                                                routerLink="/product/{{pro.id}}"><a><i class="fas fa-info"></i></a></li>
-                                            <li ngbTooltip="Thêm vào giỏ hàng" container="body"
-                                                (click)="addToCart(pro)"><a><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="addToCart(pro)"
+                                                *ngIf="pro.unitInStock!=0">
+                                                <a><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
+                                            <li ngbTooltip="Thêm vào giỏ hàng" container="body" (click)="alertSoldOut()"
+                                                *ngIf="pro.unitInStock==0">
+                                                <a><i class="fa fa-shopping-cart"></i></a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="featured__item__text">
-                                        <h6><a href="#">{{pro.name}}</a></h6>
-                                        <h5>{{pro.price| currency:'VND':''}} <span
-                                                style="text-decoration: underline;">đ</span> </h5>
+                                        <h6><a (click)="openProductUrlInNewWindow(pro.id)"
+                                                href="javascript:void(0)">{{pro.name}}</a>
+                                        </h6>
+                                        <div *ngIf="!pro.promoInfo">
+                                            <h5>{{pro.price | currency:'VND':''}} <span
+                                                    style="text-decoration: underline;">đ</span>
+                                            </h5>
+                                        </div>
+
+                                        <div *ngIf="pro.promoInfo">
+                                            <h5 *ngIf="pro.promoInfo.promotionPercent!='null'">
+                                                {{pro.price-pro.price*toNumber(pro.promoInfo.promotionPercent)/100 |
+                                                currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-success"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionPercent}}%&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ"
+                                                    placement="auto"
+                                                    data-html="true">-{{pro.promoInfo.promotionPercent}}%</span>
+                                            </h5>
+                                            <h5 *ngIf="pro.promoInfo.promotionAmount!='null'">
+                                                {{pro.price-toNumber(pro.promoInfo.promotionAmount) |
+                                                currency:'VND':''}}
+                                                <span class="currency-dis">đ</span> <span class="badge bg-danger"
+                                                    ngbTooltip="{{pro.promoInfo.promotion.name}}&#013;Bắt đầu : {{pro.promoInfo.promotion.startDate}}&#013;Kết thúc : {{pro.promoInfo.promotion.endDate}}&#013;Giảm : {{pro.promoInfo.promotionAmount}} đ&#013;Giá gốc : {{pro.price| currency:'VND':''}} đ&#013;"
+                                                    placement="auto" data-html="true">-{{pro.promoInfo.promotionAmount|
+                                                    currency:'VND':''}} <span class="currency-dis">đ</span></span>
+                                            </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

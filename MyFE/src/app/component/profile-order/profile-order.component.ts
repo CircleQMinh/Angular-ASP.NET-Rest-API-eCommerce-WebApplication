@@ -102,12 +102,14 @@ export class ProfileOrderComponent implements OnInit {
       error => {
         console.log(error)
         this.isDisconnect = true
+        // this.router.navigateByUrl("/login")
+        // this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
       }
     )
   }
   getPagedOrder() {
     this.allFinishedOrder = this.userInfo.orders.filter(q => q.status == 3 || q.status == 4)
-    this.allNoneFinishedOrder = this.userInfo.orders.filter(q => q.status != 3 && q.status != 4).sort((a,b)=>a.status-b.status)
+    this.allNoneFinishedOrder = this.userInfo.orders.filter(q => q.status != 3 && q.status != 4).sort((a,b)=>b.id-a.id)
 
     // console.log(this.allFinishedOrder)
     // console.log(this.allNoneFinishedOrder)

@@ -45,6 +45,10 @@ export class HomeComponent implements OnInit {
   promoInfoMostFav: any[] = []
   favCount: any[] = []
 
+  isLoadingTopPro = true
+  isLoadingMostFavPro = true
+  isLoadingNewPro = true
+
 
   constructor(private proService: ProductService, private router: Router, private toast: HotToastService, private cartService: CartService,
     private authService: AuthenticationService) { }
@@ -149,6 +153,7 @@ export class HomeComponent implements OnInit {
   getTopProduct() {
     this.proService.getTopProduct(5).subscribe(
       data => {
+
         this.topProduct = data.result
         // console.log(this.topProduct)
         this.promoInfoTop = data.promoInfo
@@ -156,6 +161,7 @@ export class HomeComponent implements OnInit {
           this.topProduct[i].product.promoInfo = this.promoInfoTop[i]
         }
         this.maxTopProduct = data.max
+        this.isLoadingTopPro = false
       },
       error => {
 
@@ -172,6 +178,7 @@ export class HomeComponent implements OnInit {
         for (let i = 0; i < this.promoInfoLatest.length; i++) {
           this.latestProduct[i].promoInfo = this.promoInfoLatest[i]
         }
+        this.isLoadingNewPro=false
       },
       error => {
 
@@ -189,6 +196,7 @@ export class HomeComponent implements OnInit {
         for (let i = 0; i < this.promoInfoMostFav.length; i++) {
           this.mostFavProduct[i].promoInfo = this.promoInfoMostFav[i]
         }
+        this.isLoadingMostFavPro=false
       },
       error => {
 
@@ -229,6 +237,12 @@ export class HomeComponent implements OnInit {
     this.cartService.addToCart(pro)
     this.toast.success("Đã thêm sản phẩm vào giỏ!")
   }
+
+  alertSoldOut(){
+    this.toast.info("Sản phẩm đã hết hàng!")
+  }
+
+  
   togglePaused() {
     if (this.paused) {
       this.carousel.cycle();

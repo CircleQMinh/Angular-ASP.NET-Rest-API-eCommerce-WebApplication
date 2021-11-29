@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  // apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
   apiUrl:string="https://localhost:44324/api/";
   constructor(private http: HttpClient,private route:Router) { }
 
@@ -53,6 +53,11 @@ export class ProductService {
 
   getRelatedPromotion(id:any,number:any):Observable<any>{
     return this.http.get(`${this.apiUrl}product/getRelatedPromotionInfo/${id}?number=${number}`)
+  }
+
+
+  getCategory():Observable<any>{
+    return this.http.get(`${this.apiUrl}product/getCategory`)
   }
 
 }

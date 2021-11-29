@@ -10,6 +10,7 @@ import { DiscountCode } from 'src/app/class/discount-code';
 import { Employee } from 'src/app/class/employee';
 import { Order } from 'src/app/class/order';
 import { Product } from 'src/app/class/product';
+import { Category } from 'src/app/class/category';
 import { Promotion } from 'src/app/class/promotion';
 import { PromotionInfo } from 'src/app/class/promotion-info';
 import { Tag } from 'src/app/class/tag';
@@ -271,18 +272,31 @@ export class AdminComponent implements OnInit {
   rf17!:FormGroup
   isEdittingUserCoins = false
 
+  productWithNoPromo:Product[]=[]
+  searchProductWithNoPromo:Product[]=[]
+
+  category_productWithNoPromo="all"
+  keyword_PWNP:string=""
+
+  rf18!:FormGroup
+  discountCodeJustCreate:DiscountCode[]=[]
+
+
+  categoryList:Category[]=[]
+
+  isCreatingProductCategory=false
+  isDeletingProductCategory=false
+  isEditingProductCategory=false
+
+  deletingCategory!:Category
+
+  rf19!:FormGroup
+  rf20!:FormGroup
+
   @ViewChild('TABLE', { static: false })
   TABLE!: ElementRef;
 
-  @ViewChild('TABLE_User', { static: false })
-  TABLE_User!: ElementRef;
 
-  ExportTOExcel(name: string) {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, name);
-    XLSX.writeFile(wb, name + '.xlsx');
-  }
 
   isDisconnect = false
 
@@ -303,7 +317,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     window.scrollTo(0,0)
     this.addRForm();
-
+    this.getCategory()
     this.authService.getLocalStorage()
     this.user = this.authService.user
     this.isLogin = this.authService.isLogin
@@ -315,6 +329,16 @@ export class AdminComponent implements OnInit {
 
     }
 
+  }
+  getCategory(){
+    this.productService.getCategory().subscribe(
+      data=>{
+        this.categoryList=data.cate
+      },
+      error=>{
+        console.log(error)
+      }
+    )
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -523,6 +547,29 @@ export class AdminComponent implements OnInit {
         [Validators.required]),
       coins: new FormControl('',
         [Validators.required, Validators.pattern('^[0-9]*$')]),
+    });
+    this.rf18 = new FormGroup({
+      type: new FormControl('',
+        [Validators.required]),
+      time: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
+      number: new FormControl('',
+        [Validators.required, Validators.pattern('^[0-9]*$')]),
+      startDate: new FormControl('',
+        [Validators.required]),
+      endDate: new FormControl('',
+        [Validators.required]),
+    });
+
+    this.rf19 = new FormGroup({
+      name: new FormControl('',
+        [Validators.required]),
+    });
+    this.rf20 = new FormGroup({
+      id: new FormControl('',
+        [Validators.required]),
+      name: new FormControl('',
+        [Validators.required]),
     });
 
     let to = new Date;
@@ -1025,7 +1072,7 @@ export class AdminComponent implements OnInit {
       this.adminService.createUser(this.rf1.controls['email'].value, this.rf1.controls['password'].value,
         this.rf1.controls['username'].value, this.rf1.controls['phone'].value, this.rf1.controls['role'].value, this.urlIMG).subscribe(
           data => {
-            console.log(data)
+            //console.log(data)
             this.getUser()
             this.isCreatingUser = false
             this.toast.success("Thêm thành công!")
@@ -1069,8 +1116,10 @@ export class AdminComponent implements OnInit {
     this.showFormError = false
     this.proImgUrl = this.defaultProImgUrl
     this.rf2.reset()
-    this.rf2.controls["category"].setValue("Fruit")
+    this.rf2.controls["category"].setValue("1")
     this.rf2.controls["status"].setValue("1")
+    this.rf2.controls["uis"].setValue(100)
+    
     this.modalService.open(add_product, { ariaLabelledBy: 'modal-basic-title' })
   }
   openEditProductModal(newPro: any, p: Product) {
@@ -1080,7 +1129,7 @@ export class AdminComponent implements OnInit {
     this.rf3.controls["price"].setValue(this.editingProduct.price)
     this.rf3.controls["des"].setValue(this.editingProduct.description)
     this.rf3.controls["uis"].setValue(this.editingProduct.unitInStock)
-    this.rf3.controls["category"].setValue(this.editingProduct.category)
+    this.rf3.controls["category"].setValue(this.editingProduct.category.id)
     this.rf3.controls["status"].setValue(this.editingProduct.status)
     this.proImgUrl = this.editingProduct.imgUrl
     this.modalService.open(newPro, { ariaLabelledBy: 'modal-basic-title' })
@@ -1093,11 +1142,7 @@ export class AdminComponent implements OnInit {
     this.showFormError = true
     this.isCreatingProduct = true
     if (this.rf2.valid) {
-      // console.log(this.rf2.controls['name'].value)
-      // console.log(this.rf2.controls['price'].value)
-      // console.log(this.rf2.controls['des'].value)
-      // console.log(this.rf2.controls['uis'].value)
-      // console.log(this.rf2.controls['category'].value)
+
       if (this.proImgUrl != this.defaultProImgUrl) {
         this.authService.upLoadIMG(this.proImgUrl).subscribe(
           data => {
@@ -1683,22 +1728,38 @@ export class AdminComponent implements OnInit {
     this.showFormError = true
     this.isCreatingPromo = true
     if (this.rf9.valid) {
-      if (this.urlIMG != this.defaultProImgUrl) {
-        this.authService.upLoadIMG(this.proImgUrl).subscribe(
-          data => {
-            this.urlIMG = data.secure_url
-            this.createPromo()
-          },
-          error => {
-            this.isCreatingPromo = false
-            console.log(error)
-            this.toast.error(" An error has occurred ! Try again !")
-          }
-        )
+      let valid = true
+      var start = new  Date (this.rf9.controls["startDate"].value)
+      var end = new  Date (this.rf9.controls["endDate"].value)
+      if(end<=start){
+        valid=false
       }
-      else {
-        this.createPromo()
+      console.log(start)
+      console.log(end)
+      console.log(valid)
+      if(valid){
+        if (this.urlIMG != this.defaultProImgUrl) {
+          this.authService.upLoadIMG(this.proImgUrl).subscribe(
+            data => {
+              this.urlIMG = data.secure_url
+              this.createPromo()
+            },
+            error => {
+              this.isCreatingPromo = false
+              console.log(error)
+              this.toast.error(" An error has occurred ! Try again !")
+            }
+          )
+        }
+        else {
+          this.createPromo()
+        }
       }
+      else{
+        this.toast.error("Dữ liệu nhập chưa hợp lệ!")
+        this.isCreatingPromo = false
+      }
+ 
     }
     else {
       this.isCreatingPromo = false
@@ -1731,29 +1792,41 @@ export class AdminComponent implements OnInit {
   editPromo() {
     this.showFormError = true
     if (this.rf10.valid) {
-      this.isEditingPromo = true
-      this.editingPromo.name = this.rf10.controls["name"].value
-      this.editingPromo.description = this.rf10.controls["description"].value
-      this.editingPromo.endDate = this.rf10.controls["endDate"].value
-      this.editingPromo.startDate = this.rf10.controls["startDate"].value
-      this.editingPromo.status = this.rf10.controls["status"].value
-      this.editingPromo.visible = this.rf10.controls["visible"].value
-      if (this.urlIMG != this.editingPromo.imgUrl) {
-        this.authService.upLoadIMG(this.urlIMG).subscribe(
-          data => {
-            // console.log(data)
-            this.editingPromo.imgUrl = data.secure_url
-            this.updatePromo()
-          },
-          error => {
-            this.toast.error("Up ảnh không được")
-            console.log(error)
-          }
-        )
+      let valid = true
+      var start = new  Date (this.rf10.controls["startDate"].value)
+      var end = new  Date (this.rf10.controls["endDate"].value)
+      if(end<=start){
+        valid=false
       }
-      else {
-        this.updatePromo()
+      if(valid){
+        this.isEditingPromo = true
+        this.editingPromo.name = this.rf10.controls["name"].value
+        this.editingPromo.description = this.rf10.controls["description"].value
+        this.editingPromo.endDate = this.rf10.controls["endDate"].value
+        this.editingPromo.startDate = this.rf10.controls["startDate"].value
+        this.editingPromo.status = this.rf10.controls["status"].value
+        this.editingPromo.visible = this.rf10.controls["visible"].value
+        if (this.urlIMG != this.editingPromo.imgUrl) {
+          this.authService.upLoadIMG(this.urlIMG).subscribe(
+            data => {
+              // console.log(data)
+              this.editingPromo.imgUrl = data.secure_url
+              this.updatePromo()
+            },
+            error => {
+              this.toast.error("Up ảnh không được")
+              console.log(error)
+            }
+          )
+        }
+        else {
+          this.updatePromo()
+        }
       }
+      else{
+        this.toast.error("Dữ liệu nhập chưa hợp lệ!")
+      }
+ 
     }
     else {
       this.toast.error("Dữ liệu nhập chưa hợp lệ!")
@@ -1794,11 +1867,11 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   openChooseProductPromoModal(modal: any, promo: Promotion) {
     this.showFormError = false
     this.selectedPromotion = promo
-    this.getSearchData()
+    this.category_productWithNoPromo="all"
+    this.getProductWithNoPromo(this.category_productWithNoPromo)
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
   }
   openAddPromoInfo(pro: Product, modal: any) {
@@ -1881,6 +1954,7 @@ export class AdminComponent implements OnInit {
         data => {
           if (data.success) {
             this.toast.success("Thêm thông tin khuyến mãi thành công!")
+            this.getProductWithNoPromo(this.category_productWithNoPromo)
           }
           else {
             this.toast.error(data.error)
@@ -1992,7 +2066,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   getSearchResultOrder(modal: any) {
     this.searchResult_Order = []
     switch (this.searchBy_Order) {
@@ -2040,7 +2113,6 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
   }
-
   getSearchResultUser(modal: any) {
     this.searchResult_User = []
     switch (this.searchBy_User) {
@@ -2084,7 +2156,6 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
   }
-
   getSearchResultEmployee(modal: any) {
     this.searchResult_Employee = []
     switch (this.searchBy_Employee) {
@@ -2182,15 +2253,12 @@ export class AdminComponent implements OnInit {
   toNumber(string: string): number {
     return Number(string)
   }
-
   openProductExport() {
     window.open(`/#/xuatpdf?mode=${1}&category=${this.category}&orderBy=${this.orderProduct}&pageNumber=${this.pageNumberProduct}&pageSize=${this.pageSizeProduct}&orderDir=${this.orderDirProduct}`, '_blank');
   }
-
   openUserExport() {
     window.open(`/#/xuatpdf?mode=${2}&category=User&orderBy=${this.orderUser}&pageNumber=${this.pageNumberUser}&pageSize=${this.pageSizeUser}&orderDir=${this.orderDirUser}`, '_blank');
   }
-
   openEmployeeExport() {
     window.open(`/#/xuatpdf?mode=${3}&category=${this.roleEmployee}&orderBy=${this.orderEmployee}&pageNumber=${this.pageNumberEmployee}&pageSize=${this.pageSizeEmployee}&orderDir=${this.orderDirEmployee}`, '_blank');
   }
@@ -2204,7 +2272,6 @@ export class AdminComponent implements OnInit {
   openTKSPExport() {
     window.open(`/#/xuatpdf?mode=6&top=${this.tkTop}`, '_blank');
   }
-
   openProductTagModal(modal: any,pro:Product) {
     this.editingProduct=pro
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
@@ -2284,13 +2351,11 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   arraysEqual(a:any[], b:any[]) {
     // console.log(JSON.stringify(a))
     // console.log(JSON.stringify(b))
     return JSON.stringify(a)==JSON.stringify(b);
   }
-
   addDiscountCode(){
     if(this.rf15.valid){
       // console.log(this.rf15.controls)
@@ -2419,15 +2484,18 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   codeToUppercase(){
     let s:string =  this.rf15.controls["code"].value
     this.rf15.controls["code"].setValue(s.toUpperCase().replace(/\s/g, ""))
   }
-
   openAddDiscountCodeModal(modal:any){
     this.rf15.controls["type"].setValue(0)
     this.rf15.controls["number"].setValue(10)
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openAutoAddDiscountCodeModal(modal:any){
+    this.rf18.controls["type"].setValue(0)
+    this.rf18.controls["number"].setValue(10)
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
   openEditDiscountCodeModal(modal:any,dc:DiscountCode){
@@ -2469,7 +2537,6 @@ export class AdminComponent implements OnInit {
       }
     )
   }
-
   getSearchResultDCode(modal: any) {
     this.searchResult_DCode = []
     console.log(this.allDCode)
@@ -2489,8 +2556,6 @@ export class AdminComponent implements OnInit {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
   }
-
-
   calculateTotalPrice(o:Order):number{
     let shippingFee=0
     if(o.shippingFee==1){
@@ -2538,4 +2603,182 @@ export class AdminComponent implements OnInit {
 
   }
 
+  getProductWithNoPromo(category:any){
+    this.adminService.getProductWithNoPromotion(category).subscribe(
+      data=>{
+        this.productWithNoPromo=data.result
+        this.searchProductWithNoPromo = data.result
+      },
+      error=>{
+        console.log(error)
+        this.toast.error("Không kết nối được với API!")
+      }
+    )
+  }
+  filterProductWithNoPromo(){
+    this.searchProductWithNoPromo = this.productWithNoPromo.filter(t => String(t.name.toLowerCase()).includes(this.keyword_PWNP.toLowerCase()))
+  }
+
+
+  autoAddDiscountCode(){
+    if(this.rf18.valid){
+      let valid = true
+      try {
+        let type = this.rf18.controls["type"].value
+        if (type == 0) {
+          if (this.rf18.controls["number"].value > 100 || this.rf18.controls["number"].value <= 0) {
+            valid = false
+          }
+        }
+      }
+      catch (e) {
+        valid = false
+      }
+      var start = new  Date (this.rf18.controls["startDate"].value)
+      var end = new  Date (this.rf18.controls["endDate"].value)
+      if(end<=start){
+        valid=false
+      }
+      if(valid){
+        let dc:DiscountCode = new DiscountCode
+        dc.startDate=this.rf18.controls["startDate"].value
+        dc.endDate=this.rf18.controls["endDate"].value
+        if(this.rf18.controls["type"].value==0){
+          dc.discountPercent=this.rf18.controls["number"].value
+          dc.discountAmount="null"
+        }
+        else{
+          dc.discountAmount=this.rf18.controls["number"].value
+          dc.discountPercent="null"
+        }
+        this.isAddingDiscountCode=true
+        this.adminService.autoCreateDisCountCode(dc,this.rf18.controls["time"].value).subscribe(
+          data=>{
+            this.discountCodeJustCreate=data.dclist
+            console.log(this.discountCodeJustCreate)
+            console.log(data)
+            this.openDiscountExport(this.discountCodeJustCreate)
+            this.isAddingDiscountCode=false
+            this.toast.success("Thêm thành công!")
+            this.modalService.dismissAll()
+          },
+          error=>{
+            this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+            this.isAddingDiscountCode=false
+          }
+        )
+      }
+      else{
+        this.toast.error("Thông tin nhập chưa hợp lệ!")
+      }
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+  }
+
+  openDiscountExport(dclist:DiscountCode[]) {
+    localStorage.setItem("dclist",JSON.stringify(dclist))
+    window.open(`/#/xuatpdf?mode=7`, '_blank');
+  }
+
+
+  ExportTOExcel(name: string) {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, name);
+    XLSX.writeFile(wb, name + '.xlsx');
+  }
+
+  ExportProductToExcel(name: string){
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
+    ws['!cols']![5] = { hidden: true }
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, name);
+    XLSX.writeFile(wb, name + '.xlsx');
+  }
+
+  openAddCategoryModal( modal: any) {
+    this.showFormError=false
+    this.rf19.reset()
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openManageCategoryModal( modal: any) {
+
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openEditCategoryModal(cate: Category, modal: any) {
+    this.rf20.controls["name"].setValue(cate.name)
+    this.rf20.controls["id"].setValue(cate.id)
+
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+  openDeleteCategoryModal(cate: Category, modal: any) {
+
+    this.deletingCategory=cate
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  addCategory(){
+    if(this.rf19.valid){
+      this.isCreatingProductCategory=true
+      let a = new Category
+      a.name=this.rf19.controls["name"].value
+      this.adminService.createProductCategory(a).subscribe(
+        data=>{
+          this.isCreatingProductCategory=false
+          this.modalService.dismissAll()
+          this.toast.success("Thêm thành công!")
+          this.getCategory()
+        },
+        error=>{
+          this.isCreatingProductCategory=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        }
+      )
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+  }
+  editCategory(){
+    if(this.rf20.valid){
+      this.isEditingProductCategory=true
+      let a = new Category
+      a.name=this.rf20.controls["name"].value
+      a.id=this.rf20.controls["id"].value
+
+      this.adminService.editProductCategory(a).subscribe(
+        data=>{
+          this.isEditingProductCategory=false
+          this.modalService.dismissAll()
+          this.toast.success("Chỉnh sửa thành công!")
+          this.getCategory()
+        },
+        error=>{
+          this.isEditingProductCategory=false
+          this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+        }
+      )
+    }
+    else{
+      this.toast.error("Thông tin nhập chưa hợp lệ!")
+    }
+  }
+
+  deleteCategory(){
+    this.isDeletingProductCategory=true
+    this.adminService.deleteProductCategory(this.deletingCategory).subscribe(
+      data=>{
+        this.isDeletingProductCategory=false
+        this.toast.success("Xóa  thành công!")
+        this.modalService.dismissAll()
+      },
+      error=>{
+        console.log(error)
+        this.isDeletingProductCategory=false
+        this.toast.error("Có lỗi xảy ra! Xin hãy thử lại.")
+      }
+    )
+  }
 }

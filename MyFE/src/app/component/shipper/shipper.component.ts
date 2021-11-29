@@ -160,7 +160,7 @@ export class ShipperComponent implements OnInit {
   getAcceptedOrder() {
     this.orderService.getAcceptedOrder(this.user.id).subscribe(
       data => {
-         console.log(data)
+         //console.log(data)
         // console.log(data.sil)
         // console.log(data.sil[0])
         this.isDisconnect=false
@@ -237,6 +237,7 @@ export class ShipperComponent implements OnInit {
   }
   openFinishOrderInfoModal(info: any, o: Order) {
     this.selectedOrder = o
+    console.log(this.selectedOrder)
     this.rf1.controls["note"].setValue("Giao hàng thành công!")
     this.rf1.controls["status"].setValue(3)
     this.modalService.open(info, { ariaLabelledBy: 'modal-basic-title' })
@@ -246,19 +247,21 @@ export class ShipperComponent implements OnInit {
     this.isAcceptingOrder = true
     let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
     this.orderService.finishOrder(this.user.id, this.selectedOrder.id, this.rf1.controls["status"].value,
-      today, this.rf1.controls["note"].value).subscribe(
-        data => {
-
-          this.getAcceptedOrder()
-          this.toast.success("Đã hoàn thành đơn hàng!")
-          this.isAcceptingOrder = false
-          this.modalService.dismissAll()
-        },
-        error => {
-          console.log(error)
-          this.toast.error(" An error has occurred ! Try again !")
+    today, this.rf1.controls["note"].value).subscribe(
+      data => {
+        this.getAcceptedOrder()
+        if(this.rf1.controls["status"].value==3){
+          this.getShopCoinsForUser(this.selectedOrder.userID,this.selectedOrder.id)
         }
-      )
+        this.toast.success("Đã hoàn thành đơn hàng!")
+        this.isAcceptingOrder = false
+        this.modalService.dismissAll()
+      },
+      error => {
+        console.log(error)
+        this.toast.error(" An error has occurred ! Try again !")
+      }
+    )
   }
   toNumber(string: string): number {
     return Number(string)
@@ -280,5 +283,18 @@ export class ShipperComponent implements OnInit {
     else{
       return o.totalPrice+shippingFee
     }
+  }
+
+  getShopCoinsForUser(userID:any,orderID: any){
+    this.orderService.getShopCoins(userID, orderID).subscribe(
+      data => {
+        // if (data.coins > 0) {
+        //   this.toast.success("Bạn nhận được " + data.coins + " shop xu! Shop xu sử dụng để đổi mã giảm giá.")
+        // }
+      },
+      error => {
+
+      }
+    )
   }
 }

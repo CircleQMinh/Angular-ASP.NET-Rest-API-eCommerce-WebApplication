@@ -4,6 +4,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Category } from 'src/app/class/category';
 import { Product } from 'src/app/class/product';
 import { User } from 'src/app/class/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -27,12 +28,18 @@ export class NavComponent implements OnInit {
   priceRange: any = "0,999999"
   stringCate: string = "all"
   autoInterval:any
+
+  categoryList:Category[]=[]
+
+  
   constructor(private router: Router, private proService: ProductService, private toast: HotToastService, private authService: AuthenticationService
     ,private route: ActivatedRoute ) { }
 
   ngOnInit(): void {
-    this.authService.getLocalStorage()
 
+
+    this.authService.getLocalStorage()
+    this.getCategory()
     this.user = this.authService.user
     this.isLogin = this.authService.isLogin
     if (localStorage.getItem("products")) {
@@ -43,9 +50,10 @@ export class NavComponent implements OnInit {
     }
     this.autoInterval=setInterval(()=>{
       this.authService.getLocalStorage()
+      this.getCategory()
       this.user = this.authService.user
       this.isLogin = this.authService.isLogin
-    },1000)
+    },5000)
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -54,6 +62,16 @@ export class NavComponent implements OnInit {
       clearInterval(this.autoInterval);
       console.log("Xóa interval profile!")
     }
+  }
+  getCategory(){
+    this.proService.getCategory().subscribe(
+      data=>{
+        this.categoryList=data.cate
+      },
+      error=>{
+        console.log(error)
+      }
+    )
   }
   newSearch() {
     if(this.keyword==null){

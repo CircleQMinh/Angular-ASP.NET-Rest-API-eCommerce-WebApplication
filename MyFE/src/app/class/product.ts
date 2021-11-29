@@ -1,3 +1,4 @@
+import { Category } from "./category";
 import { PromotionInfo } from "./promotion-info";
 import { Review } from "./review";
 import { Tag } from "./tag";
@@ -10,7 +11,7 @@ export class Product {
     price!:number;
     description!:string;
     unitInStock!:number;
-    category!:string;
+    category!:Category;
     imgUrl!:string;
     lastUpdate!:string;
     favoritedUsers!:User[]
@@ -26,7 +27,7 @@ export class Product {
         this.description=des;
         this.price=price
         this.unitInStock=unit;
-        this.category=cate;
+        this.category.name=cate;
         this.imgUrl=img;
         this.lastUpdate=last;
 	}

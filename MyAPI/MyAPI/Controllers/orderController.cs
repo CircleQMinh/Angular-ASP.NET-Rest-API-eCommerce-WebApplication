@@ -608,7 +608,7 @@ namespace MyAPI.Controllers
             {
                 //Get Config Info
                 string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://circleqm31052000-001-site1.itempurl.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://minh18110320-001-site1.etempurl.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
@@ -729,6 +729,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("applyDiscountCode")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -755,6 +756,34 @@ namespace MyAPI.Controllers
             }
         }
 
+
+        [HttpPost("getShopCoins")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetShopCoins(GetShopCoinsDTO unitDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "error" });
+            }
+            try
+            {
+                var order = await _unitOfWork.Orders.Get(q => q.Id == unitDTO.OrderId, new List<string> { "discountCode" });
+                var coins = (int)(order.TotalPrice / 10000);
+                var user = await _unitOfWork.Users.Get(q => q.Id == unitDTO.UserId);
+                user.Coins += coins;
+                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Save();
+                return Accepted(new { coins, order.TotalPrice });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(FinishOrder)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
     }
 
 }

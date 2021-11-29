@@ -83,8 +83,8 @@ export class ProfileXuComponent implements OnInit {
       error => {
         console.log(error)
         this.isDisconnect = true
-        //this.router.navigateByUrl("/error")
-        //this.toast.error(" An error has occurred ! Try again !")
+        // this.router.navigateByUrl("/login")
+        // this.toast.info("Phiên đăng nhập hết hạn, xin hãy đăng nhập lại!")
       }
     )
   }

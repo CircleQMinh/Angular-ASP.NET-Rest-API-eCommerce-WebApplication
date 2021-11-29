@@ -13,7 +13,7 @@ namespace MyAPI.Configurations
     public class EmailHelper
     {
         public string site = "http://localhost:4200/#/";
-        public string siteOnline = "http://circleqm31052000-001-site1.itempurl.com/#/";
+        public string siteOnline = "http://minh18110320-001-site1.etempurl.com/#/";
         public int shippingFee = 15000;
         public string SendEmailConfirm(string userEmail, string token,string username)
         {
@@ -117,9 +117,6 @@ namespace MyAPI.Configurations
             mailMessage.Subject = "Đơn hàng của bạn đã được ghi nhận - Mã đơn hàng : "+order.Id;
             mailMessage.IsBodyHtml = true;
 
-            //string encodetk = token.Replace("+", "%2B");
-            //string link = site + "reset-password?email=" + userEmail + "&token=" + encodetk;
-            //string linkOnline = siteOnline + "reset-password?email=" + userEmail + "&token=" + encodetk;
           
             string msg = "<!DOCTYPE html><html><head> <title></title> <meta charset='utf-8' /> <style> table, th, td { border: 1px solid black; } " +
                 "</style></head><body style='font-family: monospace;'> <br /> <table width='100%'> <tr> <td style='background-color:#97b6e4;text-align: center;'>" +
@@ -249,8 +246,8 @@ namespace MyAPI.Configurations
 
             try
             {
-                //client.Send(mailMessage);
-                //client.Dispose();
+                client.Send(mailMessage);
+                client.Dispose();
                 return msg;
             }
             catch (Exception ex)

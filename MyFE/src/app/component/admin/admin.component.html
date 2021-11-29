@@ -804,10 +804,16 @@
                             <button class="btn btn-info" (click)="openAddProductModal(add_product)">
                                 <i class="fas fa-plus"></i> Thêm sản phẩm
                             </button>
+                            <button class="btn btn-secondary" (click)="openAddCategoryModal(add_product_category)">
+                                <i class="fas fa-plus"></i> Thêm danh mục
+                            </button>
+                            <button class="btn btn-warning" (click)="openManageCategoryModal(product_category_manage)">
+                                <i class="far fa-edit"></i> Chỉnh sửa danh mục
+                            </button>
                             <button class="btn btn-success" (click)="getProduct()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
                             </button>
-                            <button class="btn btn-warning " (click)="ExportTOExcel('SanPham')">
+                            <button class="btn btn-warning " (click)="ExportProductToExcel('SanPham')">
                                 <i class="fas fa-download"></i> Tải file excel
                             </button>
                             <button class="btn btn-danger " (click)="openProductExport()">
@@ -820,13 +826,10 @@
                                 <label>Danh mục: </label>
                                 <select class="form-select" [(ngModel)]="category"
                                     (change)=" onPageSizeCategoryChange()">
+                                    
                                     <option value="all" selected="true">Tất cả</option>
-                                    <option value="Fruit">Trái cây</option>
-                                    <option value="Vegetable">Rau củ</option>
-                                    <option value="Confectionery">Bánh kẹo</option>
-                                    <option value="Snack">Snack</option>
-                                    <option value="AnimalProduct">Thịt tươi sống</option>
-                                    <option value="CannedFood">Đồ hộp</option>
+                                    <option *ngFor="let o of categoryList " value={{o.name}}>{{o.name}}</option>
+              
                                 </select>
                             </div>
                             <div class="form-group">
@@ -877,6 +880,7 @@
                                     <th>Giá</th>
                                     <th>Số lượng</th>
                                     <th>Danh mục/Thẻ</th>
+                                    <th class="d-none">Danh mục</th>
                                     <th>Chỉnh sửa</th>
                                     <th>Hiển thị</th>
                                     <th>SL bán</th>
@@ -899,10 +903,11 @@
                                             style="text-decoration: underline;">đ</span></td>
                                     <td>{{o.unitInStock}}</td>
                                     <td>
-                                        <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
+                                        <p class="text-tron text-success">{{o.category.name}}</p>
                                         <hr>
                                         <span class="badge bg-primary" *ngFor="let i of o.tags">{{i.name}}</span>
                                     </td>
+                                    <td class="d-none"> <p class="text-tron text-success">{{o.category.name}}</p></td>
                                     <td>{{o.lastUpdate}}</td>
                                     <td *ngIf="o.status==1">
                                         <p class="text-tron text-success"><i class="fas fa-check"></i></p>
@@ -1501,6 +1506,7 @@
                     <div class="card ">
                         <div class="card-header">
                             <h4><i class="fas fa-sign"></i> Thống kê đơn hàng</h4>
+                            <hr>
                         </div>
                         <div class="card-body border-tron">
                             <div class="d-flex justify-content-center " *ngIf="!isLoading" style="height: 300px;">
@@ -1523,6 +1529,9 @@
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-info " (click)="openAddDiscountCodeModal(add_discountCode)">
                                 <i class="fas fa-plus"></i> Thêm mã giảm giá
+                            </button>
+                            <button class="btn btn-info " (click)="openAutoAddDiscountCodeModal(autoadd_discountCode)">
+                                <i class="fas fa-plus"></i> Tự động thêm mã giảm giá
                             </button>
                             <button class="btn btn-info " (click)="getPromotion()">
                                 <i class="fas fa-sync-alt"></i> Tải lại
@@ -1888,12 +1897,7 @@
                 <label for="cate">Danh mục</label>
                 <div class="input-group">
                     <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
-                        <option value="Fruit" selected>Trái cây</option>
-                        <option value="Vegetable">Rau củ</option>
-                        <option value="Confectionery">Bánh kẹo</option>
-                        <option value="Snack">Snack</option>
-                        <option value="AnimalProduct">Thịt tươi sống</option>
-                        <option value="CannedFood">Đồ hợp</option>
+                        <option *ngFor="let o of categoryList " value={{o.id}}>{{o.name}}</option>
                     </select>
                 </div>
 
@@ -1977,12 +1981,7 @@
                 <label for="cate">Danh mục</label>
                 <div class="input-group">
                     <select id="cate" class="form-select" placeholder="100" name="cate" formControlName="category">
-                        <option value="Fruit" selected>Trái cây</option>
-                        <option value="Vegetable">Rau củ</option>
-                        <option value="Confectionery">Bánh kẹo</option>
-                        <option value="Snack">Snack</option>
-                        <option value="AnimalProduct">Thịt tươi sống</option>
-                        <option value="CannedFood">Đồ hộp</option>
+                        <option *ngFor="let o of categoryList " value={{o.id}}>{{o.name}}</option>
                     </select>
                 </div>
                 <label for="cate">Hiển thị</label>
@@ -2622,7 +2621,7 @@
         <div *ngIf="!isCreatingPromo">
 
             <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
-                (click)="createPromo()">Lưu</button>
+                (click)="addPromo()">Lưu</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
         </div>
         <div class="loading-full" style="height: 100px;" *ngIf="isCreatingPromo">
@@ -2814,17 +2813,40 @@
             </div>
             <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
-        <div class="div-center-content" style="margin-top: -25px;margin-bottom: 15px;" id='searchBarProduct'>
+
+    
+        <div class="div-center-content"  id='searchBarProduct'>
             <div class="wrap">
                 <div class="search">
-                    <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword"
-                        [ngbTypeahead]="searchProduct" [resultTemplate]="rt"
-                        (selectItem)="selectedItemPromomo($event,add_promoInfo)">
+                    <input type="text" class="searchTerm" placeholder="Bạn đang tìm sản phẩm nào?" [(ngModel)]="keyword_PWNP" 
+                    (keyup.enter)="filterProductWithNoPromo()" >
                     <button type="submit" class="searchButton">
                         <i class="fa fa-search"></i>
                     </button>
+                  
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-success" (click)="getProductWithNoPromo(category_productWithNoPromo)">
+                <i class="fas fa-sync-alt"></i> Tải lại
+            </button>
+        </div>
+        <div class="d-flex flex-wrap justify-content-around ">
+            <div class="form-group">
+                <label>Danh mục: </label>
+                <select class="form-select" [(ngModel)]="category_productWithNoPromo"
+                    (change)=" getProductWithNoPromo(category_productWithNoPromo)">
+                    <option value="all" selected="true">Tất cả</option>
+                    <option value="Fruit">Trái cây</option>
+                    <option value="Vegetable">Rau củ</option>
+                    <option value="Confectionery">Bánh kẹo</option>
+                    <option value="Snack">Snack</option>
+                    <option value="AnimalProduct">Thịt tươi sống</option>
+                    <option value="CannedFood">Đồ hộp</option>
+                </select>
+            </div>
+
         </div>
         <div class="table-responsive p-20" *ngIf="!isGettingPromoInfo">
             <table class="table">
@@ -2837,7 +2859,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let o of allProduct">
+                    <tr *ngFor="let o of searchProductWithNoPromo">
                         <td><img style="height: 40px;width: 40px;" src="{{ o.imgUrl }}"></td>
                         <td>{{ o.name }}</td>
                         <td>{{ o.price }}</td>
@@ -3291,7 +3313,7 @@
                         <td>{{o.price| currency:'VND':''}} <span style="text-decoration: underline;">đ</span></td>
                         <td>{{o.unitInStock}}</td>
                         <td>
-                            <p class="text-tron text-success">{{getDisplayCategory(o.category)}}</p>
+                            <p class="text-tron text-success">{{o.category.name}}</p>
                         </td>
                         <td *ngIf="o.status==1">
                             <p class="text-tron text-success"><i class="fas fa-check"></i></p>
@@ -3815,6 +3837,208 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
             <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #autoadd_discountCode let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Tự động thêm mã giảm giá</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf18">
+
+            <label for="email">Số lượng tạo </label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="time" type="number">
+            </div>
+            <label for="email">Loại hình giảm giá</label>
+            <div class="input-group">
+                <select class="form-select" formControlName="type">
+                    <option selected value="0">Theo %</option>
+                    <option value="1">Theo đơn vị tiền</option>
+                </select>
+
+            </div>
+            <label for="email">Giá trị khuyến mãi</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="number" type="number">
+            </div>
+            <label for="email">Ngày bắt đầu</label>
+            <div class="input-group">
+                <input id="sd" class="form-control" name="3" formControlName="startDate" type="date">
+
+            </div>
+            <label for="email">Ngày kết thúc</label>
+            <div class="input-group">
+                <input id="ed" class="form-control" name="4" formControlName="endDate" type="date">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isAddingDiscountCode">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="autoAddDiscountCode()">Lưu</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isAddingDiscountCode">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #add_product_category let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Thêm danh mục sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf19">
+            <div class="form-group">
+                <label for="name">Tên danh mục</label>
+                <p class="text-center" *ngIf="rf19.controls.name?.errors?.required&&showFormError">
+                    <i class="fas fa-exclamation-triangle"></i>Chưa có tên sản phẩm!
+                </p>
+                <div class="input-group">
+                    <input id="name" class="form-control" placeholder="name..." name="name" formControlName="name">
+                </div>
+              
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isCreatingProductCategory">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="addCategory()">Thêm</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isCreatingProductCategory">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #product_category_manage let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Danh mục của sản phẩm</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="table-responsive p-20" *ngIf="categoryList.length!=0">
+            <p>Tổng số danh mục : {{categoryList.length}}</p>
+          
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Tên </th>
+                        <th>Chỉnh sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let o of categoryList,index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{o.name}}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm admin-button mr-2" (click)="openEditCategoryModal(o,edit_product_category)" >
+                                <i class="far fa-edit" ></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm admin-button " (click)="openDeleteCategoryModal(o,delete_product_category)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Đóng</button>
+    </div>
+</ng-template>
+
+
+<ng-template #edit_product_category let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Chỉnh sửa Xu cho người dùng</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="rf20">
+            <div class="form-group">
+                <label for="name">Mã ID  : </label>
+                <div class="input-group">
+                    <input id="name" class="form-control" placeholder="ID..." name="name" formControlName="id" [attr.disabled]='true'>
+                </div>
+                <label for="uis">Tên danh mục : </label>
+                <div class="input-group">
+                    <input id="uis" class="form-control" placeholder="Tên danh mục" name="unit"
+                        formControlName="name" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isEditingProductCategory">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="editCategory()">Edit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isEditingProductCategory">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Please wait a sec...</p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #delete_product_category let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xóa danh mục này </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-tron text-monospace">Xóa danh mục này?</p>
+        <p class="text-center"><i class="fas fa-exclamation-triangle"></i>Bất cứ thông tin nào liên quan đến danh mục sẽ
+            bị xóa!</p>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="!isDeletingProductCategory">
+
+            <button type="button" class="btn btn-outline-dark" style="background-color: rgb(25, 216, 41);"
+                (click)="deleteCategory()">Xóa</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Hủy</button>
+        </div>
+        <div class="loading-full" style="height: 100px;" *ngIf="isDeletingProductCategory">
+            <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text monospace">Xin chờ 1 xíu...</p>
         </div>
     </div>
 </ng-template>

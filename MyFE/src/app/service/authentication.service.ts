@@ -9,7 +9,7 @@ import { User } from '../class/user';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  // apiUrl:string="http://circleqm31052000-001-site1.itempurl.com/api/";
+  // apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
   apiUrl: string = "https://localhost:44324/api/";
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";
 
@@ -81,7 +81,7 @@ export class AuthenticationService {
       email: email,
       password: password,
       displayName: userName,
-      imgUrl: "https://el.tvu.edu.vn/images/avatar/no-avatar.png",
+      imgUrl: "https://res.cloudinary.com/dkmk9tdwx/image/upload/v1635284412/tszai1cvlsw5p2wwxis1.png",
       phoneNumber: phoneNumber,
       roles: [
         "User"
@@ -185,4 +185,6 @@ export class AuthenticationService {
       mode: mode
     }, { headers: header })
   }
+
+
 }

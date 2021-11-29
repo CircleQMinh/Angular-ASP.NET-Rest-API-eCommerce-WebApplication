@@ -153,7 +153,7 @@ export class CheckoutComponent implements OnInit {
             this.toast.error("Đã có lỗi xảy ra ! Xin hãy thử lại.")
           }
         )
-      }
+      }//not use, can be remove
       else if (this.rf1.controls["billOption"].value == "vnpay") {
 
         this.saveOrderToLocal(address, today)
@@ -279,7 +279,7 @@ export class CheckoutComponent implements OnInit {
    // console.log("aaaaaaaaaaaaaaaaaaaaaa")
     this.orderService.sentEmailWithOrderInfo(id,email).subscribe(
       data=>{
-        console.log(data)
+        //console.log(data)
       },
       error=>{
         console.log(error)
@@ -293,6 +293,7 @@ export class CheckoutComponent implements OnInit {
       this.orderService.applyDiscountCode(dc.code,orderID).subscribe(
         data=>{
           this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
+          //this.getShopCoinsForUser(orderID)
         },
         error=>{
           console.log(error)
@@ -301,6 +302,7 @@ export class CheckoutComponent implements OnInit {
     }
     else{
       this.sendEmailWithOrderInfo(this.rf1.controls["email"].value,orderID)
+      //this.getShopCoinsForUser(orderID)
     }
   }
 
@@ -318,5 +320,18 @@ export class CheckoutComponent implements OnInit {
     else{
       return this.totalPrice+this.shippingFee
     }
+  }
+
+  getShopCoinsForUser(orderID:any){
+    this.orderService.getShopCoins(this.user.id,orderID).subscribe(
+      data=>{
+        if(data.coins>0){
+          this.toast.success("Bạn nhận được "+data.coins+" shop xu! Shop xu sử dụng để đổi mã giảm giá.")
+        }
+      },
+      error=>{
+
+      }
+    )
   }
 }

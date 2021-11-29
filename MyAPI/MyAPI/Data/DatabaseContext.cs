@@ -29,6 +29,8 @@ namespace MyAPI.Data
         public DbSet<Tag> Tags { get; set; }
 
         public DbSet<DiscountCode> DiscountCodes { get; set; }
+
+        public DbSet<Category> Category { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
