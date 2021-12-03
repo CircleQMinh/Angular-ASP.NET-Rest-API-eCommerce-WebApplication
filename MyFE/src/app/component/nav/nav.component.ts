@@ -67,6 +67,7 @@ export class NavComponent implements OnInit {
     this.proService.getCategory().subscribe(
       data=>{
         this.categoryList=data.cate
+        localStorage.setItem("categoryList",JSON.stringify(this.categoryList))
       },
       error=>{
         console.log(error)

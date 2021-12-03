@@ -776,14 +776,14 @@ namespace MyAPI.Controllers
             try
             {
                 var result = new List<Dictionary<string, string>>();
-                List<string> cate = new List<string> {"Fruit","Vegetable","Confectionery","Snack","AnimalProduct","CannedFood" };
-                List<string> cateVN = new List<string> { "Trái cây", "Rau củ", "Bánh kẹo", "Snack", "Thịt tươi sống", "Đồ hộp" };
+                var cate = await _unitOfWork.Categories.GetAll(null, null, null);
+
 
                 for (int i=0;i<cate.Count;i++)
                 {
-                    var count = await _unitOfWork.Products.GetCount(q => q.Category.Name == cate[i]);
+                    var count = await _unitOfWork.Products.GetCount(q => q.Category.Name == cate[i].Name);
                     var dic = new Dictionary<string, string>();
-                    dic.Add("name", cateVN[i]);
+                    dic.Add("name", cate[i].Name);
                     dic.Add("value", count.ToString());
                     result.Add(dic);
                 }
@@ -1304,26 +1304,7 @@ namespace MyAPI.Controllers
             }
         }
 
-        [HttpGet("getAuthorizeHttp", Name = "GetAuthorizeHttp")]
-        [Authorize(Roles = "Administrator")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAuthorizeHttp(int variable)
-        {
-            var id = User.Identity.Name;
-            try
-            {
-                var greet = "Hello world! ";
 
-                return Accepted(new { variable, greet, id });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAuthorizeHttp)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
-            }
-        }
 
 
         [HttpPost("removeReview")]
@@ -1701,6 +1682,7 @@ namespace MyAPI.Controllers
 
 
         [HttpPost("createCategory")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1729,6 +1711,7 @@ namespace MyAPI.Controllers
         }
 
         [HttpPut("editCategory")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1760,6 +1743,7 @@ namespace MyAPI.Controllers
 
 
         [HttpDelete("deleteCategory")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -1791,6 +1775,47 @@ namespace MyAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteCategory)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+        [HttpGet("getAuthorizeHttp", Name = "GetAuthorizeHttp")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAuthorizeHttp(int variable)
+        {
+            var id = User.Identity.Name;
+            try
+            {
+                var greet = "Hello world! ";
+
+                return Accepted(new { variable, greet, id });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAuthorizeHttp)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
+            }
+        }
+
+        [HttpGet("getAPILastUpdate", Name = "GetAPILastUpdate")]
+        //[Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAPILastUpdate()
+        {
+ 
+            try
+            {
+                var ver = "03/12/2021 11:24:00 ";
+
+                return Accepted(new { version=ver});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetAPILastUpdate)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
             }
         }

@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Product } from '../class/product';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class CartService {
   totalItem:number=0
   totalPrice:number=0
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private toast:HotToastService) { }
 
   getLocalStorage() {
     if(localStorage.getItem("cart-timeOut")){
@@ -80,7 +81,14 @@ export class CartService {
       let a:Product = this.cartItems[i];
       if(a.name==pro.name){
         alreadyExistsInCart=true;
-        this.cartItemsQuantity[i]++;
+        if(this.cartItemsQuantity[i]==pro.unitInStock){
+          this.toast.info("Sản phẩm đã đạt số lượng tối đa!")
+        }
+        else{
+          this.cartItemsQuantity[i]++;
+          this.toast.success("Đã thêm sản phẩm vào giỏ!")
+        }
+     
         break;
       }
     }
@@ -88,6 +96,7 @@ export class CartService {
     if(!alreadyExistsInCart){
       this.cartItems.push(pro);
       this.cartItemsQuantity.push(1);
+      this.toast.success("Đã thêm sản phẩm vào giỏ!")
     }
     this.computeCartTotals();
   }

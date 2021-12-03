@@ -33,7 +33,10 @@ namespace MyAPI.DTOs
         public string category { get; set; }
         public string priceRange { get; set; }
         public string keyword { get; set; }
-        public string[] tag { get; set; }
+        public string tag { get; set; }
+
+        public int pageNumber {get;set;}
+        public int pageSize { get; set; }
     }
     public class ProductDTO 
     {
@@ -67,7 +70,7 @@ namespace MyAPI.DTOs
         public string LastUpdate { get; set; }
         public int Status { get; set; }
         public virtual ICollection<ReviewUserInfoDTO> FavoritedUsers { get; set; }
-
+        public virtual ICollection<TagDTO> Tags { get; set; }
         public virtual ICollection<ReviewDTO> Reviews { get; set; }
     }
 

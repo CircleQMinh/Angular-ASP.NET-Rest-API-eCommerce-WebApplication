@@ -679,7 +679,7 @@ export class AdminComponent implements OnInit {
           this.isDisconnect = true
         }
       )
-    }, 3000)
+    }, 10000)
   }
 
   signOut() {
@@ -777,10 +777,10 @@ export class AdminComponent implements OnInit {
               this.isDisconnect = true
             }
           )
-        }, 3000)
+        }, 10500)
         this.autoInterval = setInterval(() => {
           this.autoReload()
-        }, 1200)
+        }, 3000)
       },
       error => {
         console.log(error)
@@ -1739,7 +1739,7 @@ export class AdminComponent implements OnInit {
       console.log(valid)
       if(valid){
         if (this.urlIMG != this.defaultProImgUrl) {
-          this.authService.upLoadIMG(this.proImgUrl).subscribe(
+          this.authService.upLoadIMG(this.urlIMG).subscribe(
             data => {
               this.urlIMG = data.secure_url
               this.createPromo()
@@ -2522,6 +2522,10 @@ export class AdminComponent implements OnInit {
     this.deletingDCode=dc
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
   }
+  onChangeFilterDiscountCode(){
+    this.pageNumberDiscountCode=1
+    this.getDiscountCodes()
+  }
   getDiscountCodes(){
     this.adminService.getDiscountCode(this.orderDiscountCode,this.pageNumberDiscountCode,
       this.pageSizeDiscountCode,this.orderDirDiscountCode).subscribe(
@@ -2771,6 +2775,7 @@ export class AdminComponent implements OnInit {
     this.adminService.deleteProductCategory(this.deletingCategory).subscribe(
       data=>{
         this.isDeletingProductCategory=false
+        this.getCategory()
         this.toast.success("Xóa  thành công!")
         this.modalService.dismissAll()
       },

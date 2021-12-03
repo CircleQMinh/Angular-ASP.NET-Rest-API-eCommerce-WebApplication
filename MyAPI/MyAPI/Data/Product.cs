@@ -21,7 +21,7 @@ namespace MyAPI.Data
         public string ImgUrl { get; set; }
         public string LastUpdate { get; set; }
         public virtual ICollection<APIUser> FavoritedUsers { get; set; }
-
+        public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
 
         public int Status { get; set; }

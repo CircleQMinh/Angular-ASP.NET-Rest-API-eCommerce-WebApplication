@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Category } from 'src/app/class/category';
 import { Product } from 'src/app/class/product';
 import { Promotion } from 'src/app/class/promotion';
 import { AuthenticationService } from 'src/app/service/authentication.service';
@@ -48,13 +49,42 @@ export class HomeComponent implements OnInit {
   isLoadingTopPro = true
   isLoadingMostFavPro = true
   isLoadingNewPro = true
-
+  
+  categoryList:Category[]=[]
 
   constructor(private proService: ProductService, private router: Router, private toast: HotToastService, private cartService: CartService,
     private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.getPromotion()
+    this.getCategory()
+    
+    this.getMostFavProduct()
+    this.getTopProduct()
+    this.getLatestProduct()
+ 
+
+
+    this.autoInterval = setInterval(() => {
+      this.proService.getPromotion().subscribe(
+        data => {
+          if (!this.isHover) {
+            this.promotions = data.result
+            this.getNextPromo()
+          }
+          this.isDisconnect = false
+          //console.log(this.promotion)
+        },
+        error => {
+          this.isDisconnect = true
+          console.log(error)
+        }
+      )
+
+      //this.getTopProduct()
+      this.getLatestProduct()
+      // this.getMostFavProduct()
+    }, 10000)
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -64,7 +94,10 @@ export class HomeComponent implements OnInit {
       //console.log("Xóa interval home!")
     }
   }
-
+  goToSearch(cate:any){
+    localStorage.setItem("searchCate",cate)
+    window.open("/#/search")
+  }
   openPromoUrlInNewWindow(id: any) {
 
     window.open(`/#/khuyenmai/${id}`, '_blank');
@@ -84,30 +117,17 @@ export class HomeComponent implements OnInit {
       }
     )
 
-    this.getTopProduct()
-    this.getLatestProduct()
-    this.getMostFavProduct()
-
-    this.autoInterval = setInterval(() => {
-      this.proService.getPromotion().subscribe(
-        data => {
-          if (!this.isHover) {
-            this.promotions = data.result
-            this.getNextPromo()
-          }
-          this.isDisconnect = false
-          //console.log(this.promotion)
-        },
-        error => {
-          this.isDisconnect = true
-          console.log(error)
-        }
-      )
-
-      this.getTopProduct()
-      this.getLatestProduct()
-      this.getMostFavProduct()
-    }, 6000)
+  }
+  getCategory(){
+    this.proService.getCategory().subscribe(
+      data=>{
+        this.categoryList=data.cate
+        localStorage.setItem("categoryList",JSON.stringify(this.categoryList))
+      },
+      error=>{
+        console.log(error)
+      }
+    )
   }
   getNextPromo() {
     //console.log(this.isHover)

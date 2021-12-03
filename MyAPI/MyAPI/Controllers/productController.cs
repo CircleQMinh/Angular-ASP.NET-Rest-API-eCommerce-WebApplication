@@ -96,7 +96,7 @@ namespace MyAPI.Controllers
             try
             {
                 // câu truy vấn sử dụng repo Products
-                var query = await _unitOfWork.Products.Get(q => q.Id == id,new List<string> { "FavoritedUsers","Category"});
+                var query = await _unitOfWork.Products.Get(q => q.Id == id,new List<string> { "FavoritedUsers","Category","Tags"});
                 // sử dụng mapper để map dữ liệu thành 1 DTO(data tranfer object)
                 var result = _mapper.Map<FullProductDTO>(query);
                 // câu truy vấn 2 sử dụng repo Reviews
@@ -108,11 +108,8 @@ namespace MyAPI.Controllers
 
                 var promoInfo = _mapper.Map<PromotionInfoDTO>(query3);
 
-                var query4 = await _unitOfWork.Tags.GetAll(q => q.ProductId == id ,null,null);
-
-                var tags = _mapper.Map<IList < TagDTO >> (query4);
                 //trả lời request
-                return Ok(new { result,reviews,promoInfo,tags });
+                return Ok(new { result,reviews,promoInfo,tags=result.Tags });
             }
             catch (Exception ex)
             {
@@ -257,77 +254,54 @@ namespace MyAPI.Controllers
             try
             {
                 string[] range = unitDTO.priceRange.Split(",");
-                string[] cate = unitDTO.category.Split(",");  
-                if (unitDTO.keyword == null || unitDTO.keyword.Trim()=="")
+                string cate = unitDTO.category;
+                var count=0;
+                Expression<Func<Product, bool>> expression = null;
+                if (unitDTO.keyword=="")
                 {
-                    var query = await _unitOfWork.Products.GetAll(q=>q.Status==1, null, new List<string> { "Category"});
+                    unitDTO.keyword = " ";
+                }
 
-                    var list = _mapper.Map<IList<ProductDTO>>(query);
-                    var rs = new List<ProductDTO>();
-                    var tags = new List<List<String>>();
-                    foreach (var item in list)                   
+                if (cate!="all")
+                {
+                    if (unitDTO.tag != "all")
                     {
-                        var product_tags = await _unitOfWork.Tags.GetAll(q => q.ProductId == item.Id, null, null);
-                        var product_tags_string = new List<String>();
-                        foreach (var t in product_tags)
-                        {
-                            product_tags_string.Add(t.Name);
-                        }
-                        
-                        
-                        if ((cate.Contains(item.Category.Name) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <=Int32.Parse(range[1])
-                            &&(product_tags_string.Intersect(unitDTO.tag).Any() || unitDTO.tag.Contains("all")))
-                        {
-                            rs.Add(item);
-                            tags.Add(product_tags_string);
-                        }
+                        //var tags = await _unitOfWork.Tags.GetAll(q => q.Name == unitDTO.tag, null,null);
+                        expression = q => q.Category.Name == cate && q.Price >= Int32.Parse(range[0]) && q.Price <= Int32.Parse(range[1])&&q.Tags.Any(k=>k.Name==unitDTO.tag)&&q.Name.Contains(unitDTO.keyword);
+                        count = await _unitOfWork.Products.GetCount(expression);
                     }
-
-                    var promoInfo = new List<PromotionInfoDTO>();
-
-                    foreach (var item in rs)
+                    else
                     {
-                        var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
-                        var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
-                        promoInfo.Add(pi_map);
+                        expression = q => q.Category.Name == cate && q.Price >= Int32.Parse(range[0]) && q.Price <= Int32.Parse(range[1]) && q.Name.Contains(unitDTO.keyword);
+                        count = await _unitOfWork.Products.GetCount(expression);
                     }
-
-
-                    return Ok(new { result = rs, total = rs.Count , promoInfo,tags });
                 }
                 else
                 {
-                    var query = await _unitOfWork.Products.GetAll(q => q.Name.Contains(unitDTO.keyword.Trim())&&q.Status==1, null, new List<string> { "Category" });
-
-                    var list = _mapper.Map<IList<ProductDTO>>(query);
-                    var rs = new List<ProductDTO>();
-                    var tags = new List<List<String>>();
-                    foreach (var item in list)
+                    if (unitDTO.tag != "all")
                     {
-                        var product_tags = await _unitOfWork.Tags.GetAll(q => q.ProductId == item.Id, null, null);
-                        var product_tags_string = new List<String>();
-                        foreach (var t in product_tags)
-                        {
-                            product_tags_string.Add(t.Name);
-                        }
-                       
-                        if ((cate.Contains(item.Category.Name) || cate.Contains("all")) && item.Price >= Int32.Parse(range[0]) && item.Price <= Int32.Parse(range[1])
-                            && (product_tags_string.Intersect(unitDTO.tag).Any() || unitDTO.tag.Contains("all")))
-                        {
-                            rs.Add(item);
-                            tags.Add(product_tags_string);
-                        }
+                        //var tags = await _unitOfWork.Tags.GetAll(q => q.Name == unitDTO.tag, null,null);
+                        expression = q => q.Price >= Int32.Parse(range[0]) && q.Price <= Int32.Parse(range[1]) && q.Tags.Any(k => k.Name == unitDTO.tag) && q.Name.Contains(unitDTO.keyword);
+                        count = await _unitOfWork.Products.GetCount(expression);
                     }
-                    var promoInfo = new List<PromotionInfoDTO>();
-
-                    foreach (var item in rs)
+                    else
                     {
-                        var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
-                        var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
-                        promoInfo.Add(pi_map);
+                        expression = q => q.Price >= Int32.Parse(range[0]) && q.Price <= Int32.Parse(range[1]) && q.Name.Contains(unitDTO.keyword);
+                        count = await _unitOfWork.Products.GetCount(expression);
                     }
-                    return Ok(new { result = rs, total = rs.Count ,promoInfo,tags,list});
+            
                 }
+                var query = await _unitOfWork.Products.GetAll(expression,null,new List<string>{"Category","Tags"},new PaginationFilter(unitDTO.pageNumber,unitDTO.pageSize));
+                var rs = _mapper.Map<IList<FullProductDTO>>(query);
+                var promoInfo = new List<PromotionInfoDTO>();
+                foreach (var item in rs)
+                {
+                    var pi = await _unitOfWork.PromotionInfos.Get(q => q.ProductId == item.Id && q.Promotion.Status == 1, new List<string> { "Promotion" });
+                    var pi_map = _mapper.Map<PromotionInfoDTO>(pi);
+                    promoInfo.Add(pi_map);
+                }
+
+                return Accepted(new { result = rs, total = count, promoInfo });   
       
             }
 
@@ -623,17 +597,37 @@ namespace MyAPI.Controllers
 
         //    try
         //    {
-        //        var cate = await _unitOfWork.Categories.GetAll(null,null,null);
 
-        //        return Accepted(new {cate});
+
         //    }
         //    catch (Exception ex)
         //    {
         //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetRandomProduct)}");
-        //        return StatusCode(500, "Internal Server Error. Please Try Again Later."+ex.ToString());
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later." + ex.ToString());
         //    }
         //}
 
+        [HttpGet("getRelatedTag")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetRelatedTag(string category)
+        {
 
+            try
+            {
+
+                var query = await _unitOfWork.Tags.GetAll(q => q.Product.Category.Name == category,null,null);
+                
+
+
+                return Accepted(new { result= query.GroupBy(q => q.Name).Select(q => q.First()).Distinct() });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetRandomProduct)}");
+                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+            }
+        }
     }
 }

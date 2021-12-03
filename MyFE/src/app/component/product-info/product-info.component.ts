@@ -297,7 +297,7 @@ export class ProductInfoComponent implements OnInit {
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)
-    this.toast.success("Đã thêm sản phẩm vào giỏ!")
+    //this.toast.success("Đã thêm sản phẩm vào giỏ!")
   }
 
   addReview() {

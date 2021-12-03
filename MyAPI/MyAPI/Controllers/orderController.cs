@@ -388,6 +388,16 @@ namespace MyAPI.Controllers
                 si.deliveryDate = unitDTO.date;
                 existingOrder.Status = unitDTO.status;
                 existingOrder.Note = unitDTO.note;
+                if (unitDTO.status==3)
+                {
+                    var orderInfos = await _unitOfWork.OrderDetails.GetAll(q => q.OrderId == unitDTO.orderId, null, null);
+                    foreach (var item in orderInfos)
+                    {
+                        var product = await _unitOfWork.Products.Get(q => q.Id == item.ProductId);
+                        product.UnitInStock -= item.Quantity;
+                        _unitOfWork.Products.Update(product);
+                    }
+                }
 
                 _unitOfWork.Orders.Update(existingOrder);
                 _unitOfWork.ShippingInfos.Update(si);
@@ -491,111 +501,111 @@ namespace MyAPI.Controllers
         }
 
 
-        [HttpGet("getPaySign", Name = "GetPaySign")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPaySign(string Id,string totalPrice)
-        {
-            try
-            {
-                //string endpoint ="https://test-payment.momo.vn/v2/gateway/api/create";
-                string partnerCode = "MOMOEVY720210913";
-                string accessKey = "Vxo6vQMlwjbrGq3c";
-                string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
-                string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
-                string redirectUrl = "http://localhost:4200/#/thankyou";
-                string notifyUrl = "http://localhost:4200/#/thankyou";
+        //[HttpGet("getPaySign", Name = "GetPaySign")]
+        //[Authorize]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetPaySign(string Id,string totalPrice)
+        //{
+        //    try
+        //    {
+        //        //string endpoint ="https://test-payment.momo.vn/v2/gateway/api/create";
+        //        string partnerCode = "MOMOEVY720210913";
+        //        string accessKey = "Vxo6vQMlwjbrGq3c";
+        //        string serectkey = "u4tghg8QhWdC45JKsl1zaIgB3kXPzc9q";
+        //        string orderInfo = "Thanh toán cho đơn hàng của CircleShop";
+        //        string redirectUrl = "http://localhost:4200/#/thankyou";
+        //        string notifyUrl = "http://localhost:4200/#/thankyou";
 
-                //string redirectUrl = "http://18110320.000webhostapp.com/#/thankyou";
-                //string notifyUrl = "http://18110320.000webhostapp.com/#/thankyou";
+        //        //string redirectUrl = "http://18110320.000webhostapp.com/#/thankyou";
+        //        //string notifyUrl = "http://18110320.000webhostapp.com/#/thankyou";
 
-                //string requestType = "captureWallet";
+        //        //string requestType = "captureWallet";
 
-                string amount = totalPrice;
-                string orderId = Id;
-                string requestId = Id;
-                string extraData = "";
+        //        string amount = totalPrice;
+        //        string orderId = Id;
+        //        string requestId = Id;
+        //        string extraData = "";
 
-                //Before sign HMAC SHA256 signature
+        //        //Before sign HMAC SHA256 signature
 
-                string rH=
-                    "partnerCode=" + partnerCode +
-                    "&accessKey=" + accessKey +
-                    "&requestId=" + requestId +
-                    "&amount=" + amount +
-                    "&orderId=" + orderId +
-                    "&orderInfo=" + orderInfo +
-                    "&returnUrl=" + redirectUrl +
-                    "&notifyUrl=" + notifyUrl +
-                    "&extraData=" + extraData
-                    ;
+        //        string rH=
+        //            "partnerCode=" + partnerCode +
+        //            "&accessKey=" + accessKey +
+        //            "&requestId=" + requestId +
+        //            "&amount=" + amount +
+        //            "&orderId=" + orderId +
+        //            "&orderInfo=" + orderInfo +
+        //            "&returnUrl=" + redirectUrl +
+        //            "&notifyUrl=" + notifyUrl +
+        //            "&extraData=" + extraData
+        //            ;
 
-                MoMoSecurity crypto = new MoMoSecurity();
-                string sig= crypto.signSHA256(rH, serectkey);
+        //        MoMoSecurity crypto = new MoMoSecurity();
+        //        string sig= crypto.signSHA256(rH, serectkey);
 
-                return Ok(new { sig,rH,Id,totalPrice });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPaySign)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
-        }
-
-
-        [HttpGet("getVNPayUrl", Name = "getVNPayUrl")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetVNPayUrl(int totalPrice)
-        {
-            try
-            {
-                string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                //string returnUrl = "http://18110320.000webhostapp.com/#/thankyou";
-
-                string returnUrl = "http://localhost:4200/#/thankyou";
-
-                //string tmnCode = "V0A4GQCF";
-                //string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
-
-                string tmnCode = "K3IS060E";
-                string hashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";
-
-                string price = (totalPrice * 100).ToString();
-                string orderInfo = "Thanh toan don hang cho CircleShop";
+        //        return Ok(new { sig,rH,Id,totalPrice });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetPaySign)}");
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+        //    }
+        //}
 
 
+        //[HttpGet("getVNPayUrl", Name = "getVNPayUrl")]
+        //[Authorize]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetVNPayUrl(int totalPrice)
+        //{
+        //    try
+        //    {
+        //        string url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        //        //string returnUrl = "http://18110320.000webhostapp.com/#/thankyou";
 
-                PayLib pay = new PayLib();
+        //        string returnUrl = "http://localhost:4200/#/thankyou";
 
-                pay.AddRequestData("vnp_Version", "2.0.1"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
-                pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
-                pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-                pay.AddRequestData("vnp_Amount",price); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
-                pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
-                pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
-                pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
-                pay.AddRequestData("vnp_IpAddr", Util.GetIpAddress()); //Địa chỉ IP của khách hàng thực hiện giao dịch
-                pay.AddRequestData("vnp_Locale", "vn"); //Ngôn ngữ giao diện hiển thị - Tiếng Việt (vn), Tiếng Anh (en)
-                pay.AddRequestData("vnp_OrderInfo", orderInfo); //Thông tin mô tả nội dung thanh toán
-                pay.AddRequestData("vnp_OrderType", "other"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
-                pay.AddRequestData("vnp_ReturnUrl", returnUrl); //URL thông báo kết quả giao dịch khi Khách hàng kết thúc thanh toán
-                pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
+        //        //string tmnCode = "V0A4GQCF";
+        //        //string hashSecret = "CQWPCYYDWRGMVSRNJBXRSOFDJWVSFUHO";
 
-                string paymentUrl = pay.CreateRequestUrl(url, hashSecret);
+        //        string tmnCode = "K3IS060E";
+        //        string hashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";
+
+        //        string price = (totalPrice * 100).ToString();
+        //        string orderInfo = "Thanh toan don hang cho CircleShop";
 
 
-                return Ok(new { paymentUrl });
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
-        }
+        //        PayLib pay = new PayLib();
+
+        //        pay.AddRequestData("vnp_Version", "2.0.1"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
+        //        pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
+        //        pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
+        //        pay.AddRequestData("vnp_Amount",price); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+        //        pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
+        //        pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
+        //        pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
+        //        pay.AddRequestData("vnp_IpAddr", Util.GetIpAddress()); //Địa chỉ IP của khách hàng thực hiện giao dịch
+        //        pay.AddRequestData("vnp_Locale", "vn"); //Ngôn ngữ giao diện hiển thị - Tiếng Việt (vn), Tiếng Anh (en)
+        //        pay.AddRequestData("vnp_OrderInfo", orderInfo); //Thông tin mô tả nội dung thanh toán
+        //        pay.AddRequestData("vnp_OrderType", "other"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
+        //        pay.AddRequestData("vnp_ReturnUrl", returnUrl); //URL thông báo kết quả giao dịch khi Khách hàng kết thúc thanh toán
+        //        pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
+
+        //        string paymentUrl = pay.CreateRequestUrl(url, hashSecret);
+
+
+        //        return Ok(new { paymentUrl });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl)}");
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+        //    }
+        //}
 
 
         [HttpGet("getVNPayUrl2", Name = "getVNPayUrl2")]
@@ -607,8 +617,8 @@ namespace MyAPI.Controllers
             try
             {
                 //Get Config Info
-                string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
-                //string vnp_Returnurl = "http://minh18110320-001-site1.etempurl.com/#/thankyou";//URL nhan ket qua tra ve 
+                //string vnp_Returnurl = "http://localhost:4200/#/thankyou";//URL nhan ket qua tra ve 
+                string vnp_Returnurl = "http://minh18110320-001-site1.etempurl.com/#/thankyou";//URL nhan ket qua tra ve 
                 string vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; //URL thanh toan cua VNPAY 
                 string vnp_TmnCode = "K3IS060E"; //Ma website
                 string vnp_HashSecret = "TPNMDBCUDPXMJCVFZTSYEKWXPAQHFFPW";//Chuoi bi mat
@@ -658,7 +668,7 @@ namespace MyAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl)}");
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetVNPayUrl2)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
@@ -714,9 +724,9 @@ namespace MyAPI.Controllers
                 {
                     return Accepted(new { success = false, msg = "Mã đã hết hạn!" });
                 }
-                else if (DateTime.ParseExact(dc.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) > today)
+                else if (DateTime.ParseExact(dc.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) > today.AddDays(1))
                 {
-                    return Accepted(new { success = false, msg = "Mã đã chưa thể sử dụng!" });
+                    return Accepted(new { success = false, msg = "Mã chưa thể sử dụng!" });
                 }
                 return Accepted(new { success = true, discountCode=dc });
             }

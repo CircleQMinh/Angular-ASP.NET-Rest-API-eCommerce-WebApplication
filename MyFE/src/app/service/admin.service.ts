@@ -15,8 +15,8 @@ import { Tag } from '../class/tag';
   providedIn: 'root'
 })
 export class AdminService {
-  //apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
-  apiUrl: string = "https://localhost:44324/api/";
+  apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
+  // apiUrl: string = "https://localhost:44324/api/";
 
   apikey:string="3113feaeeb294cee92641b976ba196de"
   firebaseUrl: string = "https://random-website-7f4cf-default-rtdb.firebaseio.com/";

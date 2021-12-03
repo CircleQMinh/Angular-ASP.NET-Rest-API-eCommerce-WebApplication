@@ -1542,7 +1542,7 @@
                         <div class="d-flex flex-wrap justify-content-around ">
                             <div class="form-group">
                                 <label>Sắp xếp theo: </label>
-                                <select class="form-select" [(ngModel)]="orderDiscountCode" (change)=" getDiscountCodes()">
+                                <select class="form-select" [(ngModel)]="orderDiscountCode" (change)=" onChangeFilterDiscountCode()">
                                     <option value="StartDate">Ngày bắt đầu</option>
                                     <option value="EndDate">Ngày kết thúc</option>
                                     <option value="Id">Id</option>
@@ -1552,7 +1552,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Asc/Desc: </label>
-                                <select class="form-select" [(ngModel)]="orderDirDiscountCode" (change)="  getDiscountCodes()">
+                                <select class="form-select" [(ngModel)]="orderDirDiscountCode" (change)="  onChangeFilterDiscountCode()">
                                     <option value="Asc">
                                         <p>Asc<i class="fas fa-sort-amount-up-alt"></i></p>
                                     </option>
@@ -1563,7 +1563,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Hiển thị: </label>
-                                <select class="form-select" [(ngModel)]="pageSizeDiscountCode" (change)=" getDiscountCodes()">
+                                <select class="form-select" [(ngModel)]="pageSizeDiscountCode" (change)=" onChangeFilterDiscountCode()">
                                     <option value="5" selected="true">5</option>
                                     <option value="2">2</option>
                                     <option value="10">10</option>
@@ -2838,12 +2838,8 @@
                 <select class="form-select" [(ngModel)]="category_productWithNoPromo"
                     (change)=" getProductWithNoPromo(category_productWithNoPromo)">
                     <option value="all" selected="true">Tất cả</option>
-                    <option value="Fruit">Trái cây</option>
-                    <option value="Vegetable">Rau củ</option>
-                    <option value="Confectionery">Bánh kẹo</option>
-                    <option value="Snack">Snack</option>
-                    <option value="AnimalProduct">Thịt tươi sống</option>
-                    <option value="CannedFood">Đồ hộp</option>
+                    <option *ngFor="let o of categoryList" value="{{o.name}}" >{{o.name}}</option>
+
                 </select>
             </div>
 

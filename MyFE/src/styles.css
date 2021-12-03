@@ -1319,8 +1319,8 @@ img{transition:opacity 1s;opacity:1;}
     font-weight: 600;
     padding: 5px 10px;
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 0px;
+    top: 0px;
     /* height: 36px; */
     z-index: 99;
 }
@@ -1343,6 +1343,7 @@ img{transition:opacity 1s;opacity:1;}
 .ngxImageZoomContainer {
     width: 100% !important;
     height: 100% !important;
+    max-width: fit-content;
 }
 
 .truncate_texts {

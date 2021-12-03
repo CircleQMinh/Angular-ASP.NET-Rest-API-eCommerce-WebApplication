@@ -33,46 +33,12 @@
                     </ng-container>
          
             
-                    <!-- <ng-container *ngIf="categoryList[0].checked">
-                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây Việt Nam')">Trái cây Việt Nam</span>
-                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trái cây nhập khẩu')">Trái cây nhập khẩu</span>
+                   <ng-container *ngIf="!allCate" >
+                        <span *ngFor="let o of relatedTag" class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag(o.name)">{{o.name}}</span>
+                   
                     </ng-container>
             
             
-                    <ng-container *ngIf="categoryList[1].checked">
-                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ hằng ngày')">Rau củ hằng ngày</span>
-                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Rau củ gia vị')">Rau củ gia vị</span>
-                    </ng-container>
-              
-                    <ng-container *ngIf="categoryList[2].checked"> 
-                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh choco Pie')">Bánh choco Pie</span>
-                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Kẹo')">Kẹo</span>
-                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Alpenliebe')">Alpenliebe</span>
-                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('AFC')">AFC</span>
-                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
-                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Chupa Chups')">Chupa Chups</span>
-                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Bánh gạo')">Bánh gạo</span>
-                    </ng-container>
-            
-                    <ng-container *ngIf="categoryList[3].checked">
-                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Oishi')">Oishi</span>
-                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Lays')">Lay's</span>
-                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Pringles')">Pringles </span>
-                    </ng-container>
-               
-                    <ng-container *ngIf="categoryList[4].checked">
-                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo')">Thịt heo</span>
-                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt gà')">Thịt gà</span>
-                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò')">Thịt bò</span>
-                        <span class="badge bg-info mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá tươi')">Cá tươi</span>
-                        <span class="badge bg-danger mr-1 mt-4 even-larger-badge"  (click)="applyTag('Trứng')">Trứng</span>
-                    </ng-container>
-           
-                    <ng-container *ngIf="categoryList[5].checked">
-                        <span class="badge bg-warning mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt heo hộp')">Thịt heo hộp</span>
-                        <span class="badge bg-primary mr-1 mt-4 even-larger-badge"  (click)="applyTag('Thịt bò hộp')">Thịt bò hộp</span>
-                        <span class="badge bg-success mr-1 mt-4 even-larger-badge"  (click)="applyTag('Cá hộp')">Cá hộp</span>
-                    </ng-container> -->
                  
                 </p>
             </div>
@@ -126,7 +92,7 @@
                                     id="flexRadioDefault1" [(ngModel)]="priceRange" value="20000,40000" name="pr3"
                                     (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
-                                    Từ 20.000 dến 40.000
+                                    Từ 20.000 đến 40.000
                                 </label>
                             </div>
                             <div class="form-check">
@@ -134,7 +100,7 @@
                                     id="flexRadioDefault1" [(ngModel)]="priceRange" value="40000,120000" name="pr4"
                                     (change)="filterChange(null)">
                                 <label class="form-check-label" for="flexRadioDefault1">
-                                    Từ 40.000 dến 120.000
+                                    Từ 40.000 đến 120.000
                                 </label>
                             </div>
                             <div class="form-check">
@@ -166,7 +132,7 @@
                             </div>
                         </form>
                         <hr>
-                        <h4>Khuyến mãi</h4>
+                        <!-- <h4>Khuyến mãi</h4>
                         <form>
                             <div class="form-check ">
                                 <input class="form-check-input" type="checkbox" value="onPromo" name="PromoOnly"
@@ -176,7 +142,7 @@
                                 </label>
                             </div>
                         </form>
-                        <hr>
+                        <hr> -->
                     </div>
 
                     <div class="col col-md-9">
@@ -214,7 +180,7 @@
                             </ng-container>
                             <h4 class="tag-search-h4" *ngIf="priceRange!='0,99999999'">
                                 <span class="badge rounded-pill bg-danger mx-2 hover_badge" ngbTooltip="Nhấn để loại bỏ khỏi bộ lọc"
-                                (click)="removePriceRange()">Khoảng giá : {{priceRange}} <i class="far fa-times-circle"></i></span>
+                                (click)="removePriceRange()">Khoảng giá : {{displayPriceRange(priceRange)}} <i class="far fa-times-circle"></i></span>
                             </h4>
                             <h4 class="tag-search-h4" *ngIf="priceRange=='0,99999999'">
                                 <span class="badge rounded-pill bg-danger mx-2 hover_badge">Khoảng giá : Toàn bộ </span>
@@ -238,10 +204,12 @@
 
                             <p class="lead text-monospace text-center mt-5" *ngIf="totalProduct()==0">Không tìm thấy sản
                                 phẩm !</p>
-                            <div *ngFor="let pro of pagedProduct ,index as i " class="gradient-border"
+                            <div *ngFor="let pro of products ,index as i " class="gradient-border"
                                 style=" margin: 10px;margin-bottom: 110px;">
                                 <span class="sold-out-overlay" *ngIf="pro.unitInStock==0" 
                                 ngbTooltip="Sản phẩm đã hết hàng."  ><i class="fas fa-ban"></i> Hết hàng</span>
+                                <span class="sold-out-overlay" *ngIf="pro.unitInStock!=0" style="background-color: rgb(65, 243, 65);"
+                                ngbTooltip="Sản phẩm còn lại"  > SL : {{pro.unitInStock}}</span>
                                 <div class="featured__item" >
                                     <div class="featured__item__pic set-bg " 
                                         [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
@@ -299,13 +267,13 @@
                             </div>
                         </div>
 
-                        <div class="container d-flex justify-content-center mt-5 ">
+                        <div class="container d-flex justify-content-center mt-5 " *ngIf="!onPromoOnly&&!isLoading">
                             <div class="row">
                                 <div class="col">
                                     <div id="ng-pagi">
                                         <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize"
-                                            [collectionSize]="products.length" [maxSize]="3" [boundaryLinks]=true
-                                            (pageChange)="getPagedProduct()" size="sm">
+                                            [collectionSize]="collectionSize" [maxSize]="3" [boundaryLinks]=true
+                                            (pageChange)="findProduct()" size="sm">
                                         </ngb-pagination>
                                     </div>
 
@@ -320,6 +288,8 @@
                                     *ngIf="pro.promoInfo">
                                     <span class="sold-out-overlay" *ngIf="pro.unitInStock==0" 
                                     ngbTooltip="Sản phẩm đã hết hàng."  ><i class="fas fa-ban"></i> Hết hàng</span>
+                                    <span class="sold-out-overlay" *ngIf="pro.unitInStock!=0" 
+                                    ngbTooltip="Sản phẩm đã hết hàng."  > Còn {{pro.unitInStock}}</span>
                                     <div class="featured__item">
                                         <div class="featured__item__pic set-bg"
                                             [ngStyle]="{'background-image':'url(' + pro.imgUrl + ')'}"
@@ -374,6 +344,19 @@
 
                                 </div>
                             </ng-container>
+                        </div>
+                        <div class="container d-flex justify-content-center mt-5 " *ngIf="onPromoOnly&&!isLoading">
+                            <div class="row">
+                                <div class="col">
+                                    <div id="ng-pagi">
+                                        <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize"
+                                            [collectionSize]="collectionSize" [maxSize]="3" [boundaryLinks]=true
+                                            (pageChange)="findProduct()" size="sm">
+                                        </ngb-pagination>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
