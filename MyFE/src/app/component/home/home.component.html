@@ -40,17 +40,17 @@
                         class="text-box banner-layer x50 md-x50 lg-x50 y15 md-y15 lg-y15 res-text">
                         <div class="text-box-content text dark">
                             <div class="text-inner text-center">
-                                <h4>Rau củ, thịt, cá, trứng, trái cây các loại</h4>
+                                <h4>Cửa hàng mua thực phẩm online TP.HCM. Chuyên bán các loại rau sạch, củ quả, trái cây, thực phẩm tươi sống</h4>
 
-                                <a routerLink="/vegetable" target="_self"
+                                <a *ngFor="let o of categoryList" (click)="goToSearch(o.name)"
                                     class="button primary is-small animate__animated animate__backInDown "
                                     style="border-radius:99px;">
                                     <span>
-                                        <i class="fas fa-carrot"></i> Rau củ
+                                      {{o.name}}
                                     </span>
-                                    <i class="fas fa-arrow-right"></i>
+                                    <i class="fas fa-arrow-right "></i>
                                 </a>
-                                <a routerLink="/fruit" target="_self"
+                                <!-- <a routerLink="/fruit" target="_self"
                                     class="button primary is-small animate__animated animate__backInDown "
                                     style="border-radius:99px;">
                                     <span><i class="fas fa-apple-alt"></i> Trái cây</span>
@@ -76,7 +76,7 @@
                                     class="button primary is-small animate__animated animate__backInDown "
                                     style="border-radius:99px;"> <span><i class="fas fa-spray-can"></i> Đồ hộp</span>
                                     <i class="fas fa-arrow-right"></i>
-                                </a>
+                                </a> -->
                               
                             </div>
                         </div>

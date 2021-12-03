@@ -8,6 +8,7 @@ import { CartService } from 'src/app/service/cart.service';
 import { ProductService } from 'src/app/service/product.service';
 import { Location } from '@angular/common';
 import { Category } from 'src/app/class/category';
+import { Tag } from 'src/app/class/tag';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -17,7 +18,7 @@ export class SearchComponent implements OnInit {
   isLoading = false
   keyword: any
 
-  defaultPriceRange = ["0,20000", "20000,40000", "40000,120000", "120000,999999", "0,999999"]
+  defaultPriceRange = ["0,20000", "20000,40000", "40000,120000", "120000,99999999", "0,99999999"]
 
   allCate = false
 
@@ -40,7 +41,9 @@ export class SearchComponent implements OnInit {
   pageSize: number = 10
 
   categoryList:Category[]=[]
-
+  collectionSize: any;
+  relatedTag:Tag[]=[]
+  
   constructor(private productService: ProductService, private toast: HotToastService,
     private cartService: CartService, private authService: AuthenticationService) { }
 
@@ -49,8 +52,23 @@ export class SearchComponent implements OnInit {
     this.getCategory()
 
 
+    if(localStorage.getItem("searchCate")){
+      let a = localStorage.getItem("searchCate")
+      console.log(a)
+      localStorage.removeItem("searchCate")
+      for(let i=0;i<this.categoryList.length;i++){
+        if(a==this.categoryList[i].name){
+          this.categoryList[i].checked=true
+        }
+      }
+      this.stringCate=a!
+    }
+    else{
+      this.allCate = true
+      this.stringCate = "all"
+    }
 
-    this.priceRange = "0,999999"
+    this.priceRange = "0,99999999"
     this.keyword = ""
     if(localStorage.getItem("searchKeyWord")){
       this.keyword=localStorage.getItem("searchKeyWord")
@@ -65,13 +83,13 @@ export class SearchComponent implements OnInit {
     }
 
 
-
+    this.findProduct()
 
     //console.log(this.keyword)
     this.autoInterval = setInterval(() => {
       //this.getCategory()
       this.findProduct()
-    }, 3000)
+    }, 10000)
     window.scrollTo(0, 0)
   }
   ngOnDestroy(): void {
@@ -85,47 +103,48 @@ export class SearchComponent implements OnInit {
   }
 
   getCategory(){
-    this.productService.getCategory().subscribe(
-      data=>{
-        this.isDisconnect = false
-        this.categoryList=data.cate
-        if(localStorage.getItem("searchCate")){
-          let a = localStorage.getItem("searchCate")
-          //console.log(a)
-          localStorage.removeItem("searchCate")
-          for(let i=0;i<this.categoryList.length;i++){
-            if(a==this.categoryList[i].name){
-              this.categoryList[i].checked=true
-            }
-          }
-          this.stringCate=a!
+
+    if(localStorage.getItem("categoryList")){
+      console.log("Không phải tải lại")
+      this.categoryList=JSON.parse(localStorage.getItem("categoryList")!)
+    }
+    else{
+      
+      this.productService.getCategory().subscribe(
+        data=>{
+          this.isDisconnect = false
+          this.categoryList=data.cate
+          this.categoryList.forEach(element => {
+            element.checked=false
+          });
+  
+        },
+        error=>{
+          console.log(error)
+          this.isDisconnect = true
         }
-        else{
-          this.allCate = true
-          this.stringCate = "all"
-        }
-        this.findProduct()
-      },
-      error=>{
-        console.log(error)
-        this.isDisconnect = true
-      }
-    )
+      )
+    }
+
   }
 
   findProduct() {
 
-    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate, this.tag).subscribe(
+    this.productService.getSearchProductResult(this.keyword, this.priceRange, this.stringCate, this.tag[0],this.pageNumber,this.pageSize).subscribe(
       data => {
         this.isDisconnect = false
         this.products = data.result
+        this.collectionSize=data.total
         //console.log(this.products)
         this.promoInfo = data.promoInfo
         for (let i = 0; i < this.products.length; i++) {
           this.products[i].promoInfo = this.promoInfo[i]
         }
-        this.getPagedProduct()
+        //this.getPagedProduct()
         //console.log(this.products)
+        if(this.stringCate!="all"){
+          this.getCategoryTag(this.stringCate)
+        }
         this.isLoading = false
       },
       error => {
@@ -146,7 +165,7 @@ export class SearchComponent implements OnInit {
     }
   }
   filterChange(name: any) {
-
+    this.pageNumber=1
     if (name) {
       if (name == "all") {
         this.allCate = true
@@ -245,14 +264,14 @@ export class SearchComponent implements OnInit {
   }
   removePriceRange() {
     this.isLoading = true
-    this.priceRange = '0,999999'
+    this.priceRange = '0,99999999'
     this.findProduct()
   }
   resetFilter() {
     this.isLoading = true
     this.allCate = true
     this.stringCate = "all"
-    this.priceRange = "0,999999"
+    this.priceRange = "0,99999999"
     this.keyword = ""
     this.tag = ["all"]
     this.onPromoOnly = false
@@ -285,7 +304,7 @@ export class SearchComponent implements OnInit {
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)
-    this.toast.success("Đã thêm sản phẩm vào giỏ!")
+    //this.toast.success("Đã thêm sản phẩm vào giỏ!")
   }
 
   toNumber(string: string): number {
@@ -313,5 +332,26 @@ export class SearchComponent implements OnInit {
   }
   alertSoldOut(){
     this.toast.info("Sản phẩm đã hết hàng!")
+  }
+
+  displayPriceRange(priceRange:string):string{
+    let pr:string[]=priceRange.split(",")
+    if(pr[1]=="99999999"){
+      return "Trên " + pr[0]+" VND"
+    }
+    else{
+      return "Từ "+pr[0]+" đến "+pr[1]+ " VND"
+    }
+  }
+  getCategoryTag(cate:string){
+    this.productService.getCategoryTag(cate).subscribe(
+      data=>{
+        this.relatedTag=data.result
+        console.log(this.relatedTag)
+      },
+      error=>{
+        console.log(error)
+      }
+    )
   }
 }

@@ -135,7 +135,7 @@ namespace MyAPI.Repository
 
             if (expression != null)
             {
-                query = query.Where(expression);
+                query = query.Where(expression).Distinct(); ;
             }
 
             if (includes != null)

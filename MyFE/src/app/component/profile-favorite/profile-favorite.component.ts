@@ -64,7 +64,6 @@ export class ProfileFavoriteComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-
     }
   }
   getUserInfo() {
@@ -142,7 +141,7 @@ export class ProfileFavoriteComponent implements OnInit {
   }
   addToCart(pro: Product) {
     this.cartService.addToCart(pro)
-    this.toast.success("Thêm sản phẩm vào giỏ hàng thành công!")
+    //this.toast.success("Thêm sản phẩm vào giỏ hàng thành công!")
   }
   signOut() {
     let a = this.router.url

@@ -353,7 +353,9 @@ body{
   }
 }
 
-
+.fb_reset{
+  display: none!important;
+}
 .fb_dialog_contentt{
   display: none!important;
 }

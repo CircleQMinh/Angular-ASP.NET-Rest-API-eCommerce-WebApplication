@@ -323,3 +323,6 @@ a:hover,a:focus{color:#f6a879;}
 p{
     color: black;
 }
+.ngxImageZoomThumbnail{
+    width: 100%;
+}

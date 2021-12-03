@@ -10,11 +10,11 @@ export class OrderService {
 
   shippingFee:number = 15000
 
-  // apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
-  // hostUrl:string="http://minh18110320-001-site1.etempurl.com/#/"
+  apiUrl:string="http://minh18110320-001-site1.etempurl.com/api/";
+  hostUrl:string="http://minh18110320-001-site1.etempurl.com/#/"
 
-  hostUrl:string="http://localhost:4200/#/"
-  apiUrl: string = "https://localhost:44324/api/";
+  // hostUrl:string="http://localhost:4200/#/"
+  // apiUrl: string = "https://localhost:44324/api/";
 
   momoUrl: string = "https://test-payment.momo.vn/gw_payment/transactionProcessor"
 
