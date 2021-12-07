@@ -245,7 +245,7 @@ export class ShipperComponent implements OnInit {
 
   finishOrder() {
     this.isAcceptingOrder = true
-    let today = formatDate(Date.now(), 'dd-MM-yyyy hh:mm:ss', 'en');
+    let today = formatDate(Date.now(), 'dd-MM-yyyy HH:mm:ss', 'en');
     this.orderService.finishOrder(this.user.id, this.selectedOrder.id, this.rf1.controls["status"].value,
     today, this.rf1.controls["note"].value).subscribe(
       data => {
