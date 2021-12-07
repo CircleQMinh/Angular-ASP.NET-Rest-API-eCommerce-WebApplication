@@ -62,7 +62,7 @@ export class AdminComponent implements OnInit {
   dashboardInfo = {
     totalUser: 5,
     totalProduct: 142,
-    totalOrder: 3,
+    totalOrder: 0,
     totalEmp: 5,
     totalPromo: 1
   }
@@ -326,7 +326,27 @@ export class AdminComponent implements OnInit {
     }
     else {
       this.getAdminInfo()
-
+      //check new order
+      this.newOrderInterval = setInterval(() => {
+        this.adminService.getDashboardInfo().subscribe(
+          data => {
+            this.isDisconnect = false
+            // console.log("---------")
+            // console.log(data)
+            // console.log(this.dashboardInfo)
+            if (data.totalOrder > this.dashboardInfo.totalOrder) {
+            
+              this.showNewOrderNotify = true
+              this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
+              this.dashboardInfo = data
+            }
+          },
+          error => {
+            console.log(error)
+            this.isDisconnect = true
+          }
+        )
+      }, 5000)
     }
 
   }
@@ -692,8 +712,17 @@ export class AdminComponent implements OnInit {
   getDBInfo() {
     this.adminService.getDashboardInfo().subscribe(
       data => {
-        this.dashboardInfo = data
+        if(this.dashboardInfo.totalOrder==0){
+          this.dashboardInfo = data
+        }
+        if (data.totalOrder > this.dashboardInfo.totalOrder) {
+            
+          this.showNewOrderNotify = true
+          this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
+          this.dashboardInfo = data
+        }
         //console.log(this.dashboardInfo)
+        
         this.isLoading = false
         this.isDisconnect = false
       },
@@ -759,25 +788,7 @@ export class AdminComponent implements OnInit {
         }
         this.getSearchData()
         this.getDBInfo()
-        //check new order
-        this.newOrderInterval = setInterval(() => {
-          this.adminService.getDashboardInfo().subscribe(
-            data => {
-              this.isDisconnect = false
-              if (data.totalOrder > this.dashboardInfo.totalOrder) {
-                this.showNewOrderNotify = true
-                this.numberOfNewOrder += data.totalOrder - this.dashboardInfo.totalOrder
-                this.dashboardInfo != null
-              }
-              this.dashboardInfo = data
-
-            },
-            error => {
-              console.log(error)
-              this.isDisconnect = true
-            }
-          )
-        }, 10500)
+        
         this.autoInterval = setInterval(() => {
           this.autoReload()
         }, 3000)
@@ -894,7 +905,7 @@ export class AdminComponent implements OnInit {
     switch (this.active_tab) {
       case "db":
         this.isLoading = false
-        this.getDBInfo()
+        //this.getDBInfo()
         break
       case "order":
         this.getOrder()
@@ -1734,9 +1745,9 @@ export class AdminComponent implements OnInit {
       if(end<=start){
         valid=false
       }
-      console.log(start)
-      console.log(end)
-      console.log(valid)
+      // console.log(start)
+      // console.log(end)
+      // console.log(valid)
       if(valid){
         if (this.urlIMG != this.defaultProImgUrl) {
           this.authService.upLoadIMG(this.urlIMG).subscribe(

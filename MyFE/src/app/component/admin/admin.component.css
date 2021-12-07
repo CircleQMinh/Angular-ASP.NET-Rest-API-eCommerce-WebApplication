@@ -359,6 +359,9 @@ body{
 .fb_dialog_contentt{
   display: none!important;
 }
+#facebook{
+  display: none;
+}
 .card {
   background-color: #fff;
   border-radius: 10px;
