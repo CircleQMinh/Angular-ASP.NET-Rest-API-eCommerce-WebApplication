@@ -71,7 +71,7 @@ export class ProductListComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval search!")
+     // console.log("Xóa interval search!")
     }
     localStorage.removeItem("searchCate")
   }
@@ -79,7 +79,7 @@ export class ProductListComponent implements OnInit {
   getCategory(){
 
     if(localStorage.getItem("categoryList")){
-      console.log("Không phải tải lại")
+      //console.log("Không phải tải lại")
       this.categoryList=JSON.parse(localStorage.getItem("categoryList")!)
     }
     else{
@@ -329,7 +329,7 @@ export class ProductListComponent implements OnInit {
     this.productService.getCategoryTag(cate).subscribe(
       data=>{
         this.relatedTag=data.result
-        console.log(this.relatedTag)
+       // console.log(this.relatedTag)
       },
       error=>{
         console.log(error)

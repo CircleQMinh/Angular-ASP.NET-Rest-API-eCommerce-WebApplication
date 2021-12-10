@@ -75,7 +75,7 @@ export class ProfileXuComponent implements OnInit {
       data => {
         this.userInfo = data.user
         this.userInfo.roles = data.roles
-        console.log(this.userInfo)
+        //console.log(this.userInfo)
         localStorage.setItem("user-info", JSON.stringify(this.userInfo))
         this.isLoading = false
         this.isDisconnect = false
