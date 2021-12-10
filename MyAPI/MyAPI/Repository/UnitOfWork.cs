@@ -21,7 +21,6 @@ namespace MyAPI.Repository
         private IGenericRepository<PromotionInfo> _promotionInfo;
         private IGenericRepository<Tag> _tag;
         private IGenericRepository<DiscountCode> _discountcode;
-
         private IGenericRepository<Category> _category;
         public UnitOfWork(DatabaseContext context)
         {
@@ -33,7 +32,6 @@ namespace MyAPI.Repository
         public IGenericRepository<APIUser> Users => _user ??= new GenericRepository<APIUser>(_context);
         public IGenericRepository<ShippingInfo> ShippingInfos => _shippingInfo ??= new GenericRepository<ShippingInfo>(_context);
         public IGenericRepository<Review> Reviews => _review ??= new GenericRepository<Review>(_context);
-
         public IGenericRepository<EmployeeInfo> EmployeeInfos => _employeeInfo ??= new GenericRepository<EmployeeInfo>(_context);
         public IGenericRepository<Promotion> Promotions => _promotion ??= new GenericRepository<Promotion>(_context);
         public IGenericRepository<PromotionInfo> PromotionInfos => _promotionInfo ??= new GenericRepository<PromotionInfo>(_context);
@@ -45,7 +43,6 @@ namespace MyAPI.Repository
             _context.Dispose();
             GC.SuppressFinalize(this);
         }
-
         public async Task Save()
         {
             await _context.SaveChangesAsync();

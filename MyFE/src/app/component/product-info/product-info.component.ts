@@ -61,6 +61,7 @@ export class ProductInfoComponent implements OnInit {
 
   isRemovingReview=false
   review_owner_id=""
+  autoInterval:any
 
   constructor(private router: Router, private route: ActivatedRoute, private proService: ProductService, private toast: HotToastService
     , private cartService: CartService, private authService: AuthenticationService,private modalService:NgbModal,private adminService:AdminService) { }
@@ -75,14 +76,21 @@ export class ProductInfoComponent implements OnInit {
         this.isLoading = true
         window.scrollTo(0, 0)
         this.updateInfo()
-        setInterval(()=>{
+        this.autoInterval=setInterval(()=>{
           this.refreshInfo()
          // console.log(this.user)
-        },1000)
+        },5000)
       }
     )
   }
-
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.autoInterval) {
+      clearInterval(this.autoInterval);
+      //console.log("Xóa interval product!")
+    }
+  }
   sortChange() {
     if (this.sort == "d") {
       this.product.reviews.sort((a, b) => {

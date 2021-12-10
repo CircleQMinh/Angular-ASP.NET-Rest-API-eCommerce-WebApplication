@@ -60,7 +60,7 @@ export class NavComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     if (this.autoInterval) {
       clearInterval(this.autoInterval);
-      console.log("Xóa interval profile!")
+     // console.log("Xóa interval profile!")
     }
   }
   getCategory(){
