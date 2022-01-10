@@ -618,9 +618,9 @@ namespace MyAPI.Controllers
             {
 
                 var query = await _unitOfWork.Tags.GetAll(q => q.Product.Category.Name == category,null,null);
-                
 
 
+                //Select All distinct values in a column using LINQ
                 return Accepted(new { result= query.GroupBy(q => q.Name).Select(q => q.First()).Distinct() });
             }
             catch (Exception ex)
