@@ -173,7 +173,7 @@ namespace MyAPI.Repository
                 query = query.Where(expression);
             }
 
-            return (double) query.Average(prop);
+            return (double)await  query.AverageAsync(prop);
         }
 
         public async Task<double> GetMax(Expression<Func<T, bool>> expression = null, Expression<Func<T, decimal>> prop = null)
@@ -184,7 +184,7 @@ namespace MyAPI.Repository
                 query = query.Where(expression);
             }
 
-            return (double)query.Max(prop);
+            return (double)await query.MaxAsync(prop);
         }
 
         public async Task<double> GetMin(Expression<Func<T, bool>> expression = null, Expression<Func<T, decimal>> prop = null)
@@ -195,7 +195,7 @@ namespace MyAPI.Repository
                 query = query.Where(expression);
             }
 
-            return (double)query.Min(prop);
+            return (double)await query.MinAsync(prop);
         }
 
         public async Task Insert(T entity)

@@ -1428,7 +1428,7 @@ export class AdminComponent implements OnInit {
         console.log(error)
       }
     )
-    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' })
+    this.modalService.open(modal, {  size: 'xl',ariaLabelledBy: 'modal-basic-title' })
   }
   addEmployee() {
     this.showFormError = true
