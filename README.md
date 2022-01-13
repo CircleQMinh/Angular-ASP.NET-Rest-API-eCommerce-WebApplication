@@ -1,4 +1,5 @@
 # Angular-ASP.NET-Rest-API-eCommerce-WebApplication
+Tên đề tài: Tìm hiểu công nghệ Angular, ASP.NET Core và xây dựng website thương mại điện tử<br>
 Host tại : http://minh18110320-001-site1.etempurl.com/#/home <br>
 Api tại : http://minh18110320-001-site1.etempurl.com/swagger/index.html <br>
 Angular-ASP.NET-Rest-API-eCommerce-WebApplication <br>
